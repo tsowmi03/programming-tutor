@@ -44,11 +44,15 @@ TURSO_DATABASE_URL=... TURSO_AUTH_TOKEN=... npm run db:seed
 
 ## 2. Code execution — self-hosted Piston
 
-On any Docker host (a $5 VPS is plenty for one user):
+On a small x86-64 Linux VPS:
 
 ```bash
-docker run -d --name piston --privileged -p 2000:2000 \
-  -v piston_packages:/piston/packages ghcr.io/engineer-man/piston
+cd deploy/piston
+cp .env.example .env
+# Set PISTON_HOST and generate PISTON_AUTH_TOKEN with:
+# openssl rand -hex 32
+docker compose up -d
+
 # install the four runtimes (matching versions in src/lib/judge/languages.ts)
 for pkg in "python 3.10.0" "node 18.15.0" "java 15.0.2" "gcc 10.2.0"; do
   set -- $pkg
@@ -58,7 +62,9 @@ for pkg in "python 3.10.0" "node 18.15.0" "java 15.0.2" "gcc 10.2.0"; do
 done
 ```
 
-Put it behind HTTPS (Caddy/Traefik/cloudflared) and note the URL.
+The included Caddy service obtains HTTPS certificates automatically. It keeps
+Piston's port bound to the VPS loopback interface and requires a bearer token
+on the public endpoint.
 
 ## 3. App — Vercel
 
@@ -74,7 +80,8 @@ Set the environment variables in the Vercel project:
 | `TURSO_AUTH_TOKEN` | from step 1 |
 | `DATABASE_URL` | `file:./dev.db` (unused at runtime once Turso is wired, but Prisma's generator wants it set) |
 | `EXECUTOR` | `piston` |
-| `PISTON_URL` | `https://<your-piston-host>/api/v2/piston` |
+| `PISTON_URL` | `https://<your-piston-host>/api/v2` |
+| `PISTON_AUTH_TOKEN` | the token configured on the Piston host |
 
 Deploy. Done.
 

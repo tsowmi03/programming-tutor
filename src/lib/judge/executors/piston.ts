@@ -42,6 +42,7 @@ function pistonUrl(): string {
 
 export async function executeOnPiston(req: ExecRequest): Promise<ExecResult> {
   const { piston } = LANGUAGES[req.language];
+  const authToken = process.env.PISTON_AUTH_TOKEN;
   const body = JSON.stringify({
     language: piston.language,
     version: piston.version,
@@ -57,7 +58,10 @@ export async function executeOnPiston(req: ExecRequest): Promise<ExecResult> {
     try {
       const res = await fetch(`${pistonUrl()}/execute`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+        },
         body,
         signal: AbortSignal.timeout(30_000),
       });
