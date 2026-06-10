@@ -1,65 +1,173 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Flame, Sparkles } from "lucide-react";
+import { listProblems } from "@/lib/problems";
+import { CATEGORY_LIST } from "@/content/categories";
+import { DifficultyBadge, StatusIcon } from "@/components/badges";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function DashboardPage() {
+  const problems = await listProblems();
+  const solved = problems.filter((p) => p.status === "solved").length;
+  const attempted = problems.filter((p) => p.status === "attempted").length;
+  const total = problems.length;
+  const pct = total === 0 ? 0 : Math.round((solved / total) * 100);
+
+  // "Continue" = first attempted problem, else first unsolved in path order.
+  const ordered = CATEGORY_LIST.flatMap((c) =>
+    problems
+      .filter((p) => p.category === c.id)
+      .sort((a, b) => a.order - b.order),
+  );
+  const next =
+    ordered.find((p) => p.status === "attempted") ??
+    ordered.find((p) => p.status !== "solved");
+
+  const ring = 2 * Math.PI * 52;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="mx-auto max-w-6xl px-4 py-10">
+      {/* Hero */}
+      <section className="relative overflow-hidden rounded-2xl border border-edge bg-gradient-to-br from-indigo-950/60 via-surface to-surface p-8">
+        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-indigo-600/20 blur-3xl" />
+        <div className="flex flex-wrap items-center justify-between gap-8">
+          <div className="max-w-xl">
+            <p className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-300 ring-1 ring-indigo-500/30">
+              <Sparkles className="h-3.5 w-3.5" />
+              Your personal training ground
+            </p>
+            <h1 className="text-3xl font-bold tracking-tight">
+              Build problem-solving instincts,
+              <br />
+              one rep at a time.
+            </h1>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              Work through data structures and algorithms in Python,
+              JavaScript, Java, or C — judged against real test cases — and
+              cement the concepts with written explanations.
+            </p>
+            {next && (
+              <Link
+                href={`/problems/${next.slug}`}
+                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-950/50 transition hover:bg-indigo-400"
+              >
+                {next.status === "attempted" ? "Keep going" : "Continue learning"}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
+          </div>
+
+          <div className="flex items-center gap-6 pr-2">
+            <div className="relative h-32 w-32">
+              <svg viewBox="0 0 120 120" className="h-32 w-32 -rotate-90">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="#27272a" strokeWidth="10" />
+                <circle
+                  cx="60"
+                  cy="60"
+                  r="52"
+                  fill="none"
+                  stroke="url(#grad)"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  strokeDasharray={`${(pct / 100) * ring} ${ring}`}
+                />
+                <defs>
+                  <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#818cf8" />
+                    <stop offset="100%" stopColor="#34d399" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-2xl font-bold">{pct}%</span>
+                <span className="text-[11px] text-muted">complete</span>
+              </div>
+            </div>
+            <dl className="space-y-3 text-sm">
+              <div>
+                <dt className="text-muted">Solved</dt>
+                <dd className="text-xl font-semibold text-emerald-400">
+                  {solved}
+                  <span className="text-sm font-normal text-muted"> / {total}</span>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-muted">In progress</dt>
+                <dd className="text-xl font-semibold text-amber-400">{attempted}</dd>
+              </div>
+            </dl>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </section>
+
+      {/* Categories */}
+      <section className="mt-10">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-semibold tracking-tight">Topics</h2>
+          <Link
+            href="/problems"
+            className="text-sm text-indigo-300 transition hover:text-indigo-200"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Browse all problems →
+          </Link>
         </div>
-      </main>
-    </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {CATEGORY_LIST.map((cat) => {
+            const inCat = problems.filter((p) => p.category === cat.id);
+            if (inCat.length === 0) return null;
+            const catSolved = inCat.filter((p) => p.status === "solved").length;
+            const width = Math.round((catSolved / inCat.length) * 100);
+            return (
+              <Link
+                key={cat.id}
+                href={`/problems?category=${cat.id}`}
+                className="group rounded-xl border border-edge bg-surface p-5 transition hover:border-indigo-500/40 hover:bg-surface-raised"
+              >
+                <div className="flex items-start justify-between">
+                  <h3 className="font-medium">{cat.label}</h3>
+                  <span className="text-xs tabular-nums text-muted">
+                    {catSolved}/{inCat.length}
+                  </span>
+                </div>
+                <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-muted">
+                  {cat.description}
+                </p>
+                <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-zinc-800">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-emerald-400 transition-all"
+                    style={{ width: `${width}%` }}
+                  />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Up next */}
+      {next && (
+        <section className="mt-10">
+          <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold tracking-tight">
+            <Flame className="h-5 w-5 text-orange-400" />
+            Up next
+          </h2>
+          <Link
+            href={`/problems/${next.slug}`}
+            className="flex items-center justify-between rounded-xl border border-edge bg-surface p-5 transition hover:border-indigo-500/40 hover:bg-surface-raised"
+          >
+            <div className="flex items-center gap-4">
+              <StatusIcon status={next.status} />
+              <div>
+                <p className="font-medium">{next.title}</p>
+                <p className="text-xs capitalize text-muted">
+                  {next.category.replace(/-/g, " ")}
+                </p>
+              </div>
+            </div>
+            <DifficultyBadge difficulty={next.difficulty} />
+          </Link>
+        </section>
+      )}
+    </main>
   );
 }

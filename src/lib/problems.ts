@@ -117,14 +117,19 @@ export async function getProblemDetail(
   return detail;
 }
 
-/** Parsed judging inputs for a code problem (server-side only). */
+/**
+ * Parsed judging inputs for a code problem (server-side only).
+ * Tests are ordered visible-first so that result indices line up with the
+ * sample tests the client displays, regardless of authoring order.
+ */
 export function parseJudgingData(record: {
   signature: string | null;
   testCases: string | null;
 }): { signature: FunctionSignature; tests: TestCase[] } | null {
   if (!record.signature || !record.testCases) return null;
+  const tests = JSON.parse(record.testCases) as TestCase[];
   return {
     signature: JSON.parse(record.signature) as FunctionSignature,
-    tests: JSON.parse(record.testCases) as TestCase[],
+    tests: [...tests.filter((t) => !t.hidden), ...tests.filter((t) => t.hidden)],
   };
 }
