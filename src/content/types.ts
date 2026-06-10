@@ -1,0 +1,58 @@
+/**
+ * Authoring types for problem content.
+ *
+ * Problems are authored as TypeScript modules under src/content/problems and
+ * seeded into the database (prisma/seed.ts). Keeping content in the repo
+ * makes it reviewable, versioned, and type-checked.
+ */
+
+import type { LanguageId } from "@/lib/judge/languages";
+import type { FunctionSignature, TestCase } from "@/lib/judge/types";
+
+export type Difficulty = "easy" | "medium" | "hard";
+
+export type CategoryId =
+  | "foundations"
+  | "complexity"
+  | "arrays-hashing"
+  | "two-pointers"
+  | "stack"
+  | "binary-search"
+  | "sliding-window"
+  | "linked-lists"
+  | "trees-graphs"
+  | "recursion-dp";
+
+interface ProblemBase {
+  slug: string;
+  title: string;
+  difficulty: Difficulty;
+  category: CategoryId;
+  /** Sort order within the category (roughly a learning path). */
+  order: number;
+  /** Markdown statement shown in the workspace. */
+  description: string;
+  /** Progressive hints, revealed one at a time. */
+  hints: string[];
+}
+
+export interface CodeProblemDef extends ProblemBase {
+  type: "code";
+  signature: FunctionSignature;
+  testCases: TestCase[];
+  starterCode: Record<LanguageId, string>;
+  /** Reference solutions; shown after solving and used to verify the judge. */
+  solutions: Record<LanguageId, string>;
+  /** Markdown walkthrough of the intended approach. */
+  editorial: string;
+}
+
+export interface ExplanationProblemDef extends ProblemBase {
+  type: "explanation";
+  /** Markdown model answer revealed after the user writes theirs. */
+  modelAnswer: string;
+  /** Checklist of points a good answer should cover (self-assessment). */
+  keyPoints: string[];
+}
+
+export type ProblemDef = CodeProblemDef | ExplanationProblemDef;
