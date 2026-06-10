@@ -28,30 +28,11 @@ turso db show codeclimb --url        # -> TURSO_DATABASE_URL
 turso db tokens create codeclimb     # -> TURSO_AUTH_TOKEN
 ```
 
-Then install the Prisma driver adapter and wire it in (one small code
-change, kept out of the local path on purpose):
+The Prisma driver adapter is already wired into the app and seed script.
+Install dependencies after cloning:
 
 ```bash
-npm install @prisma/adapter-libsql
-```
-
-In `src/lib/prisma.ts`, construct the client with the adapter when the env
-vars are present:
-
-```ts
-import { PrismaClient } from "@prisma/client";
-import { PrismaLibSQL } from "@prisma/adapter-libsql";
-
-function makeClient() {
-  if (process.env.TURSO_DATABASE_URL) {
-    const adapter = new PrismaLibSQL({
-      url: process.env.TURSO_DATABASE_URL,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
-    return new PrismaClient({ adapter });
-  }
-  return new PrismaClient(); // local SQLite via DATABASE_URL
-}
+npm install
 ```
 
 Push the schema and seed (run locally, pointed at Turso):

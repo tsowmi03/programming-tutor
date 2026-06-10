@@ -5,10 +5,10 @@
  * pruned.
  */
 
-import { PrismaClient } from "@prisma/client";
 import { ALL_PROBLEMS } from "../src/content";
+import { createPrismaClient } from "../src/lib/prisma-client";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 async function main() {
   const slugs = ALL_PROBLEMS.map((p) => p.slug);
