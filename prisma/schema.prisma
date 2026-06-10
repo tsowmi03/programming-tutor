@@ -1,0 +1,67 @@
+// Prisma schema for the programming tutor.
+//
+// SQLite is used for local development. For production the same schema works
+// with Turso (libSQL) via Prisma driver adapters — see DEPLOYMENT.md.
+//
+// SQLite does not support native enums or Json columns, so string-typed
+// fields below are validated at the application boundary with Zod
+// (see src/lib/validation.ts) and JSON payloads are stored as strings.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Problem {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  title       String
+  type        String // "code" | "explanation"
+  difficulty  String // "easy" | "medium" | "hard"
+  category    String // slug of a category, e.g. "arrays-hashing"
+  order       Int     @default(0)
+  description String // markdown problem statement
+  hints       String  @default("[]") // JSON string[]
+
+  // Code problems only
+  signature   String? // JSON FunctionSignature
+  testCases   String? // JSON TestCase[]
+  starterCode String? // JSON Record<LanguageId, string>
+  solutions   String? // JSON Record<LanguageId, string> — reference solutions
+  editorial   String? // markdown explanation of the intended approach
+
+  // Explanation problems only
+  modelAnswer String? // markdown model answer
+  keyPoints   String? // JSON string[] — checklist used for self-assessment
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  submissions Submission[]
+}
+
+model Submission {
+  id        String  @id @default(cuid())
+  problemId String
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  kind     String // "code" | "explanation"
+  language String? // code submissions: "python" | "javascript" | "java" | "c"
+  code     String?
+
+  answerText String? // explanation submissions
+  selfScore  Int? // 0 = missed, 1 = partial, 2 = got it
+
+  status      String // "passed" | "failed" | "error" | "compile_error" | "self_assessed"
+  results     String? // JSON TestResult[]
+  passedCount Int?
+  totalCount  Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([problemId, createdAt])
+}
