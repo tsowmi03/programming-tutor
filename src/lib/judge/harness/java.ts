@@ -82,9 +82,10 @@ export function buildJavaHarness(
     })
     .join("\n");
 
+  // Piston runs Java via single-file source launch (`java Main.java`), where
+  // the entry point is the *first* top-level class and it must declare main().
+  // So the harness's Main class must precede the user's Solution class.
   return `import java.util.*;
-
-${userCode}
 
 // ---- judge harness (auto-generated, do not edit) ----
 public class Main {
@@ -178,5 +179,7 @@ public class Main {
 ${calls}
     }
 }
+
+${userCode}
 `;
 }
