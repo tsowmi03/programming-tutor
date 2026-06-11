@@ -27,7 +27,10 @@ import { bfsVsDfs } from "./problems/bfs-vs-dfs";
 import { memoizationVsTabulation } from "./problems/memoization-vs-tabulation";
 import { whenBinarySearchApplies } from "./problems/when-binary-search-applies";
 
-export const ALL_PROBLEMS: ProblemDef[] = [
+// AI-generated problems (scripts/batch-generate.ts); index is auto-built.
+import { GENERATED_PROBLEMS } from "./generated";
+
+const CURATED_PROBLEMS: ProblemDef[] = [
   // Foundations & complexity
   fizzbuzz,
   bigOBasics,
@@ -60,6 +63,11 @@ export const ALL_PROBLEMS: ProblemDef[] = [
   climbingStairs,
   coinChange,
   memoizationVsTabulation,
+];
+
+export const ALL_PROBLEMS: ProblemDef[] = [
+  ...CURATED_PROBLEMS,
+  ...GENERATED_PROBLEMS,
 ];
 
 export { CATEGORIES, CATEGORY_LIST } from "./categories";

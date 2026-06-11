@@ -1,0 +1,794 @@
+[
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "sum of an integer array"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "find the maximum value in an array"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "find the minimum value in an array"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "count even numbers in an array"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "reverse a string in place"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "check whether an integer is a palindrome"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "factorial of n (iterative)"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "count vowels in a string"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "average of an array, returned as an int (floor)"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "check if an array is sorted in ascending order"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "find the second largest element in an array"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "rotate an array right by k positions"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "count elements strictly greater than a given threshold"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "square each element of an integer array"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "check if a string contains only digit characters"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "sum the digits of a positive integer"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "check if a number is a power of two"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "count words in a sentence (split on single spaces)"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "find the index of the first occurrence of a target in an array"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "remove all instances of a value from an array, return new length"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "check if two strings are equal ignoring case"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "celsius to fahrenheit conversion (integer input, integer output)"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "easy",
+    "topic": "count pairs of identical adjacent characters in a string"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "medium",
+    "topic": "run-length encode a string"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "medium",
+    "topic": "convert an integer to its binary string representation"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "medium",
+    "topic": "roman numeral string to integer"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "medium",
+    "topic": "find the missing number in an array containing 0 through n with one missing"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "medium",
+    "topic": "plus one: increment an integer represented as an array of digits"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "medium",
+    "topic": "reverse words in a sentence"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "medium",
+    "topic": "find all pairs in an array that sum to a target, return count of unique pairs"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "medium",
+    "topic": "check if a number is a perfect square without using sqrt"
+  },
+  {
+    "category": "foundations",
+    "difficulty": "medium",
+    "topic": "flatten a 2D integer array into a 1D array"
+  },
+  {
+    "category": "complexity",
+    "difficulty": "easy",
+    "topic": "what Big-O describes and why constants are dropped",
+    "type": "explanation"
+  },
+  {
+    "category": "complexity",
+    "difficulty": "easy",
+    "topic": "the difference between time and space complexity",
+    "type": "explanation"
+  },
+  {
+    "category": "complexity",
+    "difficulty": "easy",
+    "topic": "why O(log n) arises from repeatedly halving a problem",
+    "type": "explanation"
+  },
+  {
+    "category": "complexity",
+    "difficulty": "medium",
+    "topic": "best, average, and worst case explained with examples",
+    "type": "explanation"
+  },
+  {
+    "category": "complexity",
+    "difficulty": "medium",
+    "topic": "why nested loops over the same array are usually O(n^2)",
+    "type": "explanation"
+  },
+  {
+    "category": "complexity",
+    "difficulty": "medium",
+    "topic": "amortized analysis using dynamic array growth",
+    "type": "explanation"
+  },
+  {
+    "category": "complexity",
+    "difficulty": "medium",
+    "topic": "space-time tradeoff: trading memory for speed with a lookup table",
+    "type": "explanation"
+  },
+  {
+    "category": "complexity",
+    "difficulty": "medium",
+    "topic": "recognizing O(n log n) algorithms and why comparison sorts can't do better",
+    "type": "explanation"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "check if an array contains a target value"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "count occurrences of each value and return the most frequent"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "find the single number that appears once when all others appear twice"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "intersection of two integer arrays (unique values)"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "check if two strings are anagrams using counts"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "check if an integer array has no duplicates"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "union of two integer arrays (unique values)"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "count pairs with equal values in an array"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "move all zeros to the end while preserving relative order of non-zero elements"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "easy",
+    "topic": "check if there exists a duplicate within k index distance"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "group counts: return the k most frequent elements"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "longest consecutive sequence in an unsorted array"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "subarray sum equals k (count subarrays) using prefix sums"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "product of array except self"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "group anagrams: return group sizes sorted descending"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "four sum count: count tuples (one from each of 4 arrays) that sum to zero"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "check if two strings are isomorphic"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "longest common prefix among an array of strings"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "find all unique pairs in an array that sum to a target, return count"
+  },
+  {
+    "category": "arrays-hashing",
+    "difficulty": "medium",
+    "topic": "maximum sum of any subarray of length exactly k (fixed window)"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "easy",
+    "topic": "reverse an array in place with two pointers"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "easy",
+    "topic": "check if a string is a palindrome ignoring case and non-letters"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "easy",
+    "topic": "merge two sorted arrays into one sorted array"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "easy",
+    "topic": "two sum on a sorted array, return 1-indexed positions"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "easy",
+    "topic": "squares of a sorted array, return in sorted order"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "easy",
+    "topic": "remove element from an array in place, return new length"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "easy",
+    "topic": "count pairs in an array with absolute difference equal to k"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "medium",
+    "topic": "three sum: all unique triplets that sum to zero, return count"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "medium",
+    "topic": "remove duplicates from a sorted array in place, return new length"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "medium",
+    "topic": "container with most water"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "medium",
+    "topic": "sort an array of 0s, 1s, and 2s in-place (Dutch national flag)"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "medium",
+    "topic": "four sum: count quadruplets in an array summing to a target"
+  },
+  {
+    "category": "two-pointers",
+    "difficulty": "medium",
+    "topic": "find the maximum pair sum where one pointer starts from each end"
+  },
+  {
+    "category": "stack",
+    "difficulty": "easy",
+    "topic": "valid parentheses with three bracket types"
+  },
+  {
+    "category": "stack",
+    "difficulty": "easy",
+    "topic": "evaluate a string of pushes and pops, return final stack as an array"
+  },
+  {
+    "category": "stack",
+    "difficulty": "easy",
+    "topic": "next greater element to the right for each element in an array"
+  },
+  {
+    "category": "stack",
+    "difficulty": "easy",
+    "topic": "remove all adjacent duplicate characters from a string using a stack"
+  },
+  {
+    "category": "stack",
+    "difficulty": "medium",
+    "topic": "evaluate reverse polish notation"
+  },
+  {
+    "category": "stack",
+    "difficulty": "medium",
+    "topic": "daily temperatures: days until a warmer temperature"
+  },
+  {
+    "category": "stack",
+    "difficulty": "medium",
+    "topic": "min stack: support getMin in O(1) via an operations encoding"
+  },
+  {
+    "category": "stack",
+    "difficulty": "medium",
+    "topic": "asteroid collision: find the final state of an array of asteroids"
+  },
+  {
+    "category": "stack",
+    "difficulty": "medium",
+    "topic": "decode string: expand k[encoded_string] notation"
+  },
+  {
+    "category": "stack",
+    "difficulty": "medium",
+    "topic": "simplify a Unix-style file path string"
+  },
+  {
+    "category": "stack",
+    "difficulty": "medium",
+    "topic": "remove k digits from a number string to produce the smallest possible number"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "easy",
+    "topic": "classic binary search for a target in a sorted array"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "easy",
+    "topic": "find the insert position of a target in a sorted array"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "easy",
+    "topic": "integer square root via binary search"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "easy",
+    "topic": "count occurrences of a target in a sorted array"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "easy",
+    "topic": "find the leftmost index of a target in a sorted array with duplicates"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "medium",
+    "topic": "find the first and last position of a target in a sorted array"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "medium",
+    "topic": "search in a rotated sorted array"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "medium",
+    "topic": "find the peak element index"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "medium",
+    "topic": "minimum in a rotated sorted array"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "medium",
+    "topic": "koko eating bananas: minimum eating speed to finish within h hours"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "medium",
+    "topic": "capacity to ship packages within d days"
+  },
+  {
+    "category": "binary-search",
+    "difficulty": "medium",
+    "topic": "find the kth smallest element in a row-wise and column-wise sorted matrix"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "easy",
+    "topic": "maximum sum of any window of size k"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "easy",
+    "topic": "best time to buy and sell stock (single transaction)"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "easy",
+    "topic": "maximum average subarray of exactly size k (return integer floor)"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "easy",
+    "topic": "count subarrays of exactly size k where all elements are distinct"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "medium",
+    "topic": "longest substring without repeating characters"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "medium",
+    "topic": "longest substring with at most two distinct characters"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "medium",
+    "topic": "minimum size subarray sum at least target"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "medium",
+    "topic": "longest substring with at most k distinct characters"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "medium",
+    "topic": "longest substring with same letters after at most k replacements"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "medium",
+    "topic": "count subarrays whose product is strictly less than k"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "medium",
+    "topic": "max consecutive ones after flipping at most k zeros"
+  },
+  {
+    "category": "sliding-window",
+    "difficulty": "medium",
+    "topic": "count occurrences of all anagrams of a pattern in a string"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "easy",
+    "topic": "when to prefer a linked list over an array",
+    "type": "explanation"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "easy",
+    "topic": "reverse a singly linked list represented as an int array of values"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "easy",
+    "topic": "find the middle value of a list given as an int array (slow/fast pointers)"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "easy",
+    "topic": "check if linked list values form a palindrome (array representation)"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "easy",
+    "topic": "return the kth value from the end of a list (array representation)"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "easy",
+    "topic": "insert a value at the front of a list and return the new list array"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "medium",
+    "topic": "detect a cycle given next-pointers encoded as an int array, return true/false"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "medium",
+    "topic": "merge two sorted lists given as int arrays of values"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "medium",
+    "topic": "remove the nth node from the end, lists given as value arrays"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "medium",
+    "topic": "rotate a linked list right by k positions (array representation)"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "medium",
+    "topic": "reorder list: L0→Ln→L1→Ln-1 pattern (array representation)"
+  },
+  {
+    "category": "linked-lists",
+    "difficulty": "medium",
+    "topic": "add two numbers stored in reversed linked lists (array representation), return result array"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "easy",
+    "topic": "maximum depth of a binary tree encoded as a level-order int array"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "easy",
+    "topic": "breadth-first vs depth-first traversal tradeoffs",
+    "type": "explanation"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "easy",
+    "topic": "count connected components in an undirected graph given as an edge list (int[][])"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "easy",
+    "topic": "minimum depth of a binary tree encoded as a level-order int array"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "easy",
+    "topic": "path sum: check if any root-to-leaf path sums to a target (level-order encoding)"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "easy",
+    "topic": "symmetric tree: check if a binary tree is its own mirror (level-order int array)"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "easy",
+    "topic": "what is a binary search tree and its invariants",
+    "type": "explanation"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "easy",
+    "topic": "count leaf nodes in a binary tree encoded as a level-order int array"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "medium",
+    "topic": "number of islands in a grid (int[][] of 0s and 1s)"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "medium",
+    "topic": "flood fill on a 2D grid"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "medium",
+    "topic": "shortest path length in an unweighted grid via BFS"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "medium",
+    "topic": "detect a cycle in a directed graph given as an adjacency edge list"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "medium",
+    "topic": "level order traversal of binary tree (level-order encoding), return values per level as int[][]"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "medium",
+    "topic": "validate a binary search tree (level-order int array)"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "medium",
+    "topic": "number of provinces in a friendship graph (int[][] adjacency matrix)"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "medium",
+    "topic": "topological sort of a DAG given as edge list, return a valid ordering"
+  },
+  {
+    "category": "trees-graphs",
+    "difficulty": "medium",
+    "topic": "rotting oranges: minimum minutes until all oranges are rotten (2D grid BFS)"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "easy",
+    "topic": "nth Fibonacci number with memoization"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "easy",
+    "topic": "climbing stairs: number of ways to reach step n"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "easy",
+    "topic": "memoization versus tabulation explained",
+    "type": "explanation"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "easy",
+    "topic": "power function: compute x raised to the power n (recursive, non-negative n)"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "easy",
+    "topic": "sum of digits of a positive integer using recursion"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "easy",
+    "topic": "count ways to tile a 2×n floor with 1×2 dominoes"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "easy",
+    "topic": "tribonacci number: T(n) = T(n-1) + T(n-2) + T(n-3)"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "coin change: fewest coins to make an amount"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "house robber: max non-adjacent sum"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "longest increasing subsequence length"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "unique paths in an m by n grid"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "word break: check if a string can be segmented using a dictionary"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "decode ways: count decodings of a digit string (1-26 mapping)"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "jump game: can you reach the last index given jump lengths"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "combination sum count: number of ordered ways to sum to target using given coins"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "minimum path sum from top-left to bottom-right of a grid"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "longest common subsequence length of two strings"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "maximum product subarray"
+  },
+  {
+    "category": "recursion-dp",
+    "difficulty": "medium",
+    "topic": "partition equal subset sum: can the array be split into two equal-sum halves"
+  }
+]
