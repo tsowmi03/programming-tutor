@@ -262,8 +262,20 @@ Output: 1
     // TODO: implement
     return 0;
 }`,
+    typescript: `function fourSumCount(nums1: number[], nums2: number[], nums3: number[], nums4: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        // TODO: implement
+        return 0;
+    }
+}`,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int FourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
         // TODO: implement
         return 0;
     }
@@ -273,6 +285,13 @@ Output: 1
     // TODO: implement
     return 0;
 }`,
+    cpp: `class Solution {
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `from collections import defaultdict
@@ -289,6 +308,22 @@ def four_sum_count(nums1, nums2, nums3, nums4):
     return result`,
     javascript: `function fourSumCount(nums1, nums2, nums3, nums4) {
     const map = new Map();
+    for (const a of nums1) {
+        for (const b of nums2) {
+            const s = a + b;
+            map.set(s, (map.get(s) || 0) + 1);
+        }
+    }
+    let result = 0;
+    for (const c of nums3) {
+        for (const d of nums4) {
+            result += (map.get(-(c + d)) || 0);
+        }
+    }
+    return result;
+}`,
+    typescript: `function fourSumCount(nums1: number[], nums2: number[], nums3: number[], nums4: number[]): number {
+    const map = new Map<number, number>();
     for (const a of nums1) {
         for (const b of nums2) {
             const s = a + b;
@@ -320,6 +355,33 @@ def four_sum_count(nums1, nums2, nums3, nums4):
         return result;
     }
 }`,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int FourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        Dictionary<int, int> map = new Dictionary<int, int>();
+        foreach (int a in nums1) {
+            foreach (int b in nums2) {
+                int s = a + b;
+                if (map.ContainsKey(s)) {
+                    map[s]++;
+                } else {
+                    map[s] = 1;
+                }
+            }
+        }
+        int result = 0;
+        foreach (int c in nums3) {
+            foreach (int d in nums4) {
+                int key = -(c + d);
+                if (map.ContainsKey(key)) {
+                    result += map[key];
+                }
+            }
+        }
+        return result;
+    }
+}`,
     c: `int fourSumCount(int* nums1, int nums1Size, int* nums2, int nums2Size,
                  int* nums3, int nums3Size, int* nums4, int nums4Size) {
     /* Values in [-100,100] => pairwise sums in [-200,200], 401 buckets */
@@ -341,6 +403,27 @@ def four_sum_count(nums1, nums2, nums3, nums4):
     }
     return result;
 }`,
+    cpp: `class Solution {
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+        unordered_map<int, int> map;
+        for (int a : nums1) {
+            for (int b : nums2) {
+                map[a + b]++;
+            }
+        }
+        int result = 0;
+        for (int c : nums3) {
+            for (int d : nums4) {
+                auto it = map.find(-(c + d));
+                if (it != map.end()) {
+                    result += it->second;
+                }
+            }
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Two-Pass Hash Map
 

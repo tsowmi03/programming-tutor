@@ -171,6 +171,10 @@ Explanation: (10 + 20 + 30) / 3 = 60 / 3 = 20 (exact)
     return 0;
 }
 `,
+    typescript: `function averageArray(nums: number[]): number {
+    // TODO: return the floor average of nums
+    return 0;
+}`,
     java: `class Solution {
     public int averageArray(int[] nums) {
         // TODO: return the floor average of nums
@@ -178,11 +182,24 @@ Explanation: (10 + 20 + 30) / 3 = 60 / 3 = 20 (exact)
     }
 }
 `,
+    csharp: `public class Solution {
+    public int AverageArray(int[] nums) {
+        // TODO: return the floor average of nums
+        return 0;
+    }
+}`,
     c: `int averageArray(int* nums, int numsSize) {
     // TODO: return the floor average of nums
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int averageArray(vector<int>& nums) {
+        // TODO: return the floor average of nums
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def average_array(nums):
@@ -193,6 +210,10 @@ Explanation: (10 + 20 + 30) / 3 = 60 / 3 = 20 (exact)
     return Math.floor(total / nums.length);
 }
 `,
+    typescript: `function averageArray(nums: number[]): number {
+    const total = nums.reduce((acc, val) => acc + val, 0);
+    return Math.floor(total / nums.length);
+}`,
     java: `class Solution {
     public int averageArray(int[] nums) {
         int sum = 0;
@@ -201,12 +222,27 @@ Explanation: (10 + 20 + 30) / 3 = 60 / 3 = 20 (exact)
     }
 }
 `,
+    csharp: `public class Solution {
+    public int AverageArray(int[] nums) {
+        int sum = 0;
+        foreach (int n in nums) sum += n;
+        return sum / nums.Length;
+    }
+}`,
     c: `int averageArray(int* nums, int numsSize) {
     int sum = 0;
     for (int i = 0; i < numsSize; i++) sum += nums[i];
     return sum / numsSize;
 }
 `,
+    cpp: `class Solution {
+public:
+    int averageArray(vector<int>& nums) {
+        int sum = 0;
+        for (int n : nums) sum += n;
+        return sum / (int)nums.size();
+    }
+};`,
   },
   editorial: `## Approach: Single Pass Sum
 

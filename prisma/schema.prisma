@@ -80,7 +80,7 @@ model Submission {
   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   kind     String // "code" | "explanation"
-  language String? // code submissions: "python" | "javascript" | "java" | "c"
+  language String? // code submissions: a LanguageId, e.g. "python" | "typescript" | "cpp"
   code     String?
 
   answerText String? // explanation submissions

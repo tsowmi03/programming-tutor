@@ -247,6 +247,10 @@ Explanation:
     return [];
 }
 `,
+    typescript: `function levelOrder(tree: number[]): number[] {
+    // TODO
+    return [];
+}`,
     java: `class Solution {
     public int[] levelOrder(int[] tree) {
         // TODO
@@ -254,12 +258,25 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] LevelOrder(int[] tree) {
+        // TODO
+        return new int[0];
+    }
+}`,
     c: `int* levelOrder(int* tree, int treeSize, int* returnSize) {
     // TODO
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> levelOrder(vector<int>& tree) {
+        // TODO
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def level_order(tree):
@@ -307,6 +324,27 @@ Explanation:
     return result;
 }
 `,
+    typescript: `function levelOrder(tree: number[]): number[] {
+    if (!tree || tree.length === 0 || tree[0] === -1) return [];
+    const n = tree.length;
+    const result: number[] = [];
+    let curLevel: number[] = [0];
+    let first = true;
+    while (curLevel.length > 0) {
+        if (!first) result.push(-1);
+        first = false;
+        const nextLevel: number[] = [];
+        for (const idx of curLevel) {
+            result.push(tree[idx]);
+            const left = 2 * idx + 1;
+            const right = 2 * idx + 2;
+            if (left < n && tree[left] !== -1) nextLevel.push(left);
+            if (right < n && tree[right] !== -1) nextLevel.push(right);
+        }
+        curLevel = nextLevel;
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] levelOrder(int[] tree) {
         if (tree == null || tree.length == 0 || tree[0] == -1) return new int[0];
@@ -336,6 +374,33 @@ Explanation:
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] LevelOrder(int[] tree) {
+        if (tree == null || tree.Length == 0 || tree[0] == -1) return new int[0];
+        int n = tree.Length;
+        int[] queue = new int[n];
+        int head = 0, tail = 0;
+        queue[tail++] = 0;
+        List<int> result = new List<int>();
+        while (head < tail) {
+            int levelSize = tail - head;
+            for (int i = 0; i < levelSize; i++) {
+                int idx = queue[head++];
+                result.Add(tree[idx]);
+                int left = 2 * idx + 1;
+                int right = 2 * idx + 2;
+                if (left < n && tree[left] != -1) queue[tail++] = left;
+                if (right < n && tree[right] != -1) queue[tail++] = right;
+            }
+            if (head < tail) {
+                result.Add(-1);
+            }
+        }
+        return result.ToArray();
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* levelOrder(int* tree, int treeSize, int* returnSize) {
@@ -366,6 +431,30 @@ int* levelOrder(int* tree, int treeSize, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> levelOrder(vector<int>& tree) {
+        if (tree.empty() || tree[0] == -1) return {};
+        int n = (int)tree.size();
+        vector<int> result;
+        vector<int> curLevel = {0};
+        bool first = true;
+        while (!curLevel.empty()) {
+            if (!first) result.push_back(-1);
+            first = false;
+            vector<int> nextLevel;
+            for (int idx : curLevel) {
+                result.push_back(tree[idx]);
+                int left = 2 * idx + 1;
+                int right = 2 * idx + 2;
+                if (left < n && tree[left] != -1) nextLevel.push_back(left);
+                if (right < n && tree[right] != -1) nextLevel.push_back(right);
+            }
+            curLevel = nextLevel;
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: BFS with Level-Separator Encoding
 

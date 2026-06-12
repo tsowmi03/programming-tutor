@@ -190,6 +190,10 @@ Explanation: Pairs (1+9)=10 and (4+6)=10 both achieve
     return -1;
 }
 `,
+    typescript: `function maxPairSum(nums: number[], target: number): number {
+    // TODO
+    return -1;
+}`,
     java: `class Solution {
     public int maxPairSum(int[] nums, int target) {
         // TODO
@@ -197,11 +201,24 @@ Explanation: Pairs (1+9)=10 and (4+6)=10 both achieve
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MaxPairSum(int[] nums, int target) {
+        // TODO
+        return -1;
+    }
+}`,
     c: `int maxPairSum(int* nums, int numsSize, int target) {
     // TODO
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxPairSum(vector<int>& nums, int target) {
+        // TODO
+        return -1;
+    }
+};`,
   },
   solutions: {
     python: `def max_pair_sum(nums, target):
@@ -234,6 +251,21 @@ Explanation: Pairs (1+9)=10 and (4+6)=10 both achieve
     return maxSum;
 }
 `,
+    typescript: `function maxPairSum(nums: number[], target: number): number {
+    nums.sort((a, b) => a - b);
+    let left = 0, right = nums.length - 1;
+    let maxSum = -1;
+    while (left < right) {
+        const s = nums[left] + nums[right];
+        if (s <= target) {
+            if (s > maxSum) maxSum = s;
+            left++;
+        } else {
+            right--;
+        }
+    }
+    return maxSum;
+}`,
     java: `class Solution {
     public int maxPairSum(int[] nums, int target) {
         java.util.Arrays.sort(nums);
@@ -252,6 +284,25 @@ Explanation: Pairs (1+9)=10 and (4+6)=10 both achieve
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int MaxPairSum(int[] nums, int target) {
+        Array.Sort(nums);
+        int left = 0, right = nums.Length - 1;
+        int maxSum = -1;
+        while (left < right) {
+            int s = nums[left] + nums[right];
+            if (s <= target) {
+                if (s > maxSum) maxSum = s;
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return maxSum;
+    }
+}`,
     c: `#include <stdlib.h>
 
 static int cmp(const void *a, const void *b) {
@@ -277,6 +328,24 @@ int maxPairSum(int* nums, int numsSize, int target) {
     return maxSum;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxPairSum(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int left = 0, right = (int)nums.size() - 1;
+        int maxSum = -1;
+        while (left < right) {
+            int s = nums[left] + nums[right];
+            if (s <= target) {
+                if (s > maxSum) maxSum = s;
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return maxSum;
+    }
+};`,
   },
   editorial: `## Approach: Sort + Two Pointers
 

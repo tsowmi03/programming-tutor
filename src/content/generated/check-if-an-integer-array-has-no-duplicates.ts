@@ -181,6 +181,10 @@ function isUnique(nums) {
     return true;
 }
 `,
+    typescript: `function isUnique(nums: number[]): boolean {
+    // TODO: return true if no duplicates exist, false otherwise
+    return true;
+}`,
     java: `class Solution {
     public boolean isUnique(int[] nums) {
         // TODO: return true if no duplicates exist, false otherwise
@@ -188,6 +192,12 @@ function isUnique(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsUnique(int[] nums) {
+        // TODO: return true if no duplicates exist, false otherwise
+        return true;
+    }
+}`,
     c: `#include <stdbool.h>
 
 bool isUnique(int* nums, int numsSize) {
@@ -195,6 +205,13 @@ bool isUnique(int* nums, int numsSize) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isUnique(vector<int>& nums) {
+        // TODO: return true if no duplicates exist, false otherwise
+        return true;
+    }
+};`,
   },
   solutions: {
     python: `def is_unique(nums: list[int]) -> bool:
@@ -208,6 +225,9 @@ function isUnique(nums) {
     return nums.length === new Set(nums).size;
 }
 `,
+    typescript: `function isUnique(nums: number[]): boolean {
+    return nums.length === new Set(nums).size;
+}`,
     java: `class Solution {
     public boolean isUnique(int[] nums) {
         java.util.HashSet<Integer> seen = new java.util.HashSet<>();
@@ -220,6 +240,19 @@ function isUnique(nums) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public bool IsUnique(int[] nums) {
+        HashSet<int> seen = new HashSet<int>();
+        foreach (int n in nums) {
+            if (!seen.Add(n)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}`,
     c: `#include <stdbool.h>
 
 bool isUnique(int* nums, int numsSize) {
@@ -233,6 +266,18 @@ bool isUnique(int* nums, int numsSize) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isUnique(vector<int>& nums) {
+        unordered_set<int> seen;
+        for (int n : nums) {
+            if (!seen.insert(n).second) {
+                return false;
+            }
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: Hash Set Membership
 

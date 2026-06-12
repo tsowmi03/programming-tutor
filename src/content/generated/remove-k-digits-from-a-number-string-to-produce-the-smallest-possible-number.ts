@@ -152,6 +152,10 @@ function removeKdigits(num, k) {
     return "0";
 }
 `,
+    typescript: `function removeKdigits(num: string, k: number): string {
+    // TODO: implement
+    return "0";
+}`,
     java: `class Solution {
     public String removeKdigits(String num, int k) {
         // TODO: implement
@@ -159,6 +163,12 @@ function removeKdigits(num, k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public string RemoveKdigits(string num, int k) {
+        // TODO: implement
+        return "0";
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 char* removeKdigits(char* num, int k) {
@@ -166,6 +176,13 @@ char* removeKdigits(char* num, int k) {
     return "0";
 }
 `,
+    cpp: `class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        // TODO: implement
+        return "0";
+    }
+};`,
   },
   solutions: {
     python: `def remove_kdigits(num: str, k: int) -> str:
@@ -201,6 +218,24 @@ char* removeKdigits(char* num, int k) {
     return result === '' ? '0' : result;
 }
 `,
+    typescript: `function removeKdigits(num: string, k: number): string {
+    const stack: string[] = [];
+    for (const ch of num) {
+        while (k > 0 && stack.length > 0 && stack[stack.length - 1] > ch) {
+            stack.pop();
+            k--;
+        }
+        stack.push(ch);
+    }
+    if (k > 0) {
+        stack.splice(stack.length - k, k);
+    }
+    // Strip leading zeros
+    let i = 0;
+    while (i < stack.length - 1 && stack[i] === '0') i++;
+    const result = stack.slice(i).join('');
+    return result === '' ? '0' : result;
+}`,
     java: `class Solution {
     public String removeKdigits(String num, int k) {
         StringBuilder stack = new StringBuilder();
@@ -225,6 +260,31 @@ char* removeKdigits(char* num, int k) {
     }
 }
 `,
+    csharp: `using System.Text;
+
+public class Solution {
+    public string RemoveKdigits(string num, int k) {
+        StringBuilder stack = new StringBuilder();
+        foreach (char ch in num) {
+            while (k > 0 && stack.Length > 0 && stack[stack.Length - 1] > ch) {
+                stack.Remove(stack.Length - 1, 1);
+                k--;
+            }
+            stack.Append(ch);
+        }
+        if (k > 0) {
+            stack.Remove(stack.Length - k, k);
+        }
+        // Strip leading zeros
+        int start = 0;
+        while (start < stack.Length - 1 && stack[start] == '0') {
+            start++;
+        }
+        if (stack.Length == 0) return "0";
+        string result = stack.ToString().Substring(start);
+        return result == "" ? "0" : result;
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 char* removeKdigits(char* num, int k) {
@@ -261,6 +321,30 @@ char* removeKdigits(char* num, int k) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        string stack = "";
+        for (char ch : num) {
+            while (k > 0 && !stack.empty() && stack.back() > ch) {
+                stack.pop_back();
+                k--;
+            }
+            stack.push_back(ch);
+        }
+        if (k > 0) {
+            stack.resize(stack.size() - k);
+        }
+        // Strip leading zeros
+        int start = 0;
+        while (start < (int)stack.size() - 1 && stack[start] == '0') {
+            start++;
+        }
+        if (stack.empty()) return "0";
+        string result = stack.substr(start);
+        return result.empty() ? "0" : result;
+    }
+};`,
   },
   editorial: `## Approach: Greedy with Monotonic Stack
 

@@ -233,6 +233,10 @@ function searchRange(nums, target) {
     return [-1, -1];
 }
 `,
+    typescript: `function searchRange(nums: number[], target: number): number[] {
+    // TODO: implement using binary search
+    return [-1, -1];
+}`,
     java: `class Solution {
     public int[] searchRange(int[] nums, int target) {
         // TODO: implement using binary search
@@ -240,6 +244,12 @@ function searchRange(nums, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] SearchRange(int[] nums, int target) {
+        // TODO: implement using binary search
+        return new int[]{-1, -1};
+    }
+}`,
     c: `/**
  * Note: The returned array must be malloced, assume caller calls free().
  */
@@ -252,6 +262,13 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        // TODO: implement using binary search
+        return {-1, -1};
+    }
+};`,
   },
   solutions: {
     python: `def search_range(nums, target):
@@ -319,6 +336,41 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize) {
     return [findFirst(nums, target), findLast(nums, target)];
 }
 `,
+    typescript: `function searchRange(nums: number[], target: number): number[] {
+    function findFirst(nums: number[], target: number): number {
+        let lo = 0, hi = nums.length - 1, idx = -1;
+        while (lo <= hi) {
+            const mid = Math.floor((lo + hi) / 2);
+            if (nums[mid] === target) {
+                idx = mid;
+                hi = mid - 1;
+            } else if (nums[mid] < target) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return idx;
+    }
+
+    function findLast(nums: number[], target: number): number {
+        let lo = 0, hi = nums.length - 1, idx = -1;
+        while (lo <= hi) {
+            const mid = Math.floor((lo + hi) / 2);
+            if (nums[mid] === target) {
+                idx = mid;
+                lo = mid + 1;
+            } else if (nums[mid] < target) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return idx;
+    }
+
+    return [findFirst(nums, target), findLast(nums, target)];
+}`,
     java: `class Solution {
     public int[] searchRange(int[] nums, int target) {
         return new int[]{findFirst(nums, target), findLast(nums, target)};
@@ -357,6 +409,43 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] SearchRange(int[] nums, int target) {
+        return new int[]{FindFirst(nums, target), FindLast(nums, target)};
+    }
+
+    private int FindFirst(int[] nums, int target) {
+        int lo = 0, hi = nums.Length - 1, idx = -1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) {
+                idx = mid;
+                hi = mid - 1;
+            } else if (nums[mid] < target) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return idx;
+    }
+
+    private int FindLast(int[] nums, int target) {
+        int lo = 0, hi = nums.Length - 1, idx = -1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) {
+                idx = mid;
+                lo = mid + 1;
+            } else if (nums[mid] < target) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return idx;
+    }
+}`,
     c: `#include <stdlib.h>
 
 static int findFirst(int* nums, int numsSize, int target) {
@@ -399,6 +488,45 @@ int* searchRange(int* nums, int numsSize, int target, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        return {findFirst(nums, target), findLast(nums, target)};
+    }
+
+private:
+    int findFirst(vector<int>& nums, int target) {
+        int lo = 0, hi = (int)nums.size() - 1, idx = -1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) {
+                idx = mid;
+                hi = mid - 1;
+            } else if (nums[mid] < target) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return idx;
+    }
+
+    int findLast(vector<int>& nums, int target) {
+        int lo = 0, hi = (int)nums.size() - 1, idx = -1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) {
+                idx = mid;
+                lo = mid + 1;
+            } else if (nums[mid] < target) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return idx;
+    }
+};`,
   },
   editorial: `## Approach: Two Binary Searches
 

@@ -29,23 +29,103 @@ Output: false
 - \`-1000000000 <= nums[i] <= 1000000000\`
 `,
   hints: [
-    "Comparing every pair works but costs O(n²). What data structure answers “have I seen this before?” quickly?",
-    "A hash set stores seen values with O(1) average insert and lookup.",
-    "Alternative: sort the array first — duplicates become neighbours. That's O(n log n) time but O(1) extra space.",
+    `Comparing every pair works but costs O(n²). What data structure answers “have I seen this before?” quickly?`,
+    `A hash set stores seen values with O(1) average insert and lookup.`,
+    `Alternative: sort the array first — duplicates become neighbours. That's O(n log n) time but O(1) extra space.`,
   ],
   signature: {
-    name: "containsDuplicate",
-    params: [{ name: "nums", type: "int[]" }],
-    returns: "bool",
+    "name": "containsDuplicate",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      }
+    ],
+    "returns": "bool"
   },
   testCases: [
-    { input: [[1, 2, 3, 1]], expected: true },
-    { input: [[1, 2, 3, 4]], expected: false },
-    { input: [[1, 1, 1, 3, 3, 4, 3, 2, 4, 2]], expected: true },
-    { input: [[7]], expected: false, hidden: true },
-    { input: [[-1, -1]], expected: true, hidden: true },
-    { input: [[1000000000, -1000000000, 0]], expected: false, hidden: true },
-    { input: [[2, 14, 18, 22, 22]], expected: true, hidden: true },
+    {
+      "input": [
+        [
+          1,
+          2,
+          3,
+          1
+        ]
+      ],
+      "expected": true
+    },
+    {
+      "input": [
+        [
+          1,
+          2,
+          3,
+          4
+        ]
+      ],
+      "expected": false
+    },
+    {
+      "input": [
+        [
+          1,
+          1,
+          1,
+          3,
+          3,
+          4,
+          3,
+          2,
+          4,
+          2
+        ]
+      ],
+      "expected": true
+    },
+    {
+      "input": [
+        [
+          7
+        ]
+      ],
+      "expected": false,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          -1,
+          -1
+        ]
+      ],
+      "expected": true,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          1000000000,
+          -1000000000,
+          0
+        ]
+      ],
+      "expected": false,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          2,
+          14,
+          18,
+          22,
+          22
+        ]
+      ],
+      "expected": true,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def contains_duplicate(nums):
@@ -61,6 +141,14 @@ function containsDuplicate(nums) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+function containsDuplicate(nums: number[]): boolean {
+  // Your code here
+  return false;
+}`,
     java: `class Solution {
     public boolean containsDuplicate(int[] nums) {
         // Your code here
@@ -68,11 +156,26 @@ function containsDuplicate(nums) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public bool ContainsDuplicate(int[] nums) {
+        // Your code here
+        return false;
+    }
+}`,
     c: `bool containsDuplicate(int* nums, int numsSize) {
     // Your code here
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        // Your code here
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def contains_duplicate(nums):
@@ -92,6 +195,14 @@ function containsDuplicate(nums) {
   return false;
 }
 `,
+    typescript: `function containsDuplicate(nums: number[]): boolean {
+  const seen = new Set<number>();
+  for (const n of nums) {
+    if (seen.has(n)) return true;
+    seen.add(n);
+  }
+  return false;
+}`,
     java: `class Solution {
     public boolean containsDuplicate(int[] nums) {
         Set<Integer> seen = new HashSet<>();
@@ -102,6 +213,17 @@ function containsDuplicate(nums) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public bool ContainsDuplicate(int[] nums) {
+        HashSet<int> seen = new HashSet<int>();
+        foreach (int n in nums) {
+            if (!seen.Add(n)) return true;
+        }
+        return false;
+    }
+}`,
     c: `static int cmpInt(const void* a, const void* b) {
     int x = *(const int*)a, y = *(const int*)b;
     return (x > y) - (x < y);
@@ -115,6 +237,17 @@ bool containsDuplicate(int* nums, int numsSize) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_set<int> seen;
+        for (int n : nums) {
+            if (seen.count(n)) return true;
+            seen.insert(n);
+        }
+        return false;
+    }
+};`,
   },
   editorial: `## Approach: hash set of seen values
 

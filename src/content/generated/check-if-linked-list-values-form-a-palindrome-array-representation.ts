@@ -180,6 +180,10 @@ function isLinkedListPalindrome(values) {
     return false;
 }
 `,
+    typescript: `function isLinkedListPalindrome(values: number[]): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean isLinkedListPalindrome(int[] values) {
         // TODO: implement
@@ -187,6 +191,12 @@ function isLinkedListPalindrome(values) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsLinkedListPalindrome(int[] values) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 
 bool isLinkedListPalindrome(int* values, int valuesSize) {
@@ -194,6 +204,13 @@ bool isLinkedListPalindrome(int* values, int valuesSize) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isLinkedListPalindrome(vector<int>& values) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_linked_list_palindrome(values: list[int]) -> bool:
@@ -219,6 +236,15 @@ function isLinkedListPalindrome(values) {
     return true;
 }
 `,
+    typescript: `function isLinkedListPalindrome(values: number[]): boolean {
+    let left = 0, right = values.length - 1;
+    while (left < right) {
+        if (values[left] !== values[right]) return false;
+        left++;
+        right--;
+    }
+    return true;
+}`,
     java: `class Solution {
     public boolean isLinkedListPalindrome(int[] values) {
         int left = 0, right = values.length - 1;
@@ -231,6 +257,17 @@ function isLinkedListPalindrome(values) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsLinkedListPalindrome(int[] values) {
+        int left = 0, right = values.Length - 1;
+        while (left < right) {
+            if (values[left] != values[right]) return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+}`,
     c: `#include <stdbool.h>
 
 bool isLinkedListPalindrome(int* values, int valuesSize) {
@@ -243,6 +280,18 @@ bool isLinkedListPalindrome(int* values, int valuesSize) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isLinkedListPalindrome(vector<int>& values) {
+        int left = 0, right = (int)values.size() - 1;
+        while (left < right) {
+            if (values[left] != values[right]) return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: Two-Pointer Technique
 

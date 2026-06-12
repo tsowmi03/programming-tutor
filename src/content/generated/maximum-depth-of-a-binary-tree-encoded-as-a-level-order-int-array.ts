@@ -210,6 +210,14 @@ function maxDepth(tree) {
     return 0;
 }
 `,
+    typescript: `/**
+ * @param {number[]} tree
+ * @return {number}
+ */
+function maxDepth(tree: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int maxDepth(int[] tree) {
         // TODO: implement
@@ -217,11 +225,24 @@ function maxDepth(tree) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MaxDepth(int[] tree) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int maxDepth(int* tree, int treeSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxDepth(vector<int>& tree) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def max_depth(tree: list[int]) -> int:
@@ -252,6 +273,17 @@ function maxDepth(tree) {
     return dfs(0);
 }
 `,
+    typescript: `function maxDepth(tree: number[]): number {
+    if (!tree || tree.length === 0 || tree[0] === -1) return 0;
+    const n = tree.length;
+
+    function dfs(i: number): number {
+        if (i >= n || tree[i] === -1) return 0;
+        return 1 + Math.max(dfs(2 * i + 1), dfs(2 * i + 2));
+    }
+
+    return dfs(0);
+}`,
     java: `class Solution {
     private int[] tree;
     private int n;
@@ -269,6 +301,24 @@ function maxDepth(tree) {
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    private int[] tree;
+    private int n;
+
+    public int MaxDepth(int[] tree) {
+        if (tree == null || tree.Length == 0 || tree[0] == -1) return 0;
+        this.tree = tree;
+        this.n = tree.Length;
+        return Dfs(0);
+    }
+
+    private int Dfs(int i) {
+        if (i >= n || tree[i] == -1) return 0;
+        return 1 + Math.Max(Dfs(2 * i + 1), Dfs(2 * i + 2));
+    }
+}`,
     c: `int dfsHelper(int* tree, int treeSize, int i) {
     if (i >= treeSize || tree[i] == -1) return 0;
     int left = dfsHelper(tree, treeSize, 2 * i + 1);
@@ -281,6 +331,22 @@ int maxDepth(int* tree, int treeSize) {
     return dfsHelper(tree, treeSize, 0);
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxDepth(vector<int>& tree) {
+        if (tree.empty() || tree[0] == -1) return 0;
+        int n = tree.size();
+        return dfs(tree, n, 0);
+    }
+
+private:
+    int dfs(vector<int>& tree, int n, int i) {
+        if (i >= n || tree[i] == -1) return 0;
+        int left = dfs(tree, n, 2 * i + 1);
+        int right = dfs(tree, n, 2 * i + 2);
+        return 1 + max(left, right);
+    }
+};`,
   },
   editorial: `## Approach: Recursive DFS on Array-Encoded Tree
 

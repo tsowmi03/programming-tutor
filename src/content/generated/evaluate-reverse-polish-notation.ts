@@ -199,6 +199,10 @@ Explanation:
     return 0;
 }
 `,
+    typescript: `function evalRPN(tokens: string[]): number {
+    // TODO: evaluate the Reverse Polish Notation expression
+    return 0;
+}`,
     java: `class Solution {
     public int evalRPN(String[] tokens) {
         // TODO: evaluate the Reverse Polish Notation expression
@@ -206,6 +210,12 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int EvalRPN(string[] tokens) {
+        // TODO: evaluate the Reverse Polish Notation expression
+        return 0;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int evalRPN(char** tokens, int tokensSize) {
@@ -213,6 +223,13 @@ int evalRPN(char** tokens, int tokensSize) {
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        // TODO: evaluate the Reverse Polish Notation expression
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def eval_rpn(tokens):
@@ -250,6 +267,22 @@ int evalRPN(char** tokens, int tokensSize) {
     return stack[0];
 }
 `,
+    typescript: `function evalRPN(tokens: string[]): number {
+    const stack: number[] = [];
+    for (const token of tokens) {
+        if (token === '+' || token === '-' || token === '*' || token === '/') {
+            const b = stack.pop()!;
+            const a = stack.pop()!;
+            if (token === '+') stack.push(a + b);
+            else if (token === '-') stack.push(a - b);
+            else if (token === '*') stack.push(a * b);
+            else stack.push(Math.trunc(a / b));
+        } else {
+            stack.push(parseInt(token, 10));
+        }
+    }
+    return stack[0];
+}`,
     java: `class Solution {
     public int evalRPN(String[] tokens) {
         int[] stack = new int[tokens.length];
@@ -270,6 +303,27 @@ int evalRPN(char** tokens, int tokensSize) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int EvalRPN(string[] tokens) {
+        int[] stack = new int[tokens.Length];
+        int top = 0;
+        foreach (string token in tokens) {
+            if (token == "+" || token == "-" || token == "*" || token == "/") {
+                int b = stack[--top];
+                int a = stack[--top];
+                if (token == "+")      stack[top++] = a + b;
+                else if (token == "-") stack[top++] = a - b;
+                else if (token == "*") stack[top++] = a * b;
+                else                   stack[top++] = a / b;
+            } else {
+                stack[top++] = int.Parse(token);
+            }
+        }
+        return stack[0];
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -295,6 +349,26 @@ int evalRPN(char** tokens, int tokensSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        vector<int> stack;
+        stack.reserve(tokens.size());
+        for (const string& token : tokens) {
+            if (token == "+" || token == "-" || token == "*" || token == "/") {
+                int b = stack.back(); stack.pop_back();
+                int a = stack.back(); stack.pop_back();
+                if (token == "+")      stack.push_back(a + b);
+                else if (token == "-") stack.push_back(a - b);
+                else if (token == "*") stack.push_back(a * b);
+                else                   stack.push_back(a / b);
+            } else {
+                stack.push_back(stoi(token));
+            }
+        }
+        return stack[0];
+    }
+};`,
   },
   editorial: `## Approach: Stack-Based Evaluation
 

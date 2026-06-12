@@ -184,6 +184,10 @@ Explanation: The array is empty, so target cannot be found.
     return false;
 }
 `,
+    typescript: `function containsTarget(nums: number[], target: number): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean containsTarget(int[] nums, int target) {
         // TODO: implement
@@ -191,6 +195,12 @@ Explanation: The array is empty, so target cannot be found.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool ContainsTarget(int[] nums, int target) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 
 bool containsTarget(int* nums, int numsSize, int target) {
@@ -198,6 +208,13 @@ bool containsTarget(int* nums, int numsSize, int target) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool containsTarget(vector<int>& nums, int target) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def contains_target(nums: list, target: int) -> bool:
@@ -207,6 +224,9 @@ bool containsTarget(int* nums, int numsSize, int target) {
     return nums.includes(target);
 }
 `,
+    typescript: `function containsTarget(nums: number[], target: number): boolean {
+    return nums.includes(target);
+}`,
     java: `class Solution {
     public boolean containsTarget(int[] nums, int target) {
         for (int num : nums) {
@@ -216,6 +236,14 @@ bool containsTarget(int* nums, int numsSize, int target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool ContainsTarget(int[] nums, int target) {
+        foreach (int num in nums) {
+            if (num == target) return true;
+        }
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 
 bool containsTarget(int* nums, int numsSize, int target) {
@@ -225,6 +253,15 @@ bool containsTarget(int* nums, int numsSize, int target) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool containsTarget(vector<int>& nums, int target) {
+        for (int num : nums) {
+            if (num == target) return true;
+        }
+        return false;
+    }
+};`,
   },
   editorial: `## Approach: Linear Scan
 

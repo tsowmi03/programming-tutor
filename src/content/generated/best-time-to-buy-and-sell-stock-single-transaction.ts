@@ -171,6 +171,10 @@ Explanation: Prices only decrease, so no transaction yields a profit.
     return 0;
 }
 `,
+    typescript: `function maxProfit(prices: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int maxProfit(int[] prices) {
         // TODO: implement
@@ -178,11 +182,24 @@ Explanation: Prices only decrease, so no transaction yields a profit.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MaxProfit(int[] prices) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int maxProfit(int* prices, int pricesSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def max_profit(prices: list[int]) -> int:
@@ -208,6 +225,18 @@ Explanation: Prices only decrease, so no transaction yields a profit.
     return maxProfitVal;
 }
 `,
+    typescript: `function maxProfit(prices: number[]): number {
+    let minPrice = Infinity;
+    let maxProfitVal = 0;
+    for (const price of prices) {
+        if (price < minPrice) {
+            minPrice = price;
+        } else if (price - minPrice > maxProfitVal) {
+            maxProfitVal = price - minPrice;
+        }
+    }
+    return maxProfitVal;
+}`,
     java: `class Solution {
     public int maxProfit(int[] prices) {
         int minPrice = Integer.MAX_VALUE;
@@ -223,6 +252,20 @@ Explanation: Prices only decrease, so no transaction yields a profit.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MaxProfit(int[] prices) {
+        int minPrice = int.MaxValue;
+        int maxProfit = 0;
+        foreach (int price in prices) {
+            if (price < minPrice) {
+                minPrice = price;
+            } else if (price - minPrice > maxProfit) {
+                maxProfit = price - minPrice;
+            }
+        }
+        return maxProfit;
+    }
+}`,
     c: `int maxProfit(int* prices, int pricesSize) {
     int minPrice = prices[0];
     int maxProfitVal = 0;
@@ -236,6 +279,21 @@ Explanation: Prices only decrease, so no transaction yields a profit.
     return maxProfitVal;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int minPrice = INT_MAX;
+        int maxProfitVal = 0;
+        for (int price : prices) {
+            if (price < minPrice) {
+                minPrice = price;
+            } else if (price - minPrice > maxProfitVal) {
+                maxProfitVal = price - minPrice;
+            }
+        }
+        return maxProfitVal;
+    }
+};`,
   },
   editorial: `## Approach: Single Pass (Sliding Window / Greedy)
 

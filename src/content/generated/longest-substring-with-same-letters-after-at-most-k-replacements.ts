@@ -156,6 +156,10 @@ function characterReplacement(s, k) {
     return 0;
 }
 `,
+    typescript: `function characterReplacement(s: string, k: number): number {
+    // TODO: implement sliding window
+    return 0;
+}`,
     java: `class Solution {
     public int characterReplacement(String s, int k) {
         // TODO: implement sliding window
@@ -163,11 +167,24 @@ function characterReplacement(s, k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CharacterReplacement(string s, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+}`,
     c: `int characterReplacement(char* s, int k) {
     // TODO: implement sliding window
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def character_replacement(s: str, k: int) -> int:
@@ -200,6 +217,21 @@ function characterReplacement(s, k) {
     return result;
 }
 `,
+    typescript: `function characterReplacement(s: string, k: number): number {
+    const count = new Array(26).fill(0);
+    let left = 0, maxFreq = 0, result = 0;
+    for (let right = 0; right < s.length; right++) {
+        const idx = s.charCodeAt(right) - 65;
+        count[idx]++;
+        maxFreq = Math.max(maxFreq, count[idx]);
+        while ((right - left + 1) - maxFreq > k) {
+            count[s.charCodeAt(left) - 65]--;
+            left++;
+        }
+        result = Math.max(result, right - left + 1);
+    }
+    return result;
+}`,
     java: `class Solution {
     public int characterReplacement(String s, int k) {
         int[] count = new int[26];
@@ -218,6 +250,25 @@ function characterReplacement(s, k) {
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int CharacterReplacement(string s, int k) {
+        int[] count = new int[26];
+        int left = 0, maxFreq = 0, result = 0;
+        for (int right = 0; right < s.Length; right++) {
+            int idx = s[right] - 'A';
+            count[idx]++;
+            maxFreq = Math.Max(maxFreq, count[idx]);
+            while ((right - left + 1) - maxFreq > k) {
+                count[s[left] - 'A']--;
+                left++;
+            }
+            result = Math.Max(result, right - left + 1);
+        }
+        return result;
+    }
+}`,
     c: `int characterReplacement(char* s, int k) {
     int count[26] = {0};
     int left = 0, maxFreq = 0, result = 0;
@@ -236,6 +287,24 @@ function characterReplacement(s, k) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        int count[26] = {0};
+        int left = 0, maxFreq = 0, result = 0;
+        for (int right = 0; right < (int)s.size(); right++) {
+            int idx = s[right] - 'A';
+            count[idx]++;
+            maxFreq = max(maxFreq, count[idx]);
+            while ((right - left + 1) - maxFreq > k) {
+                count[s[left] - 'A']--;
+                left++;
+            }
+            result = max(result, right - left + 1);
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Sliding Window with Max-Frequency Tracking
 

@@ -197,6 +197,10 @@ function searchInsert(nums, target) {
     return 0;
 }
 `,
+    typescript: `function searchInsert(nums: number[], target: number): number {
+    // TODO: implement binary search to find insert position
+    return 0;
+}`,
     java: `class Solution {
     public int searchInsert(int[] nums, int target) {
         // TODO: implement binary search to find insert position
@@ -204,11 +208,24 @@ function searchInsert(nums, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int SearchInsert(int[] nums, int target) {
+        // TODO: implement binary search to find insert position
+        return 0;
+    }
+}`,
     c: `int searchInsert(int* nums, int numsSize, int target) {
     // TODO: implement binary search to find insert position
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        // TODO: implement binary search to find insert position
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def search_insert(nums: list[int], target: int) -> int:
@@ -243,6 +260,20 @@ function searchInsert(nums, target) {
     return left;
 }
 `,
+    typescript: `function searchInsert(nums: number[], target: number): number {
+    let left = 0, right = nums.length - 1;
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        if (nums[mid] === target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return left;
+}`,
     java: `class Solution {
     public int searchInsert(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
@@ -260,6 +291,22 @@ function searchInsert(nums, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int SearchInsert(int[] nums, int target) {
+        int left = 0, right = nums.Length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+}`,
     c: `int searchInsert(int* nums, int numsSize, int target) {
     int left = 0, right = numsSize - 1;
     while (left <= right) {
@@ -275,6 +322,23 @@ function searchInsert(nums, target) {
     return left;
 }
 `,
+    cpp: `class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int left = 0, right = (int)nums.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+};`,
   },
   editorial: `## Approach: Binary Search
 

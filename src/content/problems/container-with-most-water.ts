@@ -34,23 +34,108 @@ Output: 1
 - \`0 <= height[i] <= 10000\`
 `,
   hints: [
-    "Brute force tries every pair — O(n²). Think about starting with the *widest* container instead.",
-    "With pointers at both ends, the area is limited by the shorter line. What happens to the area if you move the taller line inward? The width shrinks and the limiting height can't improve.",
-    "So the only move that can possibly help is moving the **shorter** line inward. Track the best area seen along the way.",
+    `Brute force tries every pair — O(n²). Think about starting with the *widest* container instead.`,
+    `With pointers at both ends, the area is limited by the shorter line. What happens to the area if you move the taller line inward? The width shrinks and the limiting height can't improve.`,
+    `So the only move that can possibly help is moving the **shorter** line inward. Track the best area seen along the way.`,
   ],
   signature: {
-    name: "maxArea",
-    params: [{ name: "height", type: "int[]" }],
-    returns: "int",
+    "name": "maxArea",
+    "params": [
+      {
+        "name": "height",
+        "type": "int[]"
+      }
+    ],
+    "returns": "int"
   },
   testCases: [
-    { input: [[1, 8, 6, 2, 5, 4, 8, 3, 7]], expected: 49 },
-    { input: [[1, 1]], expected: 1 },
-    { input: [[4, 3, 2, 1, 4]], expected: 16, hidden: true },
-    { input: [[1, 2, 1]], expected: 2, hidden: true },
-    { input: [[0, 0]], expected: 0, hidden: true },
-    { input: [[10, 0, 0, 0, 10]], expected: 40, hidden: true },
-    { input: [[2, 3, 4, 5, 18, 17, 6]], expected: 17, hidden: true },
+    {
+      "input": [
+        [
+          1,
+          8,
+          6,
+          2,
+          5,
+          4,
+          8,
+          3,
+          7
+        ]
+      ],
+      "expected": 49
+    },
+    {
+      "input": [
+        [
+          1,
+          1
+        ]
+      ],
+      "expected": 1
+    },
+    {
+      "input": [
+        [
+          4,
+          3,
+          2,
+          1,
+          4
+        ]
+      ],
+      "expected": 16,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          1,
+          2,
+          1
+        ]
+      ],
+      "expected": 2,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          0,
+          0
+        ]
+      ],
+      "expected": 0,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          10,
+          0,
+          0,
+          0,
+          10
+        ]
+      ],
+      "expected": 40,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          2,
+          3,
+          4,
+          5,
+          18,
+          17,
+          6
+        ]
+      ],
+      "expected": 17,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def max_area(height):
@@ -66,6 +151,14 @@ function maxArea(height) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {number[]} height
+ * @return {number}
+ */
+function maxArea(height: number[]): number {
+  // Your code here
+  return 0;
+}`,
     java: `class Solution {
     public int maxArea(int[] height) {
         // Your code here
@@ -73,11 +166,24 @@ function maxArea(height) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MaxArea(int[] height) {
+        // Your code here
+        return 0;
+    }
+}`,
     c: `int maxArea(int* height, int heightSize) {
     // Your code here
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        // Your code here
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def max_area(height):
@@ -105,6 +211,18 @@ function maxArea(height) {
   return best;
 }
 `,
+    typescript: `function maxArea(height: number[]): number {
+  let left = 0;
+  let right = height.length - 1;
+  let best = 0;
+  while (left < right) {
+    const area = (right - left) * Math.min(height[left], height[right]);
+    best = Math.max(best, area);
+    if (height[left] < height[right]) left++;
+    else right--;
+  }
+  return best;
+}`,
     java: `class Solution {
     public int maxArea(int[] height) {
         int left = 0, right = height.length - 1, best = 0;
@@ -118,6 +236,19 @@ function maxArea(height) {
     }
 }
 `,
+    csharp: `using System;
+public class Solution {
+    public int MaxArea(int[] height) {
+        int left = 0, right = height.Length - 1, best = 0;
+        while (left < right) {
+            int area = (right - left) * Math.Min(height[left], height[right]);
+            best = Math.Max(best, area);
+            if (height[left] < height[right]) left++;
+            else right--;
+        }
+        return best;
+    }
+}`,
     c: `int maxArea(int* height, int heightSize) {
     int left = 0, right = heightSize - 1, best = 0;
     while (left < right) {
@@ -130,6 +261,19 @@ function maxArea(height) {
     return best;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int left = 0, right = (int)height.size() - 1, best = 0;
+        while (left < right) {
+            int area = (right - left) * min(height[left], height[right]);
+            best = max(best, area);
+            if (height[left] < height[right]) left++;
+            else right--;
+        }
+        return best;
+    }
+};`,
   },
   editorial: `## Approach: two pointers, move the shorter line
 

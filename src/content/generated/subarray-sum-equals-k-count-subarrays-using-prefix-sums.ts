@@ -190,8 +190,20 @@ var subarraySum = function(nums, k) {
     // TODO: return the count of subarrays that sum to k
     return 0;
 };`,
+    typescript: `function subarraySum(nums: number[], k: number): number {
+    // TODO: return the count of subarrays that sum to k
+    return 0;
+}`,
     java: `class Solution {
     public int subarraySum(int[] nums, int k) {
+        // TODO: return the count of subarrays that sum to k
+        return 0;
+    }
+}`,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int SubarraySum(int[] nums, int k) {
         // TODO: return the count of subarrays that sum to k
         return 0;
     }
@@ -200,6 +212,13 @@ var subarraySum = function(nums, k) {
     // TODO: return the count of subarrays that sum to k
     return 0;
 }`,
+    cpp: `class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        // TODO: return the count of subarrays that sum to k
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def subarray_sum(nums, k):
@@ -222,6 +241,17 @@ var subarraySum = function(nums, k) {
     }
     return count;
 };`,
+    typescript: `function subarraySum(nums: number[], k: number): number {
+    let count = 0, prefix = 0;
+    const freq = new Map<number, number>();
+    freq.set(0, 1);
+    for (const num of nums) {
+        prefix += num;
+        count += (freq.get(prefix - k) || 0);
+        freq.set(prefix, (freq.get(prefix) || 0) + 1);
+    }
+    return count;
+}`,
     java: `class Solution {
     public int subarraySum(int[] nums, int k) {
         int count = 0, prefix = 0;
@@ -231,6 +261,26 @@ var subarraySum = function(nums, k) {
             prefix += num;
             count += freq.getOrDefault(prefix - k, 0);
             freq.put(prefix, freq.getOrDefault(prefix, 0) + 1);
+        }
+        return count;
+    }
+}`,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int SubarraySum(int[] nums, int k) {
+        int count = 0, prefix = 0;
+        Dictionary<int, int> freq = new Dictionary<int, int>();
+        freq[0] = 1;
+        foreach (int num in nums) {
+            prefix += num;
+            int val;
+            count += freq.TryGetValue(prefix - k, out val) ? val : 0;
+            if (freq.ContainsKey(prefix)) {
+                freq[prefix]++;
+            } else {
+                freq[prefix] = 1;
+            }
         }
         return count;
     }
@@ -246,6 +296,23 @@ var subarraySum = function(nums, k) {
     }
     return count;
 }`,
+    cpp: `class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int count = 0, prefix = 0;
+        unordered_map<int, int> freq;
+        freq[0] = 1;
+        for (int num : nums) {
+            prefix += num;
+            auto it = freq.find(prefix - k);
+            if (it != freq.end()) {
+                count += it->second;
+            }
+            freq[prefix]++;
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Prefix Sum + Hash Map
 

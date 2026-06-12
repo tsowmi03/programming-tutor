@@ -124,6 +124,10 @@ Explanation: Single digit — the sum is the number itself.
     // TODO: implement using recursion
 }
 `,
+    typescript: `function digitSum(n: number): number {
+    // TODO: implement using recursion
+    return 0;
+}`,
     java: `class Solution {
     public int digitSum(int n) {
         // TODO: implement using recursion
@@ -131,11 +135,24 @@ Explanation: Single digit — the sum is the number itself.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int DigitSum(int n) {
+        // TODO: implement using recursion
+        return 0;
+    }
+}`,
     c: `int digitSum(int n) {
     // TODO: implement using recursion
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int digitSum(int n) {
+        // TODO: implement using recursion
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def digit_sum(n: int) -> int:
@@ -148,6 +165,10 @@ Explanation: Single digit — the sum is the number itself.
     return (n % 10) + digitSum(Math.floor(n / 10));
 }
 `,
+    typescript: `function digitSum(n: number): number {
+    if (n < 10) return n;
+    return (n % 10) + digitSum(Math.floor(n / 10));
+}`,
     java: `class Solution {
     public int digitSum(int n) {
         if (n < 10) return n;
@@ -155,11 +176,24 @@ Explanation: Single digit — the sum is the number itself.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int DigitSum(int n) {
+        if (n < 10) return n;
+        return (n % 10) + DigitSum(n / 10);
+    }
+}`,
     c: `int digitSum(int n) {
     if (n < 10) return n;
     return (n % 10) + digitSum(n / 10);
 }
 `,
+    cpp: `class Solution {
+public:
+    int digitSum(int n) {
+        if (n < 10) return n;
+        return (n % 10) + digitSum(n / 10);
+    }
+};`,
   },
   editorial: `## Approach: Simple Recursion
 

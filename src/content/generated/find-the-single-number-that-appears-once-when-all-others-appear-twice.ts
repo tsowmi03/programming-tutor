@@ -153,8 +153,18 @@ Explanation: 4 appears once; 1 and 2 each appear twice.
     // TODO: implement
     return 0;
 }`,
+    typescript: `function singleNumber(nums: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int singleNumber(int[] nums) {
+        // TODO: implement
+        return 0;
+    }
+}`,
+    csharp: `public class Solution {
+    public int SingleNumber(int[] nums) {
         // TODO: implement
         return 0;
     }
@@ -163,6 +173,13 @@ Explanation: 4 appears once; 1 and 2 each appear twice.
     /* TODO: implement */
     return 0;
 }`,
+    cpp: `class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def single_number(nums):
@@ -171,6 +188,13 @@ Explanation: 4 appears once; 1 and 2 each appear twice.
         result ^= n
     return result`,
     javascript: `function singleNumber(nums) {
+    let result = 0;
+    for (const n of nums) {
+        result ^= n;
+    }
+    return result;
+}`,
+    typescript: `function singleNumber(nums: number[]): number {
     let result = 0;
     for (const n of nums) {
         result ^= n;
@@ -186,6 +210,15 @@ Explanation: 4 appears once; 1 and 2 each appear twice.
         return result;
     }
 }`,
+    csharp: `public class Solution {
+    public int SingleNumber(int[] nums) {
+        int result = 0;
+        foreach (int n in nums) {
+            result ^= n;
+        }
+        return result;
+    }
+}`,
     c: `int singleNumber(int* nums, int numsSize) {
     int result = 0;
     for (int i = 0; i < numsSize; i++) {
@@ -193,6 +226,16 @@ Explanation: 4 appears once; 1 and 2 each appear twice.
     }
     return result;
 }`,
+    cpp: `class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int result = 0;
+        for (int n : nums) {
+            result ^= n;
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach 1: XOR Bit Manipulation (Optimal)
 

@@ -252,6 +252,15 @@ function countComponents(n, edges) {
     return 0;
 }
 `,
+    typescript: `/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {number}
+ */
+function countComponents(n: number, edges: number[][]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int countComponents(int n, int[][] edges) {
         // TODO: implement
@@ -259,11 +268,24 @@ function countComponents(n, edges) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountComponents(int n, int[][] edges) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int countComponents(int n, int** edges, int edgesSize, int* edgesColSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countComponents(int n, vector<vector<int>>& edges) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_components(n: int, edges: list[list[int]]) -> int:
@@ -312,6 +334,32 @@ function countComponents(n, edges) {
     return count;
 }
 `,
+    typescript: `function countComponents(n: number, edges: number[][]): number {
+    const parent: number[] = Array.from({length: n}, (_, i) => i);
+
+    function find(x: number): number {
+        while (parent[x] !== x) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+    }
+
+    function union(x: number, y: number): void {
+        const px = find(x), py = find(y);
+        if (px !== py) parent[px] = py;
+    }
+
+    for (const [u, v] of edges) {
+        union(u, v);
+    }
+
+    let count = 0;
+    for (let i = 0; i < n; i++) {
+        if (find(i) === i) count++;
+    }
+    return count;
+}`,
     java: `class Solution {
     private int[] parent;
 
@@ -344,6 +392,37 @@ function countComponents(n, edges) {
     }
 }
 `,
+    csharp: `public class Solution {
+    private int[] parent;
+
+    private int Find(int x) {
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+    }
+
+    private void Union(int x, int y) {
+        int px = Find(x), py = Find(y);
+        if (px != py) parent[px] = py;
+    }
+
+    public int CountComponents(int n, int[][] edges) {
+        parent = new int[n];
+        for (int i = 0; i < n; i++) parent[i] = i;
+
+        foreach (int[] edge in edges) {
+            Union(edge[0], edge[1]);
+        }
+
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (Find(i) == i) count++;
+        }
+        return count;
+    }
+}`,
     c: `int countComponents(int n, int** edges, int edgesSize, int* edgesColSize) {
     int parent[1001];
     for (int i = 0; i < n; i++) parent[i] = i;
@@ -367,6 +446,39 @@ function countComponents(n, edges) {
     return count;
 }
 `,
+    cpp: `class Solution {
+private:
+    vector<int> parent;
+
+    int find(int x) {
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+    }
+
+    void unite(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px != py) parent[px] = py;
+    }
+
+public:
+    int countComponents(int n, vector<vector<int>>& edges) {
+        parent.resize(n);
+        for (int i = 0; i < n; i++) parent[i] = i;
+
+        for (auto& edge : edges) {
+            unite(edge[0], edge[1]);
+        }
+
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (find(i) == i) count++;
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Union-Find (Disjoint Set Union)
 

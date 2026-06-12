@@ -190,6 +190,10 @@ function prependToList(list, val) {
     // TODO: insert val at the front and return the new list
 }
 `,
+    typescript: `function prependToList(list: number[], val: number): number[] {
+    // TODO: insert val at the front and return the new list
+    return [];
+}`,
     java: `class Solution {
     public int[] prependToList(int[] list, int val) {
         // TODO: insert val at the front and return the new list
@@ -197,6 +201,12 @@ function prependToList(list, val) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] PrependToList(int[] list, int val) {
+        // TODO: insert val at the front and return the new list
+        return new int[]{};
+    }
+}`,
     c: `#include <stdlib.h>
 int* prependToList(int* list, int listSize, int val, int* returnSize) {
     // TODO: insert val at the front and return the new list
@@ -204,6 +214,13 @@ int* prependToList(int* list, int listSize, int val, int* returnSize) {
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> prependToList(vector<int>& list, int val) {
+        // TODO: insert val at the front and return the new list
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def prepend_to_list(list: list[int], val: int) -> list[int]:
@@ -218,6 +235,9 @@ function prependToList(list, val) {
     return [val, ...list];
 }
 `,
+    typescript: `function prependToList(list: number[], val: number): number[] {
+    return [val, ...list];
+}`,
     java: `class Solution {
     public int[] prependToList(int[] list, int val) {
         int n = list.length;
@@ -230,6 +250,17 @@ function prependToList(list, val) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] PrependToList(int[] list, int val) {
+        int n = list.Length;
+        int[] result = new int[n + 1];
+        result[0] = val;
+        for (int i = 0; i < n; i++) {
+            result[i + 1] = list[i];
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 int* prependToList(int* list, int listSize, int val, int* returnSize) {
     int newSize = listSize + 1;
@@ -242,6 +273,17 @@ int* prependToList(int* list, int listSize, int val, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> prependToList(vector<int>& list, int val) {
+        vector<int> result;
+        result.push_back(val);
+        for (int x : list) {
+            result.push_back(x);
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Allocate a New Array of Size n+1
 

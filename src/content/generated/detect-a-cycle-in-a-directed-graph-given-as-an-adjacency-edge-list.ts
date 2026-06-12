@@ -302,6 +302,10 @@ function hasCycle(n, edges) {
     return false;
 }
 `,
+    typescript: `function hasCycle(n: number, edges: number[][]): boolean {
+    // TODO: implement cycle detection in a directed graph
+    return false;
+}`,
     java: `class Solution {
     public boolean hasCycle(int n, int[][] edges) {
         // TODO: implement cycle detection in a directed graph
@@ -309,11 +313,24 @@ function hasCycle(n, edges) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool HasCycle(int n, int[][] edges) {
+        // TODO: implement cycle detection in a directed graph
+        return false;
+    }
+}`,
     c: `bool hasCycle(int n, int** edges, int edgesSize, int* edgesColSize) {
     // TODO: implement cycle detection in a directed graph
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool hasCycle(int n, vector<vector<int>>& edges) {
+        // TODO: implement cycle detection in a directed graph
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def has_cycle(n: int, edges: list[list[int]]) -> bool:
@@ -367,6 +384,32 @@ function hasCycle(n, edges) {
     return false;
 }
 `,
+    typescript: `function hasCycle(n: number, edges: number[][]): boolean {
+    const adj: number[][] = Array.from({length: n}, () => []);
+    for (const [u, v] of edges) {
+        adj[u].push(v);
+    }
+
+    // 0 = unvisited, 1 = in stack, 2 = done
+    const state: number[] = new Array(n).fill(0);
+
+    function dfs(node: number): boolean {
+        state[node] = 1;
+        for (const nei of adj[node]) {
+            if (state[nei] === 1) return true;
+            if (state[nei] === 0 && dfs(nei)) return true;
+        }
+        state[node] = 2;
+        return false;
+    }
+
+    for (let i = 0; i < n; i++) {
+        if (state[i] === 0) {
+            if (dfs(i)) return true;
+        }
+    }
+    return false;
+}`,
     java: `class Solution {
     private int[] state;
     private int[][] adjList;
@@ -399,6 +442,39 @@ function hasCycle(n, edges) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    private int[] state;
+    private List<int>[] adj;
+
+    public bool HasCycle(int n, int[][] edges) {
+        adj = new List<int>[n];
+        for (int i = 0; i < n; i++) {
+            adj[i] = new List<int>();
+        }
+        state = new int[n];
+
+        foreach (int[] e in edges) {
+            adj[e[0]].Add(e[1]);
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (state[i] == 0 && Dfs(i)) return true;
+        }
+        return false;
+    }
+
+    private bool Dfs(int node) {
+        state[node] = 1;
+        foreach (int nei in adj[node]) {
+            if (state[nei] == 1) return true;
+            if (state[nei] == 0 && Dfs(nei)) return true;
+        }
+        state[node] = 2;
+        return false;
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -455,6 +531,35 @@ int hasCycle(int n, int** edges, int edgesSize, int* edgesColSize) {
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool hasCycle(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> adj(n);
+        for (auto& e : edges) {
+            adj[e[0]].push_back(e[1]);
+        }
+
+        // 0 = unvisited, 1 = in stack, 2 = done
+        vector<int> state(n, 0);
+
+        function<bool(int)> dfs = [&](int node) -> bool {
+            state[node] = 1;
+            for (int nei : adj[node]) {
+                if (state[nei] == 1) return true;
+                if (state[nei] == 0 && dfs(nei)) return true;
+            }
+            state[node] = 2;
+            return false;
+        };
+
+        for (int i = 0; i < n; i++) {
+            if (state[i] == 0) {
+                if (dfs(i)) return true;
+            }
+        }
+        return false;
+    }
+};`,
   },
   editorial: `## Approach: DFS with Recursion Stack Coloring
 

@@ -136,6 +136,10 @@ function mySqrt(n) {
     return 0;
 }
 `,
+    typescript: `function mySqrt(n: number): number {
+    // TODO: implement integer square root using binary search
+    return 0;
+}`,
     java: `class Solution {
     public int mySqrt(int n) {
         // TODO: implement integer square root using binary search
@@ -143,11 +147,24 @@ function mySqrt(n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MySqrt(int n) {
+        // TODO: implement integer square root using binary search
+        return 0;
+    }
+}`,
     c: `int mySqrt(int n) {
     // TODO: implement integer square root using binary search
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int mySqrt(int n) {
+        // TODO: implement integer square root using binary search
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def my_sqrt(n: int) -> int:
@@ -183,6 +200,20 @@ function mySqrt(n) {
     return ans;
 }
 `,
+    typescript: `function mySqrt(n: number): number {
+    if (n === 0) return 0;
+    let lo = 1, hi = n, ans = 0;
+    while (lo <= hi) {
+        const mid = Math.floor((lo + hi) / 2);
+        if (BigInt(mid) * BigInt(mid) <= BigInt(n)) {
+            ans = mid;
+            lo = mid + 1;
+        } else {
+            hi = mid - 1;
+        }
+    }
+    return ans;
+}`,
     java: `class Solution {
     public int mySqrt(int n) {
         if (n == 0) return 0;
@@ -200,6 +231,22 @@ function mySqrt(n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MySqrt(int n) {
+        if (n == 0) return 0;
+        long lo = 1, hi = n, ans = 0;
+        while (lo <= hi) {
+            long mid = lo + (hi - lo) / 2;
+            if (mid * mid <= (long) n) {
+                ans = mid;
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return (int) ans;
+    }
+}`,
     c: `int mySqrt(int n) {
     if (n == 0) return 0;
     long long lo = 1, hi = n, ans = 0;
@@ -215,6 +262,23 @@ function mySqrt(n) {
     return (int)ans;
 }
 `,
+    cpp: `class Solution {
+public:
+    int mySqrt(int n) {
+        if (n == 0) return 0;
+        long long lo = 1, hi = n, ans = 0;
+        while (lo <= hi) {
+            long long mid = lo + (hi - lo) / 2;
+            if (mid * mid <= (long long) n) {
+                ans = mid;
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return (int) ans;
+    }
+};`,
   },
   editorial: `## Approach: Binary Search
 

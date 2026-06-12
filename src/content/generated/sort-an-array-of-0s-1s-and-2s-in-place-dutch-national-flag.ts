@@ -200,6 +200,10 @@ Output: [0, 1, 2]
     return [];
 }
 `,
+    typescript: `function sortColors(nums: number[]): number[] {
+    // TODO: implement the Dutch National Flag algorithm
+    return [];
+}`,
     java: `class Solution {
     public int[] sortColors(int[] nums) {
         // TODO: implement the Dutch National Flag algorithm
@@ -207,12 +211,25 @@ Output: [0, 1, 2]
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] SortColors(int[] nums) {
+        // TODO: implement the Dutch National Flag algorithm
+        return new int[]{};
+    }
+}`,
     c: `int* sortColors(int* nums, int numsSize, int* returnSize) {
     // TODO: implement the Dutch National Flag algorithm
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> sortColors(vector<int>& nums) {
+        // TODO: implement the Dutch National Flag algorithm
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def sort_colors(nums):
@@ -250,6 +267,26 @@ Output: [0, 1, 2]
     return nums;
 }
 `,
+    typescript: `function sortColors(nums: number[]): number[] {
+    let low = 0, mid = 0, high = nums.length - 1;
+    while (mid <= high) {
+        if (nums[mid] === 0) {
+            let tmp = nums[low];
+            nums[low] = nums[mid];
+            nums[mid] = tmp;
+            low++;
+            mid++;
+        } else if (nums[mid] === 1) {
+            mid++;
+        } else {
+            let tmp = nums[mid];
+            nums[mid] = nums[high];
+            nums[high] = tmp;
+            high--;
+        }
+    }
+    return nums;
+}`,
     java: `class Solution {
     public int[] sortColors(int[] nums) {
         int low = 0, mid = 0, high = nums.length - 1;
@@ -273,6 +310,28 @@ Output: [0, 1, 2]
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] SortColors(int[] nums) {
+        int low = 0, mid = 0, high = nums.Length - 1;
+        while (mid <= high) {
+            if (nums[mid] == 0) {
+                int tmp = nums[low];
+                nums[low] = nums[mid];
+                nums[mid] = tmp;
+                low++;
+                mid++;
+            } else if (nums[mid] == 1) {
+                mid++;
+            } else {
+                int tmp = nums[mid];
+                nums[mid] = nums[high];
+                nums[high] = tmp;
+                high--;
+            }
+        }
+        return nums;
+    }
+}`,
     c: `#include <stdlib.h>
 int* sortColors(int* nums, int numsSize, int* returnSize) {
     *returnSize = numsSize;
@@ -301,6 +360,29 @@ int* sortColors(int* nums, int numsSize, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> sortColors(vector<int>& nums) {
+        int low = 0, mid = 0, high = (int)nums.size() - 1;
+        while (mid <= high) {
+            if (nums[mid] == 0) {
+                int tmp = nums[low];
+                nums[low] = nums[mid];
+                nums[mid] = tmp;
+                low++;
+                mid++;
+            } else if (nums[mid] == 1) {
+                mid++;
+            } else {
+                int tmp = nums[mid];
+                nums[mid] = nums[high];
+                nums[high] = tmp;
+                high--;
+            }
+        }
+        return nums;
+    }
+};`,
   },
   editorial: `## Dutch National Flag Algorithm
 

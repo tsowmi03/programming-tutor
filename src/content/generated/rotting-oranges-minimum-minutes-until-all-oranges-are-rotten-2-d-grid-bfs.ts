@@ -251,6 +251,10 @@ Explanation: No fresh oranges exist, so 0 minutes are needed.
     return 0;
 }
 `,
+    typescript: `function rottingOranges(grid: number[][]): number {
+    // TODO: implement multi-source BFS
+    return 0;
+}`,
     java: `class Solution {
     public int rottingOranges(int[][] grid) {
         // TODO: implement multi-source BFS
@@ -258,12 +262,27 @@ Explanation: No fresh oranges exist, so 0 minutes are needed.
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int RottingOranges(int[][] grid) {
+        // TODO: implement multi-source BFS
+        return 0;
+    }
+}`,
     c: `#include <stdlib.h>
 int rottingOranges(int** grid, int gridSize, int* gridColSize) {
     // TODO: implement multi-source BFS
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int rottingOranges(vector<vector<int>>& grid) {
+        // TODO: implement multi-source BFS
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `from collections import deque
@@ -338,6 +357,43 @@ def rotting_oranges(grid: list[list[int]]) -> int:
     return fresh === 0 ? minutes : -1;
 }
 `,
+    typescript: `function rottingOranges(grid: number[][]): number {
+    const m = grid.length;
+    const n = grid[0].length;
+    const queue: number[][] = [];
+    let fresh = 0;
+    let head = 0;
+
+    for (let r = 0; r < m; r++) {
+        for (let c = 0; c < n; c++) {
+            if (grid[r][c] === 2) queue.push([r, c]);
+            else if (grid[r][c] === 1) fresh++;
+        }
+    }
+
+    if (fresh === 0) return 0;
+
+    const dirs = [[0,1],[0,-1],[1,0],[-1,0]];
+    let minutes = 0;
+
+    while (head < queue.length && fresh > 0) {
+        minutes++;
+        const size = queue.length - head;
+        for (let i = 0; i < size; i++) {
+            const [r, c] = queue[head++];
+            for (const [dr, dc] of dirs) {
+                const nr = r + dr, nc = c + dc;
+                if (nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] === 1) {
+                    grid[nr][nc] = 2;
+                    fresh--;
+                    queue.push([nr, nc]);
+                }
+            }
+        }
+    }
+
+    return fresh === 0 ? minutes : -1;
+}`,
     java: `class Solution {
     public int rottingOranges(int[][] grid) {
         int m = grid.length, n = grid[0].length;
@@ -376,6 +432,45 @@ def rotting_oranges(grid: list[list[int]]) -> int:
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int RottingOranges(int[][] grid) {
+        int m = grid.Length, n = grid[0].Length;
+        Queue<int[]> queue = new Queue<int[]>();
+        int fresh = 0;
+
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (grid[r][c] == 2) queue.Enqueue(new int[]{r, c});
+                else if (grid[r][c] == 1) fresh++;
+            }
+        }
+
+        if (fresh == 0) return 0;
+
+        int[][] dirs = new int[][]{ new int[]{0,1}, new int[]{0,-1}, new int[]{1,0}, new int[]{-1,0} };
+        int minutes = 0;
+
+        while (queue.Count > 0 && fresh > 0) {
+            minutes++;
+            int size = queue.Count;
+            for (int i = 0; i < size; i++) {
+                int[] cell = queue.Dequeue();
+                foreach (int[] d in dirs) {
+                    int nr = cell[0] + d[0], nc = cell[1] + d[1];
+                    if (nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] == 1) {
+                        grid[nr][nc] = 2;
+                        fresh--;
+                        queue.Enqueue(new int[]{nr, nc});
+                    }
+                }
+            }
+        }
+
+        return fresh == 0 ? minutes : -1;
+    }
+}`,
     c: `#include <stdlib.h>
 int rottingOranges(int** grid, int gridSize, int* gridColSize) {
     int m = gridSize;
@@ -418,6 +513,45 @@ int rottingOranges(int** grid, int gridSize, int* gridColSize) {
     return fresh == 0 ? minutes : -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int rottingOranges(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        queue<pair<int,int>> q;
+        int fresh = 0;
+
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (grid[r][c] == 2) q.push({r, c});
+                else if (grid[r][c] == 1) fresh++;
+            }
+        }
+
+        if (fresh == 0) return 0;
+
+        int dirs[4][2] = {{0,1},{0,-1},{1,0},{-1,0}};
+        int minutes = 0;
+
+        while (!q.empty() && fresh > 0) {
+            minutes++;
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                auto [r, c] = q.front();
+                q.pop();
+                for (auto& d : dirs) {
+                    int nr = r + d[0], nc = c + d[1];
+                    if (nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] == 1) {
+                        grid[nr][nc] = 2;
+                        fresh--;
+                        q.push({nr, nc});
+                    }
+                }
+            }
+        }
+
+        return fresh == 0 ? minutes : -1;
+    }
+};`,
   },
   editorial: `## Approach: Multi-Source BFS
 

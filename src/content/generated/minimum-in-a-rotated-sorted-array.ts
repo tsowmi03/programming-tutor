@@ -194,6 +194,10 @@ Explanation: A single-element array is already sorted; the minimum is that eleme
     // TODO: implement binary search
 }
 `,
+    typescript: `function findMin(nums: number[]): number {
+    // TODO: implement binary search
+    return 0;
+}`,
     java: `class Solution {
     public int findMin(int[] nums) {
         // TODO: implement binary search
@@ -201,11 +205,24 @@ Explanation: A single-element array is already sorted; the minimum is that eleme
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindMin(int[] nums) {
+        // TODO: implement binary search
+        return 0;
+    }
+}`,
     c: `int findMin(int* nums, int numsSize) {
     // TODO: implement binary search
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        // TODO: implement binary search
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def find_min(nums):
@@ -231,6 +248,18 @@ Explanation: A single-element array is already sorted; the minimum is that eleme
     return nums[left];
 }
 `,
+    typescript: `function findMin(nums: number[]): number {
+    let left = 0, right = nums.length - 1;
+    while (left < right) {
+        const mid = Math.floor((left + right) / 2);
+        if (nums[mid] > nums[right]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return nums[left];
+}`,
     java: `class Solution {
     public int findMin(int[] nums) {
         int left = 0, right = nums.length - 1;
@@ -246,6 +275,20 @@ Explanation: A single-element array is already sorted; the minimum is that eleme
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindMin(int[] nums) {
+        int left = 0, right = nums.Length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        return nums[left];
+    }
+}`,
     c: `int findMin(int* nums, int numsSize) {
     int left = 0, right = numsSize - 1;
     while (left < right) {
@@ -259,6 +302,21 @@ Explanation: A single-element array is already sorted; the minimum is that eleme
     return nums[left];
 }
 `,
+    cpp: `class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int left = 0, right = (int)nums.size() - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        return nums[left];
+    }
+};`,
   },
   editorial: `## Approach: Binary Search on the Rotation Point
 

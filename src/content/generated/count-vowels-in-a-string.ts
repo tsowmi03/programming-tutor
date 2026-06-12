@@ -132,6 +132,10 @@ Explanation: All five characters are vowels (case-insensitive).
     return 0;
 }
 `,
+    typescript: `function countVowels(s: string): number {
+    // TODO: return the number of vowels in s
+    return 0;
+}`,
     java: `class Solution {
     public int countVowels(String s) {
         // TODO: return the number of vowels in s
@@ -139,11 +143,24 @@ Explanation: All five characters are vowels (case-insensitive).
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountVowels(string s) {
+        // TODO: return the number of vowels in s
+        return 0;
+    }
+}`,
     c: `int countVowels(char* s) {
     // TODO: return the number of vowels in s
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countVowels(string s) {
+        // TODO: return the number of vowels in s
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_vowels(s: str) -> int:
@@ -159,6 +176,14 @@ Explanation: All five characters are vowels (case-insensitive).
     return count;
 }
 `,
+    typescript: `function countVowels(s: string): number {
+    const vowels = new Set(['a','e','i','o','u','A','E','I','O','U']);
+    let count = 0;
+    for (const c of s) {
+        if (vowels.has(c)) count++;
+    }
+    return count;
+}`,
     java: `class Solution {
     public int countVowels(String s) {
         String vowels = "aeiouAEIOU";
@@ -170,6 +195,16 @@ Explanation: All five characters are vowels (case-insensitive).
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountVowels(string s) {
+        string vowels = "aeiouAEIOU";
+        int count = 0;
+        for (int i = 0; i < s.Length; i++) {
+            if (vowels.IndexOf(s[i]) >= 0) count++;
+        }
+        return count;
+    }
+}`,
     c: `int countVowels(char* s) {
     const char* vowels = "aeiouAEIOU";
     int count = 0;
@@ -184,6 +219,17 @@ Explanation: All five characters are vowels (case-insensitive).
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countVowels(string s) {
+        string vowels = "aeiouAEIOU";
+        int count = 0;
+        for (int i = 0; i < (int)s.size(); i++) {
+            if (vowels.find(s[i]) != string::npos) count++;
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Linear Scan
 

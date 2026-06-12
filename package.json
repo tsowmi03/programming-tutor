@@ -14,6 +14,7 @@
     "problems:generate": "tsx scripts/generate-problem.ts",
     "problems:batch": "tsx scripts/batch-generate.ts",
     "problems:index": "tsx scripts/build-generated-index.ts",
+    "problems:backfill": "tsx scripts/backfill-languages.ts",
     "problems:verify": "tsx scripts/verify-solutions.ts",
     "postinstall": "prisma generate"
   },

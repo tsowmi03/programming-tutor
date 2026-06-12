@@ -40,6 +40,16 @@ const solutions: Record<LanguageId, string> = {
   return [];
 }
 `,
+  typescript: `function twoSum(nums: number[], target: number): number[] {
+  const seen = new Map<number, number>();
+  for (let i = 0; i < nums.length; i++) {
+    const other = seen.get(target - nums[i]);
+    if (other !== undefined) return [other, i];
+    seen.set(nums[i], i);
+  }
+  return [];
+}
+`,
   java: `class Solution {
     public int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> seen = new HashMap<>();
@@ -50,6 +60,21 @@ const solutions: Record<LanguageId, string> = {
             seen.put(nums[i], i);
         }
         return new int[]{};
+    }
+}
+`,
+  csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] TwoSum(int[] nums, int target) {
+        var seen = new Dictionary<int, int>();
+        for (int i = 0; i < nums.Length; i++) {
+            if (seen.ContainsKey(target - nums[i])) {
+                return new int[] { seen[target - nums[i]], i };
+            }
+            seen[nums[i]] = i;
+        }
+        return new int[] {};
     }
 }
 `,
@@ -66,6 +91,19 @@ const solutions: Record<LanguageId, string> = {
     *returnSize = 0;
     return out;
 }
+`,
+  cpp: `class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> seen;
+        for (int i = 0; i < (int)nums.size(); i++) {
+            auto it = seen.find(target - nums[i]);
+            if (it != seen.end()) return {it->second, i};
+            seen[nums[i]] = i;
+        }
+        return {};
+    }
+};
 `,
 };
 

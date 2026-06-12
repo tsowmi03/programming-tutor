@@ -211,6 +211,10 @@ Output: [1,1,1,0]
     return [];
 }
 `,
+    typescript: `function dailyTemperatures(temperatures: number[]): number[] {
+    // TODO
+    return [];
+}`,
     java: `class Solution {
     public int[] dailyTemperatures(int[] temperatures) {
         // TODO
@@ -218,11 +222,24 @@ Output: [1,1,1,0]
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] DailyTemperatures(int[] temperatures) {
+        // TODO
+        return new int[]{};
+    }
+}`,
     c: `int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize) {
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        // TODO
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def daily_temperatures(temperatures):
@@ -250,6 +267,19 @@ Output: [1,1,1,0]
     return result;
 }
 `,
+    typescript: `function dailyTemperatures(temperatures: number[]): number[] {
+    const n = temperatures.length;
+    const result = new Array(n).fill(0);
+    const stack: number[] = [];
+    for (let i = 0; i < n; i++) {
+        while (stack.length > 0 && temperatures[i] > temperatures[stack[stack.length - 1]]) {
+            const idx = stack.pop()!;
+            result[idx] = i - idx;
+        }
+        stack.push(i);
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] dailyTemperatures(int[] temperatures) {
         int n = temperatures.length;
@@ -267,6 +297,22 @@ Output: [1,1,1,0]
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] DailyTemperatures(int[] temperatures) {
+        int n = temperatures.Length;
+        int[] result = new int[n];
+        int[] stack = new int[n];
+        int top = -1;
+        for (int i = 0; i < n; i++) {
+            while (top >= 0 && temperatures[i] > temperatures[stack[top]]) {
+                int idx = stack[top--];
+                result[idx] = i - idx;
+            }
+            stack[++top] = i;
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize) {
     *returnSize = temperaturesSize;
@@ -285,6 +331,23 @@ int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize)
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n = temperatures.size();
+        vector<int> result(n, 0);
+        vector<int> stack;
+        for (int i = 0; i < n; i++) {
+            while (!stack.empty() && temperatures[i] > temperatures[stack.back()]) {
+                int idx = stack.back();
+                stack.pop_back();
+                result[idx] = i - idx;
+            }
+            stack.push_back(i);
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Monotonic Decreasing Stack
 

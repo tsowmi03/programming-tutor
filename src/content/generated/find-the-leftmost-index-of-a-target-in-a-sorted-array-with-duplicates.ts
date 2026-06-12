@@ -219,6 +219,10 @@ function leftmostIndex(nums, target) {
     return -1;
 }
 `,
+    typescript: `function leftmostIndex(nums: number[], target: number): number {
+    // TODO: implement binary search for leftmost occurrence
+    return -1;
+}`,
     java: `class Solution {
     public int leftmostIndex(int[] nums, int target) {
         // TODO: implement binary search for leftmost occurrence
@@ -226,11 +230,24 @@ function leftmostIndex(nums, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LeftmostIndex(int[] nums, int target) {
+        // TODO: implement binary search for leftmost occurrence
+        return -1;
+    }
+}`,
     c: `int leftmostIndex(int* nums, int numsSize, int target) {
     // TODO: implement binary search for leftmost occurrence
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int leftmostIndex(vector<int>& nums, int target) {
+        // TODO: implement binary search for leftmost occurrence
+        return -1;
+    }
+};`,
   },
   solutions: {
     python: `def leftmost_index(nums: list[int], target: int) -> int:
@@ -264,6 +281,22 @@ function leftmostIndex(nums, target) {
     return result;
 }
 `,
+    typescript: `function leftmostIndex(nums: number[], target: number): number {
+    let lo = 0, hi = nums.length - 1;
+    let result = -1;
+    while (lo <= hi) {
+        const mid = (lo + hi) >> 1;
+        if (nums[mid] === target) {
+            result = mid;
+            hi = mid - 1; // keep searching left
+        } else if (nums[mid] < target) {
+            lo = mid + 1;
+        } else {
+            hi = mid - 1;
+        }
+    }
+    return result;
+}`,
     java: `class Solution {
     public int leftmostIndex(int[] nums, int target) {
         int lo = 0, hi = nums.length - 1;
@@ -283,6 +316,24 @@ function leftmostIndex(nums, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LeftmostIndex(int[] nums, int target) {
+        int lo = 0, hi = nums.Length - 1;
+        int result = -1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) {
+                result = mid;
+                hi = mid - 1; // keep searching left
+            } else if (nums[mid] < target) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return result;
+    }
+}`,
     c: `int leftmostIndex(int* nums, int numsSize, int target) {
     int lo = 0, hi = numsSize - 1;
     int result = -1;
@@ -300,6 +351,25 @@ function leftmostIndex(nums, target) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int leftmostIndex(vector<int>& nums, int target) {
+        int lo = 0, hi = (int)nums.size() - 1;
+        int result = -1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) {
+                result = mid;
+                hi = mid - 1; // keep searching left
+            } else if (nums[mid] < target) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Modified Binary Search
 

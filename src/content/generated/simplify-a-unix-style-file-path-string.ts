@@ -155,6 +155,10 @@ var simplifyPath = function(path) {
     // TODO: implement using a stack
 };
 `,
+    typescript: `function simplifyPath(path: string): string {
+    // TODO: implement using a stack
+    return "";
+}`,
     java: `class Solution {
     public String simplifyPath(String path) {
         // TODO: implement using a stack
@@ -162,6 +166,12 @@ var simplifyPath = function(path) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public string SimplifyPath(string path) {
+        // TODO: implement using a stack
+        return "";
+    }
+}`,
     c: `#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -171,6 +181,13 @@ char* simplifyPath(char* path) {
     return "";
 }
 `,
+    cpp: `class Solution {
+public:
+    string simplifyPath(string path) {
+        // TODO: implement using a stack
+        return "";
+    }
+};`,
   },
   solutions: {
     python: `def simplify_path(path: str) -> str:
@@ -203,6 +220,22 @@ char* simplifyPath(char* path) {
     return '/' + stack.join('/');
 };
 `,
+    typescript: `function simplifyPath(path: string): string {
+    const stack: string[] = [];
+    const parts = path.split('/');
+    for (const part of parts) {
+        if (part === '' || part === '.') {
+            continue;
+        } else if (part === '..') {
+            if (stack.length > 0) {
+                stack.pop();
+            }
+        } else {
+            stack.push(part);
+        }
+    }
+    return '/' + stack.join('/');
+}`,
     java: `class Solution {
     public String simplifyPath(String path) {
         java.util.Deque<String> stack = new java.util.ArrayDeque<>();
@@ -227,6 +260,31 @@ char* simplifyPath(char* path) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public string SimplifyPath(string path) {
+        Stack<string> stack = new Stack<string>();
+        string[] parts = path.Split('/');
+        foreach (string part in parts) {
+            if (part == "" || part == ".") {
+                continue;
+            } else if (part == "..") {
+                if (stack.Count > 0) {
+                    stack.Pop();
+                }
+            } else {
+                stack.Push(part);
+            }
+        }
+        string[] arr = stack.ToArray();
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        for (int i = arr.Length - 1; i >= 0; i--) {
+            sb.Append('/').Append(arr[i]);
+        }
+        return sb.Length == 0 ? "/" : sb.ToString();
+    }
+}`,
     c: `#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -268,6 +326,31 @@ char* simplifyPath(char* path) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    string simplifyPath(string path) {
+        vector<string> stack;
+        stringstream ss(path);
+        string part;
+        while (getline(ss, part, '/')) {
+            if (part == "" || part == ".") {
+                continue;
+            } else if (part == "..") {
+                if (!stack.empty()) {
+                    stack.pop_back();
+                }
+            } else {
+                stack.push_back(part);
+            }
+        }
+        if (stack.empty()) return "/";
+        string result = "";
+        for (const string& s : stack) {
+            result += '/' + s;
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Stack-Based Path Simplification
 

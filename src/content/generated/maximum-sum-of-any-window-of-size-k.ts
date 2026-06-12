@@ -201,6 +201,10 @@ function maxSumWindow(nums, k) {
     return 0;
 }
 `,
+    typescript: `function maxSumWindow(nums: number[], k: number): number {
+    // TODO: implement sliding window
+    return 0;
+}`,
     java: `class Solution {
     public int maxSumWindow(int[] nums, int k) {
         // TODO: implement sliding window
@@ -208,11 +212,24 @@ function maxSumWindow(nums, k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MaxSumWindow(int[] nums, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+}`,
     c: `int maxSumWindow(int* nums, int numsSize, int k) {
     // TODO: implement sliding window
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxSumWindow(vector<int>& nums, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def max_sum_window(nums: list[int], k: int) -> int:
@@ -244,6 +261,22 @@ function maxSumWindow(nums, k) {
     return maxSum;
 }
 `,
+    typescript: `function maxSumWindow(nums: number[], k: number): number {
+    const n = nums.length;
+    if (n < k) return 0;
+    let windowSum = 0;
+    for (let i = 0; i < k; i++) {
+        windowSum += nums[i];
+    }
+    let maxSum = windowSum;
+    for (let i = k; i < n; i++) {
+        windowSum += nums[i] - nums[i - k];
+        if (windowSum > maxSum) {
+            maxSum = windowSum;
+        }
+    }
+    return maxSum;
+}`,
     java: `class Solution {
     public int maxSumWindow(int[] nums, int k) {
         int n = nums.length;
@@ -263,6 +296,24 @@ function maxSumWindow(nums, k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MaxSumWindow(int[] nums, int k) {
+        int n = nums.Length;
+        if (n < k) return 0;
+        int windowSum = 0;
+        for (int i = 0; i < k; i++) {
+            windowSum += nums[i];
+        }
+        int maxSum = windowSum;
+        for (int i = k; i < n; i++) {
+            windowSum += nums[i] - nums[i - k];
+            if (windowSum > maxSum) {
+                maxSum = windowSum;
+            }
+        }
+        return maxSum;
+    }
+}`,
     c: `int maxSumWindow(int* nums, int numsSize, int k) {
     if (numsSize < k) return 0;
     int windowSum = 0;
@@ -279,6 +330,25 @@ function maxSumWindow(nums, k) {
     return maxSum;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxSumWindow(vector<int>& nums, int k) {
+        int n = nums.size();
+        if (n < k) return 0;
+        int windowSum = 0;
+        for (int i = 0; i < k; i++) {
+            windowSum += nums[i];
+        }
+        int maxSum = windowSum;
+        for (int i = k; i < n; i++) {
+            windowSum += nums[i] - nums[i - k];
+            if (windowSum > maxSum) {
+                maxSum = windowSum;
+            }
+        }
+        return maxSum;
+    }
+};`,
   },
   editorial: `## Approach: Sliding Window
 

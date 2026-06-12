@@ -231,6 +231,10 @@ Explanation: Both 4 and 9 appear in both arrays.
     return [];
 }
 `,
+    typescript: `function intersection(nums1: number[], nums2: number[]): number[] {
+    // TODO: return the intersection of nums1 and nums2 (unique values only)
+    return [];
+}`,
     java: `class Solution {
     public int[] intersection(int[] nums1, int[] nums2) {
         // TODO: return the intersection of nums1 and nums2 (unique values only)
@@ -238,6 +242,14 @@ Explanation: Both 4 and 9 appear in both arrays.
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] Intersection(int[] nums1, int[] nums2) {
+        // TODO: return the intersection of nums1 and nums2 (unique values only)
+        return new int[]{};
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
@@ -246,6 +258,13 @@ int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* ret
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        // TODO: return the intersection of nums1 and nums2 (unique values only)
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def intersection(nums1, nums2):
@@ -257,6 +276,11 @@ int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* ret
     return [...set1].filter(x => set2.has(x));
 }
 `,
+    typescript: `function intersection(nums1: number[], nums2: number[]): number[] {
+    const set1 = new Set(nums1);
+    const set2 = new Set(nums2);
+    return [...set1].filter(x => set2.has(x));
+}`,
     java: `class Solution {
     public int[] intersection(int[] nums1, int[] nums2) {
         java.util.Set<Integer> set1 = new java.util.HashSet<>();
@@ -272,6 +296,22 @@ int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* ret
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] Intersection(int[] nums1, int[] nums2) {
+        HashSet<int> set1 = new HashSet<int>();
+        foreach (int n in nums1) set1.Add(n);
+        HashSet<int> resultSet = new HashSet<int>();
+        foreach (int n in nums2) {
+            if (set1.Contains(n)) resultSet.Add(n);
+        }
+        int[] arr = new int[resultSet.Count];
+        int i = 0;
+        foreach (int n in resultSet) arr[i++] = n;
+        return arr;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
@@ -293,6 +333,17 @@ int* intersection(int* nums1, int nums1Size, int* nums2, int nums2Size, int* ret
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int> set1(nums1.begin(), nums1.end());
+        unordered_set<int> resultSet;
+        for (int n : nums2) {
+            if (set1.count(n)) resultSet.insert(n);
+        }
+        return vector<int>(resultSet.begin(), resultSet.end());
+    }
+};`,
   },
   editorial: `## Approach: Hash Set Intersection
 

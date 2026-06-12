@@ -17,7 +17,7 @@ import { fetchJson } from "./shared";
 type TabId = "description" | "hints" | "solution" | "submissions";
 
 interface SolutionPayload {
-  solutions: Record<LanguageId, string> | null;
+  solutions: Partial<Record<LanguageId, string>> | null;
   editorial: string | null;
 }
 
@@ -176,6 +176,14 @@ function SolutionTab({
   if (error) return <p className="text-sm text-rose-300">{error}</p>;
   if (!data) return <p className="text-sm text-muted">Loading solution…</p>;
 
+  // Older problems may not have solutions in every language yet.
+  const solutionLangs = LANGUAGE_IDS.filter(
+    (id) => data.solutions?.[id] != null,
+  );
+  const shownLang = solutionLangs.includes(solutionLang)
+    ? solutionLang
+    : (solutionLangs[0] ?? "python");
+
   return (
     <div className="space-y-6">
       {data.editorial && <MarkdownView>{data.editorial}</MarkdownView>}
@@ -184,12 +192,12 @@ function SolutionTab({
           <div className="mb-2 flex items-center justify-between">
             <h3 className="text-sm font-semibold">Reference solution</h3>
             <select
-              value={solutionLang}
+              value={shownLang}
               onChange={(e) => setSolutionLang(e.target.value as LanguageId)}
               className="rounded-md border border-edge bg-surface-raised px-2 py-1 text-xs outline-none"
               aria-label="Solution language"
             >
-              {LANGUAGE_IDS.map((id) => (
+              {solutionLangs.map((id) => (
                 <option key={id} value={id}>
                   {LANGUAGES[id].label}
                 </option>
@@ -197,7 +205,7 @@ function SolutionTab({
             </select>
           </div>
           <pre className="overflow-x-auto rounded-lg border border-edge bg-zinc-900/80 p-4 font-mono text-xs leading-relaxed">
-            {data.solutions[solutionLang]}
+            {data.solutions[shownLang]}
           </pre>
         </div>
       )}

@@ -228,6 +228,10 @@ var shipWithinDays = function(weights, days) {
     // TODO: implement using binary search
 };
 `,
+    typescript: `function shipWithinDays(weights: number[], days: number): number {
+    // TODO: implement using binary search
+    return 0;
+}`,
     java: `class Solution {
     public int shipWithinDays(int[] weights, int days) {
         // TODO: implement using binary search
@@ -235,11 +239,24 @@ var shipWithinDays = function(weights, days) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int ShipWithinDays(int[] weights, int days) {
+        // TODO: implement using binary search
+        return 0;
+    }
+}`,
     c: `int shipWithinDays(int* weights, int weightsSize, int days) {
     // TODO: implement using binary search
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int days) {
+        // TODO: implement using binary search
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def ship_within_days(weights: list[int], days: int) -> int:
@@ -288,6 +305,31 @@ var shipWithinDays = function(weights, days) {
     return lo;
 };
 `,
+    typescript: `function shipWithinDays(weights: number[], days: number): number {
+    function canShip(capacity: number): boolean {
+        let dayCount = 1, currentLoad = 0;
+        for (const w of weights) {
+            if (currentLoad + w > capacity) {
+                dayCount++;
+                currentLoad = 0;
+            }
+            currentLoad += w;
+        }
+        return dayCount <= days;
+    }
+
+    let lo = Math.max(...weights);
+    let hi = weights.reduce((a, b) => a + b, 0);
+    while (lo < hi) {
+        const mid = Math.floor((lo + hi) / 2);
+        if (canShip(mid)) {
+            hi = mid;
+        } else {
+            lo = mid + 1;
+        }
+    }
+    return lo;
+}`,
     java: `class Solution {
     public int shipWithinDays(int[] weights, int days) {
         int lo = 0, hi = 0;
@@ -319,6 +361,36 @@ var shipWithinDays = function(weights, days) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int ShipWithinDays(int[] weights, int days) {
+        int lo = 0, hi = 0;
+        foreach (int w in weights) {
+            if (w > lo) lo = w;
+            hi += w;
+        }
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+            if (CanShip(weights, days, mid)) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+    private bool CanShip(int[] weights, int days, int capacity) {
+        int dayCount = 1, currentLoad = 0;
+        foreach (int w in weights) {
+            if (currentLoad + w > capacity) {
+                dayCount++;
+                currentLoad = 0;
+            }
+            currentLoad += w;
+        }
+        return dayCount <= days;
+    }
+}`,
     c: `static int canShip(int* weights, int weightsSize, int days, int capacity) {
     int dayCount = 1, currentLoad = 0;
     for (int i = 0; i < weightsSize; i++) {
@@ -348,6 +420,38 @@ int shipWithinDays(int* weights, int weightsSize, int days) {
     return lo;
 }
 `,
+    cpp: `class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int days) {
+        int lo = 0, hi = 0;
+        for (int w : weights) {
+            if (w > lo) lo = w;
+            hi += w;
+        }
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+            if (canShip(weights, days, mid)) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+private:
+    bool canShip(vector<int>& weights, int days, int capacity) {
+        int dayCount = 1, currentLoad = 0;
+        for (int w : weights) {
+            if (currentLoad + w > capacity) {
+                dayCount++;
+                currentLoad = 0;
+            }
+            currentLoad += w;
+        }
+        return dayCount <= days;
+    }
+};`,
   },
   editorial: `## Approach: Binary Search on the Answer
 

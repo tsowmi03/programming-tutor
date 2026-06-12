@@ -39,25 +39,81 @@ Output: true
 - \`1 <= s.length <= 10000\`
 `,
   hints: [
-    "“Most recently opened, first closed” is exactly Last-In-First-Out — which data structure is that?",
-    "Push opening brackets onto a stack. On a closing bracket, the top of the stack must be its partner; pop it. Anything else is invalid.",
-    "Don't forget the two edge cases at the ends: a closing bracket when the stack is empty, and leftover open brackets when the string finishes.",
+    `“Most recently opened, first closed” is exactly Last-In-First-Out — which data structure is that?`,
+    `Push opening brackets onto a stack. On a closing bracket, the top of the stack must be its partner; pop it. Anything else is invalid.`,
+    `Don't forget the two edge cases at the ends: a closing bracket when the stack is empty, and leftover open brackets when the string finishes.`,
   ],
   signature: {
-    name: "isValid",
-    params: [{ name: "s", type: "string" }],
-    returns: "bool",
+    "name": "isValid",
+    "params": [
+      {
+        "name": "s",
+        "type": "string"
+      }
+    ],
+    "returns": "bool"
   },
   testCases: [
-    { input: ["()[]{}"], expected: true },
-    { input: ["(]"], expected: false },
-    { input: ["([{}])"], expected: true },
-    { input: ["("], expected: false, hidden: true },
-    { input: [")"], expected: false, hidden: true },
-    { input: ["(("], expected: false, hidden: true },
-    { input: ["([)]"], expected: false, hidden: true },
-    { input: ["{[]}"], expected: true, hidden: true },
-    { input: ["(())((()())())"], expected: true, hidden: true },
+    {
+      "input": [
+        "()[]{}"
+      ],
+      "expected": true
+    },
+    {
+      "input": [
+        "(]"
+      ],
+      "expected": false
+    },
+    {
+      "input": [
+        "([{}])"
+      ],
+      "expected": true
+    },
+    {
+      "input": [
+        "("
+      ],
+      "expected": false,
+      "hidden": true
+    },
+    {
+      "input": [
+        ")"
+      ],
+      "expected": false,
+      "hidden": true
+    },
+    {
+      "input": [
+        "(("
+      ],
+      "expected": false,
+      "hidden": true
+    },
+    {
+      "input": [
+        "([)]"
+      ],
+      "expected": false,
+      "hidden": true
+    },
+    {
+      "input": [
+        "{[]}"
+      ],
+      "expected": true,
+      "hidden": true
+    },
+    {
+      "input": [
+        "(())((()())())"
+      ],
+      "expected": true,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def is_valid(s):
@@ -73,6 +129,14 @@ function isValid(s) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {string} s
+ * @return {boolean}
+ */
+function isValid(s: string): boolean {
+  // Your code here
+  return false;
+}`,
     java: `class Solution {
     public boolean isValid(String s) {
         // Your code here
@@ -80,11 +144,24 @@ function isValid(s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsValid(string s) {
+        // Your code here
+        return false;
+    }
+}`,
     c: `bool isValid(char* s) {
     // Your code here (a char array can act as the stack)
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isValid(string s) {
+        // Your code here
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_valid(s):
@@ -115,6 +192,21 @@ function isValid(s) {
   return stack.length === 0;
 }
 `,
+    typescript: `function isValid(s: string): boolean {
+  const pairs: Record<string, string> = { ")": "(", "]": "[", "}": "{" };
+  const stack: string[] = [];
+  for (const ch of s) {
+    if (ch === "(" || ch === "[" || ch === "{") {
+      stack.push(ch);
+    } else {
+      if (stack.length === 0 || stack[stack.length - 1] !== pairs[ch]) {
+        return false;
+      }
+      stack.pop();
+    }
+  }
+  return stack.length === 0;
+}`,
     java: `class Solution {
     public boolean isValid(String s) {
         Deque<Character> stack = new ArrayDeque<>();
@@ -130,6 +222,22 @@ function isValid(s) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public bool IsValid(string s) {
+        var stack = new Stack<char>();
+        foreach (char c in s) {
+            if (c == '(' || c == '[' || c == '{') {
+                stack.Push(c);
+            } else {
+                char open = c == ')' ? '(' : c == ']' ? '[' : '{';
+                if (stack.Count == 0 || stack.Pop() != open) return false;
+            }
+        }
+        return stack.Count == 0;
+    }
+}`,
     c: `bool isValid(char* s) {
     int n = (int)strlen(s);
     char* stack = malloc(n);
@@ -149,6 +257,22 @@ function isValid(s) {
     return ok;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> st;
+        for (char c : s) {
+            if (c == '(' || c == '[' || c == '{') {
+                st.push(c);
+            } else {
+                char open = c == ')' ? '(' : c == ']' ? '[' : '{';
+                if (st.empty() || st.top() != open) return false;
+                st.pop();
+            }
+        }
+        return st.empty();
+    }
+};`,
   },
   editorial: `## Approach: a stack of open brackets
 

@@ -184,6 +184,10 @@ Explanation: You are already at the last index.
     return false;
 }
 `,
+    typescript: `function canJump(nums: number[]): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean canJump(int[] nums) {
         // TODO: implement
@@ -191,11 +195,24 @@ Explanation: You are already at the last index.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool CanJump(int[] nums) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `bool canJump(int* nums, int numsSize) {
     // TODO: implement
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def can_jump(nums):
@@ -220,6 +237,16 @@ Explanation: You are already at the last index.
     return true;
 }
 `,
+    typescript: `function canJump(nums: number[]): boolean {
+    let farthest = 0;
+    const n = nums.length;
+    for (let i = 0; i < n; i++) {
+        if (i > farthest) return false;
+        if (farthest >= n - 1) return true;
+        farthest = Math.max(farthest, i + nums[i]);
+    }
+    return true;
+}`,
     java: `class Solution {
     public boolean canJump(int[] nums) {
         int farthest = 0;
@@ -233,6 +260,20 @@ Explanation: You are already at the last index.
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public bool CanJump(int[] nums) {
+        int farthest = 0;
+        int n = nums.Length;
+        for (int i = 0; i < n; i++) {
+            if (i > farthest) return false;
+            if (farthest >= n - 1) return true;
+            farthest = Math.Max(farthest, i + nums[i]);
+        }
+        return true;
+    }
+}`,
     c: `#include <stdbool.h>
 bool canJump(int* nums, int numsSize) {
     int farthest = 0;
@@ -245,6 +286,19 @@ bool canJump(int* nums, int numsSize) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int farthest = 0;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            if (i > farthest) return false;
+            if (farthest >= n - 1) return true;
+            farthest = max(farthest, i + nums[i]);
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: Greedy Reachability Scan
 

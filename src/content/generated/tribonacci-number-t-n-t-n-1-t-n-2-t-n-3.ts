@@ -138,6 +138,10 @@ function tribonacci(n) {
     return 0;
 }
 `,
+    typescript: `function tribonacci(n: number): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int tribonacci(int n) {
         // TODO: implement
@@ -145,11 +149,24 @@ function tribonacci(n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Tribonacci(int n) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int tribonacci(int n) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int tribonacci(int n) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def tribonacci(n: int) -> int:
@@ -179,6 +196,18 @@ function tribonacci(n) {
     return c;
 }
 `,
+    typescript: `function tribonacci(n: number): number {
+    if (n === 0) return 0;
+    if (n === 1 || n === 2) return 1;
+    let a = 0, b = 1, c = 1;
+    for (let i = 3; i <= n; i++) {
+        const next = a + b + c;
+        a = b;
+        b = c;
+        c = next;
+    }
+    return c;
+}`,
     java: `class Solution {
     public int tribonacci(int n) {
         if (n == 0) return 0;
@@ -194,6 +223,20 @@ function tribonacci(n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Tribonacci(int n) {
+        if (n == 0) return 0;
+        if (n == 1 || n == 2) return 1;
+        int a = 0, b = 1, c = 1;
+        for (int i = 3; i <= n; i++) {
+            int next = a + b + c;
+            a = b;
+            b = c;
+            c = next;
+        }
+        return c;
+    }
+}`,
     c: `int tribonacci(int n) {
     if (n == 0) return 0;
     if (n == 1 || n == 2) return 1;
@@ -207,6 +250,21 @@ function tribonacci(n) {
     return c;
 }
 `,
+    cpp: `class Solution {
+public:
+    int tribonacci(int n) {
+        if (n == 0) return 0;
+        if (n == 1 || n == 2) return 1;
+        int a = 0, b = 1, c = 1;
+        for (int i = 3; i <= n; i++) {
+            int next = a + b + c;
+            a = b;
+            b = c;
+            c = next;
+        }
+        return c;
+    }
+};`,
   },
   editorial: `## Approach: Iterative Bottom-Up DP
 

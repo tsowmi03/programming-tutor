@@ -177,6 +177,10 @@ Explanation:
     return 0;
 }
 `,
+    typescript: `function countEqualPairs(nums: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int countEqualPairs(int[] nums) {
         // TODO: implement
@@ -184,11 +188,24 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountEqualPairs(int[] nums) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int countEqualPairs(int* nums, int numsSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countEqualPairs(vector<int>& nums) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_equal_pairs(nums):
@@ -212,6 +229,17 @@ Explanation:
     return result;
 }
 `,
+    typescript: `function countEqualPairs(nums: number[]): number {
+    const freq: {[key: number]: number} = {};
+    for (const n of nums) {
+        freq[n] = (freq[n] || 0) + 1;
+    }
+    let result = 0;
+    for (const f of Object.values(freq)) {
+        result += f * (f - 1) / 2;
+    }
+    return result;
+}`,
     java: `class Solution {
     public int countEqualPairs(int[] nums) {
         int[] freq = new int[20001];
@@ -226,6 +254,21 @@ Explanation:
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int CountEqualPairs(int[] nums) {
+        int[] freq = new int[20001];
+        foreach (int n in nums) {
+            freq[n + 10000]++;
+        }
+        int result = 0;
+        foreach (int f in freq) {
+            result += f * (f - 1) / 2;
+        }
+        return result;
+    }
+}`,
     c: `int countEqualPairs(int* nums, int numsSize) {
     int result = 0;
     for (int i = 0; i < numsSize; i++) {
@@ -238,6 +281,20 @@ Explanation:
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countEqualPairs(vector<int>& nums) {
+        int freq[20001] = {0};
+        for (int n : nums) {
+            freq[n + 10000]++;
+        }
+        int result = 0;
+        for (int f : freq) {
+            result += f * (f - 1) / 2;
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Frequency Counting
 

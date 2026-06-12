@@ -195,6 +195,10 @@ function countGreaterThan(nums, threshold) {
     return 0;
 }
 `,
+    typescript: `function countGreaterThan(nums: number[], threshold: number): number {
+    // TODO: count elements strictly greater than threshold
+    return 0;
+}`,
     java: `class Solution {
     public int countGreaterThan(int[] nums, int threshold) {
         // TODO: count elements strictly greater than threshold
@@ -202,11 +206,24 @@ function countGreaterThan(nums, threshold) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountGreaterThan(int[] nums, int threshold) {
+        // TODO: count elements strictly greater than threshold
+        return 0;
+    }
+}`,
     c: `int countGreaterThan(int* nums, int numsSize, int threshold) {
     /* TODO: count elements strictly greater than threshold */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countGreaterThan(vector<int>& nums, int threshold) {
+        // TODO: count elements strictly greater than threshold
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_greater_than(nums: list[int], threshold: int) -> int:
@@ -224,6 +241,13 @@ function countGreaterThan(nums, threshold) {
     return count;
 }
 `,
+    typescript: `function countGreaterThan(nums: number[], threshold: number): number {
+    let count = 0;
+    for (const x of nums) {
+        if (x > threshold) count++;
+    }
+    return count;
+}`,
     java: `class Solution {
     public int countGreaterThan(int[] nums, int threshold) {
         int count = 0;
@@ -234,6 +258,15 @@ function countGreaterThan(nums, threshold) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountGreaterThan(int[] nums, int threshold) {
+        int count = 0;
+        foreach (int x in nums) {
+            if (x > threshold) count++;
+        }
+        return count;
+    }
+}`,
     c: `int countGreaterThan(int* nums, int numsSize, int threshold) {
     int count = 0;
     for (int i = 0; i < numsSize; i++) {
@@ -242,6 +275,16 @@ function countGreaterThan(nums, threshold) {
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countGreaterThan(vector<int>& nums, int threshold) {
+        int count = 0;
+        for (int x : nums) {
+            if (x > threshold) count++;
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Linear Scan
 

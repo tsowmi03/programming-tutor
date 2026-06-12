@@ -38,64 +38,155 @@ Explanation: Only one unique quadruplet: [2,2,2,2].
     `Watch out for integer overflow when summing four large values — use a 64-bit integer (long in Java/C).`,
   ],
   signature: {
-    name: "fourSum",
-    params: [
-      { name: "nums", type: "int[]" },
-      { name: "target", type: "int" },
+    "name": "fourSum",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      },
+      {
+        "name": "target",
+        "type": "int"
+      }
     ],
-    returns: "int",
+    "returns": "int"
   },
   testCases: [
     {
-      input: [[1, 0, -1, 0, -2, 2], 0],
-      expected: 3,
-      hidden: false,
+      "input": [
+        [
+          1,
+          0,
+          -1,
+          0,
+          -2,
+          2
+        ],
+        0
+      ],
+      "expected": 3,
+      "hidden": false
     },
     {
-      input: [[2, 2, 2, 2, 2], 8],
-      expected: 1,
-      hidden: false,
+      "input": [
+        [
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        8
+      ],
+      "expected": 1,
+      "hidden": false
     },
     {
-      input: [[0, 0, 0, 0], 0],
-      expected: 1,
-      hidden: false,
+      "input": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        0
+      ],
+      "expected": 1,
+      "hidden": false
     },
     {
-      input: [[], 0],
-      expected: 0,
-      hidden: true,
+      "input": [
+        [],
+        0
+      ],
+      "expected": 0,
+      "hidden": true
     },
     {
-      input: [[1, 2, 3], 6],
-      expected: 0,
-      hidden: true,
+      "input": [
+        [
+          1,
+          2,
+          3
+        ],
+        6
+      ],
+      "expected": 0,
+      "hidden": true
     },
     {
-      input: [[1, 2, 3, 4], 100],
-      expected: 0,
-      hidden: true,
+      "input": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        100
+      ],
+      "expected": 0,
+      "hidden": true
     },
     {
-      input: [[-3, -2, -1, 0, 0, 1, 2, 3], 0],
-      expected: 8,
-      hidden: true,
+      "input": [
+        [
+          -3,
+          -2,
+          -1,
+          0,
+          0,
+          1,
+          2,
+          3
+        ],
+        0
+      ],
+      "expected": 8,
+      "hidden": true
     },
     {
-      input: [[2, 2, 2, 2, 5], 11],
-      expected: 1,
-      hidden: true,
+      "input": [
+        [
+          2,
+          2,
+          2,
+          2,
+          5
+        ],
+        11
+      ],
+      "expected": 1,
+      "hidden": true
     },
     {
-      input: [[-1, -1, 0, 0, 1, 1], 0],
-      expected: 2,
-      hidden: true,
+      "input": [
+        [
+          -1,
+          -1,
+          0,
+          0,
+          1,
+          1
+        ],
+        0
+      ],
+      "expected": 2,
+      "hidden": true
     },
     {
-      input: [[1, 2, 3, 4, 5], 14],
-      expected: 1,
-      hidden: true,
-    },
+      "input": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        14
+      ],
+      "expected": 1,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def four_sum(nums, target):
@@ -107,6 +198,10 @@ Explanation: Only one unique quadruplet: [2,2,2,2].
     return 0;
 }
 `,
+    typescript: `function fourSum(nums: number[], target: number): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int fourSum(int[] nums, int target) {
         // TODO: implement
@@ -114,11 +209,24 @@ Explanation: Only one unique quadruplet: [2,2,2,2].
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FourSum(int[] nums, int target) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int fourSum(int* nums, int numsSize, int target) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int fourSum(vector<int>& nums, int target) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def four_sum(nums, target):
@@ -176,6 +284,33 @@ Explanation: Only one unique quadruplet: [2,2,2,2].
     return count;
 }
 `,
+    typescript: `function fourSum(nums: number[], target: number): number {
+    nums.sort((a, b) => a - b);
+    const n = nums.length;
+    let count = 0;
+    for (let i = 0; i < n - 3; i++) {
+        if (i > 0 && nums[i] === nums[i - 1]) continue;
+        for (let j = i + 1; j < n - 2; j++) {
+            if (j > i + 1 && nums[j] === nums[j - 1]) continue;
+            let left = j + 1, right = n - 1;
+            while (left < right) {
+                const s = nums[i] + nums[j] + nums[left] + nums[right];
+                if (s === target) {
+                    count++;
+                    while (left < right && nums[left] === nums[left + 1]) left++;
+                    while (left < right && nums[right] === nums[right - 1]) right--;
+                    left++;
+                    right--;
+                } else if (s < target) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+    }
+    return count;
+}`,
     java: `class Solution {
     public int fourSum(int[] nums, int target) {
         java.util.Arrays.sort(nums);
@@ -206,6 +341,37 @@ Explanation: Only one unique quadruplet: [2,2,2,2].
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int FourSum(int[] nums, int target) {
+        Array.Sort(nums);
+        int n = nums.Length;
+        int count = 0;
+        for (int i = 0; i < n - 3; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            for (int j = i + 1; j < n - 2; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                int left = j + 1, right = n - 1;
+                while (left < right) {
+                    long s = (long)nums[i] + nums[j] + nums[left] + nums[right];
+                    if (s == target) {
+                        count++;
+                        while (left < right && nums[left] == nums[left + 1]) left++;
+                        while (left < right && nums[right] == nums[right - 1]) right--;
+                        left++;
+                        right--;
+                    } else if (s < target) {
+                        left++;
+                    } else {
+                        right--;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+}`,
     c: `#include <stdlib.h>
 
 static int cmp_int(const void *a, const void *b) {
@@ -240,6 +406,36 @@ int fourSum(int* nums, int numsSize, int target) {
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int fourSum(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        int count = 0;
+        for (int i = 0; i < n - 3; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            for (int j = i + 1; j < n - 2; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                int left = j + 1, right = n - 1;
+                while (left < right) {
+                    long long s = (long long)nums[i] + nums[j] + nums[left] + nums[right];
+                    if (s == target) {
+                        count++;
+                        while (left < right && nums[left] == nums[left + 1]) left++;
+                        while (left < right && nums[right] == nums[right - 1]) right--;
+                        left++;
+                        right--;
+                    } else if (s < target) {
+                        left++;
+                    } else {
+                        right--;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Sort + Two Nested Loops + Two Pointers
 

@@ -202,6 +202,10 @@ Explanation: nums[1] + nums[3] = 2 + 4 = 6  (1-indexed)
     return [];
 }
 `,
+    typescript: `function twoSumSorted(nums: number[], target: number): number[] {
+    // TODO: use two pointers to find the pair
+    return [];
+}`,
     java: `class Solution {
     public int[] twoSumSorted(int[] nums, int target) {
         // TODO: use two pointers to find the pair
@@ -209,12 +213,25 @@ Explanation: nums[1] + nums[3] = 2 + 4 = 6  (1-indexed)
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] TwoSumSorted(int[] nums, int target) {
+        // TODO: use two pointers to find the pair
+        return new int[]{};
+    }
+}`,
     c: `int* twoSumSorted(int* nums, int numsSize, int target, int* returnSize) {
     // TODO: use two pointers to find the pair
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> twoSumSorted(vector<int>& nums, int target) {
+        // TODO: use two pointers to find the pair
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def two_sum_sorted(nums, target):
@@ -240,6 +257,16 @@ Explanation: nums[1] + nums[3] = 2 + 4 = 6  (1-indexed)
     return [];
 }
 `,
+    typescript: `function twoSumSorted(nums: number[], target: number): number[] {
+    let left = 0, right = nums.length - 1;
+    while (left < right) {
+        const s = nums[left] + nums[right];
+        if (s === target) return [left + 1, right + 1];
+        else if (s < target) left++;
+        else right--;
+    }
+    return [];
+}`,
     java: `class Solution {
     public int[] twoSumSorted(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
@@ -253,6 +280,18 @@ Explanation: nums[1] + nums[3] = 2 + 4 = 6  (1-indexed)
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] TwoSumSorted(int[] nums, int target) {
+        int left = 0, right = nums.Length - 1;
+        while (left < right) {
+            int s = nums[left] + nums[right];
+            if (s == target) return new int[]{left + 1, right + 1};
+            else if (s < target) left++;
+            else right--;
+        }
+        return new int[]{};
+    }
+}`,
     c: `#include <stdlib.h>
 int* twoSumSorted(int* nums, int numsSize, int target, int* returnSize) {
     int* result = (int*)malloc(2 * sizeof(int));
@@ -274,6 +313,19 @@ int* twoSumSorted(int* nums, int numsSize, int target, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> twoSumSorted(vector<int>& nums, int target) {
+        int left = 0, right = (int)nums.size() - 1;
+        while (left < right) {
+            int s = nums[left] + nums[right];
+            if (s == target) return {left + 1, right + 1};
+            else if (s < target) left++;
+            else right--;
+        }
+        return {};
+    }
+};`,
   },
   editorial: `## Approach: Two Pointers
 

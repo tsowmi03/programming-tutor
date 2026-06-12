@@ -32,24 +32,74 @@ Output: false
 - \`s\` consists of printable ASCII characters.
 `,
   hints: [
-    "You could build a cleaned-up copy of the string and compare it with its reverse — that works, but uses O(n) extra space.",
-    "Try two pointers: one starting at each end, moving towards the middle.",
-    "When a pointer lands on a non-alphanumeric character, just skip past it. Compare lowercased characters when both pointers are on valid ones.",
+    `You could build a cleaned-up copy of the string and compare it with its reverse — that works, but uses O(n) extra space.`,
+    `Try two pointers: one starting at each end, moving towards the middle.`,
+    `When a pointer lands on a non-alphanumeric character, just skip past it. Compare lowercased characters when both pointers are on valid ones.`,
   ],
   signature: {
-    name: "isPalindrome",
-    params: [{ name: "s", type: "string" }],
-    returns: "bool",
+    "name": "isPalindrome",
+    "params": [
+      {
+        "name": "s",
+        "type": "string"
+      }
+    ],
+    "returns": "bool"
   },
   testCases: [
-    { input: ["A man, a plan, a canal: Panama"], expected: true },
-    { input: ["race a car"], expected: false },
-    { input: [" "], expected: true },
-    { input: ["0P"], expected: false, hidden: true },
-    { input: ["a."], expected: true, hidden: true },
-    { input: ["ab_a"], expected: true, hidden: true },
-    { input: ["No 'x' in Nixon"], expected: true, hidden: true },
-    { input: ["palindrome"], expected: false, hidden: true },
+    {
+      "input": [
+        "A man, a plan, a canal: Panama"
+      ],
+      "expected": true
+    },
+    {
+      "input": [
+        "race a car"
+      ],
+      "expected": false
+    },
+    {
+      "input": [
+        " "
+      ],
+      "expected": true
+    },
+    {
+      "input": [
+        "0P"
+      ],
+      "expected": false,
+      "hidden": true
+    },
+    {
+      "input": [
+        "a."
+      ],
+      "expected": true,
+      "hidden": true
+    },
+    {
+      "input": [
+        "ab_a"
+      ],
+      "expected": true,
+      "hidden": true
+    },
+    {
+      "input": [
+        "No 'x' in Nixon"
+      ],
+      "expected": true,
+      "hidden": true
+    },
+    {
+      "input": [
+        "palindrome"
+      ],
+      "expected": false,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def is_palindrome(s):
@@ -66,6 +116,14 @@ function isPalindrome(s) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {string} s
+ * @return {boolean}
+ */
+function isPalindrome(s: string): boolean {
+  // Your code here
+  return false;
+}`,
     java: `class Solution {
     public boolean isPalindrome(String s) {
         // Your code here
@@ -73,6 +131,12 @@ function isPalindrome(s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsPalindrome(string s) {
+        // Your code here
+        return false;
+    }
+}`,
     c: `#include <ctype.h>
 
 bool isPalindrome(char* s) {
@@ -80,6 +144,13 @@ bool isPalindrome(char* s) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPalindrome(string s) {
+        // Your code here
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_palindrome(s):
@@ -109,6 +180,19 @@ bool isPalindrome(char* s) {
   return true;
 }
 `,
+    typescript: `function isPalindrome(s: string): boolean {
+  const isAlnum = (c: string): boolean => /[a-z0-9]/i.test(c);
+  let left = 0;
+  let right = s.length - 1;
+  while (left < right) {
+    while (left < right && !isAlnum(s[left])) left++;
+    while (left < right && !isAlnum(s[right])) right--;
+    if (s[left].toLowerCase() !== s[right].toLowerCase()) return false;
+    left++;
+    right--;
+  }
+  return true;
+}`,
     java: `class Solution {
     public boolean isPalindrome(String s) {
         int left = 0, right = s.length() - 1;
@@ -126,6 +210,21 @@ bool isPalindrome(char* s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsPalindrome(string s) {
+        int left = 0, right = s.Length - 1;
+        while (left < right) {
+            while (left < right && !char.IsLetterOrDigit(s[left])) left++;
+            while (left < right && !char.IsLetterOrDigit(s[right])) right--;
+            if (char.ToLower(s[left]) != char.ToLower(s[right])) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}`,
     c: `#include <ctype.h>
 
 bool isPalindrome(char* s) {
@@ -143,6 +242,22 @@ bool isPalindrome(char* s) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPalindrome(string s) {
+        int left = 0, right = (int)s.length() - 1;
+        while (left < right) {
+            while (left < right && !isalnum((unsigned char)s[left])) left++;
+            while (left < right && !isalnum((unsigned char)s[right])) right--;
+            if (tolower((unsigned char)s[left]) != tolower((unsigned char)s[right])) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: two pointers from the ends
 

@@ -154,6 +154,10 @@ function uniquePaths(m, n) {
     // TODO: implement using dynamic programming
 }
 `,
+    typescript: `function uniquePaths(m: number, n: number): number {
+    // TODO: implement using dynamic programming
+    return 0;
+}`,
     java: `class Solution {
     public int uniquePaths(int m, int n) {
         // TODO: implement using dynamic programming
@@ -161,11 +165,24 @@ function uniquePaths(m, n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int UniquePaths(int m, int n) {
+        // TODO: implement using dynamic programming
+        return 0;
+    }
+}`,
     c: `int uniquePaths(int m, int n) {
     // TODO: implement using dynamic programming
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        // TODO: implement using dynamic programming
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def unique_paths(m: int, n: int) -> int:
@@ -185,6 +202,15 @@ function uniquePaths(m, n) {
     return dp[n - 1];
 }
 `,
+    typescript: `function uniquePaths(m: number, n: number): number {
+    const dp: number[] = new Array(n).fill(1);
+    for (let i = 1; i < m; i++) {
+        for (let j = 1; j < n; j++) {
+            dp[j] += dp[j - 1];
+        }
+    }
+    return dp[n - 1];
+}`,
     java: `class Solution {
     public int uniquePaths(int m, int n) {
         int[] dp = new int[n];
@@ -198,6 +224,18 @@ function uniquePaths(m, n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int UniquePaths(int m, int n) {
+        int[] dp = new int[n];
+        for (int j = 0; j < n; j++) dp[j] = 1;
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[j] += dp[j - 1];
+            }
+        }
+        return dp[n - 1];
+    }
+}`,
     c: `int uniquePaths(int m, int n) {
     int dp[15];
     for (int j = 0; j < n; j++) dp[j] = 1;
@@ -209,6 +247,18 @@ function uniquePaths(m, n) {
     return dp[n - 1];
 }
 `,
+    cpp: `class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        vector<int> dp(n, 1);
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[j] += dp[j - 1];
+            }
+        }
+        return dp[n - 1];
+    }
+};`,
   },
   editorial: `## Approach: Dynamic Programming (1D Space-Optimized)
 

@@ -131,6 +131,10 @@ Explanation:
     return "";
 }
 `,
+    typescript: `function removeDuplicates(s: string): string {
+    // TODO: use a stack to remove adjacent duplicate characters
+    return "";
+}`,
     java: `class Solution {
     public String removeDuplicates(String s) {
         // TODO: use a stack to remove adjacent duplicate characters
@@ -138,11 +142,24 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public string RemoveDuplicates(string s) {
+        // TODO: use a stack to remove adjacent duplicate characters
+        return "";
+    }
+}`,
     c: `char* removeDuplicates(char* s) {
     /* TODO: use a stack to remove adjacent duplicate characters */
     return "";
 }
 `,
+    cpp: `class Solution {
+public:
+    string removeDuplicates(string s) {
+        // TODO: use a stack to remove adjacent duplicate characters
+        return "";
+    }
+};`,
   },
   solutions: {
     python: `def remove_duplicates(s: str) -> str:
@@ -166,6 +183,17 @@ Explanation:
     return stack.join('');
 }
 `,
+    typescript: `function removeDuplicates(s: string): string {
+    const stack: string[] = [];
+    for (const c of s) {
+        if (stack.length > 0 && stack[stack.length - 1] === c) {
+            stack.pop();
+        } else {
+            stack.push(c);
+        }
+    }
+    return stack.join('');
+}`,
     java: `class Solution {
     public String removeDuplicates(String s) {
         StringBuilder stack = new StringBuilder();
@@ -181,6 +209,20 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public string RemoveDuplicates(string s) {
+        System.Text.StringBuilder stack = new System.Text.StringBuilder();
+        foreach (char c in s) {
+            int len = stack.Length;
+            if (len > 0 && stack[len - 1] == c) {
+                stack.Remove(len - 1, 1);
+            } else {
+                stack.Append(c);
+            }
+        }
+        return stack.ToString();
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -199,6 +241,20 @@ char* removeDuplicates(char* s) {
     return stack;
 }
 `,
+    cpp: `class Solution {
+public:
+    string removeDuplicates(string s) {
+        string stack;
+        for (char c : s) {
+            if (!stack.empty() && stack.back() == c) {
+                stack.pop_back();
+            } else {
+                stack.push_back(c);
+            }
+        }
+        return stack;
+    }
+};`,
   },
   editorial: `## Approach: Stack Simulation
 

@@ -202,6 +202,10 @@ function minEatingSpeed(piles, h) {
     return 0;
 }
 `,
+    typescript: `function minEatingSpeed(piles: number[], h: number): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int minEatingSpeed(int[] piles, int h) {
         // TODO: implement
@@ -209,11 +213,24 @@ function minEatingSpeed(piles, h) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MinEatingSpeed(int[] piles, int h) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int minEatingSpeed(int* piles, int pilesSize, int h) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def min_eating_speed(piles: list[int], h: int) -> int:
@@ -253,6 +270,26 @@ function minEatingSpeed(piles, h) {
     return lo;
 }
 `,
+    typescript: `function minEatingSpeed(piles: number[], h: number): number {
+    function canFinish(speed: number): boolean {
+        let hours = 0;
+        for (const p of piles) {
+            hours += Math.ceil(p / speed);
+        }
+        return hours <= h;
+    }
+
+    let lo = 1, hi = Math.max(...piles);
+    while (lo < hi) {
+        const mid = Math.floor((lo + hi) / 2);
+        if (canFinish(mid)) {
+            hi = mid;
+        } else {
+            lo = mid + 1;
+        }
+    }
+    return lo;
+}`,
     java: `class Solution {
     public int minEatingSpeed(int[] piles, int h) {
         int lo = 1, hi = 0;
@@ -278,6 +315,32 @@ function minEatingSpeed(piles, h) {
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int MinEatingSpeed(int[] piles, int h) {
+        int lo = 1, hi = 0;
+        foreach (int p in piles) hi = Math.Max(hi, p);
+
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (CanFinish(piles, mid, h)) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+    private bool CanFinish(int[] piles, int speed, int h) {
+        long hours = 0;
+        foreach (int p in piles) {
+            hours += (p + speed - 1) / speed;
+        }
+        return hours <= h;
+    }
+}`,
     c: `int minEatingSpeed(int* piles, int pilesSize, int h) {
     int hi = 0;
     for (int i = 0; i < pilesSize; i++) {
@@ -300,6 +363,32 @@ function minEatingSpeed(piles, h) {
     return lo;
 }
 `,
+    cpp: `class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int lo = 1, hi = 0;
+        for (int p : piles) hi = max(hi, p);
+
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (canFinish(piles, mid, h)) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+private:
+    bool canFinish(vector<int>& piles, int speed, int h) {
+        long long hours = 0;
+        for (int p : piles) {
+            hours += (p + speed - 1) / speed;
+        }
+        return hours <= (long long)h;
+    }
+};`,
   },
   editorial: `## Approach: Binary Search on the Answer
 

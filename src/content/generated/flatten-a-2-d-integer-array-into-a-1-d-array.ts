@@ -263,6 +263,10 @@ Explanation: Rows have lengths 3, 2, and 1; elements are appended left-to-right,
     return [];
 }
 `,
+    typescript: `function flattenMatrix(matrix: number[][]): number[] {
+    // TODO: implement
+    return [];
+}`,
     java: `class Solution {
     public int[] flattenMatrix(int[][] matrix) {
         // TODO: implement
@@ -270,12 +274,25 @@ Explanation: Rows have lengths 3, 2, and 1; elements are appended left-to-right,
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] FlattenMatrix(int[][] matrix) {
+        // TODO: implement
+        return new int[]{};
+    }
+}`,
     c: `int* flattenMatrix(int** matrix, int matrixSize, int* matrixColSize, int* returnSize) {
     // TODO: implement
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> flattenMatrix(vector<vector<int>>& matrix) {
+        // TODO: implement
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def flatten_matrix(matrix):
@@ -295,6 +312,15 @@ Explanation: Rows have lengths 3, 2, and 1; elements are appended left-to-right,
     return result;
 }
 `,
+    typescript: `function flattenMatrix(matrix: number[][]): number[] {
+    const result: number[] = [];
+    for (const row of matrix) {
+        for (const val of row) {
+            result.push(val);
+        }
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] flattenMatrix(int[][] matrix) {
         int total = 0;
@@ -312,6 +338,19 @@ Explanation: Rows have lengths 3, 2, and 1; elements are appended left-to-right,
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] FlattenMatrix(int[][] matrix) {
+        List<int> result = new List<int>();
+        foreach (int[] row in matrix) {
+            foreach (int val in row) {
+                result.Add(val);
+            }
+        }
+        return result.ToArray();
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* flattenMatrix(int** matrix, int matrixSize, int* matrixColSize, int* returnSize) {
@@ -333,6 +372,18 @@ int* flattenMatrix(int** matrix, int matrixSize, int* matrixColSize, int* return
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> flattenMatrix(vector<vector<int>>& matrix) {
+        vector<int> result;
+        for (const vector<int>& row : matrix) {
+            for (int val : row) {
+                result.push_back(val);
+            }
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Row-by-Row Traversal
 

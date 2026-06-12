@@ -192,6 +192,10 @@ Explanation: [2] and [2] both sum to 2.
     return false;
 }
 `,
+    typescript: `function canPartition(nums: number[]): boolean {
+    // TODO: implement partition equal subset sum
+    return false;
+}`,
     java: `class Solution {
     public boolean canPartition(int[] nums) {
         // TODO: implement partition equal subset sum
@@ -199,11 +203,24 @@ Explanation: [2] and [2] both sum to 2.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool CanPartition(int[] nums) {
+        // TODO: implement partition equal subset sum
+        return false;
+    }
+}`,
     c: `bool canPartition(int* nums, int numsSize) {
     // TODO: implement partition equal subset sum
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        // TODO: implement partition equal subset sum
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def can_partition(nums):
@@ -232,6 +249,19 @@ Explanation: [2] and [2] both sum to 2.
     return dp[target];
 }
 `,
+    typescript: `function canPartition(nums: number[]): boolean {
+    const total = nums.reduce((a, b) => a + b, 0);
+    if (total % 2 !== 0) return false;
+    const target = total / 2;
+    const dp = new Array(target + 1).fill(false);
+    dp[0] = true;
+    for (const n of nums) {
+        for (let j = target; j >= n; j--) {
+            dp[j] = dp[j] || dp[j - n];
+        }
+    }
+    return dp[target];
+}`,
     java: `class Solution {
     public boolean canPartition(int[] nums) {
         int total = 0;
@@ -249,6 +279,22 @@ Explanation: [2] and [2] both sum to 2.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool CanPartition(int[] nums) {
+        int total = 0;
+        foreach (int n in nums) total += n;
+        if (total % 2 != 0) return false;
+        int target = total / 2;
+        bool[] dp = new bool[target + 1];
+        dp[0] = true;
+        foreach (int n in nums) {
+            for (int j = target; j >= n; j--) {
+                dp[j] = dp[j] || dp[j - n];
+            }
+        }
+        return dp[target];
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 bool canPartition(int* nums, int numsSize) {
@@ -268,6 +314,23 @@ bool canPartition(int* nums, int numsSize) {
     return dp[target];
 }
 `,
+    cpp: `class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int total = 0;
+        for (int n : nums) total += n;
+        if (total % 2 != 0) return false;
+        int target = total / 2;
+        vector<bool> dp(target + 1, false);
+        dp[0] = true;
+        for (int n : nums) {
+            for (int j = target; j >= n; j--) {
+                dp[j] = dp[j] || dp[j - n];
+            }
+        }
+        return dp[target];
+    }
+};`,
   },
   editorial: `## Approach: 0/1 Knapsack DP
 

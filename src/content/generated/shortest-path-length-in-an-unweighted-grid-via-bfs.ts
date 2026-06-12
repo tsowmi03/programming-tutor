@@ -358,6 +358,10 @@ Explanation: Start equals end; path length is 1.
     return -1;
 }
 `,
+    typescript: `function shortestPathGrid(grid: number[], rows: number, cols: number): number {
+    // TODO: implement BFS to find shortest path
+    return -1;
+}`,
     java: `class Solution {
     public int shortestPathGrid(int[] grid, int rows, int cols) {
         // TODO: implement BFS to find shortest path
@@ -365,11 +369,24 @@ Explanation: Start equals end; path length is 1.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int ShortestPathGrid(int[] grid, int rows, int cols) {
+        // TODO: implement BFS to find shortest path
+        return -1;
+    }
+}`,
     c: `int shortestPathGrid(int* grid, int gridSize, int rows, int cols) {
     // TODO: implement BFS to find shortest path
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int shortestPathGrid(vector<int>& grid, int rows, int cols) {
+        // TODO: implement BFS to find shortest path
+        return -1;
+    }
+};`,
   },
   solutions: {
     python: `from collections import deque
@@ -421,6 +438,30 @@ def shortest_path_grid(grid: list[int], rows: int, cols: int) -> int:
     return -1;
 }
 `,
+    typescript: `function shortestPathGrid(grid: number[], rows: number, cols: number): number {
+    if (grid[0] === 1 || grid[rows * cols - 1] === 1) return -1;
+    if (rows === 1 && cols === 1) return 1;
+    const visited: boolean[] = new Array(rows * cols).fill(false);
+    visited[0] = true;
+    const queue: [number, number, number][] = [[0, 0, 1]];
+    const dirs: [number, number][] = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+    let head = 0;
+    while (head < queue.length) {
+        const [r, c, dist] = queue[head++];
+        for (const [dr, dc] of dirs) {
+            const nr = r + dr, nc = c + dc;
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                const idx = nr * cols + nc;
+                if (!visited[idx] && grid[idx] === 0) {
+                    if (nr === rows - 1 && nc === cols - 1) return dist + 1;
+                    visited[idx] = true;
+                    queue.push([nr, nc, dist + 1]);
+                }
+            }
+        }
+    }
+    return -1;
+}`,
     java: `class Solution {
     public int shortestPathGrid(int[] grid, int rows, int cols) {
         if (grid[0] == 1 || grid[rows * cols - 1] == 1) return -1;
@@ -454,6 +495,36 @@ def shortest_path_grid(grid: list[int], rows: int, cols: int) -> int:
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int ShortestPathGrid(int[] grid, int rows, int cols) {
+        if (grid[0] == 1 || grid[rows * cols - 1] == 1) return -1;
+        if (rows == 1 && cols == 1) return 1;
+        bool[] visited = new bool[rows * cols];
+        visited[0] = true;
+        Queue<int[]> queue = new Queue<int[]>();
+        queue.Enqueue(new int[] { 0, 0, 1 });
+        int[] drs = { -1, 1, 0, 0 };
+        int[] dcs = { 0, 0, -1, 1 };
+        while (queue.Count > 0) {
+            int[] cur = queue.Dequeue();
+            int r = cur[0], c = cur[1], dist = cur[2];
+            for (int i = 0; i < 4; i++) {
+                int nr = r + drs[i], nc = c + dcs[i];
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                    int idx = nr * cols + nc;
+                    if (!visited[idx] && grid[idx] == 0) {
+                        if (nr == rows - 1 && nc == cols - 1) return dist + 1;
+                        visited[idx] = true;
+                        queue.Enqueue(new int[] { nr, nc, dist + 1 });
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -495,6 +566,35 @@ int shortestPathGrid(int* grid, int gridSize, int rows, int cols) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int shortestPathGrid(vector<int>& grid, int rows, int cols) {
+        if (grid[0] == 1 || grid[rows * cols - 1] == 1) return -1;
+        if (rows == 1 && cols == 1) return 1;
+        vector<bool> visited(rows * cols, false);
+        visited[0] = true;
+        queue<tuple<int,int,int>> q;
+        q.push({0, 0, 1});
+        int drs[] = {-1, 1, 0, 0};
+        int dcs[] = {0, 0, -1, 1};
+        while (!q.empty()) {
+            auto [r, c, dist] = q.front();
+            q.pop();
+            for (int i = 0; i < 4; i++) {
+                int nr = r + drs[i], nc = c + dcs[i];
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                    int idx = nr * cols + nc;
+                    if (!visited[idx] && grid[idx] == 0) {
+                        if (nr == rows - 1 && nc == cols - 1) return dist + 1;
+                        visited[idx] = true;
+                        q.push({nr, nc, dist + 1});
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};`,
   },
   editorial: `## Approach: Breadth-First Search (BFS)
 

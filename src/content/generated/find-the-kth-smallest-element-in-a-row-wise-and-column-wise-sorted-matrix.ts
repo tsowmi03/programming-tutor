@@ -235,6 +235,10 @@ Explanation: Sorted order: [1,2,3,4,5,6,7,8,9]; 5th element is 5.
     return 0;
 }
 `,
+    typescript: `function kthSmallest(matrix: number[], n: number, k: number): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int kthSmallest(int[] matrix, int n, int k) {
         // TODO: implement
@@ -242,11 +246,24 @@ Explanation: Sorted order: [1,2,3,4,5,6,7,8,9]; 5th element is 5.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int KthSmallest(int[] matrix, int n, int k) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int kthSmallest(int* matrix, int matrixSize, int n, int k) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int kthSmallest(vector<int>& matrix, int n, int k) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def kth_smallest(matrix: list[int], n: int, k: int) -> int:
@@ -297,6 +314,31 @@ Explanation: Sorted order: [1,2,3,4,5,6,7,8,9]; 5th element is 5.
     return lo;
 }
 `,
+    typescript: `function kthSmallest(matrix: number[], n: number, k: number): number {
+    function countLessEqual(mid: number): number {
+        let row = n - 1, col = 0, count = 0;
+        while (row >= 0 && col < n) {
+            if (matrix[row * n + col] <= mid) {
+                count += row + 1;
+                col++;
+            } else {
+                row--;
+            }
+        }
+        return count;
+    }
+
+    let lo = matrix[0], hi = matrix[n * n - 1];
+    while (lo < hi) {
+        const mid = Math.floor((lo + hi) / 2);
+        if (countLessEqual(mid) >= k) {
+            hi = mid;
+        } else {
+            lo = mid + 1;
+        }
+    }
+    return lo;
+}`,
     java: `class Solution {
     public int kthSmallest(int[] matrix, int n, int k) {
         int lo = matrix[0], hi = matrix[n * n - 1];
@@ -325,6 +367,33 @@ Explanation: Sorted order: [1,2,3,4,5,6,7,8,9]; 5th element is 5.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int KthSmallest(int[] matrix, int n, int k) {
+        int lo = matrix[0], hi = matrix[n * n - 1];
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (CountLessEqual(matrix, n, mid) >= k) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+    private int CountLessEqual(int[] matrix, int n, int mid) {
+        int row = n - 1, col = 0, count = 0;
+        while (row >= 0 && col < n) {
+            if (matrix[row * n + col] <= mid) {
+                count += row + 1;
+                col++;
+            } else {
+                row--;
+            }
+        }
+        return count;
+    }
+}`,
     c: `int kthSmallest(int* matrix, int matrixSize, int n, int k) {
     int lo = matrix[0], hi = matrix[n * n - 1];
     while (lo < hi) {
@@ -348,6 +417,35 @@ Explanation: Sorted order: [1,2,3,4,5,6,7,8,9]; 5th element is 5.
     return lo;
 }
 `,
+    cpp: `class Solution {
+public:
+    int kthSmallest(vector<int>& matrix, int n, int k) {
+        int lo = matrix[0], hi = matrix[n * n - 1];
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (countLessEqual(matrix, n, mid) >= k) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        return lo;
+    }
+
+private:
+    int countLessEqual(vector<int>& matrix, int n, int mid) {
+        int row = n - 1, col = 0, count = 0;
+        while (row >= 0 && col < n) {
+            if (matrix[row * n + col] <= mid) {
+                count += row + 1;
+                col++;
+            } else {
+                row--;
+            }
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Binary Search on Value
 

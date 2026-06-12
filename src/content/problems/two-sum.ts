@@ -35,30 +35,135 @@ Output: [1,2]
 **Follow-up:** the brute-force solution checks every pair in O(n²). Can you do it in a single pass?
 `,
   hints: [
-    "For each number `x`, you are really looking for whether `target - x` exists elsewhere in the array.",
-    "A hash map gives O(1) average lookups. What would you store as keys, and what as values?",
-    "Walk the array once: before inserting the current number, check whether its complement is already in the map. This also guarantees you never reuse the same index.",
+    `For each number \`x\`, you are really looking for whether \`target - x\` exists elsewhere in the array.`,
+    `A hash map gives O(1) average lookups. What would you store as keys, and what as values?`,
+    `Walk the array once: before inserting the current number, check whether its complement is already in the map. This also guarantees you never reuse the same index.`,
   ],
   signature: {
-    name: "twoSum",
-    params: [
-      { name: "nums", type: "int[]" },
-      { name: "target", type: "int" },
+    "name": "twoSum",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      },
+      {
+        "name": "target",
+        "type": "int"
+      }
     ],
-    returns: "int[]",
+    "returns": "int[]"
   },
   testCases: [
-    { input: [[2, 7, 11, 15], 9], expected: [0, 1] },
-    { input: [[3, 2, 4], 6], expected: [1, 2] },
-    { input: [[3, 3], 6], expected: [0, 1] },
-    { input: [[-1, -2, -3, -4, -5], -8], expected: [2, 4], hidden: true },
-    { input: [[0, 4, 3, 0], 0], expected: [0, 3], hidden: true },
-    { input: [[1, 5, 9, 2], 11], expected: [2, 3], hidden: true },
     {
-      input: [[5, 75, 25, 90, 1, 14, 30], 104],
-      expected: [3, 5],
-      hidden: true,
+      "input": [
+        [
+          2,
+          7,
+          11,
+          15
+        ],
+        9
+      ],
+      "expected": [
+        0,
+        1
+      ]
     },
+    {
+      "input": [
+        [
+          3,
+          2,
+          4
+        ],
+        6
+      ],
+      "expected": [
+        1,
+        2
+      ]
+    },
+    {
+      "input": [
+        [
+          3,
+          3
+        ],
+        6
+      ],
+      "expected": [
+        0,
+        1
+      ]
+    },
+    {
+      "input": [
+        [
+          -1,
+          -2,
+          -3,
+          -4,
+          -5
+        ],
+        -8
+      ],
+      "expected": [
+        2,
+        4
+      ],
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          0,
+          4,
+          3,
+          0
+        ],
+        0
+      ],
+      "expected": [
+        0,
+        3
+      ],
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          1,
+          5,
+          9,
+          2
+        ],
+        11
+      ],
+      "expected": [
+        2,
+        3
+      ],
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          5,
+          75,
+          25,
+          90,
+          1,
+          14,
+          30
+        ],
+        104
+      ],
+      "expected": [
+        3,
+        5
+      ],
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def two_sum(nums, target):
@@ -76,6 +181,15 @@ function twoSum(nums, target) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]} indices in ascending order
+ */
+function twoSum(nums: number[], target: number): number[] {
+  // Your code here
+  return [];
+}`,
     java: `class Solution {
     public int[] twoSum(int[] nums, int target) {
         // Your code here
@@ -83,6 +197,14 @@ function twoSum(nums, target) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] TwoSum(int[] nums, int target) {
+        // Your code here
+        return new int[]{};
+    }
+}`,
     c: `/**
  * Return a heap-allocated array of the two indices (ascending).
  * Set *returnSize to 2.
@@ -93,6 +215,13 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        // Your code here
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def two_sum(nums, target):
@@ -114,6 +243,15 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
   return [];
 }
 `,
+    typescript: `function twoSum(nums: number[], target: number): number[] {
+  const seen = new Map<number, number>(); // value -> index
+  for (let i = 0; i < nums.length; i++) {
+    const complement = target - nums[i];
+    if (seen.has(complement)) return [seen.get(complement)!, i];
+    seen.set(nums[i], i);
+  }
+  return [];
+}`,
     java: `class Solution {
     public int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> seen = new HashMap<>(); // value -> index
@@ -128,6 +266,21 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] TwoSum(int[] nums, int target) {
+        Dictionary<int, int> seen = new Dictionary<int, int>(); // value -> index
+        for (int i = 0; i < nums.Length; i++) {
+            int complement = target - nums[i];
+            if (seen.ContainsKey(complement)) {
+                return new int[]{seen[complement], i};
+            }
+            seen[nums[i]] = i;
+        }
+        return new int[]{};
+    }
+}`,
     c: `int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     int* out = malloc(2 * sizeof(int));
     for (int i = 0; i < numsSize; i++) {
@@ -144,6 +297,20 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     return out;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> seen; // value -> index
+        for (int i = 0; i < (int)nums.size(); i++) {
+            int complement = target - nums[i];
+            if (seen.count(complement)) {
+                return {seen[complement], i};
+            }
+            seen[nums[i]] = i;
+        }
+        return {};
+    }
+};`,
   },
   editorial: `## Approach: one-pass hash map
 

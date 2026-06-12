@@ -223,6 +223,10 @@ Output: [0]
     return [];
 }
 `,
+    typescript: `function addTwoNumbers(l1: number[], l2: number[]): number[] {
+    // TODO: implement
+    return [];
+}`,
     java: `class Solution {
     public int[] addTwoNumbers(int[] l1, int[] l2) {
         // TODO: implement
@@ -230,12 +234,25 @@ Output: [0]
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] AddTwoNumbers(int[] l1, int[] l2) {
+        // TODO: implement
+        return new int[0];
+    }
+}`,
     c: `int* addTwoNumbers(int* l1, int l1Size, int* l2, int l2Size, int* returnSize) {
     // TODO: implement
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> addTwoNumbers(vector<int>& l1, vector<int>& l2) {
+        // TODO: implement
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def add_two_numbers(l1: list[int], l2: list[int]) -> list[int]:
@@ -266,6 +283,20 @@ Output: [0]
     return result;
 }
 `,
+    typescript: `function addTwoNumbers(l1: number[], l2: number[]): number[] {
+    const result: number[] = [];
+    let carry = 0;
+    let i = 0;
+    while (i < l1.length || i < l2.length || carry) {
+        const a = i < l1.length ? l1[i] : 0;
+        const b = i < l2.length ? l2[i] : 0;
+        const total = a + b + carry;
+        result.push(total % 10);
+        carry = Math.floor(total / 10);
+        i++;
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] addTwoNumbers(int[] l1, int[] l2) {
         int maxLen = Math.max(l1.length, l2.length) + 1;
@@ -285,6 +316,23 @@ Output: [0]
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] AddTwoNumbers(int[] l1, int[] l2) {
+        List<int> result = new List<int>();
+        int carry = 0, i = 0;
+        while (i < l1.Length || i < l2.Length || carry != 0) {
+            int a = i < l1.Length ? l1[i] : 0;
+            int b = i < l2.Length ? l2[i] : 0;
+            int total = a + b + carry;
+            result.Add(total % 10);
+            carry = total / 10;
+            i++;
+        }
+        return result.ToArray();
+    }
+}`,
     c: `#include <stdlib.h>
 int* addTwoNumbers(int* l1, int l1Size, int* l2, int l2Size, int* returnSize) {
     int maxLen = (l1Size > l2Size ? l1Size : l2Size) + 1;
@@ -302,6 +350,22 @@ int* addTwoNumbers(int* l1, int l1Size, int* l2, int l2Size, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> addTwoNumbers(vector<int>& l1, vector<int>& l2) {
+        vector<int> result;
+        int carry = 0, i = 0;
+        while (i < (int)l1.size() || i < (int)l2.size() || carry) {
+            int a = i < (int)l1.size() ? l1[i] : 0;
+            int b = i < (int)l2.size() ? l2[i] : 0;
+            int total = a + b + carry;
+            result.push_back(total % 10);
+            carry = total / 10;
+            i++;
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Digit-by-Digit Addition with Carry
 

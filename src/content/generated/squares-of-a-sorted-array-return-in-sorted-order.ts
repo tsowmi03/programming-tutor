@@ -237,6 +237,10 @@ Explanation: After squaring: [49, 9, 4, 9, 121] → sorted: [4, 9, 9, 49, 121]
     return [];
 }
 `,
+    typescript: `function sortedSquares(nums: number[]): number[] {
+    // TODO: implement using two pointers
+    return [];
+}`,
     java: `class Solution {
     public int[] sortedSquares(int[] nums) {
         // TODO: implement using two pointers
@@ -244,12 +248,25 @@ Explanation: After squaring: [49, 9, 4, 9, 121] → sorted: [4, 9, 9, 49, 121]
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] SortedSquares(int[] nums) {
+        // TODO: implement using two pointers
+        return new int[]{};
+    }
+}`,
     c: `int* sortedSquares(int* nums, int numsSize, int* returnSize) {
     // TODO: implement using two pointers
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        // TODO: implement using two pointers
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def sorted_squares(nums):
@@ -284,6 +301,22 @@ Explanation: After squaring: [49, 9, 4, 9, 121] → sorted: [4, 9, 9, 49, 121]
     return result;
 }
 `,
+    typescript: `function sortedSquares(nums: number[]): number[] {
+    const n = nums.length;
+    const result = new Array(n).fill(0);
+    let left = 0, right = n - 1, pos = n - 1;
+    while (left <= right) {
+        if (Math.abs(nums[left]) >= Math.abs(nums[right])) {
+            result[pos] = nums[left] * nums[left];
+            left++;
+        } else {
+            result[pos] = nums[right] * nums[right];
+            right--;
+        }
+        pos--;
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] sortedSquares(int[] nums) {
         int n = nums.length;
@@ -303,6 +336,25 @@ Explanation: After squaring: [49, 9, 4, 9, 121] → sorted: [4, 9, 9, 49, 121]
     }
 }
 `,
+    csharp: `using System;
+public class Solution {
+    public int[] SortedSquares(int[] nums) {
+        int n = nums.Length;
+        int[] result = new int[n];
+        int left = 0, right = n - 1, pos = n - 1;
+        while (left <= right) {
+            if (Math.Abs(nums[left]) >= Math.Abs(nums[right])) {
+                result[pos] = nums[left] * nums[left];
+                left++;
+            } else {
+                result[pos] = nums[right] * nums[right];
+                right--;
+            }
+            pos--;
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 int* sortedSquares(int* nums, int numsSize, int* returnSize) {
     *returnSize = numsSize;
@@ -323,6 +375,25 @@ int* sortedSquares(int* nums, int numsSize, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> result(n);
+        int left = 0, right = n - 1, pos = n - 1;
+        while (left <= right) {
+            if (abs(nums[left]) >= abs(nums[right])) {
+                result[pos] = nums[left] * nums[left];
+                left++;
+            } else {
+                result[pos] = nums[right] * nums[right];
+                right--;
+            }
+            pos--;
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Two Pointers (Fill from the Right)
 

@@ -122,6 +122,10 @@ Explanation: F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8
     return 0;
 }
 `,
+    typescript: `function fib(n: number): number {
+    // TODO: implement using memoization
+    return 0;
+}`,
     java: `class Solution {
     public int fib(int n) {
         // TODO: implement using memoization
@@ -129,11 +133,24 @@ Explanation: F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Fib(int n) {
+        // TODO: implement using memoization
+        return 0;
+    }
+}`,
     c: `int fib(int n) {
     // TODO: implement using memoization
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int fib(int n) {
+        // TODO: implement using memoization
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def fib(n: int) -> int:
@@ -161,6 +178,17 @@ Explanation: F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8
     return helper(n);
 }
 `,
+    typescript: `function fib(n: number): number {
+    const memo: { [key: number]: number } = {};
+    function helper(k: number): number {
+        if (k === 0) return 0;
+        if (k === 1) return 1;
+        if (memo[k] !== undefined) return memo[k];
+        memo[k] = helper(k - 1) + helper(k - 2);
+        return memo[k];
+    }
+    return helper(n);
+}`,
     java: `class Solution {
     private int[] memo = new int[31];
 
@@ -178,6 +206,22 @@ Explanation: F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8
     }
 }
 `,
+    csharp: `public class Solution {
+    private int[] memo = new int[31];
+
+    public int Fib(int n) {
+        for (int i = 0; i <= 30; i++) memo[i] = -1;
+        return Helper(n);
+    }
+
+    private int Helper(int k) {
+        if (k == 0) return 0;
+        if (k == 1) return 1;
+        if (memo[k] != -1) return memo[k];
+        memo[k] = Helper(k - 1) + Helper(k - 2);
+        return memo[k];
+    }
+}`,
     c: `int fib(int n) {
     int memo[31];
     int i;
@@ -191,6 +235,19 @@ Explanation: F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8
     return memo[n];
 }
 `,
+    cpp: `class Solution {
+public:
+    int fib(int n) {
+        int memo[31];
+        for (int i = 0; i <= 30; i++) memo[i] = -1;
+        memo[0] = 0;
+        memo[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            memo[i] = memo[i - 1] + memo[i - 2];
+        }
+        return memo[n];
+    }
+};`,
   },
   editorial: `## Approach: Top-Down Recursion with Memoization
 

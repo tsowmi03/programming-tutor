@@ -176,6 +176,10 @@ Explanation: 7 is at index 0.
     return -1;
 }
 `,
+    typescript: `function findFirstOccurrence(nums: number[], target: number): number {
+    // TODO: return the index of the first occurrence of target, or -1
+    return -1;
+}`,
     java: `class Solution {
     public int findFirstOccurrence(int[] nums, int target) {
         // TODO: return the index of the first occurrence of target, or -1
@@ -183,11 +187,24 @@ Explanation: 7 is at index 0.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindFirstOccurrence(int[] nums, int target) {
+        // TODO: return the index of the first occurrence of target, or -1
+        return -1;
+    }
+}`,
     c: `int findFirstOccurrence(int* nums, int numsSize, int target) {
     /* TODO: return the index of the first occurrence of target, or -1 */
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findFirstOccurrence(vector<int>& nums, int target) {
+        // TODO: return the index of the first occurrence of target, or -1
+        return -1;
+    }
+};`,
   },
   solutions: {
     python: `def find_first_occurrence(nums, target):
@@ -203,6 +220,12 @@ Explanation: 7 is at index 0.
     return -1;
 }
 `,
+    typescript: `function findFirstOccurrence(nums: number[], target: number): number {
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] === target) return i;
+    }
+    return -1;
+}`,
     java: `class Solution {
     public int findFirstOccurrence(int[] nums, int target) {
         for (int i = 0; i < nums.length; i++) {
@@ -212,6 +235,14 @@ Explanation: 7 is at index 0.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindFirstOccurrence(int[] nums, int target) {
+        for (int i = 0; i < nums.Length; i++) {
+            if (nums[i] == target) return i;
+        }
+        return -1;
+    }
+}`,
     c: `int findFirstOccurrence(int* nums, int numsSize, int target) {
     for (int i = 0; i < numsSize; i++) {
         if (nums[i] == target) return i;
@@ -219,6 +250,15 @@ Explanation: 7 is at index 0.
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findFirstOccurrence(vector<int>& nums, int target) {
+        for (int i = 0; i < (int)nums.size(); i++) {
+            if (nums[i] == target) return i;
+        }
+        return -1;
+    }
+};`,
   },
   editorial: `## Approach: Linear Scan
 

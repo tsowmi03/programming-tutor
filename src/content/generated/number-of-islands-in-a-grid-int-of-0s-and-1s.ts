@@ -303,6 +303,10 @@ function numIslands(grid, dims) {
     return 0;
 }
 `,
+    typescript: `function numIslands(grid: number[], dims: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int numIslands(int[] grid, int[] dims) {
         // TODO: implement
@@ -310,11 +314,24 @@ function numIslands(grid, dims) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int NumIslands(int[] grid, int[] dims) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int numIslands(int* grid, int gridSize, int* dims, int dimsSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int numIslands(vector<int>& grid, vector<int>& dims) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def num_islands(grid: list[int], dims: list[int]) -> int:
@@ -367,6 +384,32 @@ function numIslands(grid, dims) {
     return count;
 }
 `,
+    typescript: `function numIslands(grid: number[], dims: number[]): number {
+    const rows = dims[0];
+    const cols = dims[1];
+    const g = grid.slice();
+
+    function dfs(r: number, c: number): void {
+        if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+        if (g[r * cols + c] !== 1) return;
+        g[r * cols + c] = 0;
+        dfs(r + 1, c);
+        dfs(r - 1, c);
+        dfs(r, c + 1);
+        dfs(r, c - 1);
+    }
+
+    let count = 0;
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (g[r * cols + c] === 1) {
+                dfs(r, c);
+                count++;
+            }
+        }
+    }
+    return count;
+}`,
     java: `class Solution {
     private int[] g;
     private int rows, cols;
@@ -398,6 +441,36 @@ function numIslands(grid, dims) {
     }
 }
 `,
+    csharp: `public class Solution {
+    private int[] g;
+    private int rows, cols;
+
+    public int NumIslands(int[] grid, int[] dims) {
+        rows = dims[0];
+        cols = dims[1];
+        g = (int[])grid.Clone();
+        int count = 0;
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (g[r * cols + c] == 1) {
+                    Dfs(r, c);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private void Dfs(int r, int c) {
+        if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+        if (g[r * cols + c] != 1) return;
+        g[r * cols + c] = 0;
+        Dfs(r + 1, c);
+        Dfs(r - 1, c);
+        Dfs(r, c + 1);
+        Dfs(r, c - 1);
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -433,6 +506,38 @@ int numIslands(int* grid, int gridSize, int* dims, int dimsSize) {
     return count;
 }
 `,
+    cpp: `class Solution {
+private:
+    vector<int> g;
+    int rows, cols;
+
+    void dfs(int r, int c) {
+        if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+        if (g[r * cols + c] != 1) return;
+        g[r * cols + c] = 0;
+        dfs(r + 1, c);
+        dfs(r - 1, c);
+        dfs(r, c + 1);
+        dfs(r, c - 1);
+    }
+
+public:
+    int numIslands(vector<int>& grid, vector<int>& dims) {
+        rows = dims[0];
+        cols = dims[1];
+        g = grid;
+        int count = 0;
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (g[r * cols + c] == 1) {
+                    dfs(r, c);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: DFS Flood Fill
 

@@ -183,6 +183,10 @@ Explanation: No two numbers are consecutive; the best sequence has length 1.
     return 0;
 }
 `,
+    typescript: `function longestConsecutive(nums: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int longestConsecutive(int[] nums) {
         // TODO: implement
@@ -190,11 +194,24 @@ Explanation: No two numbers are consecutive; the best sequence has length 1.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LongestConsecutive(int[] nums) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int longestConsecutive(int* nums, int numsSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def longest_consecutive(nums):
@@ -227,6 +244,22 @@ Explanation: No two numbers are consecutive; the best sequence has length 1.
     return best;
 }
 `,
+    typescript: `function longestConsecutive(nums: number[]): number {
+    const numSet = new Set(nums);
+    let best = 0;
+    for (const n of numSet) {
+        if (!numSet.has(n - 1)) {
+            let curr = n;
+            let streak = 1;
+            while (numSet.has(curr + 1)) {
+                curr++;
+                streak++;
+            }
+            best = Math.max(best, streak);
+        }
+    }
+    return best;
+}`,
     java: `class Solution {
     public int longestConsecutive(int[] nums) {
         if (nums.length == 0) return 0;
@@ -245,6 +278,26 @@ Explanation: No two numbers are consecutive; the best sequence has length 1.
     }
 }
 `,
+    csharp: `using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int LongestConsecutive(int[] nums) {
+        if (nums.Length == 0) return 0;
+        Array.Sort(nums);
+        int best = 1, streak = 1;
+        for (int i = 1; i < nums.Length; i++) {
+            if (nums[i] == nums[i - 1]) continue;
+            if (nums[i] == nums[i - 1] + 1) {
+                streak++;
+                if (streak > best) best = streak;
+            } else {
+                streak = 1;
+            }
+        }
+        return best;
+    }
+}`,
     c: `#include <stdlib.h>
 
 static int cmp(const void* a, const void* b) {
@@ -270,6 +323,24 @@ int longestConsecutive(int* nums, int numsSize) {
     return best;
 }
 `,
+    cpp: `class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if (nums.empty()) return 0;
+        sort(nums.begin(), nums.end());
+        int best = 1, streak = 1;
+        for (int i = 1; i < (int)nums.size(); i++) {
+            if (nums[i] == nums[i - 1]) continue;
+            if (nums[i] == nums[i - 1] + 1) {
+                streak++;
+                if (streak > best) best = streak;
+            } else {
+                streak = 1;
+            }
+        }
+        return best;
+    }
+};`,
   },
   editorial: `## Approach: Hash Set with Sequence-Start Detection (Python/JS) or Sort Scan (Java/C)
 

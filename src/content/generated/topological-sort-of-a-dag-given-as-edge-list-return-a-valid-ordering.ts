@@ -271,6 +271,10 @@ Explanation:
     return [];
 }
 `,
+    typescript: `function findTopologicalOrder(n: number, edges: number[][]): number[] {
+    // TODO: implement Kahn's algorithm with greedy min-node selection
+    return [];
+}`,
     java: `class Solution {
     public int[] findTopologicalOrder(int n, int[][] edges) {
         // TODO: implement Kahn's algorithm with greedy min-node selection
@@ -278,6 +282,12 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] FindTopologicalOrder(int n, int[][] edges) {
+        // TODO: implement Kahn's algorithm with greedy min-node selection
+        return new int[0];
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -287,6 +297,13 @@ int* findTopologicalOrder(int n, int** edges, int edgesSize, int* edgesColSize, 
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> findTopologicalOrder(int n, vector<vector<int>>& edges) {
+        // TODO: implement Kahn's algorithm with greedy min-node selection
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `import heapq
@@ -336,6 +353,32 @@ def find_topological_order(n: int, edges: list[list[int]]) -> list[int]:
     return result;
 }
 `,
+    typescript: `function findTopologicalOrder(n: number, edges: number[][]): number[] {
+    const adj: number[][] = Array.from({length: n}, () => []);
+    const inDegree: number[] = new Array(n).fill(0);
+    for (const [u, v] of edges) {
+        adj[u].push(v);
+        inDegree[v]++;
+    }
+    const processed: boolean[] = new Array(n).fill(false);
+    const result: number[] = [];
+    for (let step = 0; step < n; step++) {
+        let minNode = -1;
+        for (let i = 0; i < n; i++) {
+            if (!processed[i] && inDegree[i] === 0) {
+                minNode = i;
+                break;
+            }
+        }
+        if (minNode === -1) break;
+        result.push(minNode);
+        processed[minNode] = true;
+        for (const neighbor of adj[minNode]) {
+            inDegree[neighbor]--;
+        }
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] findTopologicalOrder(int n, int[][] edges) {
         int[][] adj = new int[n][n];
@@ -366,6 +409,39 @@ def find_topological_order(n: int, edges: list[list[int]]) -> list[int]:
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] FindTopologicalOrder(int n, int[][] edges) {
+        List<int>[] adj = new List<int>[n];
+        for (int i = 0; i < n; i++) {
+            adj[i] = new List<int>();
+        }
+        int[] inDegree = new int[n];
+        foreach (int[] edge in edges) {
+            adj[edge[0]].Add(edge[1]);
+            inDegree[edge[1]]++;
+        }
+        int[] result = new int[n];
+        bool[] visited = new bool[n];
+        for (int step = 0; step < n; step++) {
+            int minNode = -1;
+            for (int i = 0; i < n; i++) {
+                if (!visited[i] && inDegree[i] == 0) {
+                    minNode = i;
+                    break;
+                }
+            }
+            if (minNode == -1) break;
+            result[step] = minNode;
+            visited[minNode] = true;
+            foreach (int neighbor in adj[minNode]) {
+                inDegree[neighbor]--;
+            }
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -404,6 +480,35 @@ int* findTopologicalOrder(int n, int** edges, int edgesSize, int* edgesColSize, 
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> findTopologicalOrder(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> adj(n);
+        vector<int> inDegree(n, 0);
+        for (auto& edge : edges) {
+            adj[edge[0]].push_back(edge[1]);
+            inDegree[edge[1]]++;
+        }
+        vector<bool> processed(n, false);
+        vector<int> result;
+        for (int step = 0; step < n; step++) {
+            int minNode = -1;
+            for (int i = 0; i < n; i++) {
+                if (!processed[i] && inDegree[i] == 0) {
+                    minNode = i;
+                    break;
+                }
+            }
+            if (minNode == -1) break;
+            result.push_back(minNode);
+            processed[minNode] = true;
+            for (int neighbor : adj[minNode]) {
+                inDegree[neighbor]--;
+            }
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Kahn's Algorithm with Greedy Minimum Selection
 

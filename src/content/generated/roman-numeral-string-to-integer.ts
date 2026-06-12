@@ -143,6 +143,10 @@ Explanation: M=1000, CM=900, XC=90, IV=4  →  1000 + 900 + 90 + 4 = 1994
     return 0;
 }
 `,
+    typescript: `function romanToInt(s: string): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int romanToInt(String s) {
         // TODO: implement
@@ -150,11 +154,24 @@ Explanation: M=1000, CM=900, XC=90, IV=4  →  1000 + 900 + 90 + 4 = 1994
     }
 }
 `,
+    csharp: `public class Solution {
+    public int RomanToInt(string s) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int romanToInt(char* s) {
     /* TODO: implement */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int romanToInt(string s) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def roman_to_int(s: str) -> int:
@@ -181,6 +198,17 @@ Explanation: M=1000, CM=900, XC=90, IV=4  →  1000 + 900 + 90 + 4 = 1994
     return result;
 }
 `,
+    typescript: `function romanToInt(s: string): number {
+    const val: {[key: string]: number} = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000};
+    let result = 0;
+    for (let i = 0; i < s.length; i++) {
+        const curr = val[s[i]];
+        const next = i + 1 < s.length ? val[s[i + 1]] : 0;
+        if (curr < next) result -= curr;
+        else result += curr;
+    }
+    return result;
+}`,
     java: `class Solution {
     private int symVal(char c) {
         switch (c) {
@@ -207,6 +235,31 @@ Explanation: M=1000, CM=900, XC=90, IV=4  →  1000 + 900 + 90 + 4 = 1994
     }
 }
 `,
+    csharp: `public class Solution {
+    private int SymVal(char c) {
+        switch (c) {
+            case 'I': return 1;
+            case 'V': return 5;
+            case 'X': return 10;
+            case 'L': return 50;
+            case 'C': return 100;
+            case 'D': return 500;
+            case 'M': return 1000;
+            default:  return 0;
+        }
+    }
+
+    public int RomanToInt(string s) {
+        int result = 0;
+        for (int i = 0; i < s.Length; i++) {
+            int curr = SymVal(s[i]);
+            int next = (i + 1 < s.Length) ? SymVal(s[i + 1]) : 0;
+            if (curr < next) result -= curr;
+            else             result += curr;
+        }
+        return result;
+    }
+}`,
     c: `static int symVal(char c) {
     switch (c) {
         case 'I': return 1;
@@ -233,6 +286,32 @@ int romanToInt(char* s) {
     return result;
 }
 `,
+    cpp: `class Solution {
+private:
+    int symVal(char c) {
+        switch (c) {
+            case 'I': return 1;
+            case 'V': return 5;
+            case 'X': return 10;
+            case 'L': return 50;
+            case 'C': return 100;
+            case 'D': return 500;
+            case 'M': return 1000;
+            default:  return 0;
+        }
+    }
+public:
+    int romanToInt(string s) {
+        int result = 0;
+        for (int i = 0; i < (int)s.length(); i++) {
+            int curr = symVal(s[i]);
+            int next = (i + 1 < (int)s.length()) ? symVal(s[i + 1]) : 0;
+            if (curr < next) result -= curr;
+            else             result += curr;
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Left-to-Right Scan with Subtractive Rule
 

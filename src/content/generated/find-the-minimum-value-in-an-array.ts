@@ -179,6 +179,10 @@ Explanation: A single-element array; that element is both min and max.
     // TODO: return the minimum value in nums
 }
 `,
+    typescript: `function findMin(nums: number[]): number {
+    // TODO: return the minimum value in nums
+    return 0;
+}`,
     java: `class Solution {
     public int findMin(int[] nums) {
         // TODO: return the minimum value in nums
@@ -186,11 +190,24 @@ Explanation: A single-element array; that element is both min and max.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindMin(int[] nums) {
+        // TODO: return the minimum value in nums
+        return 0;
+    }
+}`,
     c: `int findMin(int* nums, int numsSize) {
     /* TODO: return the minimum value in nums */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        // TODO: return the minimum value in nums
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def find_min(nums):
@@ -210,6 +227,15 @@ Explanation: A single-element array; that element is both min and max.
     return minimum;
 }
 `,
+    typescript: `function findMin(nums: number[]): number {
+    let minimum = nums[0];
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] < minimum) {
+            minimum = nums[i];
+        }
+    }
+    return minimum;
+}`,
     java: `class Solution {
     public int findMin(int[] nums) {
         int minimum = nums[0];
@@ -222,6 +248,17 @@ Explanation: A single-element array; that element is both min and max.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindMin(int[] nums) {
+        int minimum = nums[0];
+        for (int i = 1; i < nums.Length; i++) {
+            if (nums[i] < minimum) {
+                minimum = nums[i];
+            }
+        }
+        return minimum;
+    }
+}`,
     c: `int findMin(int* nums, int numsSize) {
     int minimum = nums[0];
     for (int i = 1; i < numsSize; i++) {
@@ -232,6 +269,18 @@ Explanation: A single-element array; that element is both min and max.
     return minimum;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int minimum = nums[0];
+        for (int i = 1; i < (int)nums.size(); i++) {
+            if (nums[i] < minimum) {
+                minimum = nums[i];
+            }
+        }
+        return minimum;
+    }
+};`,
   },
   editorial: `## Approach: Single Linear Scan
 

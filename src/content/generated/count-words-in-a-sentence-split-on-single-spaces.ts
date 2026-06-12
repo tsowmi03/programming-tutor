@@ -125,6 +125,10 @@ Explanation: There is only one word in the sentence.
     return 0;
 }
 `,
+    typescript: `function countWords(sentence: string): number {
+    // TODO: count and return the number of words
+    return 0;
+}`,
     java: `class Solution {
     public int countWords(String sentence) {
         // TODO: count and return the number of words
@@ -132,11 +136,24 @@ Explanation: There is only one word in the sentence.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountWords(string sentence) {
+        // TODO: count and return the number of words
+        return 0;
+    }
+}`,
     c: `int countWords(char* sentence) {
     // TODO: count and return the number of words
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countWords(string sentence) {
+        // TODO: count and return the number of words
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_words(sentence: str) -> int:
@@ -146,12 +163,20 @@ Explanation: There is only one word in the sentence.
     return sentence.split(' ').length;
 }
 `,
+    typescript: `function countWords(sentence: string): number {
+    return sentence.split(' ').length;
+}`,
     java: `class Solution {
     public int countWords(String sentence) {
         return sentence.split(" ", -1).length;
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountWords(string sentence) {
+        return sentence.Split(' ').Length;
+    }
+}`,
     c: `int countWords(char* sentence) {
     if (sentence == 0 || sentence[0] == '\\0') return 0;
     int count = 1;
@@ -161,6 +186,17 @@ Explanation: There is only one word in the sentence.
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countWords(string sentence) {
+        if (sentence.empty()) return 0;
+        int count = 1;
+        for (char c : sentence) {
+            if (c == ' ') count++;
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Count Spaces
 

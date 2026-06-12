@@ -190,6 +190,10 @@ function groupAnagramSizes(strs) {
     return [];
 }
 `,
+    typescript: `function groupAnagramSizes(strs: string[]): number[] {
+    // TODO: implement
+    return [];
+}`,
     java: `class Solution {
     public int[] groupAnagramSizes(String[] strs) {
         // TODO: implement
@@ -197,6 +201,14 @@ function groupAnagramSizes(strs) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] GroupAnagramSizes(string[] strs) {
+        // TODO: implement
+        return new int[]{};
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -206,6 +218,13 @@ int* groupAnagramSizes(char** strs, int strsSize, int* returnSize) {
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> groupAnagramSizes(vector<string>& strs) {
+        // TODO: implement
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `from typing import List
@@ -227,6 +246,14 @@ def group_anagram_sizes(strs: List[str]) -> List[int]:
     return Object.values(map).sort((a, b) => b - a);
 }
 `,
+    typescript: `function groupAnagramSizes(strs: string[]): number[] {
+    const map: { [key: string]: number } = {};
+    for (const s of strs) {
+        const key = s.split('').sort().join('');
+        map[key] = (map[key] || 0) + 1;
+    }
+    return Object.values(map).sort((a, b) => b - a);
+}`,
     java: `class Solution {
     public int[] groupAnagramSizes(String[] strs) {
         java.util.Map<String, Integer> map = new java.util.HashMap<>();
@@ -247,6 +274,30 @@ def group_anagram_sizes(strs: List[str]) -> List[int]:
     }
 }
 `,
+    csharp: `using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] GroupAnagramSizes(string[] strs) {
+        Dictionary<string, int> map = new Dictionary<string, int>();
+        foreach (string s in strs) {
+            char[] chars = s.ToCharArray();
+            Array.Sort(chars);
+            string key = new string(chars);
+            if (map.ContainsKey(key)) {
+                map[key]++;
+            } else {
+                map[key] = 1;
+            }
+        }
+        int[] result = new int[map.Count];
+        int i = 0;
+        foreach (int v in map.Values) result[i++] = v;
+        Array.Sort(result);
+        Array.Reverse(result);
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -292,6 +343,23 @@ int* groupAnagramSizes(char** strs, int strsSize, int* returnSize) {
     return counts;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> groupAnagramSizes(vector<string>& strs) {
+        unordered_map<string, int> map;
+        for (const string& s : strs) {
+            string key = s;
+            sort(key.begin(), key.end());
+            map[key]++;
+        }
+        vector<int> result;
+        for (auto& p : map) {
+            result.push_back(p.second);
+        }
+        sort(result.begin(), result.end(), [](int a, int b) { return a > b; });
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Sort-Based Canonical Key
 

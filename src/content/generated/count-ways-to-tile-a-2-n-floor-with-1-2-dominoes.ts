@@ -136,6 +136,10 @@ Output: 8
     return 0;
 }
 `,
+    typescript: `function tilingWays(n: number): number {
+    // TODO: implement me
+    return 0;
+}`,
     java: `class Solution {
     public int tilingWays(int n) {
         // TODO: implement me
@@ -143,11 +147,24 @@ Output: 8
     }
 }
 `,
+    csharp: `public class Solution {
+    public int TilingWays(int n) {
+        // TODO: implement me
+        return 0;
+    }
+}`,
     c: `int tilingWays(int n) {
     // TODO: implement me
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int tilingWays(int n) {
+        // TODO: implement me
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def tiling_ways(n: int) -> int:
@@ -171,6 +188,16 @@ Output: 8
     return dp[n];
 }
 `,
+    typescript: `function tilingWays(n: number): number {
+    if (n === 1) return 1;
+    const dp = new Array(n + 1).fill(0);
+    dp[0] = 1;
+    dp[1] = 1;
+    for (let i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+}`,
     java: `class Solution {
     public int tilingWays(int n) {
         if (n == 1) return 1;
@@ -184,6 +211,18 @@ Output: 8
     }
 }
 `,
+    csharp: `public class Solution {
+    public int TilingWays(int n) {
+        if (n == 1) return 1;
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}`,
     c: `int tilingWays(int n) {
     int dp[31];
     dp[0] = 1;
@@ -194,6 +233,18 @@ Output: 8
     return dp[n];
 }
 `,
+    cpp: `class Solution {
+public:
+    int tilingWays(int n) {
+        int dp[31];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+};`,
   },
   editorial: `## Approach: Dynamic Programming (Fibonacci)
 

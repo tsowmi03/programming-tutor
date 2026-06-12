@@ -207,6 +207,10 @@ function maxAverageFloor(nums, k) {
     // TODO: implement using a sliding window
 }
 `,
+    typescript: `function maxAverageFloor(nums: number[], k: number): number {
+    // TODO: implement using a sliding window
+    return 0;
+}`,
     java: `class Solution {
     public int maxAverageFloor(int[] nums, int k) {
         // TODO: implement using a sliding window
@@ -214,6 +218,12 @@ function maxAverageFloor(nums, k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MaxAverageFloor(int[] nums, int k) {
+        // TODO: implement using a sliding window
+        return 0;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int maxAverageFloor(int* nums, int numsSize, int k) {
@@ -221,6 +231,13 @@ int maxAverageFloor(int* nums, int numsSize, int k) {
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxAverageFloor(vector<int>& nums, int k) {
+        // TODO: implement using a sliding window
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `from typing import List
@@ -248,6 +265,18 @@ def max_average_floor(nums: List[int], k: int) -> int:
     return Math.floor(maxSum / k);
 }
 `,
+    typescript: `function maxAverageFloor(nums: number[], k: number): number {
+    let windowSum = 0;
+    for (let i = 0; i < k; i++) {
+        windowSum += nums[i];
+    }
+    let maxSum = windowSum;
+    for (let i = k; i < nums.length; i++) {
+        windowSum += nums[i] - nums[i - k];
+        if (windowSum > maxSum) maxSum = windowSum;
+    }
+    return Math.floor(maxSum / k);
+}`,
     java: `class Solution {
     public int maxAverageFloor(int[] nums, int k) {
         long windowSum = 0;
@@ -263,6 +292,24 @@ def max_average_floor(nums: List[int], k: int) -> int:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MaxAverageFloor(int[] nums, int k) {
+        long windowSum = 0;
+        for (int i = 0; i < k; i++) {
+            windowSum += nums[i];
+        }
+        long maxSum = windowSum;
+        for (int i = k; i < nums.Length; i++) {
+            windowSum += nums[i] - nums[i - k];
+            if (windowSum > maxSum) maxSum = windowSum;
+        }
+        if (maxSum >= 0) {
+            return (int)(maxSum / k);
+        } else {
+            return (int)((maxSum - k + 1) / k);
+        }
+    }
+}`,
     c: `#include <stdlib.h>
 
 int maxAverageFloor(int* nums, int numsSize, int k) {
@@ -284,6 +331,25 @@ int maxAverageFloor(int* nums, int numsSize, int k) {
     }
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxAverageFloor(vector<int>& nums, int k) {
+        long long windowSum = 0;
+        for (int i = 0; i < k; i++) {
+            windowSum += nums[i];
+        }
+        long long maxSum = windowSum;
+        for (int i = k; i < (int)nums.size(); i++) {
+            windowSum += nums[i] - nums[i - k];
+            if (windowSum > maxSum) maxSum = windowSum;
+        }
+        if (maxSum >= 0) {
+            return (int)(maxSum / k);
+        } else {
+            return (int)((maxSum - k + 1) / k);
+        }
+    }
+};`,
   },
   editorial: `## Approach: Sliding Window
 

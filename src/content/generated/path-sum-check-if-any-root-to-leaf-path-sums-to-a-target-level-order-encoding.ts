@@ -241,6 +241,10 @@ function pathSum(tree, target) {
     return false;
 }
 `,
+    typescript: `function pathSum(tree: number[], target: number): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean pathSum(int[] tree, int target) {
         // TODO: implement
@@ -248,12 +252,25 @@ function pathSum(tree, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool PathSum(int[] tree, int target) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 bool pathSum(int* tree, int treeSize, int target) {
     // TODO: implement
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool pathSum(vector<int>& tree, int target) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def path_sum(tree: list[int], target: int) -> bool:
@@ -296,6 +313,25 @@ bool pathSum(int* tree, int treeSize, int target) {
     return dfs(0, 0);
 }
 `,
+    typescript: `function pathSum(tree: number[], target: number): boolean {
+    const n = tree.length;
+    if (n === 0 || tree[0] === -1) return false;
+
+    function dfs(i: number, currentSum: number): boolean {
+        if (i >= n || tree[i] === -1) return false;
+        currentSum += tree[i];
+        const left = 2 * i + 1;
+        const right = 2 * i + 2;
+        const leftNull = (left >= n || tree[left] === -1);
+        const rightNull = (right >= n || tree[right] === -1);
+        if (leftNull && rightNull) {
+            return currentSum === target;
+        }
+        return dfs(left, currentSum) || dfs(right, currentSum);
+    }
+
+    return dfs(0, 0);
+}`,
     java: `class Solution {
     private int[] tree;
     private int n;
@@ -323,6 +359,32 @@ bool pathSum(int* tree, int treeSize, int target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    private int[] tree;
+    private int n;
+    private int target;
+
+    public bool PathSum(int[] tree, int target) {
+        this.tree = tree;
+        this.n = tree.Length;
+        this.target = target;
+        if (n == 0 || tree[0] == -1) return false;
+        return Dfs(0, 0);
+    }
+
+    private bool Dfs(int i, int currentSum) {
+        if (i >= n || tree[i] == -1) return false;
+        currentSum += tree[i];
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        bool leftNull = (left >= n || tree[left] == -1);
+        bool rightNull = (right >= n || tree[right] == -1);
+        if (leftNull && rightNull) {
+            return currentSum == target;
+        }
+        return Dfs(left, currentSum) || Dfs(right, currentSum);
+    }
+}`,
     c: `#include <stdbool.h>
 
 static int* g_tree;
@@ -350,6 +412,28 @@ bool pathSum(int* tree, int treeSize, int target) {
     return dfs(0, 0);
 }
 `,
+    cpp: `class Solution {
+public:
+    bool pathSum(vector<int>& tree, int target) {
+        int n = (int)tree.size();
+        if (n == 0 || tree[0] == -1) return false;
+        return dfs(tree, n, target, 0, 0);
+    }
+
+private:
+    bool dfs(vector<int>& tree, int n, int target, int i, int currentSum) {
+        if (i >= n || tree[i] == -1) return false;
+        currentSum += tree[i];
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        bool leftNull = (left >= n || tree[left] == -1);
+        bool rightNull = (right >= n || tree[right] == -1);
+        if (leftNull && rightNull) {
+            return currentSum == target;
+        }
+        return dfs(tree, n, target, left, currentSum) || dfs(tree, n, target, right, currentSum);
+    }
+};`,
   },
   editorial: `## Approach: DFS on Array-Encoded Tree
 

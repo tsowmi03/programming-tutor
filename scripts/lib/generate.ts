@@ -25,23 +25,28 @@ export function modelForDifficulty(difficulty: string): string {
   return MODEL_BY_DIFFICULTY[difficulty] ?? "claude-sonnet-4-6";
 }
 
-const SYSTEM_PROMPT = `You are an expert problem author for a programming-tutor platform. You write LeetCode-style coding problems and short conceptual "explanation" problems for students learning data structures and algorithms.
+const SYSTEM_PROMPT = `You are an expert problem author for the CodeClimb platform. You write LeetCode-style coding problems and short conceptual "explanation" problems for students learning data structures and algorithms.
 
 You output ONE problem as a single JSON object wrapped in <problem></problem> tags. No prose outside the tags.
 
 # Hard constraints for CODE problems
 
-The platform runs a cross-language judge. Solutions are executed in Python, JavaScript, Java, and C. You MUST respect these limits or the problem is unusable:
+The platform runs a cross-language judge. Solutions are executed in Python, JavaScript, TypeScript, Java, C#, C, and C++. You MUST respect these limits or the problem is unusable:
 
 1. The function signature may only use these value types, for both parameters and the return:
    "int", "bool", "string", "int[]", "string[]", "int[][]"
    No floats, no maps/dicts, no linked-list/tree node types, no tuples, no chars. Model graphs/trees/lists as int[]/int[][] adjacency or array encodings.
-2. "name" is camelCase (e.g. "twoSum"). Python harnesses auto-convert to snake_case.
-3. Provide starterCode AND a correct reference solution for ALL FOUR languages: python, javascript, java, c. Every solution must pass every test case.
+2. "name" is camelCase (e.g. "twoSum"). Python harnesses auto-convert to snake_case; C# harnesses auto-convert to PascalCase.
+3. Provide starterCode AND a correct reference solution for ALL SEVEN languages: python, javascript, typescript, java, csharp, c, cpp. Every solution must pass every test case.
 4. C has no built-in hash map or dynamic containers. Keep C solutions simple and self-contained — a brute-force O(n^2) scan is acceptable in C even when the editorial describes an O(n) approach. Allocate returned arrays with malloc. For array returns, follow this convention: the function takes an extra "int* returnSize" out-parameter as the LAST argument and sets it. (The harness handles this; match the style of the starter code you emit.) For int[][] parameters, use the LeetCode C convention: "int** grid, int gridSize, int* gridColSize" — gridSize is the number of rows, gridColSize[r] is the number of columns in row r.
-5. testCases: an array of { "input": [...one value per parameter in order...], "expected": <value>, "hidden": true|false }. Provide 6-10 cases. Mark the first 2-3 as visible (hidden:false) and the rest hidden:true. Include edge cases (empty input, single element, duplicates, negatives, all-same) among the hidden ones. Values must match the declared types exactly.
-6. If the correct answer is an array whose order is not significant, set "ordered": false on the signature so the judge sorts before comparing.
-7. starterCode is a stub the student fills in (correct signature, a TODO comment, a trivial default return). solutions is the full working answer.
+5. Per-language conventions for the other languages:
+   - typescript: a plain typed function, same camelCase name as javascript (e.g. "function twoSum(nums: number[], target: number): number[]"). Standalone code, no imports/exports.
+   - java: "class Solution" with the public camelCase method.
+   - csharp: "public class Solution" with the public PascalCase method (twoSum -> TwoSum). LeetCode types: int[], string[], int[][] (jagged arrays), string, bool, int. Target C# 7 — no top-level statements, no records; do not define Main.
+   - cpp: "class Solution" with a public method, LeetCode types: int, bool, string, vector<int>, vector<string>, vector<vector<int>>. Common standard headers and "using namespace std" are pre-included by the judge; do not write a main function.
+6. testCases: an array of { "input": [...one value per parameter in order...], "expected": <value>, "hidden": true|false }. Provide 6-10 cases. Mark the first 2-3 as visible (hidden:false) and the rest hidden:true. Include edge cases (empty input, single element, duplicates, negatives, all-same) among the hidden ones. Values must match the declared types exactly.
+7. If the correct answer is an array whose order is not significant, set "ordered": false on the signature so the judge sorts before comparing.
+8. starterCode is a stub the student fills in (correct signature, a TODO comment, a trivial default return). solutions is the full working answer.
 
 # Hard constraints for EXPLANATION problems
 
@@ -72,8 +77,8 @@ Do NOT include signature/testCases/starterCode/solutions/editorial for explanati
   "hints": ["...", "..."],
   "signature": { "name": "...", "params": [{ "name": "...", "type": "int[]" }], "returns": "int", "ordered": true },
   "testCases": [{ "input": [[1,2,3]], "expected": 6, "hidden": false }],
-  "starterCode": { "python": "...", "javascript": "...", "java": "...", "c": "..." },
-  "solutions": { "python": "...", "javascript": "...", "java": "...", "c": "..." },
+  "starterCode": { "python": "...", "javascript": "...", "typescript": "...", "java": "...", "csharp": "...", "c": "...", "cpp": "..." },
+  "solutions": { "python": "...", "javascript": "...", "typescript": "...", "java": "...", "csharp": "...", "c": "...", "cpp": "..." },
   "editorial": "..."
 }
 </problem>
@@ -90,7 +95,7 @@ Topic: ${spec.topic}
 
 Return only the <problem>...</problem> JSON.`;
   }
-  return `Write ONE code problem with full, correct reference solutions in all four languages (${langs}).
+  return `Write ONE code problem with full, correct reference solutions in all supported languages (${langs}).
 Category: ${spec.category}
 Difficulty: ${spec.difficulty}
 Topic: ${spec.topic}

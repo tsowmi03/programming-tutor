@@ -372,6 +372,11 @@ No pixels change.
     return [];
 }
 `,
+    typescript: `function floodFill(image: number[][], sr: number, sc: number, color: number): number[] {
+    // TODO: implement flood fill
+    // Return the modified image as a flattened 1D array (row by row)
+    return [];
+}`,
     java: `class Solution {
     public int[] floodFill(int[][] image, int sr, int sc, int color) {
         // TODO: implement flood fill
@@ -380,6 +385,13 @@ No pixels change.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] FloodFill(int[][] image, int sr, int sc, int color) {
+        // TODO: implement flood fill
+        // Return the modified image as a flattened 1D array (row by row)
+        return new int[0];
+    }
+}`,
     c: `int* floodFill(int** image, int imageSize, int* imageColSize, int sr, int sc, int color, int* returnSize) {
     /* TODO: implement flood fill */
     /* Return the modified image as a flattened 1D array (row by row) */
@@ -387,6 +399,14 @@ No pixels change.
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        // TODO: implement flood fill
+        // Return the modified image as a flattened 1D array (row by row)
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def flood_fill(image, sr, sc, color):
@@ -428,6 +448,27 @@ No pixels change.
     return result;
 }
 `,
+    typescript: `function floodFill(image: number[][], sr: number, sc: number, color: number): number[] {
+    const original = image[sr][sc];
+    const rows = image.length, cols = image[0].length;
+    if (original !== color) {
+        function dfs(r: number, c: number): void {
+            if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+            if (image[r][c] !== original) return;
+            image[r][c] = color;
+            dfs(r + 1, c);
+            dfs(r - 1, c);
+            dfs(r, c + 1);
+            dfs(r, c - 1);
+        }
+        dfs(sr, sc);
+    }
+    const result: number[] = [];
+    for (let r = 0; r < rows; r++)
+        for (let c = 0; c < cols; c++)
+            result.push(image[r][c]);
+    return result;
+}`,
     java: `class Solution {
     private int rows, cols;
     public int[] floodFill(int[][] image, int sr, int sc, int color) {
@@ -455,6 +496,34 @@ No pixels change.
     }
 }
 `,
+    csharp: `public class Solution {
+    private int rows, cols;
+
+    public int[] FloodFill(int[][] image, int sr, int sc, int color) {
+        int original = image[sr][sc];
+        rows = image.Length;
+        cols = image[0].Length;
+        if (original != color) {
+            Dfs(image, sr, sc, original, color);
+        }
+        int[] result = new int[rows * cols];
+        int idx = 0;
+        for (int r = 0; r < rows; r++)
+            for (int c = 0; c < cols; c++)
+                result[idx++] = image[r][c];
+        return result;
+    }
+
+    private void Dfs(int[][] image, int r, int c, int original, int color) {
+        if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+        if (image[r][c] != original) return;
+        image[r][c] = color;
+        Dfs(image, r + 1, c, original, color);
+        Dfs(image, r - 1, c, original, color);
+        Dfs(image, r, c + 1, original, color);
+        Dfs(image, r, c - 1, original, color);
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* floodFill(int** image, int imageSize, int* imageColSize, int sr, int sc, int color, int* returnSize) {
@@ -492,6 +561,35 @@ int* floodFill(int** image, int imageSize, int* imageColSize, int sr, int sc, in
     return result;
 }
 `,
+    cpp: `class Solution {
+private:
+    int rows, cols;
+
+    void dfs(vector<vector<int>>& image, int r, int c, int original, int color) {
+        if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+        if (image[r][c] != original) return;
+        image[r][c] = color;
+        dfs(image, r + 1, c, original, color);
+        dfs(image, r - 1, c, original, color);
+        dfs(image, r, c + 1, original, color);
+        dfs(image, r, c - 1, original, color);
+    }
+
+public:
+    vector<int> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int original = image[sr][sc];
+        rows = image.size();
+        cols = image[0].size();
+        if (original != color) {
+            dfs(image, sr, sc, original, color);
+        }
+        vector<int> result;
+        for (int r = 0; r < rows; r++)
+            for (int c = 0; c < cols; c++)
+                result.push_back(image[r][c]);
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Depth-First Search (DFS)
 

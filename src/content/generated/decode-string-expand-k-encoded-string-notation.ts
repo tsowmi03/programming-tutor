@@ -149,6 +149,10 @@ function decodeString(s) {
     return "";
 }
 `,
+    typescript: `function decodeString(s: string): string {
+    // TODO: implement using a stack
+    return "";
+}`,
     java: `class Solution {
     public String decodeString(String s) {
         // TODO: implement using a stack
@@ -156,6 +160,14 @@ function decodeString(s) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public string DecodeString(string s) {
+        // TODO: implement using a stack
+        return "";
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 char* decodeString(char* s) {
@@ -163,6 +175,13 @@ char* decodeString(char* s) {
     return "";
 }
 `,
+    cpp: `class Solution {
+public:
+    string decodeString(string s) {
+        // TODO: implement using a stack
+        return "";
+    }
+};`,
   },
   solutions: {
     python: `def decode_string(s: str) -> str:
@@ -210,6 +229,29 @@ char* decodeString(char* s) {
     return current;
 }
 `,
+    typescript: `function decodeString(s: string): string {
+    const countStack: number[] = [];
+    const stringStack: string[] = [];
+    let current = "";
+    let k = 0;
+    for (const ch of s) {
+        if (ch >= '0' && ch <= '9') {
+            k = k * 10 + parseInt(ch);
+        } else if (ch === '[') {
+            countStack.push(k);
+            stringStack.push(current);
+            current = "";
+            k = 0;
+        } else if (ch === ']') {
+            const repeat = countStack.pop()!;
+            const prev = stringStack.pop()!;
+            current = prev + current.repeat(repeat);
+        } else {
+            current += ch;
+        }
+    }
+    return current;
+}`,
     java: `class Solution {
     public String decodeString(String s) {
         java.util.Deque<Integer> countStack = new java.util.ArrayDeque<>();
@@ -240,6 +282,38 @@ char* decodeString(char* s) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+using System.Text;
+
+public class Solution {
+    public string DecodeString(string s) {
+        Stack<int> countStack = new Stack<int>();
+        Stack<StringBuilder> stringStack = new Stack<StringBuilder>();
+        StringBuilder current = new StringBuilder();
+        int k = 0;
+        foreach (char ch in s) {
+            if (char.IsDigit(ch)) {
+                k = k * 10 + (ch - '0');
+            } else if (ch == '[') {
+                countStack.Push(k);
+                stringStack.Push(current);
+                current = new StringBuilder();
+                k = 0;
+            } else if (ch == ']') {
+                int repeat = countStack.Pop();
+                StringBuilder prev = stringStack.Pop();
+                string seg = current.ToString();
+                for (int i = 0; i < repeat; i++) {
+                    prev.Append(seg);
+                }
+                current = prev;
+            } else {
+                current.Append(ch);
+            }
+        }
+        return current.ToString();
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -301,6 +375,38 @@ char* decodeString(char* s) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    string decodeString(string s) {
+        stack<int> countStack;
+        stack<string> stringStack;
+        string current = "";
+        int k = 0;
+        for (char ch : s) {
+            if (isdigit(ch)) {
+                k = k * 10 + (ch - '0');
+            } else if (ch == '[') {
+                countStack.push(k);
+                stringStack.push(current);
+                current = "";
+                k = 0;
+            } else if (ch == ']') {
+                int repeat = countStack.top();
+                countStack.pop();
+                string prev = stringStack.top();
+                stringStack.pop();
+                string seg = current;
+                current = prev;
+                for (int i = 0; i < repeat; i++) {
+                    current += seg;
+                }
+            } else {
+                current += ch;
+            }
+        }
+        return current;
+    }
+};`,
   },
   editorial: `## Approach: Stack-based Decoding
 

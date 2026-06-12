@@ -117,6 +117,10 @@ Explanation: Eight ways:
     return 0;
 }
 `,
+    typescript: `function climbStairs(n: number): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int climbStairs(int n) {
         // TODO: implement
@@ -124,11 +128,24 @@ Explanation: Eight ways:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int ClimbStairs(int n) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int climbStairs(int n) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int climbStairs(int n) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def climb_stairs(n: int) -> int:
@@ -150,6 +167,16 @@ Explanation: Eight ways:
     return prev1;
 }
 `,
+    typescript: `function climbStairs(n: number): number {
+    if (n <= 2) return n;
+    let prev2 = 1, prev1 = 2;
+    for (let i = 3; i <= n; i++) {
+        let cur = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}`,
     java: `class Solution {
     public int climbStairs(int n) {
         if (n <= 2) return n;
@@ -163,6 +190,18 @@ Explanation: Eight ways:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int ClimbStairs(int n) {
+        if (n <= 2) return n;
+        int prev2 = 1, prev1 = 2;
+        for (int i = 3; i <= n; i++) {
+            int cur = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = cur;
+        }
+        return prev1;
+    }
+}`,
     c: `int climbStairs(int n) {
     if (n <= 2) return n;
     int prev2 = 1, prev1 = 2;
@@ -174,6 +213,19 @@ Explanation: Eight ways:
     return prev1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int climbStairs(int n) {
+        if (n <= 2) return n;
+        int prev2 = 1, prev1 = 2;
+        for (int i = 3; i <= n; i++) {
+            int cur = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = cur;
+        }
+        return prev1;
+    }
+};`,
   },
   editorial: `## Approach: Bottom-Up Dynamic Programming (Fibonacci)
 
