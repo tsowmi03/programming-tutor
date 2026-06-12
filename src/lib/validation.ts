@@ -25,6 +25,26 @@ export const submissionSchema = z.discriminatedUnion("kind", [
   explanationSubmissionSchema,
 ]);
 
+const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .pipe(z.email("Enter a valid email address.").max(254));
+
+export const signupSchema = z.object({
+  name: z.string().trim().min(1, "Name is required.").max(80),
+  email: emailSchema,
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters.")
+    .max(200),
+});
+
+export const loginSchema = z.object({
+  email: emailSchema,
+  password: z.string().min(1, "Password is required."),
+});
+
 export const selfAssessSchema = z.object({
   submissionId: z.string().min(1),
   selfScore: z.number().int().min(0).max(2),

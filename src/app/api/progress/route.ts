@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { deriveStatus, type ProblemStatus } from "@/lib/problems";
+import { requireUser } from "@/lib/auth";
 import { toErrorResponse } from "@/lib/api";
 
 interface CategoryProgress {
@@ -10,11 +11,17 @@ interface CategoryProgress {
   attempted: number;
 }
 
-/** Aggregate progress: overall, per category, per difficulty, and recents. */
+/** The user's aggregate progress: overall, per category and difficulty, recents. */
 export async function GET() {
   try {
+    const user = await requireUser();
     const problems = await prisma.problem.findMany({
-      include: { submissions: { select: { status: true, selfScore: true } } },
+      include: {
+        submissions: {
+          where: { userId: user.id },
+          select: { status: true, selfScore: true },
+        },
+      },
       orderBy: [{ category: "asc" }, { order: "asc" }],
     });
 
@@ -51,6 +58,7 @@ export async function GET() {
     }
 
     const recentSubmissions = await prisma.submission.findMany({
+      where: { userId: user.id },
       orderBy: { createdAt: "desc" },
       take: 10,
       select: {

@@ -57,11 +57,14 @@ export function deriveStatus(submissions: SubmissionLite[]): ProblemStatus {
   return solved ? "solved" : "attempted";
 }
 
-export async function listProblems(): Promise<ProblemSummary[]> {
+export async function listProblems(userId: string): Promise<ProblemSummary[]> {
   const problems = await prisma.problem.findMany({
     orderBy: [{ category: "asc" }, { order: "asc" }],
     include: {
-      submissions: { select: { status: true, selfScore: true } },
+      submissions: {
+        where: { userId },
+        select: { status: true, selfScore: true },
+      },
     },
   });
 
@@ -83,11 +86,15 @@ export async function getProblemRecord(slug: string) {
 
 export async function getProblemDetail(
   slug: string,
+  userId: string,
 ): Promise<ProblemDetail | null> {
   const p = await prisma.problem.findUnique({
     where: { slug },
     include: {
-      submissions: { select: { status: true, selfScore: true } },
+      submissions: {
+        where: { userId },
+        select: { status: true, selfScore: true },
+      },
     },
   });
   if (!p) return null;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { deriveStatus } from "@/lib/problems";
+import { requireUserPage } from "@/lib/auth";
 import { CATEGORIES } from "@/content/categories";
 import { DifficultyBadge } from "@/components/badges";
 import { LANGUAGES } from "@/lib/judge/languages";
@@ -19,11 +20,18 @@ const STATUS_LABELS: Record<string, { label: string; classes: string }> = {
 };
 
 export default async function ProgressPage() {
+  const user = await requireUserPage();
   const problems = await prisma.problem.findMany({
-    include: { submissions: { select: { status: true, selfScore: true } } },
+    include: {
+      submissions: {
+        where: { userId: user.id },
+        select: { status: true, selfScore: true },
+      },
+    },
     orderBy: [{ category: "asc" }, { order: "asc" }],
   });
   const recent = await prisma.submission.findMany({
+    where: { userId: user.id },
     orderBy: { createdAt: "desc" },
     take: 12,
     include: {
@@ -37,7 +45,9 @@ export default async function ProgressPage() {
   }));
   const solved = withStatus.filter((p) => p.derived === "solved").length;
   const attempted = withStatus.filter((p) => p.derived === "attempted").length;
-  const totalSubmissions = await prisma.submission.count();
+  const totalSubmissions = await prisma.submission.count({
+    where: { userId: user.id },
+  });
 
   const difficulties = ["easy", "medium", "hard"] as const;
   const byDifficulty = difficulties

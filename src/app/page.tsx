@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { ArrowRight, Flame, Sparkles } from "lucide-react";
 import { listProblems } from "@/lib/problems";
+import { requireUserPage } from "@/lib/auth";
 import { CATEGORY_LIST } from "@/content/categories";
 import { DifficultyBadge, StatusIcon } from "@/components/badges";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const problems = await listProblems();
+  const user = await requireUserPage();
+  const problems = await listProblems(user.id);
   const solved = problems.filter((p) => p.status === "solved").length;
   const attempted = problems.filter((p) => p.status === "attempted").length;
   const total = problems.length;
@@ -34,7 +36,7 @@ export default async function DashboardPage() {
           <div className="max-w-xl">
             <p className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-300 ring-1 ring-indigo-500/30">
               <Sparkles className="h-3.5 w-3.5" />
-              Your personal training ground
+              Welcome back, {user.name.split(" ")[0]}
             </p>
             <h1 className="text-3xl font-bold tracking-tight">
               Build problem-solving instincts,

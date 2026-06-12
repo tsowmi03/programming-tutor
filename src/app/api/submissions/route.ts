@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { judgeCode } from "@/lib/judge/judge";
 import { getProblemRecord, parseJudgingData } from "@/lib/problems";
 import { selfAssessSchema, submissionSchema } from "@/lib/validation";
+import { requireUser } from "@/lib/auth";
 import { NotFoundError, toErrorResponse } from "@/lib/api";
 
 /**
@@ -12,6 +13,7 @@ import { NotFoundError, toErrorResponse } from "@/lib/api";
  */
 export async function POST(req: Request) {
   try {
+    const user = await requireUser();
     const body = submissionSchema.parse(await req.json());
 
     const record = await getProblemRecord(body.slug);
@@ -36,6 +38,7 @@ export async function POST(req: Request) {
       const submission = await prisma.submission.create({
         data: {
           problemId: record.id,
+          userId: user.id,
           kind: "code",
           language: body.language,
           code: body.code,
@@ -59,6 +62,7 @@ export async function POST(req: Request) {
     const submission = await prisma.submission.create({
       data: {
         problemId: record.id,
+        userId: user.id,
         kind: "explanation",
         answerText: body.answerText,
         status: "self_assessed",
@@ -79,6 +83,7 @@ export async function POST(req: Request) {
 /** Record the self-assessment score on an explanation submission. */
 export async function PATCH(req: Request) {
   try {
+    const user = await requireUser();
     const { submissionId, selfScore } = selfAssessSchema.parse(
       await req.json(),
     );
@@ -86,7 +91,10 @@ export async function PATCH(req: Request) {
     const existing = await prisma.submission.findUnique({
       where: { id: submissionId },
     });
-    if (!existing) throw new NotFoundError("Submission not found");
+    // Other users' submissions are indistinguishable from nonexistent ones.
+    if (!existing || existing.userId !== user.id) {
+      throw new NotFoundError("Submission not found");
+    }
     if (existing.kind !== "explanation") {
       return NextResponse.json(
         { error: "Only explanation submissions can be self-assessed." },

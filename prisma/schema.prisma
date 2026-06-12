@@ -1,4 +1,4 @@
-// Prisma schema for the programming tutor.
+// Prisma schema for CodeClimb.
 //
 // SQLite is used for local development. For production the same schema works
 // with Turso (libSQL) via Prisma driver adapters — see DEPLOYMENT.md.
@@ -14,6 +14,31 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique // stored lowercase
+  name         String
+  passwordHash String // scrypt, formatted "scrypt:N:r:p:salt:hash" (base64url)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions    Session[]
+  submissions Submission[]
+}
+
+model Session {
+  id        String @id @default(cuid())
+  tokenHash String @unique // SHA-256 of the cookie token; raw token never stored
+  userId    String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Problem {
@@ -49,6 +74,11 @@ model Submission {
   problemId String
   problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
+  // Nullable only for rows created before accounts existed; every new
+  // submission sets it. scripts/claim-submissions.ts assigns legacy rows.
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   kind     String // "code" | "explanation"
   language String? // code submissions: "python" | "javascript" | "java" | "c"
   code     String?
@@ -64,4 +94,5 @@ model Submission {
   createdAt DateTime @default(now())
 
   @@index([problemId, createdAt])
+  @@index([userId, problemId, createdAt])
 }

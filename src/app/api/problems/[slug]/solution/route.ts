@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProblemRecord } from "@/lib/problems";
+import { requireUser } from "@/lib/auth";
 import { NotFoundError, toErrorResponse } from "@/lib/api";
 
 /**
@@ -12,6 +13,7 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
+    await requireUser();
     const { slug } = await params;
     const record = await getProblemRecord(slug);
     if (!record) throw new NotFoundError(`No problem named "${slug}"`);

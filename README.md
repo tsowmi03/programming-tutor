@@ -1,11 +1,15 @@
 # CodeClimb
 
-A personal, LeetCode-style training ground for programming fundamentals.
-Solve coding problems in **Python, JavaScript, Java, or C** — judged against
-real test cases — and cement the concepts with written **explanation
-problems** reviewed against model answers.
+A LeetCode-style training ground for programming fundamentals. Solve coding
+problems in **Python, JavaScript, Java, or C** — judged against real test
+cases — and cement the concepts with written **explanation problems** reviewed
+against model answers.
 
 ## Features
+
+- **Multi-user accounts**: email + password signup with database-backed
+  sessions (no external auth service). Submissions and progress are tracked
+  per user; problems are shared.
 
 - **23 problems** across 10 topics: foundations, complexity analysis,
   arrays & hashing, two pointers, stack & queue, binary search, sliding
@@ -83,6 +87,7 @@ scripts/           judge smoke test + full solution verification
 | `npm run build` | production build |
 | `npm test` | unit tests (harness generators, protocol parser) |
 | `npm run db:seed` | (re)seed problems — idempotent, keeps submissions |
+| `npx tsx scripts/claim-submissions.ts <email>` | one-off: assign submissions made before accounts existed to a user |
 | `npx tsx scripts/verify-solutions.ts` | run every reference solution through the judge |
 | `npx tsx scripts/smoke-judge.ts` | quick judge sanity check incl. error paths |
 | `npm run problems:batch` | generate problems in bulk from `scripts/topics.json` |
@@ -135,9 +140,23 @@ See [DEPLOYMENT.md](DEPLOYMENT.md). Short version: the app deploys to Vercel
 with a Turso (libSQL) database, and needs a self-hosted Piston instance for
 code execution — those two account setups are the only manual steps.
 
+## Accounts
+
+Sign up at `/signup`; everything else requires a session. Auth is
+self-contained: scrypt password hashes (Node's crypto, no dependencies) and
+random session tokens stored hashed in the database, delivered as an
+httpOnly cookie. There are no auth-related environment variables.
+
+If you have submissions from before accounts existed (they have no owner),
+sign up first, then claim them:
+
+```bash
+npx tsx scripts/claim-submissions.ts you@example.com
+```
+
 ## Roadmap ideas
 
 - Spaced-repetition queue fed by self-assessment scores
 - Optional AI feedback on explanation answers (Claude API)
 - More languages (C++, Go, Rust) — each is one harness generator away
-- Auth + multi-user, if it ever outgrows personal use
+- OAuth sign-in (Google/GitHub) on top of the existing session layer

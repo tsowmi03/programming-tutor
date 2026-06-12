@@ -1,20 +1,22 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getProblemRecord } from "@/lib/problems";
+import { requireUser } from "@/lib/auth";
 import { NotFoundError, toErrorResponse } from "@/lib/api";
 
-/** Submission history for one problem, newest first. */
+/** The user's submission history for one problem, newest first. */
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
+    const user = await requireUser();
     const { slug } = await params;
     const record = await getProblemRecord(slug);
     if (!record) throw new NotFoundError(`No problem named "${slug}"`);
 
     const submissions = await prisma.submission.findMany({
-      where: { problemId: record.id },
+      where: { problemId: record.id, userId: user.id },
       orderBy: { createdAt: "desc" },
       take: 30,
       select: {

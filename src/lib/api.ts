@@ -3,6 +3,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { ExecutorUnavailableError } from "@/lib/judge/executors";
+import { UnauthorizedError } from "@/lib/auth";
 
 export class NotFoundError extends Error {
   constructor(message = "Not found") {
@@ -13,7 +14,8 @@ export class NotFoundError extends Error {
 
 /**
  * Uniform error envelope: { error: string }. Validation problems are 400,
- * missing resources 404, executor outages 503, everything else a logged 500.
+ * missing auth 401, missing resources 404, executor outages 503, everything
+ * else a logged 500.
  */
 export function toErrorResponse(err: unknown): NextResponse {
   if (err instanceof ZodError) {
@@ -21,6 +23,9 @@ export function toErrorResponse(err: unknown): NextResponse {
       .map((i) => (i.path.length ? `${i.path.join(".")}: ${i.message}` : i.message))
       .join("; ");
     return NextResponse.json({ error: message }, { status: 400 });
+  }
+  if (err instanceof UnauthorizedError) {
+    return NextResponse.json({ error: err.message }, { status: 401 });
   }
   if (err instanceof NotFoundError) {
     return NextResponse.json({ error: err.message }, { status: 404 });

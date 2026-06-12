@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { getProblemDetail } from "@/lib/problems";
+import { getProblemDetail, getProblemRecord } from "@/lib/problems";
+import { requireUserPage } from "@/lib/auth";
 import { CodeWorkspace } from "@/components/workspace/CodeWorkspace";
 import { ExplanationWorkspace } from "@/components/workspace/ExplanationWorkspace";
 
@@ -10,8 +11,9 @@ export default async function ProblemPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const user = await requireUserPage();
   const { slug } = await params;
-  const problem = await getProblemDetail(slug);
+  const problem = await getProblemDetail(slug, user.id);
   if (!problem) notFound();
 
   if (problem.type === "code") {
@@ -26,6 +28,6 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const problem = await getProblemDetail(slug);
-  return { title: problem?.title ?? "Problem" };
+  const record = await getProblemRecord(slug);
+  return { title: record?.title ?? "Problem" };
 }

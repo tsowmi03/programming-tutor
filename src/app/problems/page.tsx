@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { listProblems } from "@/lib/problems";
+import { requireUserPage } from "@/lib/auth";
 import { ProblemBrowser } from "@/components/ProblemBrowser";
 
 export const dynamic = "force-dynamic";
@@ -7,7 +8,8 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Problems" };
 
 export default async function ProblemsPage() {
-  const problems = await listProblems();
+  const user = await requireUserPage();
+  const problems = await listProblems(user.id);
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
       <h1 className="text-2xl font-bold tracking-tight">Problems</h1>
