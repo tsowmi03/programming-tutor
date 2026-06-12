@@ -115,7 +115,7 @@ function toResult(index: number, payloadText: string): TestResult {
   return {
     index,
     status: payload.pass ? "pass" : "fail",
-    got: payload.got !== undefined ? canonical(payload.got) : "null",
+    got: payload.got !== undefined ? canonical(payload.got) : undefined,
     expected:
       payload.expected !== undefined ? canonical(payload.expected) : undefined,
   };

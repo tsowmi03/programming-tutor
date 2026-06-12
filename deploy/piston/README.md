@@ -6,8 +6,10 @@ cgroup v2, and ports 80/443 open.
 1. Copy `.env.example` to `.env`.
 2. Set `PISTON_HOST` to a DNS name that resolves to the VPS.
 3. Generate `PISTON_AUTH_TOKEN` with `openssl rand -hex 32`.
-4. Start the services with `docker compose up -d`.
-5. Install the required runtimes through the loopback-only API:
+4. Keep `PISTON_OUTPUT_MAX_SIZE=1048576` so judge protocol output and bounded
+   user debug output fit without disabling Piston's output protection.
+5. Start the services with `docker compose up -d`.
+6. Install the required runtimes through the loopback-only API:
 
 ```bash
 for package in \

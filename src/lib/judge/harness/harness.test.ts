@@ -25,6 +25,8 @@ describe("python harness", () => {
     expect(src).toContain('globals().get("two_sum")');
     expect(src.startsWith("def two_sum")).toBe(true);
     expect(src).toContain("b64decode");
+    expect(src).toContain('\'{"pass":true}\'');
+    expect(src).not.toContain(',"expected":%s');
   });
 });
 
@@ -32,6 +34,8 @@ describe("javascript harness", () => {
   it("references the camelCase function", () => {
     const src = buildJavaScriptHarness("function twoSum(a, b) {}", twoSum, tests);
     expect(src).toContain('typeof twoSum === "function"');
+    expect(src).toContain('\'{"pass":true}\'');
+    expect(src).not.toContain('\'"expected":\'');
   });
 });
 
@@ -46,6 +50,8 @@ describe("java harness", () => {
       "runTest(0, new int[]{0,1}, true, () -> sol.twoSum(new int[]{2,7,11,15}, 9));",
     );
     expect(src).toContain("public class Main");
+    expect(src).toContain('"{\\"pass\\":true}"');
+    expect(src).not.toContain('+\\"expected\\"');
   });
 
   it("escapes special characters in string literals", () => {
@@ -86,6 +92,8 @@ describe("c harness", () => {
     expect(src).toContain("int __t0_p0[] = {2,7,11,15};");
     expect(src).toContain("twoSum(__t0_p0, 4, 9, &__rs)");
     expect(src).toContain('__emit(0, "[0,1]");');
+    expect(src).toContain('{\\"pass\\":true}');
+    expect(src).not.toContain(',\\"expected\\":%s');
   });
 
   it("sorts expected values for unordered comparisons", () => {

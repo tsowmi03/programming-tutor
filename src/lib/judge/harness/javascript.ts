@@ -51,23 +51,21 @@ export function buildJavaScriptHarness(
   for (let i = 0; i < tests.length; i++) {
     console.log("@@JUDGE:BEGIN:" + i + "@@");
     const t = tests[i];
-    const expectedJson = safeJson(t.expected);
     let payload;
     try {
       const args = JSON.parse(JSON.stringify(t.input));
       const got = fn(...args);
       const ok = deepEq(norm(got), norm(t.expected));
-      payload =
-        '{"pass":' + ok + ',"got":' + safeJson(got) +
-        ',"expected":' + expectedJson + "}";
+      payload = ok
+        ? '{"pass":true}'
+        : '{"pass":false,"got":' + safeJson(got) + "}";
     } catch (e) {
       const msg =
         e instanceof Error && e.stack
           ? e.stack.split("\\n").slice(0, 3).join("\\n").slice(0, 800)
           : String(e).slice(0, 800);
       payload =
-        '{"pass":false,"error":' + JSON.stringify(msg) +
-        ',"expected":' + expectedJson + "}";
+        '{"pass":false,"error":' + JSON.stringify(msg) + "}";
     }
     console.log("@@JUDGE:RESULT:" + i + ":" + payload + "@@");
   }

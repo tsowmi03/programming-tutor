@@ -142,6 +142,8 @@ gcloud compute ssh codeclimb-piston \
 - Deployment dir: `~/piston` (docker-compose: `piston_api`, `piston_caddy`).
 - Piston binds `127.0.0.1:2000`. Runtimes: Python 3.10.0, Node 18.15.0,
   Java 15.0.2, GCC 10.2.0.
+- `PISTON_OUTPUT_MAX_SIZE=1048576` raises the stock 1 KiB stdio cap while
+  retaining bounded-output protection for judge runs.
 - Caddy reconfigured for the tunnel: `auto_https off`, plain HTTP on `:80`,
   published as `127.0.0.1:80:80` only (port 443 dropped). It still enforces the
   `Authorization: Bearer <token>` boundary and proxies to `piston:2000`.
