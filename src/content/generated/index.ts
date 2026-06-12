@@ -31,7 +31,6 @@ import classicBinarySearchForATargetInASortedArray from "./classic-binary-search
 import climbingStairsNumberOfWaysToReachStepN from "./climbing-stairs-number-of-ways-to-reach-step-n";
 import coinChangeFewestCoinsToMakeAnAmount from "./coin-change-fewest-coins-to-make-an-amount";
 import combinationSumCountNumberOfOrderedWaysToSumToTargetUsingGivenCoins from "./combination-sum-count-number-of-ordered-ways-to-sum-to-target-using-given-coins";
-import containerWithMostWater from "./container-with-most-water";
 import convertAnIntegerToItsBinaryStringRepresentation from "./convert-an-integer-to-its-binary-string-representation";
 import countConnectedComponentsInAnUndirectedGraphGivenAsAnEdgeListInt from "./count-connected-components-in-an-undirected-graph-given-as-an-edge-list-int";
 import countElementsStrictlyGreaterThanAGivenThreshold from "./count-elements-strictly-greater-than-a-given-threshold";
@@ -91,7 +90,6 @@ import longestIncreasingSubsequenceLength from "./longest-increasing-subsequence
 import longestSubstringWithAtMostKDistinctCharacters from "./longest-substring-with-at-most-k-distinct-characters";
 import longestSubstringWithAtMostTwoDistinctCharacters from "./longest-substring-with-at-most-two-distinct-characters";
 import longestSubstringWithSameLettersAfterAtMostKReplacements from "./longest-substring-with-same-letters-after-at-most-k-replacements";
-import longestSubstringWithoutRepeatingCharacters from "./longest-substring-without-repeating-characters";
 import maxConsecutiveOnesAfterFlippingAtMostKZeros from "./max-consecutive-ones-after-flipping-at-most-k-zeros";
 import maximumAverageSubarrayOfExactlySizeKReturnIntegerFloor from "./maximum-average-subarray-of-exactly-size-k-return-integer-floor";
 import maximumDepthOfABinaryTreeEncodedAsALevelOrderIntArray from "./maximum-depth-of-a-binary-tree-encoded-as-a-level-order-int-array";
@@ -192,7 +190,6 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   climbingStairsNumberOfWaysToReachStepN,
   coinChangeFewestCoinsToMakeAnAmount,
   combinationSumCountNumberOfOrderedWaysToSumToTargetUsingGivenCoins,
-  containerWithMostWater,
   convertAnIntegerToItsBinaryStringRepresentation,
   countConnectedComponentsInAnUndirectedGraphGivenAsAnEdgeListInt,
   countElementsStrictlyGreaterThanAGivenThreshold,
@@ -252,7 +249,6 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   longestSubstringWithAtMostKDistinctCharacters,
   longestSubstringWithAtMostTwoDistinctCharacters,
   longestSubstringWithSameLettersAfterAtMostKReplacements,
-  longestSubstringWithoutRepeatingCharacters,
   maxConsecutiveOnesAfterFlippingAtMostKZeros,
   maximumAverageSubarrayOfExactlySizeKReturnIntegerFloor,
   maximumDepthOfABinaryTreeEncodedAsALevelOrderIntArray,

@@ -15,7 +15,7 @@
  * Afterwards: npm run db:seed  (and redeploy) to push the new content live.
  */
 
-import { existsSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
@@ -29,7 +29,6 @@ import {
 } from "../src/lib/judge/languages";
 import { createClient, GENERATED_DIR } from "./lib/pipeline";
 import { renderProblemModule } from "./lib/render";
-import { exportName } from "./lib/spec";
 
 const TARGET_LANGUAGES = ["typescript", "csharp", "cpp"] as const;
 type TargetLanguage = (typeof TARGET_LANGUAGES)[number];
@@ -209,12 +208,33 @@ function mergeCodeMap(
   return ordered as LanguageCodeMap;
 }
 
+/**
+ * Curated filenames and export names don't always match the slug (e.g.
+ * find-min-rotated.ts holds "find-minimum-in-rotated-sorted-array"), so the
+ * curated directory is scanned once for its actual slugs and export names.
+ */
+let curatedBySlug: Map<string, { path: string; exportAs: string }> | undefined;
+
+function curatedModules(): Map<string, { path: string; exportAs: string }> {
+  if (curatedBySlug) return curatedBySlug;
+  curatedBySlug = new Map();
+  for (const file of readdirSync(CURATED_DIR)) {
+    if (!file.endsWith(".ts")) continue;
+    const path = join(CURATED_DIR, file);
+    const text = readFileSync(path, "utf8");
+    const slug = text.match(/^\s*slug: "([^"]+)",$/m)?.[1];
+    const exportAs = text.match(/^export const (\w+):/m)?.[1];
+    if (slug && exportAs) curatedBySlug.set(slug, { path, exportAs });
+  }
+  return curatedBySlug;
+}
+
 /** Generated problems are default exports; curated ones are named exports. */
 function locateModule(slug: string): { path: string; exportAs?: string } {
+  const curated = curatedModules().get(slug);
+  if (curated) return curated;
   const generated = join(GENERATED_DIR, `${slug}.ts`);
   if (existsSync(generated)) return { path: generated };
-  const curated = join(CURATED_DIR, `${slug}.ts`);
-  if (existsSync(curated)) return { path: curated, exportAs: exportName(slug) };
   throw new Error(`No content module found for slug "${slug}"`);
 }
 
