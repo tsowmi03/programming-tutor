@@ -246,6 +246,11 @@ Explanation:
     return [];
 }
 `,
+    typescript: `function nextGreaterElement(nums: number[]): number[] {
+    // TODO: return an array where result[i] is the next greater element
+    // to the right of nums[i], or -1 if none exists
+    return [];
+}`,
     java: `class Solution {
     public int[] nextGreaterElement(int[] nums) {
         // TODO: return an array where result[i] is the next greater element
@@ -254,6 +259,13 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] NextGreaterElement(int[] nums) {
+        // TODO: return an array where result[i] is the next greater element
+        // to the right of nums[i], or -1 if none exists
+        return new int[0];
+    }
+}`,
     c: `int* nextGreaterElement(int* nums, int numsSize, int* returnSize) {
     // TODO: return an array where result[i] is the next greater element
     // to the right of nums[i], or -1 if none exists
@@ -262,6 +274,14 @@ Explanation:
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums) {
+        // TODO: return an array where result[i] is the next greater element
+        // to the right of nums[i], or -1 if none exists
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def next_greater_element(nums):
@@ -289,6 +309,19 @@ Explanation:
     return result;
 }
 `,
+    typescript: `function nextGreaterElement(nums: number[]): number[] {
+    const n = nums.length;
+    const result = new Array(n).fill(-1);
+    const stack: number[] = [];
+    for (let i = 0; i < n; i++) {
+        while (stack.length > 0 && nums[i] > nums[stack[stack.length - 1]]) {
+            const idx = stack.pop()!;
+            result[idx] = nums[i];
+        }
+        stack.push(i);
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] nextGreaterElement(int[] nums) {
         int n = nums.length;
@@ -306,6 +339,22 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] NextGreaterElement(int[] nums) {
+        int n = nums.Length;
+        int[] result = new int[n];
+        for (int k = 0; k < n; k++) result[k] = -1;
+        int[] stack = new int[n + 1];
+        int top = -1;
+        for (int i = 0; i < n; i++) {
+            while (top >= 0 && nums[i] > nums[stack[top]]) {
+                result[stack[top--]] = nums[i];
+            }
+            stack[++top] = i;
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 int* nextGreaterElement(int* nums, int numsSize, int* returnSize) {
     *returnSize = numsSize;
@@ -323,6 +372,22 @@ int* nextGreaterElement(int* nums, int numsSize, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> result(n, -1);
+        vector<int> stack;
+        for (int i = 0; i < n; i++) {
+            while (!stack.empty() && nums[i] > nums[stack.back()]) {
+                result[stack.back()] = nums[i];
+                stack.pop_back();
+            }
+            stack.push_back(i);
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Monotonic Stack — O(n)
 

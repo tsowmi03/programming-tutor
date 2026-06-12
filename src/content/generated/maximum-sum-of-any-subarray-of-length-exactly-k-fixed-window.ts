@@ -194,8 +194,18 @@ Explanation: Subarray [3, 4] has sum 7.
     // TODO: return the maximum sum of any contiguous subarray of length exactly k
     return 0;
 }`,
+    typescript: `function maxSumSubarrayOfSizeK(nums: number[], k: number): number {
+    // TODO: return the maximum sum of any contiguous subarray of length exactly k
+    return 0;
+}`,
     java: `class Solution {
     public int maxSumSubarrayOfSizeK(int[] nums, int k) {
+        // TODO: return the maximum sum of any contiguous subarray of length exactly k
+        return 0;
+    }
+}`,
+    csharp: `public class Solution {
+    public int MaxSumSubarrayOfSizeK(int[] nums, int k) {
         // TODO: return the maximum sum of any contiguous subarray of length exactly k
         return 0;
     }
@@ -204,6 +214,13 @@ Explanation: Subarray [3, 4] has sum 7.
     // TODO: return the maximum sum of any contiguous subarray of length exactly k
     return 0;
 }`,
+    cpp: `class Solution {
+public:
+    int maxSumSubarrayOfSizeK(vector<int>& nums, int k) {
+        // TODO: return the maximum sum of any contiguous subarray of length exactly k
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def max_sum_subarray_of_size_k(nums, k):
@@ -229,9 +246,35 @@ Explanation: Subarray [3, 4] has sum 7.
     }
     return maxSum;
 }`,
+    typescript: `function maxSumSubarrayOfSizeK(nums: number[], k: number): number {
+    const n = nums.length;
+    if (n < k) return 0;
+    let windowSum = 0;
+    for (let i = 0; i < k; i++) windowSum += nums[i];
+    let maxSum = windowSum;
+    for (let i = k; i < n; i++) {
+        windowSum += nums[i] - nums[i - k];
+        if (windowSum > maxSum) maxSum = windowSum;
+    }
+    return maxSum;
+}`,
     java: `class Solution {
     public int maxSumSubarrayOfSizeK(int[] nums, int k) {
         int n = nums.length;
+        if (n < k) return 0;
+        int windowSum = 0;
+        for (int i = 0; i < k; i++) windowSum += nums[i];
+        int maxSum = windowSum;
+        for (int i = k; i < n; i++) {
+            windowSum += nums[i] - nums[i - k];
+            if (windowSum > maxSum) maxSum = windowSum;
+        }
+        return maxSum;
+    }
+}`,
+    csharp: `public class Solution {
+    public int MaxSumSubarrayOfSizeK(int[] nums, int k) {
+        int n = nums.Length;
         if (n < k) return 0;
         int windowSum = 0;
         for (int i = 0; i < k; i++) windowSum += nums[i];
@@ -255,6 +298,21 @@ Explanation: Subarray [3, 4] has sum 7.
     }
     return maxSum;
 }`,
+    cpp: `class Solution {
+public:
+    int maxSumSubarrayOfSizeK(vector<int>& nums, int k) {
+        int n = nums.size();
+        if (n < k) return 0;
+        int windowSum = 0;
+        for (int i = 0; i < k; i++) windowSum += nums[i];
+        int maxSum = windowSum;
+        for (int i = k; i < n; i++) {
+            windowSum += nums[i] - nums[i - k];
+            if (windowSum > maxSum) maxSum = windowSum;
+        }
+        return maxSum;
+    }
+};`,
   },
   editorial: `## Approach: Fixed-Size Sliding Window
 

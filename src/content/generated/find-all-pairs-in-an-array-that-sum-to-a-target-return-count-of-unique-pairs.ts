@@ -202,6 +202,10 @@ Explanation: (1, 1) is the only unique pair. Having four 1s does not
     return 0;
 }
 `,
+    typescript: `function countUniquePairs(nums: number[], target: number): number {
+    // TODO: implement your solution
+    return 0;
+}`,
     java: `class Solution {
     public int countUniquePairs(int[] nums, int target) {
         // TODO: implement your solution
@@ -209,11 +213,24 @@ Explanation: (1, 1) is the only unique pair. Having four 1s does not
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountUniquePairs(int[] nums, int target) {
+        // TODO: implement your solution
+        return 0;
+    }
+}`,
     c: `int countUniquePairs(int* nums, int numsSize, int target) {
     /* TODO: implement your solution */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countUniquePairs(vector<int>& nums, int target) {
+        // TODO: implement your solution
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_unique_pairs(nums, target):
@@ -257,6 +274,26 @@ Explanation: (1, 1) is the only unique pair. Having four 1s does not
     return count;
 }
 `,
+    typescript: `function countUniquePairs(nums: number[], target: number): number {
+    nums.sort((a, b) => a - b);
+    let left = 0, right = nums.length - 1;
+    let count = 0;
+    while (left < right) {
+        const s = nums[left] + nums[right];
+        if (s === target) {
+            count++;
+            while (left < right && nums[left] === nums[left + 1]) left++;
+            while (left < right && nums[right] === nums[right - 1]) right--;
+            left++;
+            right--;
+        } else if (s < target) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+    return count;
+}`,
     java: `class Solution {
     public int countUniquePairs(int[] nums, int target) {
         java.util.Arrays.sort(nums);
@@ -280,6 +317,30 @@ Explanation: (1, 1) is the only unique pair. Having four 1s does not
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int CountUniquePairs(int[] nums, int target) {
+        Array.Sort(nums);
+        int left = 0, right = nums.Length - 1;
+        int count = 0;
+        while (left < right) {
+            int s = nums[left] + nums[right];
+            if (s == target) {
+                count++;
+                while (left < right && nums[left] == nums[left + 1]) left++;
+                while (left < right && nums[right] == nums[right - 1]) right--;
+                left++;
+                right--;
+            } else if (s < target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return count;
+    }
+}`,
     c: `#include <stdlib.h>
 
 static int cmp(const void* a, const void* b) {
@@ -309,6 +370,29 @@ int countUniquePairs(int* nums, int numsSize, int target) {
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countUniquePairs(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int left = 0, right = (int)nums.size() - 1;
+        int count = 0;
+        while (left < right) {
+            int s = nums[left] + nums[right];
+            if (s == target) {
+                count++;
+                while (left < right && nums[left] == nums[left + 1]) left++;
+                while (left < right && nums[right] == nums[right - 1]) right--;
+                left++;
+                right--;
+            } else if (s < target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Sort + Two Pointers
 

@@ -218,6 +218,10 @@ Explanation: 199 + 1 = 200
     return [];
 }
 `,
+    typescript: `function plusOne(digits: number[]): number[] {
+    // TODO: increment the integer represented by digits and return the result
+    return [];
+}`,
     java: `class Solution {
     public int[] plusOne(int[] digits) {
         // TODO: increment the integer represented by digits and return the result
@@ -225,12 +229,25 @@ Explanation: 199 + 1 = 200
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] PlusOne(int[] digits) {
+        // TODO: increment the integer represented by digits and return the result
+        return new int[]{};
+    }
+}`,
     c: `int* plusOne(int* digits, int digitsSize, int* returnSize) {
     // TODO: increment the integer represented by digits and return the result
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        // TODO: increment the integer represented by digits and return the result
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def plus_one(digits):
@@ -252,6 +269,16 @@ Explanation: 199 + 1 = 200
     return [1, ...digits];
 }
 `,
+    typescript: `function plusOne(digits: number[]): number[] {
+    for (let i = digits.length - 1; i >= 0; i--) {
+        if (digits[i] < 9) {
+            digits[i]++;
+            return digits;
+        }
+        digits[i] = 0;
+    }
+    return [1, ...digits];
+}`,
     java: `class Solution {
     public int[] plusOne(int[] digits) {
         for (int i = digits.length - 1; i >= 0; i--) {
@@ -267,6 +294,20 @@ Explanation: 199 + 1 = 200
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] PlusOne(int[] digits) {
+        for (int i = digits.Length - 1; i >= 0; i--) {
+            if (digits[i] < 9) {
+                digits[i]++;
+                return digits;
+            }
+            digits[i] = 0;
+        }
+        int[] result = new int[digits.Length + 1];
+        result[0] = 1;
+        return result;
+    }
+}`,
     c: `int* plusOne(int* digits, int digitsSize, int* returnSize) {
     int allNine = 1;
     for (int i = 0; i < digitsSize; i++) {
@@ -289,6 +330,21 @@ Explanation: 199 + 1 = 200
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        for (int i = digits.size() - 1; i >= 0; i--) {
+            if (digits[i] < 9) {
+                digits[i]++;
+                return digits;
+            }
+            digits[i] = 0;
+        }
+        vector<int> result(digits.size() + 1, 0);
+        result[0] = 1;
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Right-to-Left Carry Propagation
 

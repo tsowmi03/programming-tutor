@@ -187,6 +187,10 @@ function middleValue(nums) {
     // TODO: implement using slow/fast pointer logic
 }
 `,
+    typescript: `function middleValue(nums: number[]): number {
+    // TODO: implement using slow/fast pointer logic
+    return 0;
+}`,
     java: `class Solution {
     public int middleValue(int[] nums) {
         // TODO: implement using slow/fast pointer logic
@@ -194,6 +198,12 @@ function middleValue(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MiddleValue(int[] nums) {
+        // TODO: implement using slow/fast pointer logic
+        return 0;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int middleValue(int* nums, int numsSize) {
@@ -201,6 +211,13 @@ int middleValue(int* nums, int numsSize) {
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int middleValue(vector<int>& nums) {
+        // TODO: implement using slow/fast pointer logic
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def middle_value(nums: list[int]) -> int:
@@ -227,6 +244,16 @@ function middleValue(nums) {
     return nums[slow];
 }
 `,
+    typescript: `function middleValue(nums: number[]): number {
+    let slow = 0;
+    let fast = 0;
+    const n = nums.length;
+    while (fast < n && fast + 1 < n) {
+        slow += 1;
+        fast += 2;
+    }
+    return nums[slow];
+}`,
     java: `class Solution {
     public int middleValue(int[] nums) {
         int slow = 0;
@@ -240,6 +267,18 @@ function middleValue(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MiddleValue(int[] nums) {
+        int slow = 0;
+        int fast = 0;
+        int n = nums.Length;
+        while (fast < n && fast + 1 < n) {
+            slow += 1;
+            fast += 2;
+        }
+        return nums[slow];
+    }
+}`,
     c: `#include <stdlib.h>
 
 int middleValue(int* nums, int numsSize) {
@@ -252,6 +291,19 @@ int middleValue(int* nums, int numsSize) {
     return nums[slow];
 }
 `,
+    cpp: `class Solution {
+public:
+    int middleValue(vector<int>& nums) {
+        int slow = 0;
+        int fast = 0;
+        int n = nums.size();
+        while (fast < n && fast + 1 < n) {
+            slow += 1;
+            fast += 2;
+        }
+        return nums[slow];
+    }
+};`,
   },
   editorial: `## Approach: Slow and Fast Pointers
 

@@ -246,6 +246,10 @@ Output: [1, 2, 3, 5, 7, 9, 10]
     return [];
 }
 `,
+    typescript: `function mergeTwoSortedLists(list1: number[], list2: number[]): number[] {
+    // TODO: implement
+    return [];
+}`,
     java: `class Solution {
     public int[] mergeTwoSortedLists(int[] list1, int[] list2) {
         // TODO: implement
@@ -253,6 +257,12 @@ Output: [1, 2, 3, 5, 7, 9, 10]
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] MergeTwoSortedLists(int[] list1, int[] list2) {
+        // TODO: implement
+        return new int[0];
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* mergeTwoSortedLists(int* list1, int list1Size, int* list2, int list2Size, int* returnSize) {
@@ -261,6 +271,13 @@ int* mergeTwoSortedLists(int* list1, int list1Size, int* list2, int list2Size, i
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> mergeTwoSortedLists(vector<int>& list1, vector<int>& list2) {
+        // TODO: implement
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def merge_two_sorted_lists(list1: list[int], list2: list[int]) -> list[int]:
@@ -296,6 +313,20 @@ int* mergeTwoSortedLists(int* list1, int list1Size, int* list2, int list2Size, i
     return result;
 }
 `,
+    typescript: `function mergeTwoSortedLists(list1: number[], list2: number[]): number[] {
+    const result: number[] = [];
+    let i = 0, j = 0;
+    while (i < list1.length && j < list2.length) {
+        if (list1[i] <= list2[j]) {
+            result.push(list1[i++]);
+        } else {
+            result.push(list2[j++]);
+        }
+    }
+    while (i < list1.length) result.push(list1[i++]);
+    while (j < list2.length) result.push(list2[j++]);
+    return result;
+}`,
     java: `class Solution {
     public int[] mergeTwoSortedLists(int[] list1, int[] list2) {
         int n1 = list1.length, n2 = list2.length;
@@ -314,6 +345,23 @@ int* mergeTwoSortedLists(int* list1, int list1Size, int* list2, int list2Size, i
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] MergeTwoSortedLists(int[] list1, int[] list2) {
+        int n1 = list1.Length, n2 = list2.Length;
+        int[] result = new int[n1 + n2];
+        int i = 0, j = 0, k = 0;
+        while (i < n1 && j < n2) {
+            if (list1[i] <= list2[j]) {
+                result[k++] = list1[i++];
+            } else {
+                result[k++] = list2[j++];
+            }
+        }
+        while (i < n1) result[k++] = list1[i++];
+        while (j < n2) result[k++] = list2[j++];
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* mergeTwoSortedLists(int* list1, int list1Size, int* list2, int list2Size, int* returnSize) {
@@ -334,6 +382,24 @@ int* mergeTwoSortedLists(int* list1, int list1Size, int* list2, int list2Size, i
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> mergeTwoSortedLists(vector<int>& list1, vector<int>& list2) {
+        vector<int> result;
+        int i = 0, j = 0;
+        int n1 = list1.size(), n2 = list2.size();
+        while (i < n1 && j < n2) {
+            if (list1[i] <= list2[j]) {
+                result.push_back(list1[i++]);
+            } else {
+                result.push_back(list2[j++]);
+            }
+        }
+        while (i < n1) result.push_back(list1[i++]);
+        while (j < n2) result.push_back(list2[j++]);
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Two-Pointer Merge
 

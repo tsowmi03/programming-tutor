@@ -333,6 +333,10 @@ function findCircleNum(isConnected) {
     return 0;
 }
 `,
+    typescript: `function findCircleNum(isConnected: number[][]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int findCircleNum(int[][] isConnected) {
         // TODO: implement
@@ -340,11 +344,24 @@ function findCircleNum(isConnected) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindCircleNum(int[][] isConnected) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int findCircleNum(int** isConnected, int isConnectedSize, int* isConnectedColSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def find_circle_num(is_connected: list[list[int]]) -> int:
@@ -389,6 +406,29 @@ function findCircleNum(isConnected) {
     return provinces;
 }
 `,
+    typescript: `function findCircleNum(isConnected: number[][]): number {
+    const n = isConnected.length;
+    const visited = new Array(n).fill(false);
+
+    function dfs(city: number): void {
+        for (let neighbor = 0; neighbor < n; neighbor++) {
+            if (isConnected[city][neighbor] === 1 && !visited[neighbor]) {
+                visited[neighbor] = true;
+                dfs(neighbor);
+            }
+        }
+    }
+
+    let provinces = 0;
+    for (let i = 0; i < n; i++) {
+        if (!visited[i]) {
+            visited[i] = true;
+            dfs(i);
+            provinces++;
+        }
+    }
+    return provinces;
+}`,
     java: `class Solution {
     private int n;
     private boolean[] visited;
@@ -419,6 +459,35 @@ function findCircleNum(isConnected) {
     }
 }
 `,
+    csharp: `public class Solution {
+    private int n;
+    private bool[] visited;
+    private int[][] isConnected;
+
+    public int FindCircleNum(int[][] isConnected) {
+        this.n = isConnected.Length;
+        this.isConnected = isConnected;
+        this.visited = new bool[n];
+        int provinces = 0;
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                Dfs(i);
+                provinces++;
+            }
+        }
+        return provinces;
+    }
+
+    private void Dfs(int city) {
+        for (int neighbor = 0; neighbor < n; neighbor++) {
+            if (isConnected[city][neighbor] == 1 && !visited[neighbor]) {
+                visited[neighbor] = true;
+                Dfs(neighbor);
+            }
+        }
+    }
+}`,
     c: `int findCircleNum(int** isConnected, int isConnectedSize, int* isConnectedColSize) {
     int n = isConnectedSize;
     int visited[200] = {0};
@@ -444,6 +513,32 @@ function findCircleNum(isConnected) {
     return provinces;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        vector<bool> visited(n, false);
+        int provinces = 0;
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                dfs(isConnected, visited, n, i);
+                provinces++;
+            }
+        }
+        return provinces;
+    }
+
+private:
+    void dfs(vector<vector<int>>& isConnected, vector<bool>& visited, int n, int city) {
+        for (int neighbor = 0; neighbor < n; neighbor++) {
+            if (isConnected[city][neighbor] == 1 && !visited[neighbor]) {
+                visited[neighbor] = true;
+                dfs(isConnected, visited, n, neighbor);
+            }
+        }
+    }
+};`,
   },
   editorial: `## Approach: DFS to Count Connected Components
 

@@ -31,27 +31,140 @@ Output: -1
 - All elements are distinct and sorted ascending.
 `,
   hints: [
-    "Compare the target with the middle element: that single comparison rules out half the array.",
-    "Maintain `lo` and `hi` as the inclusive bounds of where the target could still be, and loop while `lo <= hi`.",
-    "Compute the midpoint as `lo + (hi - lo) / 2` — in fixed-width languages `(lo + hi) / 2` can overflow, and getting the habit right matters.",
+    `Compare the target with the middle element: that single comparison rules out half the array.`,
+    `Maintain \`lo\` and \`hi\` as the inclusive bounds of where the target could still be, and loop while \`lo <= hi\`.`,
+    `Compute the midpoint as \`lo + (hi - lo) / 2\` — in fixed-width languages \`(lo + hi) / 2\` can overflow, and getting the habit right matters.`,
   ],
   signature: {
-    name: "search",
-    params: [
-      { name: "nums", type: "int[]" },
-      { name: "target", type: "int" },
+    "name": "search",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      },
+      {
+        "name": "target",
+        "type": "int"
+      }
     ],
-    returns: "int",
+    "returns": "int"
   },
   testCases: [
-    { input: [[-1, 0, 3, 5, 9, 12], 9], expected: 4 },
-    { input: [[-1, 0, 3, 5, 9, 12], 2], expected: -1 },
-    { input: [[5], 5], expected: 0 },
-    { input: [[5], -5], expected: -1, hidden: true },
-    { input: [[1, 3], 3], expected: 1, hidden: true },
-    { input: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 1], expected: 0, hidden: true },
-    { input: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10], expected: 9, hidden: true },
-    { input: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 11], expected: -1, hidden: true },
+    {
+      "input": [
+        [
+          -1,
+          0,
+          3,
+          5,
+          9,
+          12
+        ],
+        9
+      ],
+      "expected": 4
+    },
+    {
+      "input": [
+        [
+          -1,
+          0,
+          3,
+          5,
+          9,
+          12
+        ],
+        2
+      ],
+      "expected": -1
+    },
+    {
+      "input": [
+        [
+          5
+        ],
+        5
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        [
+          5
+        ],
+        -5
+      ],
+      "expected": -1,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          1,
+          3
+        ],
+        3
+      ],
+      "expected": 1,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        1
+      ],
+      "expected": 0,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        10
+      ],
+      "expected": 9,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        11
+      ],
+      "expected": -1,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def search(nums, target):
@@ -68,6 +181,15 @@ function search(nums, target) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {number[]} nums sorted ascending
+ * @param {number} target
+ * @return {number} index of target, or -1
+ */
+function search(nums: number[], target: number): number {
+  // Your code here
+  return -1;
+}`,
     java: `class Solution {
     public int search(int[] nums, int target) {
         // Your code here
@@ -75,11 +197,24 @@ function search(nums, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Search(int[] nums, int target) {
+        // Your code here
+        return -1;
+    }
+}`,
     c: `int search(int* nums, int numsSize, int target) {
     // Your code here
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        // Your code here
+        return -1;
+    }
+};`,
   },
   solutions: {
     python: `def search(nums, target):
@@ -106,6 +241,17 @@ function search(nums, target) {
   return -1;
 }
 `,
+    typescript: `function search(nums: number[], target: number): number {
+  let lo = 0;
+  let hi = nums.length - 1;
+  while (lo <= hi) {
+    const mid = lo + Math.floor((hi - lo) / 2);
+    if (nums[mid] === target) return mid;
+    if (nums[mid] < target) lo = mid + 1;
+    else hi = mid - 1;
+  }
+  return -1;
+}`,
     java: `class Solution {
     public int search(int[] nums, int target) {
         int lo = 0, hi = nums.length - 1;
@@ -119,6 +265,18 @@ function search(nums, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Search(int[] nums, int target) {
+        int lo = 0, hi = nums.Length - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) return mid;
+            if (nums[mid] < target) lo = mid + 1;
+            else hi = mid - 1;
+        }
+        return -1;
+    }
+}`,
     c: `int search(int* nums, int numsSize, int target) {
     int lo = 0, hi = numsSize - 1;
     while (lo <= hi) {
@@ -130,6 +288,19 @@ function search(nums, target) {
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int lo = 0, hi = (int)nums.size() - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) return mid;
+            if (nums[mid] < target) lo = mid + 1;
+            else hi = mid - 1;
+        }
+        return -1;
+    }
+};`,
   },
   editorial: `## Approach: halve the search space
 

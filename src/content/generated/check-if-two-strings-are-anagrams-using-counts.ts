@@ -147,6 +147,10 @@ Explanation: Both strings contain exactly {l:1, i:1, s:1, t:1, e:1, n:1}.
     return false;
 }
 `,
+    typescript: `function isAnagram(s: string, t: string): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean isAnagram(String s, String t) {
         // TODO: implement
@@ -154,6 +158,12 @@ Explanation: Both strings contain exactly {l:1, i:1, s:1, t:1, e:1, n:1}.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsAnagram(string s, string t) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 
@@ -162,6 +172,13 @@ bool isAnagram(char* s, char* t) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_anagram(s: str, t: str) -> bool:
@@ -184,6 +201,15 @@ bool isAnagram(char* s, char* t) {
     return counts.every(x => x === 0);
 }
 `,
+    typescript: `function isAnagram(s: string, t: string): boolean {
+    if (s.length !== t.length) return false;
+    const counts = new Array(26).fill(0);
+    for (let i = 0; i < s.length; i++) {
+        counts[s.charCodeAt(i) - 97]++;
+        counts[t.charCodeAt(i) - 97]--;
+    }
+    return counts.every(x => x === 0);
+}`,
     java: `class Solution {
     public boolean isAnagram(String s, String t) {
         if (s.length() != t.length()) return false;
@@ -197,6 +223,18 @@ bool isAnagram(char* s, char* t) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsAnagram(string s, string t) {
+        if (s.Length != t.Length) return false;
+        int[] counts = new int[26];
+        foreach (char c in s) counts[c - 'a']++;
+        foreach (char c in t) counts[c - 'a']--;
+        foreach (int x in counts) {
+            if (x != 0) return false;
+        }
+        return true;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 
@@ -215,6 +253,21 @@ bool isAnagram(char* s, char* t) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.length() != t.length()) return false;
+        int counts[26] = {0};
+        for (int i = 0; i < (int)s.length(); i++) {
+            counts[s[i] - 'a']++;
+            counts[t[i] - 'a']--;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (counts[i] != 0) return false;
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: Character Frequency Counting
 

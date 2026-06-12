@@ -140,6 +140,10 @@ function isPalindrome(s) {
     return false;
 }
 `,
+    typescript: `function isPalindrome(s: string): boolean {
+    // TODO: implement using two pointers
+    return false;
+}`,
     java: `class Solution {
     public boolean isPalindrome(String s) {
         // TODO: implement using two pointers
@@ -147,6 +151,12 @@ function isPalindrome(s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsPalindrome(string s) {
+        // TODO: implement using two pointers
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
@@ -156,6 +166,13 @@ bool isPalindrome(char* s) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPalindrome(string s) {
+        // TODO: implement using two pointers
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_palindrome(s: str) -> bool:
@@ -183,6 +200,16 @@ function isPalindrome(s) {
     return true;
 }
 `,
+    typescript: `function isPalindrome(s: string): boolean {
+    const filtered = s.toLowerCase().split('').filter(c => /[a-z]/.test(c));
+    let left = 0, right = filtered.length - 1;
+    while (left < right) {
+        if (filtered[left] !== filtered[right]) return false;
+        left++;
+        right--;
+    }
+    return true;
+}`,
     java: `class Solution {
     public boolean isPalindrome(String s) {
         String filtered = s.toLowerCase().replaceAll("[^a-z]", "");
@@ -196,6 +223,20 @@ function isPalindrome(s) {
     }
 }
 `,
+    csharp: `using System.Text.RegularExpressions;
+
+public class Solution {
+    public bool IsPalindrome(string s) {
+        string filtered = Regex.Replace(s.ToLower(), "[^a-z]", "");
+        int left = 0, right = filtered.Length - 1;
+        while (left < right) {
+            if (filtered[left] != filtered[right]) return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
@@ -218,6 +259,24 @@ bool isPalindrome(char* s) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPalindrome(string s) {
+        string filtered;
+        for (char c : s) {
+            if (isalpha((unsigned char)c)) {
+                filtered += (char)tolower((unsigned char)c);
+            }
+        }
+        int left = 0, right = (int)filtered.size() - 1;
+        while (left < right) {
+            if (filtered[left] != filtered[right]) return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: Filter Then Two Pointers
 

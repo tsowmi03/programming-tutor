@@ -140,6 +140,10 @@ Explanation: "aabb" and "bbcc" each have 2 distinct characters and length 4.
     return 0;
 }
 `,
+    typescript: `function longestKDistinct(s: string, k: number): number {
+    // TODO: implement using a sliding window
+    return 0;
+}`,
     java: `class Solution {
     public int longestKDistinct(String s, int k) {
         // TODO: implement using a sliding window
@@ -147,12 +151,25 @@ Explanation: "aabb" and "bbcc" each have 2 distinct characters and length 4.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LongestKDistinct(string s, int k) {
+        // TODO: implement using a sliding window
+        return 0;
+    }
+}`,
     c: `#include <string.h>
 int longestKDistinct(char* s, int k) {
     // TODO: implement using a sliding window
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int longestKDistinct(string s, int k) {
+        // TODO: implement using a sliding window
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def longest_kdistinct(s: str, k: int) -> int:
@@ -191,6 +208,23 @@ int longestKDistinct(char* s, int k) {
     return maxLen;
 }
 `,
+    typescript: `function longestKDistinct(s: string, k: number): number {
+    if (k === 0 || s.length === 0) return 0;
+    const freq = new Map<string, number>();
+    let left = 0, maxLen = 0;
+    for (let right = 0; right < s.length; right++) {
+        const c = s[right];
+        freq.set(c, (freq.get(c) || 0) + 1);
+        while (freq.size > k) {
+            const lc = s[left];
+            freq.set(lc, freq.get(lc)! - 1);
+            if (freq.get(lc) === 0) freq.delete(lc);
+            left++;
+        }
+        maxLen = Math.max(maxLen, right - left + 1);
+    }
+    return maxLen;
+}`,
     java: `class Solution {
     public int longestKDistinct(String s, int k) {
         if (k == 0 || s.length() == 0) return 0;
@@ -212,6 +246,26 @@ int longestKDistinct(char* s, int k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LongestKDistinct(string s, int k) {
+        if (k == 0 || s.Length == 0) return 0;
+        int[] freq = new int[128];
+        int distinct = 0, left = 0, maxLen = 0;
+        for (int right = 0; right < s.Length; right++) {
+            char c = s[right];
+            if (freq[c] == 0) distinct++;
+            freq[c]++;
+            while (distinct > k) {
+                char lc = s[left];
+                freq[lc]--;
+                if (freq[lc] == 0) distinct--;
+                left++;
+            }
+            maxLen = System.Math.Max(maxLen, right - left + 1);
+        }
+        return maxLen;
+    }
+}`,
     c: `#include <string.h>
 int longestKDistinct(char* s, int k) {
     if (k == 0) return 0;
@@ -235,6 +289,27 @@ int longestKDistinct(char* s, int k) {
     return maxLen;
 }
 `,
+    cpp: `class Solution {
+public:
+    int longestKDistinct(string s, int k) {
+        if (k == 0 || s.empty()) return 0;
+        int freq[128] = {0};
+        int distinct = 0, left = 0, maxLen = 0;
+        for (int right = 0; right < (int)s.size(); right++) {
+            int c = (unsigned char)s[right];
+            if (freq[c] == 0) distinct++;
+            freq[c]++;
+            while (distinct > k) {
+                int lc = (unsigned char)s[left];
+                freq[lc]--;
+                if (freq[lc] == 0) distinct--;
+                left++;
+            }
+            maxLen = max(maxLen, right - left + 1);
+        }
+        return maxLen;
+    }
+};`,
   },
   editorial: `## Approach: Sliding Window
 

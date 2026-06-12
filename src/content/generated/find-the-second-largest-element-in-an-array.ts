@@ -169,6 +169,10 @@ Explanation: The maximum is -1. The second largest distinct value is -2.
     return -1;
 }
 `,
+    typescript: `function secondLargest(nums: number[]): number {
+    // TODO: implement
+    return -1;
+}`,
     java: `class Solution {
     public int secondLargest(int[] nums) {
         // TODO: implement
@@ -176,11 +180,24 @@ Explanation: The maximum is -1. The second largest distinct value is -2.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int SecondLargest(int[] nums) {
+        // TODO: implement
+        return -1;
+    }
+}`,
     c: `int secondLargest(int* nums, int numsSize) {
     /* TODO: implement */
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int secondLargest(vector<int>& nums) {
+        // TODO: implement
+        return -1;
+    }
+};`,
   },
   solutions: {
     python: `def second_largest(nums):
@@ -209,6 +226,19 @@ Explanation: The maximum is -1. The second largest distinct value is -2.
     return second === -Infinity ? -1 : second;
 }
 `,
+    typescript: `function secondLargest(nums: number[]): number {
+    if (nums.length < 2) return -1;
+    let first = -Infinity, second = -Infinity;
+    for (const n of nums) {
+        if (n > first) {
+            second = first;
+            first = n;
+        } else if (n < first && n > second) {
+            second = n;
+        }
+    }
+    return second === -Infinity ? -1 : second;
+}`,
     java: `class Solution {
     public int secondLargest(int[] nums) {
         if (nums.length < 2) return -1;
@@ -225,6 +255,21 @@ Explanation: The maximum is -1. The second largest distinct value is -2.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int SecondLargest(int[] nums) {
+        if (nums.Length < 2) return -1;
+        int first = int.MinValue, second = int.MinValue;
+        foreach (int n in nums) {
+            if (n > first) {
+                second = first;
+                first = n;
+            } else if (n < first && n > second) {
+                second = n;
+            }
+        }
+        return second == int.MinValue ? -1 : second;
+    }
+}`,
     c: `#include <limits.h>
 
 int secondLargest(int* nums, int numsSize) {
@@ -245,6 +290,22 @@ int secondLargest(int* nums, int numsSize) {
     return secondSet ? second : -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int secondLargest(vector<int>& nums) {
+        if (nums.size() < 2) return -1;
+        int first = INT_MIN, second = INT_MIN;
+        for (int n : nums) {
+            if (n > first) {
+                second = first;
+                first = n;
+            } else if (n < first && n > second) {
+                second = n;
+            }
+        }
+        return second == INT_MIN ? -1 : second;
+    }
+};`,
   },
   editorial: `## Approach: Single-Pass with Two Trackers
 

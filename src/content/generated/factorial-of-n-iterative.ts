@@ -135,6 +135,10 @@ Explanation: 12! = 479001600 (the largest factorial that fits in a 32-bit intege
     return 0;
 }
 `,
+    typescript: `function factorial(n: number): number {
+    // TODO: compute n! iteratively
+    return 0;
+}`,
     java: `class Solution {
     public int factorial(int n) {
         // TODO: compute n! iteratively
@@ -142,11 +146,24 @@ Explanation: 12! = 479001600 (the largest factorial that fits in a 32-bit intege
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Factorial(int n) {
+        // TODO: compute n! iteratively
+        return 0;
+    }
+}`,
     c: `int factorial(int n) {
     /* TODO: compute n! iteratively */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int factorial(int n) {
+        // TODO: compute n! iteratively
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def factorial(n: int) -> int:
@@ -163,6 +180,13 @@ Explanation: 12! = 479001600 (the largest factorial that fits in a 32-bit intege
     return result;
 }
 `,
+    typescript: `function factorial(n: number): number {
+    let result = 1;
+    for (let i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}`,
     java: `class Solution {
     public int factorial(int n) {
         int result = 1;
@@ -173,6 +197,15 @@ Explanation: 12! = 479001600 (the largest factorial that fits in a 32-bit intege
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Factorial(int n) {
+        int result = 1;
+        for (int i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+}`,
     c: `int factorial(int n) {
     int result = 1;
     int i;
@@ -182,6 +215,16 @@ Explanation: 12! = 479001600 (the largest factorial that fits in a 32-bit intege
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int factorial(int n) {
+        int result = 1;
+        for (int i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Simple Iterative Multiplication
 

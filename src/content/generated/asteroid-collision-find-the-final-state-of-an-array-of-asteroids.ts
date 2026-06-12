@@ -201,6 +201,10 @@ Explanation: 2 and -5 collide; -5 wins and 2 explodes.
     return [];
 }
 `,
+    typescript: `function asteroidCollision(asteroids: number[]): number[] {
+    // TODO: implement
+    return [];
+}`,
     java: `class Solution {
     public int[] asteroidCollision(int[] asteroids) {
         // TODO: implement
@@ -208,6 +212,12 @@ Explanation: 2 and -5 collide; -5 wins and 2 explodes.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] AsteroidCollision(int[] asteroids) {
+        // TODO: implement
+        return new int[]{};
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* asteroidCollision(int* asteroids, int asteroidsSize, int* returnSize) {
@@ -216,6 +226,13 @@ int* asteroidCollision(int* asteroids, int asteroidsSize, int* returnSize) {
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        // TODO: implement
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def asteroid_collision(asteroids):
@@ -260,6 +277,29 @@ int* asteroidCollision(int* asteroids, int asteroidsSize, int* returnSize) {
     return stack;
 }
 `,
+    typescript: `function asteroidCollision(asteroids: number[]): number[] {
+    const stack: number[] = [];
+    for (const a of asteroids) {
+        let destroyed = false;
+        while (stack.length > 0 && a < 0 && stack[stack.length - 1] > 0) {
+            const top = stack[stack.length - 1];
+            if (top < -a) {
+                stack.pop();
+            } else if (top === -a) {
+                stack.pop();
+                destroyed = true;
+                break;
+            } else {
+                destroyed = true;
+                break;
+            }
+        }
+        if (!destroyed) {
+            stack.push(a);
+        }
+    }
+    return stack;
+}`,
     java: `class Solution {
     public int[] asteroidCollision(int[] asteroids) {
         int[] stack = new int[asteroids.length];
@@ -289,6 +329,36 @@ int* asteroidCollision(int* asteroids, int asteroidsSize, int* returnSize) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] AsteroidCollision(int[] asteroids) {
+        int[] stack = new int[asteroids.Length];
+        int top = 0;
+        foreach (int a in asteroids) {
+            bool destroyed = false;
+            while (top > 0 && a < 0 && stack[top - 1] > 0) {
+                int t = stack[top - 1];
+                if (t < -a) {
+                    top--;
+                } else if (t == -a) {
+                    top--;
+                    destroyed = true;
+                    break;
+                } else {
+                    destroyed = true;
+                    break;
+                }
+            }
+            if (!destroyed) {
+                stack[top++] = a;
+            }
+        }
+        int[] result = new int[top];
+        System.Array.Copy(stack, result, top);
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* asteroidCollision(int* asteroids, int asteroidsSize, int* returnSize) {
@@ -318,6 +388,32 @@ int* asteroidCollision(int* asteroids, int asteroidsSize, int* returnSize) {
     return stack;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        vector<int> stack;
+        for (int a : asteroids) {
+            bool destroyed = false;
+            while (!stack.empty() && a < 0 && stack.back() > 0) {
+                int t = stack.back();
+                if (t < -a) {
+                    stack.pop_back();
+                } else if (t == -a) {
+                    stack.pop_back();
+                    destroyed = true;
+                    break;
+                } else {
+                    destroyed = true;
+                    break;
+                }
+            }
+            if (!destroyed) {
+                stack.push_back(a);
+            }
+        }
+        return stack;
+    }
+};`,
   },
   editorial: `## Approach: Stack Simulation
 

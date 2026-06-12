@@ -180,6 +180,10 @@ Explanation: Only one house, rob it.
     // TODO: implement house robber DP
 }
 `,
+    typescript: `function rob(nums: number[]): number {
+    // TODO: implement house robber DP
+    return 0;
+}`,
     java: `class Solution {
     public int rob(int[] nums) {
         // TODO: implement house robber DP
@@ -187,11 +191,24 @@ Explanation: Only one house, rob it.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Rob(int[] nums) {
+        // TODO: implement house robber DP
+        return 0;
+    }
+}`,
     c: `int rob(int* nums, int numsSize) {
     // TODO: implement house robber DP
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int rob(vector<int>& nums) {
+        // TODO: implement house robber DP
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def rob(nums):
@@ -217,6 +234,17 @@ Explanation: Only one house, rob it.
     return prev1;
 }
 `,
+    typescript: `function rob(nums: number[]): number {
+    if (nums.length === 0) return 0;
+    let prev2 = 0;
+    let prev1 = 0;
+    for (const n of nums) {
+        const curr = Math.max(prev1, prev2 + n);
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}`,
     java: `class Solution {
     public int rob(int[] nums) {
         if (nums.length == 0) return 0;
@@ -230,6 +258,20 @@ Explanation: Only one house, rob it.
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int Rob(int[] nums) {
+        if (nums.Length == 0) return 0;
+        int prev2 = 0, prev1 = 0;
+        foreach (int n in nums) {
+            int curr = Math.Max(prev1, prev2 + n);
+            prev2 = prev1;
+            prev1 = curr;
+        }
+        return prev1;
+    }
+}`,
     c: `int rob(int* nums, int numsSize) {
     if (numsSize == 0) return 0;
     int prev2 = 0, prev1 = 0;
@@ -241,6 +283,19 @@ Explanation: Only one house, rob it.
     return prev1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.empty()) return 0;
+        int prev2 = 0, prev1 = 0;
+        for (int n : nums) {
+            int curr = max(prev1, prev2 + n);
+            prev2 = prev1;
+            prev1 = curr;
+        }
+        return prev1;
+    }
+};`,
   },
   editorial: `## Approach: Dynamic Programming with O(1) Space
 

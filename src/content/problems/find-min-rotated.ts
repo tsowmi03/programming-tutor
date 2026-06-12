@@ -39,24 +39,116 @@ Explanation: rotating n times leaves the array sorted.
 - All integers are distinct.
 `,
   hints: [
-    "A linear scan is O(n). The array is two sorted runs glued together — binary search can still work, but the test at `mid` changes.",
-    "Compare `nums[mid]` with `nums[hi]`. If `nums[mid] > nums[hi]`, where must the minimum be? What if `nums[mid] < nums[hi]`?",
-    "If `nums[mid] > nums[hi]` the “break” (and the minimum) lies strictly right of mid: `lo = mid + 1`. Otherwise the minimum is at mid or left of it: `hi = mid`. Note `mid` stays a candidate in that branch.",
+    `A linear scan is O(n). The array is two sorted runs glued together — binary search can still work, but the test at \`mid\` changes.`,
+    `Compare \`nums[mid]\` with \`nums[hi]\`. If \`nums[mid] > nums[hi]\`, where must the minimum be? What if \`nums[mid] < nums[hi]\`?`,
+    `If \`nums[mid] > nums[hi]\` the “break” (and the minimum) lies strictly right of mid: \`lo = mid + 1\`. Otherwise the minimum is at mid or left of it: \`hi = mid\`. Note \`mid\` stays a candidate in that branch.`,
   ],
   signature: {
-    name: "findMin",
-    params: [{ name: "nums", type: "int[]" }],
-    returns: "int",
+    "name": "findMin",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      }
+    ],
+    "returns": "int"
   },
   testCases: [
-    { input: [[3, 4, 5, 1, 2]], expected: 1 },
-    { input: [[4, 5, 6, 7, 0, 1, 2]], expected: 0 },
-    { input: [[11, 13, 15, 17]], expected: 11 },
-    { input: [[1]], expected: 1, hidden: true },
-    { input: [[2, 1]], expected: 1, hidden: true },
-    { input: [[5, 1, 2, 3, 4]], expected: 1, hidden: true },
-    { input: [[2, 3, 4, 5, 1]], expected: 1, hidden: true },
-    { input: [[1, 2, 3, 4, 5]], expected: 1, hidden: true },
+    {
+      "input": [
+        [
+          3,
+          4,
+          5,
+          1,
+          2
+        ]
+      ],
+      "expected": 1
+    },
+    {
+      "input": [
+        [
+          4,
+          5,
+          6,
+          7,
+          0,
+          1,
+          2
+        ]
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        [
+          11,
+          13,
+          15,
+          17
+        ]
+      ],
+      "expected": 11
+    },
+    {
+      "input": [
+        [
+          1
+        ]
+      ],
+      "expected": 1,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          2,
+          1
+        ]
+      ],
+      "expected": 1,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          5,
+          1,
+          2,
+          3,
+          4
+        ]
+      ],
+      "expected": 1,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          2,
+          3,
+          4,
+          5,
+          1
+        ]
+      ],
+      "expected": 1,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      ],
+      "expected": 1,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def find_min(nums):
@@ -72,6 +164,14 @@ function findMin(nums) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {number[]} nums rotated sorted array, distinct values
+ * @return {number} the minimum element
+ */
+function findMin(nums: number[]): number {
+  // Your code here
+  return -1;
+}`,
     java: `class Solution {
     public int findMin(int[] nums) {
         // Your code here
@@ -79,11 +179,24 @@ function findMin(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindMin(int[] nums) {
+        // Your code here
+        return -1;
+    }
+}`,
     c: `int findMin(int* nums, int numsSize) {
     // Your code here
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        // Your code here
+        return -1;
+    }
+};`,
   },
   solutions: {
     python: `def find_min(nums):
@@ -107,6 +220,16 @@ function findMin(nums) {
   return nums[lo];
 }
 `,
+    typescript: `function findMin(nums: number[]): number {
+  let lo = 0;
+  let hi = nums.length - 1;
+  while (lo < hi) {
+    const mid = lo + Math.floor((hi - lo) / 2);
+    if (nums[mid] > nums[hi]) lo = mid + 1;
+    else hi = mid;
+  }
+  return nums[lo];
+}`,
     java: `class Solution {
     public int findMin(int[] nums) {
         int lo = 0, hi = nums.length - 1;
@@ -119,6 +242,17 @@ function findMin(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindMin(int[] nums) {
+        int lo = 0, hi = nums.Length - 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] > nums[hi]) lo = mid + 1;
+            else hi = mid;
+        }
+        return nums[lo];
+    }
+}`,
     c: `int findMin(int* nums, int numsSize) {
     int lo = 0, hi = numsSize - 1;
     while (lo < hi) {
@@ -129,6 +263,18 @@ function findMin(nums) {
     return nums[lo];
 }
 `,
+    cpp: `class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int lo = 0, hi = (int)nums.size() - 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] > nums[hi]) lo = mid + 1;
+            else hi = mid;
+        }
+        return nums[lo];
+    }
+};`,
   },
   editorial: `## Approach: binary search on the rotation break
 

@@ -204,6 +204,10 @@ function countLeafNodes(tree) {
     return 0;
 }
 `,
+    typescript: `function countLeafNodes(tree: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int countLeafNodes(int[] tree) {
         // TODO: implement
@@ -211,12 +215,25 @@ function countLeafNodes(tree) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountLeafNodes(int[] tree) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `#include <stdlib.h>
 int countLeafNodes(int* tree, int treeSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countLeafNodes(vector<int>& tree) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_leaf_nodes(tree: list[int]) -> int:
@@ -251,6 +268,19 @@ function countLeafNodes(tree) {
     return count;
 }
 `,
+    typescript: `function countLeafNodes(tree: number[]): number {
+    const n = tree.length;
+    let count = 0;
+    for (let i = 0; i < n; i++) {
+        if (tree[i] === -1) continue;
+        const left = 2 * i + 1;
+        const right = 2 * i + 2;
+        const leftAbsent = left >= n || tree[left] === -1;
+        const rightAbsent = right >= n || tree[right] === -1;
+        if (leftAbsent && rightAbsent) count++;
+    }
+    return count;
+}`,
     java: `class Solution {
     public int countLeafNodes(int[] tree) {
         int n = tree.length;
@@ -267,6 +297,21 @@ function countLeafNodes(tree) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountLeafNodes(int[] tree) {
+        int n = tree.Length;
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (tree[i] == -1) continue;
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+            bool leftAbsent = left >= n || tree[left] == -1;
+            bool rightAbsent = right >= n || tree[right] == -1;
+            if (leftAbsent && rightAbsent) count++;
+        }
+        return count;
+    }
+}`,
     c: `#include <stdlib.h>
 int countLeafNodes(int* tree, int treeSize) {
     int count = 0;
@@ -281,6 +326,22 @@ int countLeafNodes(int* tree, int treeSize) {
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countLeafNodes(vector<int>& tree) {
+        int n = tree.size();
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (tree[i] == -1) continue;
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+            bool leftAbsent = left >= n || tree[left] == -1;
+            bool rightAbsent = right >= n || tree[right] == -1;
+            if (leftAbsent && rightAbsent) count++;
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Linear Scan on the Level-Order Array
 

@@ -197,6 +197,10 @@ Explanation: 6 is not in the array.
     return 0;
 }
 `,
+    typescript: `function countOccurrences(nums: number[], target: number): number {
+    // TODO: use binary search to find first and last occurrence
+    return 0;
+}`,
     java: `class Solution {
     public int countOccurrences(int[] nums, int target) {
         // TODO: use binary search to find first and last occurrence
@@ -204,11 +208,24 @@ Explanation: 6 is not in the array.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountOccurrences(int[] nums, int target) {
+        // TODO: use binary search to find first and last occurrence
+        return 0;
+    }
+}`,
     c: `int countOccurrences(int* nums, int numsSize, int target) {
     // TODO: use binary search to find first and last occurrence
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countOccurrences(vector<int>& nums, int target) {
+        // TODO: use binary search to find first and last occurrence
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `import bisect
@@ -240,6 +257,27 @@ def count_occurrences(nums, target):
     return bisectRight(nums, target) - bisectLeft(nums, target);
 }
 `,
+    typescript: `function countOccurrences(nums: number[], target: number): number {
+    function bisectLeft(arr: number[], val: number): number {
+        let lo = 0, hi = arr.length;
+        while (lo < hi) {
+            const mid = (lo + hi) >> 1;
+            if (arr[mid] < val) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+    function bisectRight(arr: number[], val: number): number {
+        let lo = 0, hi = arr.length;
+        while (lo < hi) {
+            const mid = (lo + hi) >> 1;
+            if (arr[mid] <= val) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+    return bisectRight(nums, target) - bisectLeft(nums, target);
+}`,
     java: `class Solution {
     public int countOccurrences(int[] nums, int target) {
         int first = bisectLeft(nums, target);
@@ -268,6 +306,33 @@ def count_occurrences(nums, target):
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountOccurrences(int[] nums, int target) {
+        int first = BisectLeft(nums, target);
+        int last = BisectRight(nums, target);
+        return last - first;
+    }
+
+    private int BisectLeft(int[] nums, int target) {
+        int lo = 0, hi = nums.Length;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] < target) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+
+    private int BisectRight(int[] nums, int target) {
+        int lo = 0, hi = nums.Length;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] <= target) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+}`,
     c: `int countOccurrences(int* nums, int numsSize, int target) {
     if (numsSize == 0) return 0;
     int lo = 0, hi = numsSize;
@@ -287,6 +352,26 @@ def count_occurrences(nums, target):
     return last - first;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countOccurrences(vector<int>& nums, int target) {
+        int lo = 0, hi = (int)nums.size();
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] < target) lo = mid + 1;
+            else hi = mid;
+        }
+        int first = lo;
+        lo = 0; hi = (int)nums.size();
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] <= target) lo = mid + 1;
+            else hi = mid;
+        }
+        int last = lo;
+        return last - first;
+    }
+};`,
   },
   editorial: `## Approach: Two Binary Searches
 

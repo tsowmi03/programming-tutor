@@ -209,6 +209,10 @@ function minDepth(tree) {
     return 0;
 }
 `,
+    typescript: `function minDepth(tree: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int minDepth(int[] tree) {
         // TODO: implement
@@ -216,11 +220,24 @@ function minDepth(tree) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MinDepth(int[] tree) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int minDepth(int* tree, int treeSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int minDepth(vector<int>& tree) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `from collections import deque
@@ -266,6 +283,23 @@ function minDepth(tree) {
     return 0;
 }
 `,
+    typescript: `function minDepth(tree: number[]): number {
+    if (!tree || tree.length === 0 || tree[0] === -1) return 0;
+    const n = tree.length;
+    const queue: [number, number][] = [[0, 1]];
+    let head = 0;
+    while (head < queue.length) {
+        const [idx, depth] = queue[head++];
+        const left = 2 * idx + 1;
+        const right = 2 * idx + 2;
+        const leftMissing = left >= n || tree[left] === -1;
+        const rightMissing = right >= n || tree[right] === -1;
+        if (leftMissing && rightMissing) return depth;
+        if (!leftMissing) queue.push([left, depth + 1]);
+        if (!rightMissing) queue.push([right, depth + 1]);
+    }
+    return 0;
+}`,
     java: `class Solution {
     public int minDepth(int[] tree) {
         if (tree == null || tree.length == 0 || tree[0] == -1) return 0;
@@ -300,6 +334,27 @@ function minDepth(tree) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int MinDepth(int[] tree) {
+        if (tree == null || tree.Length == 0 || tree[0] == -1) return 0;
+        int n = tree.Length;
+        var queue = new Queue<(int idx, int depth)>();
+        queue.Enqueue((0, 1));
+        while (queue.Count > 0) {
+            var (idx, depth) = queue.Dequeue();
+            int left = 2 * idx + 1;
+            int right = 2 * idx + 2;
+            bool leftMissing = left >= n || tree[left] == -1;
+            bool rightMissing = right >= n || tree[right] == -1;
+            if (leftMissing && rightMissing) return depth;
+            if (!leftMissing) queue.Enqueue((left, depth + 1));
+            if (!rightMissing) queue.Enqueue((right, depth + 1));
+        }
+        return 0;
+    }
+}`,
     c: `int minDepth(int* tree, int treeSize) {
     if (treeSize == 0 || tree[0] == -1) return 0;
     int queueIdx[2000];
@@ -331,6 +386,27 @@ function minDepth(tree) {
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int minDepth(vector<int>& tree) {
+        if (tree.empty() || tree[0] == -1) return 0;
+        int n = (int)tree.size();
+        queue<pair<int,int>> q;
+        q.push({0, 1});
+        while (!q.empty()) {
+            auto [idx, depth] = q.front();
+            q.pop();
+            int left = 2 * idx + 1;
+            int right = 2 * idx + 2;
+            bool leftMissing = left >= n || tree[left] == -1;
+            bool rightMissing = right >= n || tree[right] == -1;
+            if (leftMissing && rightMissing) return depth;
+            if (!leftMissing) q.push({left, depth + 1});
+            if (!rightMissing) q.push({right, depth + 1});
+        }
+        return 0;
+    }
+};`,
   },
   editorial: `## Approach: BFS Level-Order Traversal
 

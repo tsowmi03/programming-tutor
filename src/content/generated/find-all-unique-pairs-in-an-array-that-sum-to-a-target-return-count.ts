@@ -201,8 +201,20 @@ Explanation: Unique pairs: (1,5), (2,4).
     // TODO: implement
     return 0;
 };`,
+    typescript: `function countUniquePairs(nums: number[], target: number): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int countUniquePairs(int[] nums, int target) {
+        // TODO: implement
+        return 0;
+    }
+}`,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int CountUniquePairs(int[] nums, int target) {
         // TODO: implement
         return 0;
     }
@@ -211,6 +223,13 @@ Explanation: Unique pairs: (1,5), (2,4).
     // TODO: implement
     return 0;
 }`,
+    cpp: `class Solution {
+public:
+    int countUniquePairs(vector<int>& nums, int target) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_unique_pairs(nums, target):
@@ -255,6 +274,31 @@ Explanation: Unique pairs: (1,5), (2,4).
     }
     return count;
 };`,
+    typescript: `function countUniquePairs(nums: number[], target: number): number {
+    const freq = new Map<number, number>();
+    for (const num of nums) {
+        freq.set(num, (freq.get(num) || 0) + 1);
+    }
+    const seen = new Set<string>();
+    let count = 0;
+    for (const num of freq.keys()) {
+        const complement = target - num;
+        if (freq.has(complement)) {
+            const a = Math.min(num, complement);
+            const b = Math.max(num, complement);
+            const pair = a + ',' + b;
+            if (!seen.has(pair)) {
+                if (num === complement) {
+                    if (freq.get(num)! >= 2) count++;
+                } else {
+                    count++;
+                }
+                seen.add(pair);
+            }
+        }
+    }
+    return count;
+}`,
     java: `class Solution {
     public int countUniquePairs(int[] nums, int target) {
         java.util.Map<Integer, Integer> freq = new java.util.HashMap<>();
@@ -276,6 +320,36 @@ Explanation: Unique pairs: (1,5), (2,4).
                         count++;
                     }
                     seen.add(pair);
+                }
+            }
+        }
+        return count;
+    }
+}`,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int CountUniquePairs(int[] nums, int target) {
+        Dictionary<int, int> freq = new Dictionary<int, int>();
+        foreach (int num in nums) {
+            if (freq.ContainsKey(num)) freq[num]++;
+            else freq[num] = 1;
+        }
+        HashSet<string> seen = new HashSet<string>();
+        int count = 0;
+        foreach (int num in freq.Keys) {
+            int complement = target - num;
+            if (freq.ContainsKey(complement)) {
+                int a = num < complement ? num : complement;
+                int b = num > complement ? num : complement;
+                string pair = a + "," + b;
+                if (!seen.Contains(pair)) {
+                    if (num == complement) {
+                        if (freq[num] >= 2) count++;
+                    } else {
+                        count++;
+                    }
+                    seen.Add(pair);
                 }
             }
         }
@@ -312,6 +386,35 @@ int countUniquePairs(int* nums, int numsSize, int target) {
     free(sorted);
     return count;
 }`,
+    cpp: `class Solution {
+public:
+    int countUniquePairs(vector<int>& nums, int target) {
+        unordered_map<int, int> freq;
+        for (int num : nums) {
+            freq[num]++;
+        }
+        unordered_set<string> seen;
+        int count = 0;
+        for (auto& kv : freq) {
+            int num = kv.first;
+            int complement = target - num;
+            if (freq.count(complement)) {
+                int a = min(num, complement);
+                int b = max(num, complement);
+                string pair = to_string(a) + "," + to_string(b);
+                if (!seen.count(pair)) {
+                    if (num == complement) {
+                        if (kv.second >= 2) count++;
+                    } else {
+                        count++;
+                    }
+                    seen.insert(pair);
+                }
+            }
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Frequency Map + Seen Set
 

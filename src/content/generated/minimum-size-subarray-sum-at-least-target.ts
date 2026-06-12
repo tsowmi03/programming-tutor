@@ -209,6 +209,10 @@ function minSubarrayLen(target, nums) {
     return 0;
 }
 `,
+    typescript: `function minSubarrayLen(target: number, nums: number[]): number {
+    // TODO: implement sliding window
+    return 0;
+}`,
     java: `class Solution {
     public int minSubarrayLen(int target, int[] nums) {
         // TODO: implement sliding window
@@ -216,11 +220,24 @@ function minSubarrayLen(target, nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MinSubarrayLen(int target, int[] nums) {
+        // TODO: implement sliding window
+        return 0;
+    }
+}`,
     c: `int minSubarrayLen(int target, int* nums, int numsSize) {
     // TODO: implement sliding window
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int minSubarrayLen(int target, vector<int>& nums) {
+        // TODO: implement sliding window
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def min_subarray_len(target: int, nums: list[int]) -> int:
@@ -250,6 +267,20 @@ function minSubarrayLen(target, nums) {
     return minLen === Infinity ? 0 : minLen;
 }
 `,
+    typescript: `function minSubarrayLen(target: number, nums: number[]): number {
+    let left = 0;
+    let currentSum = 0;
+    let minLen = Infinity;
+    for (let right = 0; right < nums.length; right++) {
+        currentSum += nums[right];
+        while (currentSum >= target) {
+            minLen = Math.min(minLen, right - left + 1);
+            currentSum -= nums[left];
+            left++;
+        }
+    }
+    return minLen === Infinity ? 0 : minLen;
+}`,
     java: `class Solution {
     public int minSubarrayLen(int target, int[] nums) {
         int left = 0;
@@ -267,6 +298,25 @@ function minSubarrayLen(target, nums) {
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int MinSubarrayLen(int target, int[] nums) {
+        int left = 0;
+        long currentSum = 0;
+        int minLen = int.MaxValue;
+        for (int right = 0; right < nums.Length; right++) {
+            currentSum += nums[right];
+            while (currentSum >= target) {
+                int len = right - left + 1;
+                if (len < minLen) minLen = len;
+                currentSum -= nums[left];
+                left++;
+            }
+        }
+        return minLen == int.MaxValue ? 0 : minLen;
+    }
+}`,
     c: `int minSubarrayLen(int target, int* nums, int numsSize) {
     int left = 0;
     long long currentSum = 0;
@@ -283,6 +333,24 @@ function minSubarrayLen(target, nums) {
     return minLen == numsSize + 1 ? 0 : minLen;
 }
 `,
+    cpp: `class Solution {
+public:
+    int minSubarrayLen(int target, vector<int>& nums) {
+        int left = 0;
+        long long currentSum = 0;
+        int minLen = INT_MAX;
+        for (int right = 0; right < (int)nums.size(); right++) {
+            currentSum += nums[right];
+            while (currentSum >= (long long)target) {
+                int len = right - left + 1;
+                if (len < minLen) minLen = len;
+                currentSum -= nums[left];
+                left++;
+            }
+        }
+        return minLen == INT_MAX ? 0 : minLen;
+    }
+};`,
   },
   editorial: `## Approach: Sliding Window (Two Pointers)
 

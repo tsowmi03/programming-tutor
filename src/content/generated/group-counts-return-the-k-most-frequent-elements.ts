@@ -231,6 +231,10 @@ Explanation: 3 -> 3 times, 2 -> 2 times, 1 -> 1 time.
     return [];
 }
 `,
+    typescript: `function topKFrequent(nums: number[], k: number): number[] {
+    // TODO: implement
+    return [];
+}`,
     java: `class Solution {
     public int[] topKFrequent(int[] nums, int k) {
         // TODO: implement
@@ -238,12 +242,27 @@ Explanation: 3 -> 3 times, 2 -> 2 times, 1 -> 1 time.
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] TopKFrequent(int[] nums, int k) {
+        // TODO: implement
+        return new int[]{};
+    }
+}`,
     c: `int* topKFrequent(int* nums, int numsSize, int k, int* returnSize) {
     // TODO: implement
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        // TODO: implement
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `from collections import Counter
@@ -263,6 +282,16 @@ def top_kfrequent(nums, k):
         .map(([num]) => num);
 }
 `,
+    typescript: `function topKFrequent(nums: number[], k: number): number[] {
+    const count = new Map<number, number>();
+    for (const n of nums) {
+        count.set(n, (count.get(n) || 0) + 1);
+    }
+    return [...count.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, k)
+        .map(([num]) => num);
+}`,
     java: `class Solution {
     public int[] topKFrequent(int[] nums, int k) {
         java.util.Map<Integer, Integer> count = new java.util.HashMap<>();
@@ -276,6 +305,22 @@ def top_kfrequent(nums, k):
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] TopKFrequent(int[] nums, int k) {
+        Dictionary<int, int> count = new Dictionary<int, int>();
+        foreach (int n in nums) {
+            if (count.ContainsKey(n)) count[n]++;
+            else count[n] = 1;
+        }
+        List<KeyValuePair<int, int>> entries = new List<KeyValuePair<int, int>>(count);
+        entries.Sort((a, b) => b.Value - a.Value);
+        int[] result = new int[k];
+        for (int i = 0; i < k; i++) result[i] = entries[i].Key;
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* topKFrequent(int* nums, int numsSize, int k, int* returnSize) {
@@ -306,6 +351,20 @@ int* topKFrequent(int* nums, int numsSize, int k, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> count;
+        for (int n : nums) count[n]++;
+        vector<pair<int, int>> entries(count.begin(), count.end());
+        sort(entries.begin(), entries.end(), [](const pair<int,int>& a, const pair<int,int>& b) {
+            return b.second < a.second;
+        });
+        vector<int> result;
+        for (int i = 0; i < k; i++) result.push_back(entries[i].first);
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Frequency Map + Sort
 

@@ -196,6 +196,10 @@ Explanation: All elements are equal; the only strictly increasing subsequence ha
     return 0;
 }
 `,
+    typescript: `function lengthOfLIS(nums: number[]): number {
+    // TODO: implement this function
+    return 0;
+}`,
     java: `class Solution {
     public int lengthOfLIS(int[] nums) {
         // TODO: implement this function
@@ -203,11 +207,24 @@ Explanation: All elements are equal; the only strictly increasing subsequence ha
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LengthOfLIS(int[] nums) {
+        // TODO: implement this function
+        return 0;
+    }
+}`,
     c: `int lengthOfLIS(int* nums, int numsSize) {
     // TODO: implement this function
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        // TODO: implement this function
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def length_of_lis(nums):
@@ -235,6 +252,19 @@ Explanation: All elements are equal; the only strictly increasing subsequence ha
     return Math.max(...dp);
 }
 `,
+    typescript: `function lengthOfLIS(nums: number[]): number {
+    const n = nums.length;
+    if (n === 0) return 0;
+    const dp = new Array(n).fill(1);
+    for (let i = 1; i < n; i++) {
+        for (let j = 0; j < i; j++) {
+            if (nums[j] < nums[i]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
+    }
+    return Math.max(...dp);
+}`,
     java: `class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
@@ -254,6 +284,26 @@ Explanation: All elements are equal; the only strictly increasing subsequence ha
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int LengthOfLIS(int[] nums) {
+        int n = nums.Length;
+        if (n == 0) return 0;
+        int[] dp = new int[n];
+        for (int i = 0; i < n; i++) dp[i] = 1;
+        int best = 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    dp[i] = Math.Max(dp[i], dp[j] + 1);
+                }
+            }
+            best = Math.Max(best, dp[i]);
+        }
+        return best;
+    }
+}`,
     c: `int lengthOfLIS(int* nums, int numsSize) {
     if (numsSize == 0) return 0;
     int dp[2500];
@@ -270,6 +320,24 @@ Explanation: All elements are equal; the only strictly increasing subsequence ha
     return best;
 }
 `,
+    cpp: `class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        if (n == 0) return 0;
+        vector<int> dp(n, 1);
+        int best = 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i] && dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                }
+            }
+            if (dp[i] > best) best = dp[i];
+        }
+        return best;
+    }
+};`,
   },
   editorial: `## Approach: Dynamic Programming (O(n²))
 

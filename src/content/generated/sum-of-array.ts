@@ -163,6 +163,10 @@ Explanation: No elements to add; return 0.
     return 0;
 }
 `,
+    typescript: `function arraySum(nums: number[]): number {
+    // TODO: return the sum of all elements in nums
+    return 0;
+}`,
     java: `class Solution {
     public int arraySum(int[] nums) {
         // TODO: return the sum of all elements in nums
@@ -170,11 +174,24 @@ Explanation: No elements to add; return 0.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int ArraySum(int[] nums) {
+        // TODO: return the sum of all elements in nums
+        return 0;
+    }
+}`,
     c: `int arraySum(int* nums, int numsSize) {
     /* TODO: return the sum of all elements in nums */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int arraySum(vector<int>& nums) {
+        // TODO: return the sum of all elements in nums
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def array_sum(nums: list[int]) -> int:
@@ -191,6 +208,13 @@ Explanation: No elements to add; return 0.
     return total;
 }
 `,
+    typescript: `function arraySum(nums: number[]): number {
+    let total = 0;
+    for (let i = 0; i < nums.length; i++) {
+        total += nums[i];
+    }
+    return total;
+}`,
     java: `class Solution {
     public int arraySum(int[] nums) {
         int total = 0;
@@ -201,6 +225,15 @@ Explanation: No elements to add; return 0.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int ArraySum(int[] nums) {
+        int total = 0;
+        foreach (int x in nums) {
+            total += x;
+        }
+        return total;
+    }
+}`,
     c: `int arraySum(int* nums, int numsSize) {
     int total = 0;
     for (int i = 0; i < numsSize; i++) {
@@ -209,6 +242,16 @@ Explanation: No elements to add; return 0.
     return total;
 }
 `,
+    cpp: `class Solution {
+public:
+    int arraySum(vector<int>& nums) {
+        int total = 0;
+        for (int x : nums) {
+            total += x;
+        }
+        return total;
+    }
+};`,
   },
   editorial: `## Approach: Single-Pass Accumulation
 

@@ -175,8 +175,18 @@ Explanation: (-3)²=9, 0²=0, 4²=16
     // TODO: return a new array where each element is squared
     return [];
 }`,
+    typescript: `function squareElements(nums: number[]): number[] {
+    // TODO: return a new array where each element is squared
+    return [];
+}`,
     java: `class Solution {
     public int[] squareElements(int[] nums) {
+        // TODO: return a new array where each element is squared
+        return new int[0];
+    }
+}`,
+    csharp: `public class Solution {
+    public int[] SquareElements(int[] nums) {
         // TODO: return a new array where each element is squared
         return new int[0];
     }
@@ -186,6 +196,13 @@ Explanation: (-3)²=9, 0²=0, 4²=16
     *returnSize = 0;
     return NULL;
 }`,
+    cpp: `class Solution {
+public:
+    vector<int> squareElements(vector<int>& nums) {
+        // TODO: return a new vector where each element is squared
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def square_elements(nums):
@@ -193,10 +210,22 @@ Explanation: (-3)²=9, 0²=0, 4²=16
     javascript: `function squareElements(nums) {
     return nums.map(x => x * x);
 }`,
+    typescript: `function squareElements(nums: number[]): number[] {
+    return nums.map(x => x * x);
+}`,
     java: `class Solution {
     public int[] squareElements(int[] nums) {
         int[] result = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
+            result[i] = nums[i] * nums[i];
+        }
+        return result;
+    }
+}`,
+    csharp: `public class Solution {
+    public int[] SquareElements(int[] nums) {
+        int[] result = new int[nums.Length];
+        for (int i = 0; i < nums.Length; i++) {
             result[i] = nums[i] * nums[i];
         }
         return result;
@@ -211,6 +240,16 @@ Explanation: (-3)²=9, 0²=0, 4²=16
     }
     return result;
 }`,
+    cpp: `class Solution {
+public:
+    vector<int> squareElements(vector<int>& nums) {
+        vector<int> result(nums.size());
+        for (int i = 0; i < (int)nums.size(); i++) {
+            result[i] = nums[i] * nums[i];
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Linear Scan
 

@@ -176,6 +176,10 @@ function countEven(nums) {
     return 0;
 }
 `,
+    typescript: `function countEven(nums: number[]): number {
+    // TODO: count and return the number of even integers in nums
+    return 0;
+}`,
     java: `class Solution {
     public int countEven(int[] nums) {
         // TODO: count and return the number of even integers in nums
@@ -183,11 +187,24 @@ function countEven(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountEven(int[] nums) {
+        // TODO: count and return the number of even integers in nums
+        return 0;
+    }
+}`,
     c: `int countEven(int* nums, int numsSize) {
     /* TODO: count and return the number of even integers in nums */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countEven(vector<int>& nums) {
+        // TODO: count and return the number of even integers in nums
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_even(nums: list[int]) -> int:
@@ -209,6 +226,13 @@ function countEven(nums) {
     return count;
 }
 `,
+    typescript: `function countEven(nums: number[]): number {
+    let count = 0;
+    for (const n of nums) {
+        if (n % 2 === 0) count++;
+    }
+    return count;
+}`,
     java: `class Solution {
     public int countEven(int[] nums) {
         int count = 0;
@@ -219,6 +243,15 @@ function countEven(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountEven(int[] nums) {
+        int count = 0;
+        foreach (int n in nums) {
+            if (n % 2 == 0) count++;
+        }
+        return count;
+    }
+}`,
     c: `int countEven(int* nums, int numsSize) {
     int count = 0;
     for (int i = 0; i < numsSize; i++) {
@@ -227,6 +260,16 @@ function countEven(nums) {
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countEven(vector<int>& nums) {
+        int count = 0;
+        for (int n : nums) {
+            if (n % 2 == 0) count++;
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Single Linear Scan
 

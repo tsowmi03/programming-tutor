@@ -129,6 +129,10 @@ Explanation: "10" reversed is "01", which is not equal to "10".
     return false;
 }
 `,
+    typescript: `function isPalindrome(x: number): boolean {
+    // TODO: return true if x is a palindrome, false otherwise
+    return false;
+}`,
     java: `class Solution {
     public boolean isPalindrome(int x) {
         // TODO: return true if x is a palindrome, false otherwise
@@ -136,6 +140,12 @@ Explanation: "10" reversed is "01", which is not equal to "10".
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsPalindrome(int x) {
+        // TODO: return true if x is a palindrome, false otherwise
+        return false;
+    }
+}`,
     c: `#include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -145,6 +155,13 @@ bool isPalindrome(int x) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPalindrome(int x) {
+        // TODO: return true if x is a palindrome, false otherwise
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_palindrome(x: int) -> bool:
@@ -159,6 +176,11 @@ bool isPalindrome(int x) {
     return s === s.split('').reverse().join('');
 }
 `,
+    typescript: `function isPalindrome(x: number): boolean {
+    if (x < 0) return false;
+    const s = String(x);
+    return s === s.split('').reverse().join('');
+}`,
     java: `class Solution {
     public boolean isPalindrome(int x) {
         if (x < 0) return false;
@@ -168,6 +190,17 @@ bool isPalindrome(int x) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsPalindrome(int x) {
+        if (x < 0) return false;
+        string s = x.ToString();
+        string rev = new string(new System.Text.StringBuilder(s).ToString().ToCharArray());
+        char[] chars = s.ToCharArray();
+        System.Array.Reverse(chars);
+        string reversed = new string(chars);
+        return s.Equals(reversed);
+    }
+}`,
     c: `#include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -183,6 +216,16 @@ bool isPalindrome(int x) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPalindrome(int x) {
+        if (x < 0) return false;
+        string s = to_string(x);
+        string rev = s;
+        reverse(rev.begin(), rev.end());
+        return s == rev;
+    }
+};`,
   },
   editorial: `## Approach: String Reversal
 

@@ -226,6 +226,14 @@ function isSymmetric(tree) {
     return false;
 }
 `,
+    typescript: `/**
+ * @param {number[]} tree
+ * @return {boolean}
+ */
+function isSymmetric(tree: number[]): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean isSymmetric(int[] tree) {
         // TODO: implement
@@ -233,12 +241,25 @@ function isSymmetric(tree) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsSymmetric(int[] tree) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 bool isSymmetric(int* tree, int treeSize) {
     // TODO: implement
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isSymmetric(vector<int>& tree) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_symmetric(tree: list[int]) -> bool:
@@ -279,6 +300,21 @@ function isSymmetric(tree) {
     return isMirror(1, 2);
 }
 `,
+    typescript: `function isSymmetric(tree: number[]): boolean {
+    const n = tree.length;
+
+    function isMirror(i: number, j: number): boolean {
+        const iNull = i >= n || tree[i] === -1;
+        const jNull = j >= n || tree[j] === -1;
+        if (iNull && jNull) return true;
+        if (iNull || jNull) return false;
+        if (tree[i] !== tree[j]) return false;
+        return isMirror(2*i+1, 2*j+2) && isMirror(2*i+2, 2*j+1);
+    }
+
+    if (n === 0) return true;
+    return isMirror(1, 2);
+}`,
     java: `class Solution {
     private int[] tree;
     private int n;
@@ -300,6 +336,26 @@ function isSymmetric(tree) {
     }
 }
 `,
+    csharp: `public class Solution {
+    private int[] tree;
+    private int n;
+
+    private bool IsMirror(int i, int j) {
+        bool iNull = i >= n || tree[i] == -1;
+        bool jNull = j >= n || tree[j] == -1;
+        if (iNull && jNull) return true;
+        if (iNull || jNull) return false;
+        if (tree[i] != tree[j]) return false;
+        return IsMirror(2*i+1, 2*j+2) && IsMirror(2*i+2, 2*j+1);
+    }
+
+    public bool IsSymmetric(int[] tree) {
+        this.tree = tree;
+        this.n = tree.Length;
+        if (n == 0) return true;
+        return IsMirror(1, 2);
+    }
+}`,
     c: `#include <stdbool.h>
 
 static int* g_tree;
@@ -321,6 +377,28 @@ bool isSymmetric(int* tree, int treeSize) {
     return isMirror(1, 2);
 }
 `,
+    cpp: `class Solution {
+private:
+    vector<int>* tree;
+    int n;
+
+    bool isMirror(int i, int j) {
+        bool iNull = i >= n || (*tree)[i] == -1;
+        bool jNull = j >= n || (*tree)[j] == -1;
+        if (iNull && jNull) return true;
+        if (iNull || jNull) return false;
+        if ((*tree)[i] != (*tree)[j]) return false;
+        return isMirror(2*i+1, 2*j+2) && isMirror(2*i+2, 2*j+1);
+    }
+
+public:
+    bool isSymmetric(vector<int>& tree) {
+        this->tree = &tree;
+        this->n = (int)tree.size();
+        if (n == 0) return true;
+        return isMirror(1, 2);
+    }
+};`,
   },
   editorial: `## Approach: Recursive Mirror Check
 

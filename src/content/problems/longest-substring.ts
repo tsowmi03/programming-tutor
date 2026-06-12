@@ -38,25 +38,81 @@ Explanation: "wke" — note "pwke" is a subsequence, not a substring.
 - \`s\` consists of printable ASCII characters.
 `,
   hints: [
-    "Checking every substring is O(n³)/O(n²). Instead, grow a window `[left, right]` that always contains unique characters.",
-    "Move `right` forward one character at a time. If the new character already appears in the window, shrink from the left until it doesn't.",
-    "Keep a set of the characters in the window (or a map from character to its last index, letting `left` jump instead of crawl). Track the best window length seen.",
+    `Checking every substring is O(n³)/O(n²). Instead, grow a window \`[left, right]\` that always contains unique characters.`,
+    `Move \`right\` forward one character at a time. If the new character already appears in the window, shrink from the left until it doesn't.`,
+    `Keep a set of the characters in the window (or a map from character to its last index, letting \`left\` jump instead of crawl). Track the best window length seen.`,
   ],
   signature: {
-    name: "lengthOfLongestSubstring",
-    params: [{ name: "s", type: "string" }],
-    returns: "int",
+    "name": "lengthOfLongestSubstring",
+    "params": [
+      {
+        "name": "s",
+        "type": "string"
+      }
+    ],
+    "returns": "int"
   },
   testCases: [
-    { input: ["abcabcbb"], expected: 3 },
-    { input: ["bbbbb"], expected: 1 },
-    { input: ["pwwkew"], expected: 3 },
-    { input: [""], expected: 0, hidden: true },
-    { input: [" "], expected: 1, hidden: true },
-    { input: ["au"], expected: 2, hidden: true },
-    { input: ["dvdf"], expected: 3, hidden: true },
-    { input: ["abba"], expected: 2, hidden: true },
-    { input: ["tmmzuxt"], expected: 5, hidden: true },
+    {
+      "input": [
+        "abcabcbb"
+      ],
+      "expected": 3
+    },
+    {
+      "input": [
+        "bbbbb"
+      ],
+      "expected": 1
+    },
+    {
+      "input": [
+        "pwwkew"
+      ],
+      "expected": 3
+    },
+    {
+      "input": [
+        ""
+      ],
+      "expected": 0,
+      "hidden": true
+    },
+    {
+      "input": [
+        " "
+      ],
+      "expected": 1,
+      "hidden": true
+    },
+    {
+      "input": [
+        "au"
+      ],
+      "expected": 2,
+      "hidden": true
+    },
+    {
+      "input": [
+        "dvdf"
+      ],
+      "expected": 3,
+      "hidden": true
+    },
+    {
+      "input": [
+        "abba"
+      ],
+      "expected": 2,
+      "hidden": true
+    },
+    {
+      "input": [
+        "tmmzuxt"
+      ],
+      "expected": 5,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def length_of_longest_substring(s):
@@ -73,6 +129,14 @@ function lengthOfLongestSubstring(s) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {string} s
+ * @return {number}
+ */
+function lengthOfLongestSubstring(s: string): number {
+  // Your code here
+  return 0;
+}`,
     java: `class Solution {
     public int lengthOfLongestSubstring(String s) {
         // Your code here
@@ -80,11 +144,26 @@ function lengthOfLongestSubstring(s) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int LengthOfLongestSubstring(string s) {
+        // Your code here
+        return 0;
+    }
+}`,
     c: `int lengthOfLongestSubstring(char* s) {
     // Your code here
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // Your code here
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def length_of_longest_substring(s):
@@ -113,6 +192,20 @@ function lengthOfLongestSubstring(s) {
   return best;
 }
 `,
+    typescript: `function lengthOfLongestSubstring(s: string): number {
+  const last = new Map<string, number>(); // char -> most recent index
+  let left = 0;
+  let best = 0;
+  for (let right = 0; right < s.length; right++) {
+    const ch = s[right];
+    if (last.has(ch) && last.get(ch)! >= left) {
+      left = last.get(ch)! + 1;
+    }
+    last.set(ch, right);
+    best = Math.max(best, right - left + 1);
+  }
+  return best;
+}`,
     java: `class Solution {
     public int lengthOfLongestSubstring(String s) {
         Map<Character, Integer> last = new HashMap<>();
@@ -129,6 +222,23 @@ function lengthOfLongestSubstring(s) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int LengthOfLongestSubstring(string s) {
+        Dictionary<char, int> last = new Dictionary<char, int>();
+        int left = 0, best = 0;
+        for (int right = 0; right < s.Length; right++) {
+            char ch = s[right];
+            if (last.ContainsKey(ch) && last[ch] >= left) {
+                left = last[ch] + 1;
+            }
+            last[ch] = right;
+            best = System.Math.Max(best, right - left + 1);
+        }
+        return best;
+    }
+}`,
     c: `int lengthOfLongestSubstring(char* s) {
     int last[128];
     for (int i = 0; i < 128; i++) last[i] = -1;
@@ -145,6 +255,24 @@ function lengthOfLongestSubstring(s) {
     return best;
 }
 `,
+    cpp: `class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int last[128];
+        for (int i = 0; i < 128; i++) last[i] = -1;
+        int left = 0, best = 0;
+        for (int right = 0; right < (int)s.size(); right++) {
+            unsigned char ch = (unsigned char)s[right];
+            if (last[ch] >= left) {
+                left = last[ch] + 1;
+            }
+            last[ch] = right;
+            int len = right - left + 1;
+            if (len > best) best = len;
+        }
+        return best;
+    }
+};`,
   },
   editorial: `## Approach: sliding window
 

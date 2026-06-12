@@ -129,8 +129,18 @@ Output: "0"
     // TODO: implement
     return "";
 }`,
+    typescript: `function decimalToBinary(n: number): string {
+    // TODO: implement
+    return "";
+}`,
     java: `class Solution {
     public String decimalToBinary(int n) {
+        // TODO: implement
+        return "";
+    }
+}`,
+    csharp: `public class Solution {
+    public string DecimalToBinary(int n) {
         // TODO: implement
         return "";
     }
@@ -139,6 +149,13 @@ Output: "0"
     /* TODO: implement */
     return "";
 }`,
+    cpp: `class Solution {
+public:
+    string decimalToBinary(int n) {
+        // TODO: implement
+        return "";
+    }
+};`,
   },
   solutions: {
     python: `def decimal_to_binary(n: int) -> str:
@@ -158,6 +175,15 @@ Output: "0"
     }
     return result;
 }`,
+    typescript: `function decimalToBinary(n: number): string {
+    if (n === 0) return "0";
+    let result = "";
+    while (n > 0) {
+        result = String(n % 2) + result;
+        n = Math.floor(n / 2);
+    }
+    return result;
+}`,
     java: `class Solution {
     public String decimalToBinary(int n) {
         if (n == 0) return "0";
@@ -167,6 +193,19 @@ Output: "0"
             n /= 2;
         }
         return sb.reverse().toString();
+    }
+}`,
+    csharp: `public class Solution {
+    public string DecimalToBinary(int n) {
+        if (n == 0) return "0";
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        while (n > 0) {
+            sb.Append(n % 2);
+            n /= 2;
+        }
+        char[] chars = sb.ToString().ToCharArray();
+        System.Array.Reverse(chars);
+        return new string(chars);
     }
 }`,
     c: `#include <stdlib.h>
@@ -189,6 +228,18 @@ char* decimalToBinary(int n) {
     }
     return result;
 }`,
+    cpp: `class Solution {
+public:
+    string decimalToBinary(int n) {
+        if (n == 0) return "0";
+        string result = "";
+        while (n > 0) {
+            result = char('0' + n % 2) + result;
+            n /= 2;
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Repeated Division by 2
 

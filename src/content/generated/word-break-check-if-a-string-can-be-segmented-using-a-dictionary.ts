@@ -195,6 +195,10 @@ function wordBreak(s, wordDict) {
     return false;
 }
 `,
+    typescript: `function wordBreak(s: string, wordDict: string[]): boolean {
+    // TODO: implement using dynamic programming
+    return false;
+}`,
     java: `class Solution {
     public boolean wordBreak(String s, String[] wordDict) {
         // TODO: implement using dynamic programming
@@ -202,11 +206,26 @@ function wordBreak(s, wordDict) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public bool WordBreak(string s, string[] wordDict) {
+        // TODO: implement using dynamic programming
+        return false;
+    }
+}`,
     c: `bool wordBreak(char* s, char** wordDict, int wordDictSize) {
     // TODO: implement using dynamic programming
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        // TODO: implement using dynamic programming
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def word_break(s: str, word_dict: list[str]) -> bool:
@@ -237,6 +256,21 @@ function wordBreak(s, wordDict) {
     return dp[n];
 }
 `,
+    typescript: `function wordBreak(s: string, wordDict: string[]): boolean {
+    const wordSet = new Set(wordDict);
+    const n = s.length;
+    const dp = new Array(n + 1).fill(false);
+    dp[0] = true;
+    for (let i = 1; i <= n; i++) {
+        for (let j = 0; j < i; j++) {
+            if (dp[j] && wordSet.has(s.substring(j, i))) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[n];
+}`,
     java: `class Solution {
     public boolean wordBreak(String s, String[] wordDict) {
         java.util.Set<String> wordSet = new java.util.HashSet<>();
@@ -256,6 +290,25 @@ function wordBreak(s, wordDict) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public bool WordBreak(string s, string[] wordDict) {
+        HashSet<string> wordSet = new HashSet<string>(wordDict);
+        int n = s.Length;
+        bool[] dp = new bool[n + 1];
+        dp[0] = true;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordSet.Contains(s.Substring(j, i - j))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
@@ -283,6 +336,24 @@ bool wordBreak(char* s, char** wordDict, int wordDictSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> wordSet(wordDict.begin(), wordDict.end());
+        int n = (int)s.length();
+        vector<bool> dp(n + 1, false);
+        dp[0] = true;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordSet.count(s.substr(j, i - j))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+};`,
   },
   editorial: `## Approach: Dynamic Programming
 

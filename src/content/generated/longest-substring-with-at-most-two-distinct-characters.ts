@@ -136,6 +136,10 @@ function lengthOfLongestSubstringTwoDistinct(s) {
     return 0;
 }
 `,
+    typescript: `function lengthOfLongestSubstringTwoDistinct(s: string): number {
+    // TODO: implement sliding window
+    return 0;
+}`,
     java: `class Solution {
     public int lengthOfLongestSubstringTwoDistinct(String s) {
         // TODO: implement sliding window
@@ -143,11 +147,24 @@ function lengthOfLongestSubstringTwoDistinct(s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LengthOfLongestSubstringTwoDistinct(string s) {
+        // TODO: implement sliding window
+        return 0;
+    }
+}`,
     c: `int lengthOfLongestSubstringTwoDistinct(char* s) {
     // TODO: implement sliding window
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int lengthOfLongestSubstringTwoDistinct(string s) {
+        // TODO: implement sliding window
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def length_of_longest_substring_two_distinct(s: str) -> int:
@@ -183,6 +200,23 @@ function lengthOfLongestSubstringTwoDistinct(s) {
     return best;
 }
 `,
+    typescript: `function lengthOfLongestSubstringTwoDistinct(s: string): number {
+    const freq = new Map<string, number>();
+    let left = 0;
+    let best = 0;
+    for (let right = 0; right < s.length; right++) {
+        const ch = s[right];
+        freq.set(ch, (freq.get(ch) || 0) + 1);
+        while (freq.size > 2) {
+            const lc = s[left];
+            freq.set(lc, freq.get(lc)! - 1);
+            if (freq.get(lc) === 0) freq.delete(lc);
+            left++;
+        }
+        best = Math.max(best, right - left + 1);
+    }
+    return best;
+}`,
     java: `class Solution {
     public int lengthOfLongestSubstringTwoDistinct(String s) {
         int[] freq = new int[128];
@@ -205,6 +239,27 @@ function lengthOfLongestSubstringTwoDistinct(s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LengthOfLongestSubstringTwoDistinct(string s) {
+        int[] freq = new int[128];
+        int distinct = 0;
+        int left = 0;
+        int best = 0;
+        for (int right = 0; right < s.Length; right++) {
+            int rc = s[right];
+            if (freq[rc] == 0) distinct++;
+            freq[rc]++;
+            while (distinct > 2) {
+                int lc = s[left];
+                freq[lc]--;
+                if (freq[lc] == 0) distinct--;
+                left++;
+            }
+            best = System.Math.Max(best, right - left + 1);
+        }
+        return best;
+    }
+}`,
     c: `int lengthOfLongestSubstringTwoDistinct(char* s) {
     int freq[128] = {0};
     int distinct = 0;
@@ -226,6 +281,28 @@ function lengthOfLongestSubstringTwoDistinct(s) {
     return best;
 }
 `,
+    cpp: `class Solution {
+public:
+    int lengthOfLongestSubstringTwoDistinct(string s) {
+        int freq[128] = {0};
+        int distinct = 0;
+        int left = 0;
+        int best = 0;
+        for (int right = 0; right < (int)s.size(); right++) {
+            int rc = (unsigned char)s[right];
+            if (freq[rc] == 0) distinct++;
+            freq[rc]++;
+            while (distinct > 2) {
+                int lc = (unsigned char)s[left];
+                freq[lc]--;
+                if (freq[lc] == 0) distinct--;
+                left++;
+            }
+            best = max(best, right - left + 1);
+        }
+        return best;
+    }
+};`,
   },
   editorial: `## Approach: Sliding Window with Frequency Map
 

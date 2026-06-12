@@ -128,6 +128,10 @@ Output: "a3"
     return "";
 }
 `,
+    typescript: `function runLengthEncode(s: string): string {
+    // TODO: implement run-length encoding
+    return "";
+}`,
     java: `class Solution {
     public String runLengthEncode(String s) {
         // TODO: implement run-length encoding
@@ -135,11 +139,24 @@ Output: "a3"
     }
 }
 `,
+    csharp: `public class Solution {
+    public string RunLengthEncode(string s) {
+        // TODO: implement run-length encoding
+        return "";
+    }
+}`,
     c: `char* runLengthEncode(char* s) {
     // TODO: implement run-length encoding
     return "";
 }
 `,
+    cpp: `class Solution {
+public:
+    string runLengthEncode(string s) {
+        // TODO: implement run-length encoding
+        return "";
+    }
+};`,
   },
   solutions: {
     python: `def run_length_encode(s):
@@ -172,6 +189,21 @@ Output: "a3"
     return result;
 }
 `,
+    typescript: `function runLengthEncode(s: string): string {
+    if (s.length === 0) return "";
+    let result = "";
+    let count = 1;
+    for (let i = 1; i < s.length; i++) {
+        if (s[i] === s[i - 1]) {
+            count++;
+        } else {
+            result += s[i - 1] + String(count);
+            count = 1;
+        }
+    }
+    result += s[s.length - 1] + String(count);
+    return result;
+}`,
     java: `class Solution {
     public String runLengthEncode(String s) {
         if (s.isEmpty()) return "";
@@ -192,6 +224,27 @@ Output: "a3"
     }
 }
 `,
+    csharp: `using System.Text;
+
+public class Solution {
+    public string RunLengthEncode(string s) {
+        if (s.Length == 0) return "";
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+        for (int i = 1; i < s.Length; i++) {
+            if (s[i] == s[i - 1]) {
+                count++;
+            } else {
+                sb.Append(s[i - 1]);
+                sb.Append(count);
+                count = 1;
+            }
+        }
+        sb.Append(s[s.Length - 1]);
+        sb.Append(count);
+        return sb.ToString();
+    }
+}`,
     c: `#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -223,6 +276,26 @@ char* runLengthEncode(char* s) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    string runLengthEncode(string s) {
+        if (s.empty()) return "";
+        string result = "";
+        int count = 1;
+        for (int i = 1; i < (int)s.length(); i++) {
+            if (s[i] == s[i - 1]) {
+                count++;
+            } else {
+                result += s[i - 1];
+                result += to_string(count);
+                count = 1;
+            }
+        }
+        result += s[s.length() - 1];
+        result += to_string(count);
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Single-Pass Linear Scan
 

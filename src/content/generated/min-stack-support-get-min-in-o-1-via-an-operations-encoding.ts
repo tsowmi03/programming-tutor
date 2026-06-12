@@ -429,6 +429,10 @@ Output: [-3, -2]
     return [];
 }
 `,
+    typescript: `function minStackOps(operations: number[][]): number[] {
+    // TODO: implement min stack operations
+    return [];
+}`,
     java: `class Solution {
     public int[] minStackOps(int[][] operations) {
         // TODO: implement min stack operations
@@ -436,12 +440,25 @@ Output: [-3, -2]
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] MinStackOps(int[][] operations) {
+        // TODO: implement min stack operations
+        return new int[0];
+    }
+}`,
     c: `int* minStackOps(int** operations, int operationsSize, int* operationsColSize, int* returnSize) {
     // TODO: implement min stack operations
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> minStackOps(vector<vector<int>>& operations) {
+        // TODO: implement min stack operations
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def min_stack_ops(operations):
@@ -479,6 +496,24 @@ Output: [-3, -2]
     return result;
 }
 `,
+    typescript: `function minStackOps(operations: number[][]): number[] {
+    const stack: number[] = [];
+    const minStack: number[] = [];
+    const result: number[] = [];
+    for (const op of operations) {
+        if (op[0] === 0) {
+            const val = op[1];
+            stack.push(val);
+            minStack.push(minStack.length === 0 ? val : Math.min(val, minStack[minStack.length - 1]));
+        } else if (op[0] === 1) {
+            stack.pop();
+            minStack.pop();
+        } else if (op[0] === 2) {
+            result.push(minStack[minStack.length - 1]);
+        }
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] minStackOps(int[][] operations) {
         int getMinCount = 0;
@@ -503,6 +538,32 @@ Output: [-3, -2]
     }
 }
 `,
+    csharp: `using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] MinStackOps(int[][] operations) {
+        int getMinCount = 0;
+        foreach (int[] op in operations) if (op[0] == 2) getMinCount++;
+        int[] result = new int[getMinCount];
+        int[] stack = new int[10001];
+        int[] minStack = new int[10001];
+        int top = -1, resultIdx = 0;
+        foreach (int[] op in operations) {
+            if (op[0] == 0) {
+                int val = op[1];
+                top++;
+                stack[top] = val;
+                minStack[top] = (top == 0) ? val : Math.Min(val, minStack[top - 1]);
+            } else if (op[0] == 1) {
+                top--;
+            } else if (op[0] == 2) {
+                result[resultIdx++] = minStack[top];
+            }
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* minStackOps(int** operations, int operationsSize, int* operationsColSize, int* returnSize) {
@@ -534,6 +595,31 @@ int* minStackOps(int** operations, int operationsSize, int* operationsColSize, i
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> minStackOps(vector<vector<int>>& operations) {
+        vector<int> stack;
+        vector<int> minStack;
+        vector<int> result;
+        for (const auto& op : operations) {
+            if (op[0] == 0) {
+                int val = op[1];
+                stack.push_back(val);
+                if (minStack.empty()) {
+                    minStack.push_back(val);
+                } else {
+                    minStack.push_back(min(val, minStack.back()));
+                }
+            } else if (op[0] == 1) {
+                stack.pop_back();
+                minStack.pop_back();
+            } else if (op[0] == 2) {
+                result.push_back(minStack.back());
+            }
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Auxiliary Min Stack
 

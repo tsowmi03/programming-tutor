@@ -132,6 +132,10 @@ Explanation: '.' is not a digit character.
     return false;
 }
 `,
+    typescript: `function isAllDigits(s: string): boolean {
+    // TODO: return true if s contains only digit characters ('0'-'9'), false otherwise
+    return false;
+}`,
     java: `class Solution {
     public boolean isAllDigits(String s) {
         // TODO: return true if s contains only digit characters ('0'-'9'), false otherwise
@@ -139,6 +143,12 @@ Explanation: '.' is not a digit character.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsAllDigits(string s) {
+        // TODO: return true if s contains only digit characters ('0'-'9'), false otherwise
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 
 bool isAllDigits(char* s) {
@@ -146,6 +156,13 @@ bool isAllDigits(char* s) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isAllDigits(string s) {
+        // TODO: return true if s contains only digit characters ('0'-'9'), false otherwise
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_all_digits(s: str) -> bool:
@@ -164,6 +181,13 @@ bool isAllDigits(char* s) {
     return true;
 }
 `,
+    typescript: `function isAllDigits(s: string): boolean {
+    if (s.length === 0) return false;
+    for (let i = 0; i < s.length; i++) {
+        if (s[i] < '0' || s[i] > '9') return false;
+    }
+    return true;
+}`,
     java: `class Solution {
     public boolean isAllDigits(String s) {
         if (s.isEmpty()) return false;
@@ -175,6 +199,16 @@ bool isAllDigits(char* s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsAllDigits(string s) {
+        if (s.Length == 0) return false;
+        for (int i = 0; i < s.Length; i++) {
+            char c = s[i];
+            if (c < '0' || c > '9') return false;
+        }
+        return true;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 
@@ -186,6 +220,16 @@ bool isAllDigits(char* s) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isAllDigits(string s) {
+        if (s.empty()) return false;
+        for (int i = 0; i < (int)s.length(); i++) {
+            if (s[i] < '0' || s[i] > '9') return false;
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: Linear Scan
 

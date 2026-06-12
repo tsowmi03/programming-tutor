@@ -159,6 +159,10 @@ Explanation: Five unique elements — 0, 1, 2, 3, 4.
     return 0;
 }
 `,
+    typescript: `function removeDuplicates(nums: number[]): number {
+    // TODO: use two pointers to remove duplicates in-place
+    return 0;
+}`,
     java: `class Solution {
     public int removeDuplicates(int[] nums) {
         // TODO: use two pointers to remove duplicates in-place
@@ -166,11 +170,24 @@ Explanation: Five unique elements — 0, 1, 2, 3, 4.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int RemoveDuplicates(int[] nums) {
+        // TODO: use two pointers to remove duplicates in-place
+        return 0;
+    }
+}`,
     c: `int removeDuplicates(int* nums, int numsSize) {
     // TODO: use two pointers to remove duplicates in-place
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        // TODO: use two pointers to remove duplicates in-place
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def remove_duplicates(nums):
@@ -195,6 +212,17 @@ Explanation: Five unique elements — 0, 1, 2, 3, 4.
     return k;
 }
 `,
+    typescript: `function removeDuplicates(nums: number[]): number {
+    if (nums.length === 0) return 0;
+    let k = 1;
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] !== nums[k - 1]) {
+            nums[k] = nums[i];
+            k++;
+        }
+    }
+    return k;
+}`,
     java: `class Solution {
     public int removeDuplicates(int[] nums) {
         if (nums.length == 0) return 0;
@@ -209,6 +237,19 @@ Explanation: Five unique elements — 0, 1, 2, 3, 4.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int RemoveDuplicates(int[] nums) {
+        if (nums.Length == 0) return 0;
+        int k = 1;
+        for (int i = 1; i < nums.Length; i++) {
+            if (nums[i] != nums[k - 1]) {
+                nums[k] = nums[i];
+                k++;
+            }
+        }
+        return k;
+    }
+}`,
     c: `int removeDuplicates(int* nums, int numsSize) {
     if (numsSize == 0) return 0;
     int k = 1;
@@ -221,6 +262,20 @@ Explanation: Five unique elements — 0, 1, 2, 3, 4.
     return k;
 }
 `,
+    cpp: `class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.empty()) return 0;
+        int k = 1;
+        for (int i = 1; i < (int)nums.size(); i++) {
+            if (nums[i] != nums[k - 1]) {
+                nums[k] = nums[i];
+                k++;
+            }
+        }
+        return k;
+    }
+};`,
   },
   editorial: `## Two-Pointer Approach
 

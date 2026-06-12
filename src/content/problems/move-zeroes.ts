@@ -31,27 +31,133 @@ Output: [0]
 **Follow-up:** can you do it in a single pass, minimising the number of writes?
 `,
   hints: [
-    "Creating a new array of non-zeroes then padding with zeroes works, but the point of the exercise is to rearrange in place.",
-    "Use a slow/fast pointer pair: `write` marks where the next non-zero value belongs; `read` scans every element.",
-    "Whenever `nums[read]` is non-zero, swap it into position `write` and advance `write`. Everything before `write` is non-zero, everything between `write` and `read` is zero.",
+    `Creating a new array of non-zeroes then padding with zeroes works, but the point of the exercise is to rearrange in place.`,
+    `Use a slow/fast pointer pair: \`write\` marks where the next non-zero value belongs; \`read\` scans every element.`,
+    `Whenever \`nums[read]\` is non-zero, swap it into position \`write\` and advance \`write\`. Everything before \`write\` is non-zero, everything between \`write\` and \`read\` is zero.`,
   ],
   signature: {
-    name: "moveZeroes",
-    params: [{ name: "nums", type: "int[]" }],
-    returns: "int[]",
+    "name": "moveZeroes",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      }
+    ],
+    "returns": "int[]"
   },
   testCases: [
-    { input: [[0, 1, 0, 3, 12]], expected: [1, 3, 12, 0, 0] },
-    { input: [[0]], expected: [0] },
-    { input: [[1, 2, 3]], expected: [1, 2, 3] },
-    { input: [[0, 0, 1]], expected: [1, 0, 0], hidden: true },
-    { input: [[4, 0, 5, 0, 0, 6]], expected: [4, 5, 6, 0, 0, 0], hidden: true },
-    { input: [[0, 0, 0]], expected: [0, 0, 0], hidden: true },
     {
-      input: [[-1, 0, -2, 0, 3]],
-      expected: [-1, -2, 3, 0, 0],
-      hidden: true,
+      "input": [
+        [
+          0,
+          1,
+          0,
+          3,
+          12
+        ]
+      ],
+      "expected": [
+        1,
+        3,
+        12,
+        0,
+        0
+      ]
     },
+    {
+      "input": [
+        [
+          0
+        ]
+      ],
+      "expected": [
+        0
+      ]
+    },
+    {
+      "input": [
+        [
+          1,
+          2,
+          3
+        ]
+      ],
+      "expected": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "input": [
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "expected": [
+        1,
+        0,
+        0
+      ],
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          4,
+          0,
+          5,
+          0,
+          0,
+          6
+        ]
+      ],
+      "expected": [
+        4,
+        5,
+        6,
+        0,
+        0,
+        0
+      ],
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected": [
+        0,
+        0,
+        0
+      ],
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          -1,
+          0,
+          -2,
+          0,
+          3
+        ]
+      ],
+      "expected": [
+        -1,
+        -2,
+        3,
+        0,
+        0
+      ],
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def move_zeroes(nums):
@@ -68,6 +174,14 @@ function moveZeroes(nums) {
   return nums;
 }
 `,
+    typescript: `/**
+ * @param {number[]} nums
+ * @return {number[]} the same array, zeroes moved to the end
+ */
+function moveZeroes(nums: number[]): number[] {
+  // Your code here
+  return nums;
+}`,
     java: `class Solution {
     public int[] moveZeroes(int[] nums) {
         // Your code here
@@ -75,6 +189,12 @@ function moveZeroes(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] MoveZeroes(int[] nums) {
+        // Your code here
+        return nums;
+    }
+}`,
     c: `/**
  * Rearrange nums in place and return it.
  * Set *returnSize to numsSize.
@@ -85,6 +205,13 @@ int* moveZeroes(int* nums, int numsSize, int* returnSize) {
     return nums;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> moveZeroes(vector<int>& nums) {
+        // Your code here
+        return nums;
+    }
+};`,
   },
   solutions: {
     python: `def move_zeroes(nums):
@@ -106,6 +233,16 @@ int* moveZeroes(int* nums, int numsSize, int* returnSize) {
   return nums;
 }
 `,
+    typescript: `function moveZeroes(nums: number[]): number[] {
+  let write = 0;
+  for (let read = 0; read < nums.length; read++) {
+    if (nums[read] !== 0) {
+      [nums[write], nums[read]] = [nums[read], nums[write]];
+      write++;
+    }
+  }
+  return nums;
+}`,
     java: `class Solution {
     public int[] moveZeroes(int[] nums) {
         int write = 0;
@@ -121,6 +258,20 @@ int* moveZeroes(int* nums, int numsSize, int* returnSize) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] MoveZeroes(int[] nums) {
+        int write = 0;
+        for (int read = 0; read < nums.Length; read++) {
+            if (nums[read] != 0) {
+                int tmp = nums[write];
+                nums[write] = nums[read];
+                nums[read] = tmp;
+                write++;
+            }
+        }
+        return nums;
+    }
+}`,
     c: `int* moveZeroes(int* nums, int numsSize, int* returnSize) {
     int write = 0;
     for (int read = 0; read < numsSize; read++) {
@@ -135,6 +286,21 @@ int* moveZeroes(int* nums, int numsSize, int* returnSize) {
     return nums;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> moveZeroes(vector<int>& nums) {
+        int write = 0;
+        for (int read = 0; read < (int)nums.size(); read++) {
+            if (nums[read] != 0) {
+                int tmp = nums[write];
+                nums[write] = nums[read];
+                nums[read] = tmp;
+                write++;
+            }
+        }
+        return nums;
+    }
+};`,
   },
   editorial: `## Approach: slow/fast pointers (partition in place)
 

@@ -199,8 +199,18 @@ Explanation:
     // TODO: simulate push/pop operations and return the final stack bottom-to-top
     return [];
 }`,
+    typescript: `function evaluateStack(ops: string[]): number[] {
+    // TODO: simulate push/pop operations and return the final stack bottom-to-top
+    return [];
+}`,
     java: `class Solution {
     public int[] evaluateStack(String[] ops) {
+        // TODO: simulate push/pop operations and return the final stack bottom-to-top
+        return new int[]{};
+    }
+}`,
+    csharp: `public class Solution {
+    public int[] EvaluateStack(string[] ops) {
         // TODO: simulate push/pop operations and return the final stack bottom-to-top
         return new int[]{};
     }
@@ -210,6 +220,13 @@ Explanation:
     *returnSize = 0;
     return NULL;
 }`,
+    cpp: `class Solution {
+public:
+    vector<int> evaluateStack(vector<string>& ops) {
+        // TODO: simulate push/pop operations and return the final stack bottom-to-top
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def evaluate_stack(ops):
@@ -222,6 +239,17 @@ Explanation:
     return stack`,
     javascript: `function evaluateStack(ops) {
     const stack = [];
+    for (const op of ops) {
+        if (op.startsWith('push')) {
+            stack.push(parseInt(op.split(' ')[1], 10));
+        } else {
+            stack.pop();
+        }
+    }
+    return stack;
+}`,
+    typescript: `function evaluateStack(ops: string[]): number[] {
+    const stack: number[] = [];
     for (const op of ops) {
         if (op.startsWith('push')) {
             stack.push(parseInt(op.split(' ')[1], 10));
@@ -247,6 +275,21 @@ Explanation:
         return result;
     }
 }`,
+    csharp: `using System.Collections.Generic;
+public class Solution {
+    public int[] EvaluateStack(string[] ops) {
+        List<int> stack = new List<int>();
+        foreach (string op in ops) {
+            if (op.StartsWith("push")) {
+                string[] parts = op.Split(' ');
+                stack.Add(int.Parse(parts[1]));
+            } else {
+                stack.RemoveAt(stack.Count - 1);
+            }
+        }
+        return stack.ToArray();
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* evaluateStack(char** ops, int opsSize, int* returnSize) {
@@ -267,6 +310,20 @@ int* evaluateStack(char** ops, int opsSize, int* returnSize) {
     free(temp);
     return result;
 }`,
+    cpp: `class Solution {
+public:
+    vector<int> evaluateStack(vector<string>& ops) {
+        vector<int> stack;
+        for (const string& op : ops) {
+            if (op[1] == 'u') {
+                stack.push_back(stoi(op.substr(5)));
+            } else {
+                stack.pop_back();
+            }
+        }
+        return stack;
+    }
+};`,
   },
   editorial: `## Approach: Stack Simulation
 

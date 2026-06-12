@@ -45,61 +45,146 @@ Explanation:    5
     `In the level-order encoding, the left child of index \`i\` is at \`2*i+1\` and the right child is at \`2*i+2\`. A node is null if it equals \`-1001\` or its index is out of bounds.`,
   ],
   signature: {
-    name: "isValidBST",
-    params: [{ name: "tree", type: "int[]" }],
-    returns: "bool",
+    "name": "isValidBST",
+    "params": [
+      {
+        "name": "tree",
+        "type": "int[]"
+      }
+    ],
+    "returns": "bool"
   },
   testCases: [
     {
-      input: [[2, 1, 3]],
-      expected: true,
-      hidden: false,
+      "input": [
+        [
+          2,
+          1,
+          3
+        ]
+      ],
+      "expected": true,
+      "hidden": false
     },
     {
-      input: [[5, 1, 4, -1001, -1001, 3, 6]],
-      expected: false,
-      hidden: false,
+      "input": [
+        [
+          5,
+          1,
+          4,
+          -1001,
+          -1001,
+          3,
+          6
+        ]
+      ],
+      "expected": false,
+      "hidden": false
     },
     {
-      input: [[1]],
-      expected: true,
-      hidden: false,
+      "input": [
+        [
+          1
+        ]
+      ],
+      "expected": true,
+      "hidden": false
     },
     {
-      input: [[]],
-      expected: true,
-      hidden: true,
+      "input": [
+        []
+      ],
+      "expected": true,
+      "hidden": true
     },
     {
-      input: [[2, 2, 2]],
-      expected: false,
-      hidden: true,
+      "input": [
+        [
+          2,
+          2,
+          2
+        ]
+      ],
+      "expected": false,
+      "hidden": true
     },
     {
-      input: [[5, 4, 6, -1001, -1001, 3, 7]],
-      expected: false,
-      hidden: true,
+      "input": [
+        [
+          5,
+          4,
+          6,
+          -1001,
+          -1001,
+          3,
+          7
+        ]
+      ],
+      "expected": false,
+      "hidden": true
     },
     {
-      input: [[10, 5, 15, -1001, -1001, 6, 20]],
-      expected: false,
-      hidden: true,
+      "input": [
+        [
+          10,
+          5,
+          15,
+          -1001,
+          -1001,
+          6,
+          20
+        ]
+      ],
+      "expected": false,
+      "hidden": true
     },
     {
-      input: [[8, 3, 10, 1, 6, -1001, 14, -1001, -1001, 4, 7]],
-      expected: true,
-      hidden: true,
+      "input": [
+        [
+          8,
+          3,
+          10,
+          1,
+          6,
+          -1001,
+          14,
+          -1001,
+          -1001,
+          4,
+          7
+        ]
+      ],
+      "expected": true,
+      "hidden": true
     },
     {
-      input: [[3, 1, 5, -1001, 2]],
-      expected: true,
-      hidden: true,
+      "input": [
+        [
+          3,
+          1,
+          5,
+          -1001,
+          2
+        ]
+      ],
+      "expected": true,
+      "hidden": true
     },
     {
-      input: [[0, -3, 5, -4, -1, -1001, 9]],
-      expected: true,
-      hidden: true,
-    },
+      "input": [
+        [
+          0,
+          -3,
+          5,
+          -4,
+          -1,
+          -1001,
+          9
+        ]
+      ],
+      "expected": true,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def is_valid_bst(tree):
@@ -111,6 +196,10 @@ Explanation:    5
     return false;
 }
 `,
+    typescript: `function isValidBST(tree: number[]): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean isValidBST(int[] tree) {
         // TODO: implement
@@ -118,11 +207,24 @@ Explanation:    5
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsValidBST(int[] tree) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `int isValidBST(int* tree, int treeSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isValidBST(vector<int>& tree) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_valid_bst(tree):
@@ -148,6 +250,16 @@ Explanation:    5
     return dfs(0, -Infinity, Infinity);
 }
 `,
+    typescript: `function isValidBST(tree: number[]): boolean {
+    if (tree.length === 0) return true;
+    function dfs(i: number, minVal: number, maxVal: number): boolean {
+        if (i >= tree.length || tree[i] === -1001) return true;
+        const val = tree[i];
+        if (val <= minVal || val >= maxVal) return false;
+        return dfs(2 * i + 1, minVal, val) && dfs(2 * i + 2, val, maxVal);
+    }
+    return dfs(0, -Infinity, Infinity);
+}`,
     java: `class Solution {
     private int[] tree;
 
@@ -165,6 +277,22 @@ Explanation:    5
     }
 }
 `,
+    csharp: `public class Solution {
+    private int[] tree;
+
+    public bool IsValidBST(int[] tree) {
+        this.tree = tree;
+        if (tree.Length == 0) return true;
+        return Dfs(0, long.MinValue, long.MaxValue);
+    }
+
+    private bool Dfs(int i, long min, long max) {
+        if (i >= tree.Length || tree[i] == -1001) return true;
+        long val = tree[i];
+        if (val <= min || val >= max) return false;
+        return Dfs(2 * i + 1, min, val) && Dfs(2 * i + 2, val, max);
+    }
+}`,
     c: `#include <limits.h>
 
 static int* g_tree;
@@ -184,6 +312,21 @@ int isValidBST(int* tree, int treeSize) {
     return dfs(0, LLONG_MIN, LLONG_MAX);
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isValidBST(vector<int>& tree) {
+        if (tree.empty()) return true;
+        return dfs(tree, 0, (long long)LLONG_MIN, (long long)LLONG_MAX);
+    }
+
+private:
+    bool dfs(vector<int>& tree, int i, long long minVal, long long maxVal) {
+        if (i >= (int)tree.size() || tree[i] == -1001) return true;
+        long long val = tree[i];
+        if (val <= minVal || val >= maxVal) return false;
+        return dfs(tree, 2 * i + 1, minVal, val) && dfs(tree, 2 * i + 2, val, maxVal);
+    }
+};`,
   },
   editorial: `## Approach: DFS with Valid Range Propagation
 

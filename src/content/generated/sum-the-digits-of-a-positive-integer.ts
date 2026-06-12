@@ -130,6 +130,10 @@ Explanation: 1 + 0 + 0 = 1
     return 0;
 }
 `,
+    typescript: `function digitSum(n: number): number {
+    // TODO: return the sum of all digits of n
+    return 0;
+}`,
     java: `class Solution {
     public int digitSum(int n) {
         // TODO: return the sum of all digits of n
@@ -137,11 +141,24 @@ Explanation: 1 + 0 + 0 = 1
     }
 }
 `,
+    csharp: `public class Solution {
+    public int DigitSum(int n) {
+        // TODO: return the sum of all digits of n
+        return 0;
+    }
+}`,
     c: `int digitSum(int n) {
     /* TODO: return the sum of all digits of n */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int digitSum(int n) {
+        // TODO: return the sum of all digits of n
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def digit_sum(n: int) -> int:
@@ -160,6 +177,14 @@ Explanation: 1 + 0 + 0 = 1
     return total;
 }
 `,
+    typescript: `function digitSum(n: number): number {
+    let total = 0;
+    while (n > 0) {
+        total += n % 10;
+        n = Math.floor(n / 10);
+    }
+    return total;
+}`,
     java: `class Solution {
     public int digitSum(int n) {
         int total = 0;
@@ -171,6 +196,16 @@ Explanation: 1 + 0 + 0 = 1
     }
 }
 `,
+    csharp: `public class Solution {
+    public int DigitSum(int n) {
+        int total = 0;
+        while (n > 0) {
+            total += n % 10;
+            n /= 10;
+        }
+        return total;
+    }
+}`,
     c: `int digitSum(int n) {
     int total = 0;
     while (n > 0) {
@@ -180,6 +215,17 @@ Explanation: 1 + 0 + 0 = 1
     return total;
 }
 `,
+    cpp: `class Solution {
+public:
+    int digitSum(int n) {
+        int total = 0;
+        while (n > 0) {
+            total += n % 10;
+            n /= 10;
+        }
+        return total;
+    }
+};`,
   },
   editorial: `## Approach: Repeated Modulo and Division
 

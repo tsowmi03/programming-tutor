@@ -117,6 +117,10 @@ Output: "example good a"
     return "";
 }
 `,
+    typescript: `function reverseWords(sentence: string): string {
+    // TODO: reverse the order of words in the sentence
+    return "";
+}`,
     java: `class Solution {
     public String reverseWords(String sentence) {
         // TODO: reverse the order of words in the sentence
@@ -124,11 +128,24 @@ Output: "example good a"
     }
 }
 `,
+    csharp: `public class Solution {
+    public string ReverseWords(string sentence) {
+        // TODO: reverse the order of words in the sentence
+        return "";
+    }
+}`,
     c: `char* reverseWords(char* sentence) {
     // TODO: reverse the order of words in the sentence
     return "";
 }
 `,
+    cpp: `class Solution {
+public:
+    string reverseWords(string sentence) {
+        // TODO: reverse the order of words in the sentence
+        return "";
+    }
+};`,
   },
   solutions: {
     python: `def reverse_words(sentence: str) -> str:
@@ -143,6 +160,10 @@ Output: "example good a"
     return sentence.split(' ').reverse().join(' ');
 }
 `,
+    typescript: `function reverseWords(sentence: string): string {
+    if (sentence === '') return '';
+    return sentence.split(' ').reverse().join(' ');
+}`,
     java: `class Solution {
     public String reverseWords(String sentence) {
         if (sentence.isEmpty()) return "";
@@ -156,6 +177,16 @@ Output: "example good a"
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public string ReverseWords(string sentence) {
+        if (sentence.Length == 0) return "";
+        string[] words = sentence.Split(' ');
+        Array.Reverse(words);
+        return string.Join(" ", words);
+    }
+}`,
     c: `#include <string.h>
 #include <stdlib.h>
 
@@ -185,6 +216,29 @@ char* reverseWords(char* sentence) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    string reverseWords(string sentence) {
+        if (sentence.empty()) return "";
+        vector<string> words;
+        string word;
+        for (char c : sentence) {
+            if (c == ' ') {
+                words.push_back(word);
+                word.clear();
+            } else {
+                word += c;
+            }
+        }
+        words.push_back(word);
+        string result;
+        for (int i = (int)words.size() - 1; i >= 0; i--) {
+            result += words[i];
+            if (i > 0) result += ' ';
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Split → Reverse → Join
 

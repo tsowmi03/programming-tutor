@@ -160,6 +160,10 @@ Explanation: Five elements remain: [0,1,3,0,4] in some order.
     return 0;
 }
 `,
+    typescript: `function removeElement(nums: number[], val: number): number {
+    // TODO: use two pointers to remove val in-place
+    return 0;
+}`,
     java: `class Solution {
     public int removeElement(int[] nums, int val) {
         // TODO: use two pointers to remove val in-place
@@ -167,11 +171,24 @@ Explanation: Five elements remain: [0,1,3,0,4] in some order.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int RemoveElement(int[] nums, int val) {
+        // TODO: use two pointers to remove val in-place
+        return 0;
+    }
+}`,
     c: `int removeElement(int* nums, int numsSize, int val) {
     // TODO: use two pointers to remove val in-place
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        // TODO: use two pointers to remove val in-place
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def remove_element(nums, val):
@@ -193,6 +210,16 @@ Explanation: Five elements remain: [0,1,3,0,4] in some order.
     return k;
 }
 `,
+    typescript: `function removeElement(nums: number[], val: number): number {
+    let k = 0;
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] !== val) {
+            nums[k] = nums[i];
+            k++;
+        }
+    }
+    return k;
+}`,
     java: `class Solution {
     public int removeElement(int[] nums, int val) {
         int k = 0;
@@ -206,6 +233,18 @@ Explanation: Five elements remain: [0,1,3,0,4] in some order.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int RemoveElement(int[] nums, int val) {
+        int k = 0;
+        for (int i = 0; i < nums.Length; i++) {
+            if (nums[i] != val) {
+                nums[k] = nums[i];
+                k++;
+            }
+        }
+        return k;
+    }
+}`,
     c: `int removeElement(int* nums, int numsSize, int val) {
     int k = 0;
     for (int i = 0; i < numsSize; i++) {
@@ -217,6 +256,19 @@ Explanation: Five elements remain: [0,1,3,0,4] in some order.
     return k;
 }
 `,
+    cpp: `class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int k = 0;
+        for (int i = 0; i < (int)nums.size(); i++) {
+            if (nums[i] != val) {
+                nums[k] = nums[i];
+                k++;
+            }
+        }
+        return k;
+    }
+};`,
   },
   editorial: `## Two-Pointer Approach
 

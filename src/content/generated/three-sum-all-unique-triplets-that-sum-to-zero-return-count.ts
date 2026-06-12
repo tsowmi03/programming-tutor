@@ -179,6 +179,10 @@ Explanation: No triplets can be formed.
     return 0;
 }
 `,
+    typescript: `function threeSumCount(nums: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int threeSumCount(int[] nums) {
         // TODO: implement
@@ -186,11 +190,24 @@ Explanation: No triplets can be formed.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int ThreeSumCount(int[] nums) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int threeSumCount(int* nums, int numsSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int threeSumCount(vector<int>& nums) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def three_sum_count(nums):
@@ -241,6 +258,29 @@ Explanation: No triplets can be formed.
     return count;
 }
 `,
+    typescript: `function threeSumCount(nums: number[]): number {
+    nums.sort((a, b) => a - b);
+    const n = nums.length;
+    let count = 0;
+    for (let i = 0; i < n - 2; i++) {
+        if (i > 0 && nums[i] === nums[i - 1]) continue;
+        let l = i + 1, r = n - 1;
+        while (l < r) {
+            const s = nums[i] + nums[l] + nums[r];
+            if (s === 0) {
+                count++;
+                while (l < r && nums[l] === nums[l + 1]) l++;
+                while (l < r && nums[r] === nums[r - 1]) r--;
+                l++; r--;
+            } else if (s < 0) {
+                l++;
+            } else {
+                r--;
+            }
+        }
+    }
+    return count;
+}`,
     java: `class Solution {
     public int threeSumCount(int[] nums) {
         java.util.Arrays.sort(nums);
@@ -267,6 +307,33 @@ Explanation: No triplets can be formed.
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int ThreeSumCount(int[] nums) {
+        Array.Sort(nums);
+        int n = nums.Length;
+        int count = 0;
+        for (int i = 0; i < n - 2; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int l = i + 1, r = n - 1;
+            while (l < r) {
+                int s = nums[i] + nums[l] + nums[r];
+                if (s == 0) {
+                    count++;
+                    while (l < r && nums[l] == nums[l + 1]) l++;
+                    while (l < r && nums[r] == nums[r - 1]) r--;
+                    l++; r--;
+                } else if (s < 0) {
+                    l++;
+                } else {
+                    r--;
+                }
+            }
+        }
+        return count;
+    }
+}`,
     c: `#include <stdlib.h>
 static int cmp(const void* a, const void* b) {
     int x = *(int*)a, y = *(int*)b;
@@ -295,6 +362,32 @@ int threeSumCount(int* nums, int numsSize) {
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int threeSumCount(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        int count = 0;
+        for (int i = 0; i < n - 2; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int l = i + 1, r = n - 1;
+            while (l < r) {
+                int s = nums[i] + nums[l] + nums[r];
+                if (s == 0) {
+                    count++;
+                    while (l < r && nums[l] == nums[l + 1]) l++;
+                    while (l < r && nums[r] == nums[r - 1]) r--;
+                    l++; r--;
+                } else if (s < 0) {
+                    l++;
+                } else {
+                    r--;
+                }
+            }
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Sort + Two Pointers — O(n²)
 

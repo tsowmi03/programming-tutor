@@ -179,6 +179,10 @@ Explanation: The 3rd node from the end is the head, which has value 7.
     return 0;
 }
 `,
+    typescript: `function kthFromEnd(nodes: number[], k: number): number {
+    // TODO: return the k-th value from the end
+    return 0;
+}`,
     java: `class Solution {
     public int kthFromEnd(int[] nodes, int k) {
         // TODO: return the k-th value from the end
@@ -186,11 +190,24 @@ Explanation: The 3rd node from the end is the head, which has value 7.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int KthFromEnd(int[] nodes, int k) {
+        // TODO: return the k-th value from the end
+        return 0;
+    }
+}`,
     c: `int kthFromEnd(int* nodes, int nodesSize, int k) {
     // TODO: return the k-th value from the end
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int kthFromEnd(vector<int>& nodes, int k) {
+        // TODO: return the k-th value from the end
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def kth_from_end(nodes: list[int], k: int) -> int:
@@ -200,16 +217,30 @@ Explanation: The 3rd node from the end is the head, which has value 7.
     return nodes[nodes.length - k];
 }
 `,
+    typescript: `function kthFromEnd(nodes: number[], k: number): number {
+    return nodes[nodes.length - k];
+}`,
     java: `class Solution {
     public int kthFromEnd(int[] nodes, int k) {
         return nodes[nodes.length - k];
     }
 }
 `,
+    csharp: `public class Solution {
+    public int KthFromEnd(int[] nodes, int k) {
+        return nodes[nodes.Length - k];
+    }
+}`,
     c: `int kthFromEnd(int* nodes, int nodesSize, int k) {
     return nodes[nodesSize - k];
 }
 `,
+    cpp: `class Solution {
+public:
+    int kthFromEnd(vector<int>& nodes, int k) {
+        return nodes[nodes.size() - k];
+    }
+};`,
   },
   editorial: `## Approach: Direct Index Calculation
 

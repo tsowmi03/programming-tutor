@@ -169,6 +169,10 @@ Explanation: The first four characters match across all three strings.
     return "";
 }
 `,
+    typescript: `function longestCommonPrefix(strs: string[]): string {
+    // TODO: implement
+    return "";
+}`,
     java: `class Solution {
     public String longestCommonPrefix(String[] strs) {
         // TODO: implement
@@ -176,6 +180,12 @@ Explanation: The first four characters match across all three strings.
     }
 }
 `,
+    csharp: `public class Solution {
+    public string LongestCommonPrefix(string[] strs) {
+        // TODO: implement
+        return "";
+    }
+}`,
     c: `#include <string.h>
 #include <stdlib.h>
 
@@ -186,6 +196,13 @@ char* longestCommonPrefix(char** strs, int strsSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        // TODO: implement
+        return "";
+    }
+};`,
   },
   solutions: {
     python: `def longest_common_prefix(strs):
@@ -211,6 +228,17 @@ char* longestCommonPrefix(char** strs, int strsSize) {
     return prefix;
 }
 `,
+    typescript: `function longestCommonPrefix(strs: string[]): string {
+    if (strs.length === 0) return "";
+    let prefix = strs[0];
+    for (let i = 1; i < strs.length; i++) {
+        while (strs[i].indexOf(prefix) !== 0) {
+            prefix = prefix.slice(0, -1);
+            if (prefix === "") return "";
+        }
+    }
+    return prefix;
+}`,
     java: `class Solution {
     public String longestCommonPrefix(String[] strs) {
         if (strs.length == 0) return "";
@@ -225,6 +253,19 @@ char* longestCommonPrefix(char** strs, int strsSize) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public string LongestCommonPrefix(string[] strs) {
+        if (strs.Length == 0) return "";
+        string prefix = strs[0];
+        for (int i = 1; i < strs.Length; i++) {
+            while (!strs[i].StartsWith(prefix)) {
+                prefix = prefix.Substring(0, prefix.Length - 1);
+                if (prefix == "") return "";
+            }
+        }
+        return prefix;
+    }
+}`,
     c: `#include <string.h>
 #include <stdlib.h>
 
@@ -249,6 +290,20 @@ char* longestCommonPrefix(char** strs, int strsSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if (strs.empty()) return "";
+        string prefix = strs[0];
+        for (int i = 1; i < (int)strs.size(); i++) {
+            while (strs[i].find(prefix) != 0) {
+                prefix = prefix.substr(0, prefix.length() - 1);
+                if (prefix.empty()) return "";
+            }
+        }
+        return prefix;
+    }
+};`,
   },
   editorial: `## Approach: Iterative Prefix Shrinking
 

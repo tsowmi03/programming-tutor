@@ -171,6 +171,10 @@ Explanation: Equal consecutive elements are allowed: 1 ≤ 1 ≤ 2 ≤ 3.
     return false;
 }
 `,
+    typescript: `function isSortedAscending(nums: number[]): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean isSortedAscending(int[] nums) {
         // TODO: implement
@@ -178,12 +182,25 @@ Explanation: Equal consecutive elements are allowed: 1 ≤ 1 ≤ 2 ≤ 3.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsSortedAscending(int[] nums) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 bool isSortedAscending(int* nums, int numsSize) {
     // TODO: implement
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isSortedAscending(vector<int>& nums) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_sorted_ascending(nums):
@@ -199,6 +216,12 @@ bool isSortedAscending(int* nums, int numsSize) {
     return true;
 }
 `,
+    typescript: `function isSortedAscending(nums: number[]): boolean {
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] < nums[i - 1]) return false;
+    }
+    return true;
+}`,
     java: `class Solution {
     public boolean isSortedAscending(int[] nums) {
         for (int i = 1; i < nums.length; i++) {
@@ -208,6 +231,14 @@ bool isSortedAscending(int* nums, int numsSize) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsSortedAscending(int[] nums) {
+        for (int i = 1; i < nums.Length; i++) {
+            if (nums[i] < nums[i - 1]) return false;
+        }
+        return true;
+    }
+}`,
     c: `#include <stdbool.h>
 bool isSortedAscending(int* nums, int numsSize) {
     for (int i = 1; i < numsSize; i++) {
@@ -216,6 +247,15 @@ bool isSortedAscending(int* nums, int numsSize) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isSortedAscending(vector<int>& nums) {
+        for (int i = 1; i < (int)nums.size(); i++) {
+            if (nums[i] < nums[i - 1]) return false;
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: Single Linear Scan
 

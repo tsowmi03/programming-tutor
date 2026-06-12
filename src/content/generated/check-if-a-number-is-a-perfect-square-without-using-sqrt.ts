@@ -126,6 +126,10 @@ Explanation: No non-negative integer x satisfies x × x = 14.
     return false;
 }
 `,
+    typescript: `function isPerfectSquare(n: number): boolean {
+    // TODO: implement without using Math.sqrt or Math.pow
+    return false;
+}`,
     java: `class Solution {
     public boolean isPerfectSquare(int n) {
         // TODO: implement without using Math.sqrt or Math.pow
@@ -133,6 +137,12 @@ Explanation: No non-negative integer x satisfies x × x = 14.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsPerfectSquare(int n) {
+        // TODO: implement without using Math.Sqrt or Math.Pow
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 
 bool isPerfectSquare(int n) {
@@ -140,6 +150,13 @@ bool isPerfectSquare(int n) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPerfectSquare(int n) {
+        // TODO: implement without using sqrt or pow
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_perfect_square(n: int) -> bool:
@@ -170,6 +187,18 @@ bool isPerfectSquare(int n) {
     return false;
 }
 `,
+    typescript: `function isPerfectSquare(n: number): boolean {
+    if (n === 0) return true;
+    let left = 1, right = n;
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        let sq = mid * mid;
+        if (sq === n) return true;
+        else if (sq < n) left = mid + 1;
+        else right = mid - 1;
+    }
+    return false;
+}`,
     java: `class Solution {
     public boolean isPerfectSquare(int n) {
         if (n == 0) return true;
@@ -185,6 +214,20 @@ bool isPerfectSquare(int n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsPerfectSquare(int n) {
+        if (n == 0) return true;
+        long left = 1, right = (long) n;
+        while (left <= right) {
+            long mid = (left + right) / 2;
+            long sq = mid * mid;
+            if (sq == (long) n) return true;
+            else if (sq < (long) n) left = mid + 1;
+            else right = mid - 1;
+        }
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 
 bool isPerfectSquare(int n) {
@@ -200,6 +243,21 @@ bool isPerfectSquare(int n) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPerfectSquare(int n) {
+        if (n == 0) return true;
+        long long left = 1, right = (long long) n;
+        while (left <= right) {
+            long long mid = (left + right) / 2;
+            long long sq = mid * mid;
+            if (sq == (long long) n) return true;
+            else if (sq < (long long) n) left = mid + 1;
+            else right = mid - 1;
+        }
+        return false;
+    }
+};`,
   },
   editorial: `## Approach: Binary Search
 

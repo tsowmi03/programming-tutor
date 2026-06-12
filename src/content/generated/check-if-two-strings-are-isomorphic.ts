@@ -163,6 +163,15 @@ function isIsomorphic(s, t) {
     return false;
 }
 `,
+    typescript: `/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+function isIsomorphic(s: string, t: string): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean isIsomorphic(String s, String t) {
         // TODO: implement
@@ -170,6 +179,12 @@ function isIsomorphic(s, t) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsIsomorphic(string s, string t) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 
@@ -178,6 +193,13 @@ bool isIsomorphic(char* s, char* t) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_isomorphic(s: str, t: str) -> bool:
@@ -210,6 +232,21 @@ bool isIsomorphic(char* s, char* t) {
     return true;
 }
 `,
+    typescript: `function isIsomorphic(s: string, t: string): boolean {
+    const sToT = new Map<string, string>();
+    const tToS = new Map<string, string>();
+    for (let i = 0; i < s.length; i++) {
+        const cs = s[i], ct = t[i];
+        if (sToT.has(cs)) {
+            if (sToT.get(cs) !== ct) return false;
+        } else {
+            if (tToS.has(ct)) return false;
+            sToT.set(cs, ct);
+            tToS.set(ct, cs);
+        }
+    }
+    return true;
+}`,
     java: `class Solution {
     public boolean isIsomorphic(String s, String t) {
         int[] sToT = new int[128];
@@ -229,6 +266,25 @@ bool isIsomorphic(char* s, char* t) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public bool IsIsomorphic(string s, string t) {
+        int[] sToT = new int[128];
+        int[] tToS = new int[128];
+        for (int i = 0; i < s.Length; i++) {
+            int cs = s[i];
+            int ct = t[i];
+            if (sToT[cs] == 0 && tToS[ct] == 0) {
+                sToT[cs] = ct + 1;
+                tToS[ct] = cs + 1;
+            } else if (sToT[cs] != ct + 1 || tToS[ct] != cs + 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 
@@ -250,6 +306,24 @@ bool isIsomorphic(char* s, char* t) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        int sToT[128] = {0};
+        int tToS[128] = {0};
+        for (int i = 0; i < (int)s.size(); i++) {
+            unsigned char cs = (unsigned char)s[i];
+            unsigned char ct = (unsigned char)t[i];
+            if (sToT[cs] == 0 && tToS[ct] == 0) {
+                sToT[cs] = ct + 1;
+                tToS[ct] = cs + 1;
+            } else if (sToT[cs] != ct + 1 || tToS[ct] != cs + 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: Bidirectional Character Mapping
 

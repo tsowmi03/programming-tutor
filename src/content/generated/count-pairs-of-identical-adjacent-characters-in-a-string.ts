@@ -128,6 +128,10 @@ Example 3:
     return 0;
 }
 `,
+    typescript: `function countAdjacentPairs(s: string): number {
+    // TODO: count pairs of identical adjacent characters
+    return 0;
+}`,
     java: `class Solution {
     public int countAdjacentPairs(String s) {
         // TODO: count pairs of identical adjacent characters
@@ -135,11 +139,24 @@ Example 3:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountAdjacentPairs(string s) {
+        // TODO: count pairs of identical adjacent characters
+        return 0;
+    }
+}`,
     c: `int countAdjacentPairs(char* s) {
     /* TODO: count pairs of identical adjacent characters */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countAdjacentPairs(string s) {
+        // TODO: count pairs of identical adjacent characters
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_adjacent_pairs(s: str) -> int:
@@ -157,6 +174,13 @@ Example 3:
     return count;
 }
 `,
+    typescript: `function countAdjacentPairs(s: string): number {
+    let count = 0;
+    for (let i = 0; i < s.length - 1; i++) {
+        if (s[i] === s[i + 1]) count++;
+    }
+    return count;
+}`,
     java: `class Solution {
     public int countAdjacentPairs(String s) {
         int count = 0;
@@ -167,6 +191,15 @@ Example 3:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountAdjacentPairs(string s) {
+        int count = 0;
+        for (int i = 0; i < s.Length - 1; i++) {
+            if (s[i] == s[i + 1]) count++;
+        }
+        return count;
+    }
+}`,
     c: `int countAdjacentPairs(char* s) {
     int count = 0;
     for (int i = 0; s[i] != '\\0' && s[i + 1] != '\\0'; i++) {
@@ -175,6 +208,16 @@ Example 3:
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countAdjacentPairs(string s) {
+        int count = 0;
+        for (int i = 0; i < (int)s.length() - 1; i++) {
+            if (s[i] == s[i + 1]) count++;
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Single Linear Scan
 

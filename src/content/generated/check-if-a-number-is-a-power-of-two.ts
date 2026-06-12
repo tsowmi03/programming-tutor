@@ -131,6 +131,10 @@ Explanation: 6 cannot be expressed as 2^k for any integer k.
     return false;
 }
 `,
+    typescript: `function isPowerOfTwo(n: number): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean isPowerOfTwo(int n) {
         // TODO: implement
@@ -138,12 +142,25 @@ Explanation: 6 cannot be expressed as 2^k for any integer k.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsPowerOfTwo(int n) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 bool isPowerOfTwo(int n) {
     // TODO: implement
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_power_of_two(n: int) -> bool:
@@ -153,17 +170,31 @@ bool isPowerOfTwo(int n) {
     return n > 0 && (n & (n - 1)) === 0;
 }
 `,
+    typescript: `function isPowerOfTwo(n: number): boolean {
+    return n > 0 && (n & (n - 1)) === 0;
+}`,
     java: `class Solution {
     public boolean isPowerOfTwo(int n) {
         return n > 0 && (n & (n - 1)) == 0;
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsPowerOfTwo(int n) {
+        return n > 0 && (n & (n - 1)) == 0;
+    }
+}`,
     c: `#include <stdbool.h>
 bool isPowerOfTwo(int n) {
     return n > 0 && (n & (n - 1)) == 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        return n > 0 && (n & (n - 1)) == 0;
+    }
+};`,
   },
   editorial: `## Approach: Bit Manipulation
 

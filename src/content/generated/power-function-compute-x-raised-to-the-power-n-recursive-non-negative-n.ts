@@ -145,6 +145,10 @@ function myPow(x, n) {
     // TODO: implement using recursion
 }
 `,
+    typescript: `function myPow(x: number, n: number): number {
+    // TODO: implement using recursion
+    return 0;
+}`,
     java: `class Solution {
     public int myPow(int x, int n) {
         // TODO: implement using recursion
@@ -152,11 +156,24 @@ function myPow(x, n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MyPow(int x, int n) {
+        // TODO: implement using recursion
+        return 0;
+    }
+}`,
     c: `int myPow(int x, int n) {
     // TODO: implement using recursion
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int myPow(int x, int n) {
+        // TODO: implement using recursion
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def my_pow(x: int, n: int) -> int:
@@ -169,6 +186,10 @@ function myPow(x, n) {
     return x * myPow(x, n - 1);
 }
 `,
+    typescript: `function myPow(x: number, n: number): number {
+    if (n === 0) return 1;
+    return x * myPow(x, n - 1);
+}`,
     java: `class Solution {
     public int myPow(int x, int n) {
         if (n == 0) return 1;
@@ -176,11 +197,24 @@ function myPow(x, n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MyPow(int x, int n) {
+        if (n == 0) return 1;
+        return x * MyPow(x, n - 1);
+    }
+}`,
     c: `int myPow(int x, int n) {
     if (n == 0) return 1;
     return x * myPow(x, n - 1);
 }
 `,
+    cpp: `class Solution {
+public:
+    int myPow(int x, int n) {
+        if (n == 0) return 1;
+        return x * myPow(x, n - 1);
+    }
+};`,
   },
   editorial: `## Approach: Simple Linear Recursion
 

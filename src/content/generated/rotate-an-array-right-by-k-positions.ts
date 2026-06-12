@@ -208,6 +208,10 @@ Explanation: The last element (3) wraps around to the front.
     return [];
 }
 `,
+    typescript: `function rotateArray(nums: number[], k: number): number[] {
+    // TODO: rotate nums to the right by k positions
+    return [];
+}`,
     java: `class Solution {
     public int[] rotateArray(int[] nums, int k) {
         // TODO: rotate nums to the right by k positions
@@ -215,12 +219,25 @@ Explanation: The last element (3) wraps around to the front.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] RotateArray(int[] nums, int k) {
+        // TODO: rotate nums to the right by k positions
+        return new int[0];
+    }
+}`,
     c: `int* rotateArray(int* nums, int numsSize, int k, int* returnSize) {
     // TODO: rotate nums to the right by k positions
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> rotateArray(vector<int>& nums, int k) {
+        // TODO: rotate nums to the right by k positions
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def rotate_array(nums, k):
@@ -240,6 +257,13 @@ Explanation: The last element (3) wraps around to the front.
     return [...nums.slice(n - k), ...nums.slice(0, n - k)];
 }
 `,
+    typescript: `function rotateArray(nums: number[], k: number): number[] {
+    const n = nums.length;
+    if (n === 0) return [];
+    k = k % n;
+    if (k === 0) return nums.slice();
+    return [...nums.slice(n - k), ...nums.slice(0, n - k)];
+}`,
     java: `class Solution {
     public int[] rotateArray(int[] nums, int k) {
         int n = nums.length;
@@ -253,6 +277,18 @@ Explanation: The last element (3) wraps around to the front.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] RotateArray(int[] nums, int k) {
+        int n = nums.Length;
+        if (n == 0) return new int[0];
+        k = k % n;
+        int[] result = new int[n];
+        for (int i = 0; i < n; i++) {
+            result[(i + k) % n] = nums[i];
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 int* rotateArray(int* nums, int numsSize, int k, int* returnSize) {
     *returnSize = numsSize;
@@ -265,6 +301,19 @@ int* rotateArray(int* nums, int numsSize, int k, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> rotateArray(vector<int>& nums, int k) {
+        int n = nums.size();
+        if (n == 0) return {};
+        k = k % n;
+        vector<int> result(n);
+        for (int i = 0; i < n; i++) {
+            result[(i + k) % n] = nums[i];
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Slice and Concatenate (or Index Mapping)
 

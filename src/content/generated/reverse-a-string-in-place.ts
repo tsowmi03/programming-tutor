@@ -116,8 +116,20 @@ Explanation: "racecar" is a palindrome, so reversing it yields the same string.
     return "";
 }
 `,
+    typescript: `function reverseString(s: string): string {
+    // TODO: return the characters of s in reverse order
+    return "";
+}
+`,
     java: `class Solution {
     public String reverseString(String s) {
+        // TODO: return the characters of s in reverse order
+        return "";
+    }
+}
+`,
+    csharp: `public class Solution {
+    public string ReverseString(string s) {
         // TODO: return the characters of s in reverse order
         return "";
     }
@@ -131,12 +143,24 @@ char* reverseString(char* s) {
     return "";
 }
 `,
+    cpp: `class Solution {
+public:
+    string reverseString(string s) {
+        // TODO: return the characters of s in reverse order
+        return "";
+    }
+};
+`,
   },
   solutions: {
     python: `def reverse_string(s: str) -> str:
     return s[::-1]
 `,
     javascript: `function reverseString(s) {
+    return s.split('').reverse().join('');
+}
+`,
+    typescript: `function reverseString(s: string): string {
     return s.split('').reverse().join('');
 }
 `,
@@ -158,6 +182,24 @@ char* reverseString(char* s) {
     result[len] = '\\0';
     return result;
 }
+`,
+    csharp: `using System;
+
+public class Solution {
+    public string ReverseString(string s) {
+        var chars = s.ToCharArray();
+        Array.Reverse(chars);
+        return new string(chars);
+    }
+}
+`,
+    cpp: `class Solution {
+public:
+    string reverseString(string s) {
+        reverse(s.begin(), s.end());
+        return s;
+    }
+};
 `,
   },
   editorial: `## Approach: Two-Pointer Swap

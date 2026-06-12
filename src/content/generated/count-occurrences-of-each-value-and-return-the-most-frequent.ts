@@ -181,6 +181,11 @@ Explanation: Both 1 and 2 appear twice (tied for highest).
     return 0;
 }
 `,
+    typescript: `function mostFrequent(nums: number[]): number {
+    // TODO: count occurrences and return the most frequent element
+    // (break ties by returning the smallest element)
+    return 0;
+}`,
     java: `class Solution {
     public int mostFrequent(int[] nums) {
         // TODO: count occurrences and return the most frequent element
@@ -189,12 +194,29 @@ Explanation: Both 1 and 2 appear twice (tied for highest).
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int MostFrequent(int[] nums) {
+        // TODO: count occurrences and return the most frequent element
+        // (break ties by returning the smallest element)
+        return 0;
+    }
+}`,
     c: `int mostFrequent(int* nums, int numsSize) {
     /* TODO: count occurrences and return the most frequent element
        (break ties by returning the smallest element) */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int mostFrequent(vector<int>& nums) {
+        // TODO: count occurrences and return the most frequent element
+        // (break ties by returning the smallest element)
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def most_frequent(nums):
@@ -223,6 +245,24 @@ Explanation: Both 1 and 2 appear twice (tied for highest).
     return result;
 }
 `,
+    typescript: `function mostFrequent(nums: number[]): number {
+    const count: { [key: number]: number } = {};
+    for (const n of nums) {
+        count[n] = (count[n] || 0) + 1;
+    }
+    let maxFreq = 0;
+    for (const key in count) {
+        if (count[key] > maxFreq) maxFreq = count[key];
+    }
+    let result = Infinity;
+    for (const key in count) {
+        if (count[key] === maxFreq) {
+            const val = parseInt(key);
+            if (val < result) result = val;
+        }
+    }
+    return result;
+}`,
     java: `class Solution {
     public int mostFrequent(int[] nums) {
         java.util.Map<Integer, Integer> count = new java.util.HashMap<>();
@@ -243,6 +283,28 @@ Explanation: Both 1 and 2 appear twice (tied for highest).
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int MostFrequent(int[] nums) {
+        Dictionary<int, int> count = new Dictionary<int, int>();
+        foreach (int n in nums) {
+            if (count.ContainsKey(n)) count[n]++;
+            else count[n] = 1;
+        }
+        int maxFreq = 0;
+        foreach (int v in count.Values) {
+            if (v > maxFreq) maxFreq = v;
+        }
+        int result = int.MaxValue;
+        foreach (KeyValuePair<int, int> entry in count) {
+            if (entry.Value == maxFreq && entry.Key < result) {
+                result = entry.Key;
+            }
+        }
+        return result;
+    }
+}`,
     c: `int mostFrequent(int* nums, int numsSize) {
     int maxFreq = 0;
     int result = nums[0];
@@ -259,6 +321,26 @@ Explanation: Both 1 and 2 appear twice (tied for highest).
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int mostFrequent(vector<int>& nums) {
+        map<int, int> count;
+        for (int n : nums) {
+            count[n]++;
+        }
+        int maxFreq = 0;
+        for (auto& entry : count) {
+            if (entry.second > maxFreq) maxFreq = entry.second;
+        }
+        int result = INT_MAX;
+        for (auto& entry : count) {
+            if (entry.second == maxFreq && entry.first < result) {
+                result = entry.first;
+            }
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Frequency Map + Single Scan
 

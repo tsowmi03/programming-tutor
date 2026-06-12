@@ -173,6 +173,10 @@ Explanation: -1 is the largest (least-negative) number.
     return 0;
 }
 `,
+    typescript: `function findMax(nums: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int findMax(int[] nums) {
         // TODO: implement
@@ -180,11 +184,24 @@ Explanation: -1 is the largest (least-negative) number.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindMax(int[] nums) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int findMax(int* nums, int numsSize) {
     /* TODO: implement */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findMax(vector<int>& nums) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def find_max(nums):
@@ -204,6 +221,15 @@ Explanation: -1 is the largest (least-negative) number.
     return maxVal;
 }
 `,
+    typescript: `function findMax(nums: number[]): number {
+    let maxVal = nums[0];
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] > maxVal) {
+            maxVal = nums[i];
+        }
+    }
+    return maxVal;
+}`,
     java: `class Solution {
     public int findMax(int[] nums) {
         int maxVal = nums[0];
@@ -216,6 +242,17 @@ Explanation: -1 is the largest (least-negative) number.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindMax(int[] nums) {
+        int maxVal = nums[0];
+        for (int i = 1; i < nums.Length; i++) {
+            if (nums[i] > maxVal) {
+                maxVal = nums[i];
+            }
+        }
+        return maxVal;
+    }
+}`,
     c: `int findMax(int* nums, int numsSize) {
     int maxVal = nums[0];
     int i;
@@ -227,6 +264,18 @@ Explanation: -1 is the largest (least-negative) number.
     return maxVal;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findMax(vector<int>& nums) {
+        int maxVal = nums[0];
+        for (int i = 1; i < (int)nums.size(); i++) {
+            if (nums[i] > maxVal) {
+                maxVal = nums[i];
+            }
+        }
+        return maxVal;
+    }
+};`,
   },
   editorial: `## Approach: Single Linear Scan
 

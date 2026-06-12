@@ -208,6 +208,10 @@ Explanation: Every length-2 subarray is [1,1], none are distinct.
     return 0;
 }
 `,
+    typescript: `function countDistinctSubarrays(nums: number[], k: number): number {
+    // TODO: implement sliding window
+    return 0;
+}`,
     java: `class Solution {
     public int countDistinctSubarrays(int[] nums, int k) {
         // TODO: implement sliding window
@@ -215,11 +219,24 @@ Explanation: Every length-2 subarray is [1,1], none are distinct.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountDistinctSubarrays(int[] nums, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+}`,
     c: `int countDistinctSubarrays(int* nums, int numsSize, int k) {
     // TODO: implement sliding window
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countDistinctSubarrays(vector<int>& nums, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_distinct_subarrays(nums: list[int], k: int) -> int:
@@ -274,6 +291,34 @@ Explanation: Every length-2 subarray is [1,1], none are distinct.
     return result;
 }
 `,
+    typescript: `function countDistinctSubarrays(nums: number[], k: number): number {
+    const freq = new Array(1001).fill(0);
+    let distinct = 0;
+    let result = 0;
+    const n = nums.length;
+    for (let i = 0; i < n; i++) {
+        // Add right element
+        if (freq[nums[i]] === 0) {
+            distinct++;
+        }
+        freq[nums[i]]++;
+        // Remove left element when window exceeds k
+        if (i >= k) {
+            const left = nums[i - k];
+            freq[left]--;
+            if (freq[left] === 0) {
+                distinct--;
+            }
+        }
+        // Check window of size k
+        if (i >= k - 1) {
+            if (distinct === k) {
+                result++;
+            }
+        }
+    }
+    return result;
+}`,
     java: `class Solution {
     public int countDistinctSubarrays(int[] nums, int k) {
         int[] freq = new int[1001];
@@ -305,6 +350,36 @@ Explanation: Every length-2 subarray is [1,1], none are distinct.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountDistinctSubarrays(int[] nums, int k) {
+        int[] freq = new int[1001];
+        int distinct = 0;
+        int result = 0;
+        int n = nums.Length;
+        for (int i = 0; i < n; i++) {
+            // Add right element
+            if (freq[nums[i]] == 0) {
+                distinct++;
+            }
+            freq[nums[i]]++;
+            // Remove left element when window exceeds k
+            if (i >= k) {
+                int left = nums[i - k];
+                freq[left]--;
+                if (freq[left] == 0) {
+                    distinct--;
+                }
+            }
+            // Check window of size k
+            if (i >= k - 1) {
+                if (distinct == k) {
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+}`,
     c: `int countDistinctSubarrays(int* nums, int numsSize, int k) {
     int freq[1001] = {0};
     int distinct = 0;
@@ -333,6 +408,37 @@ Explanation: Every length-2 subarray is [1,1], none are distinct.
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countDistinctSubarrays(vector<int>& nums, int k) {
+        int freq[1001] = {0};
+        int distinct = 0;
+        int result = 0;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            // Add right element
+            if (freq[nums[i]] == 0) {
+                distinct++;
+            }
+            freq[nums[i]]++;
+            // Remove left element when window exceeds k
+            if (i >= k) {
+                int left = nums[i - k];
+                freq[left]--;
+                if (freq[left] == 0) {
+                    distinct--;
+                }
+            }
+            // Check window of size k
+            if (i >= k - 1) {
+                if (distinct == k) {
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Fixed-Size Sliding Window with Frequency Count
 

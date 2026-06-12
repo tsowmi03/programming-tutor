@@ -182,6 +182,10 @@ Explanation: 5 is odd; no sequence of even numbers can sum to 5.
     return 0;
 }
 `,
+    typescript: `function combinationSumCount(coins: number[], target: number): number {
+    // TODO: implement using dynamic programming
+    return 0;
+}`,
     java: `class Solution {
     public int combinationSumCount(int[] coins, int target) {
         // TODO: implement using dynamic programming
@@ -189,11 +193,24 @@ Explanation: 5 is odd; no sequence of even numbers can sum to 5.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CombinationSumCount(int[] coins, int target) {
+        // TODO: implement using dynamic programming
+        return 0;
+    }
+}`,
     c: `int combinationSumCount(int* coins, int coinsSize, int target) {
     /* TODO: implement using dynamic programming */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int combinationSumCount(vector<int>& coins, int target) {
+        // TODO: implement using dynamic programming
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def combination_sum_count(coins: list, target: int) -> int:
@@ -218,6 +235,18 @@ Explanation: 5 is odd; no sequence of even numbers can sum to 5.
     return dp[target];
 }
 `,
+    typescript: `function combinationSumCount(coins: number[], target: number): number {
+    const dp = new Array(target + 1).fill(0);
+    dp[0] = 1;
+    for (let i = 1; i <= target; i++) {
+        for (const coin of coins) {
+            if (coin <= i) {
+                dp[i] += dp[i - coin];
+            }
+        }
+    }
+    return dp[target];
+}`,
     java: `class Solution {
     public int combinationSumCount(int[] coins, int target) {
         int[] dp = new int[target + 1];
@@ -233,6 +262,20 @@ Explanation: 5 is odd; no sequence of even numbers can sum to 5.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CombinationSumCount(int[] coins, int target) {
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= target; i++) {
+            foreach (int coin in coins) {
+                if (coin <= i) {
+                    dp[i] += dp[i - coin];
+                }
+            }
+        }
+        return dp[target];
+    }
+}`,
     c: `int combinationSumCount(int* coins, int coinsSize, int target) {
     int dp[26];
     int k;
@@ -248,6 +291,21 @@ Explanation: 5 is odd; no sequence of even numbers can sum to 5.
     return dp[target];
 }
 `,
+    cpp: `class Solution {
+public:
+    int combinationSumCount(vector<int>& coins, int target) {
+        vector<int> dp(target + 1, 0);
+        dp[0] = 1;
+        for (int i = 1; i <= target; i++) {
+            for (int coin : coins) {
+                if (coin <= i) {
+                    dp[i] += dp[i - coin];
+                }
+            }
+        }
+        return dp[target];
+    }
+};`,
   },
   editorial: `## Approach: Bottom-Up Dynamic Programming
 

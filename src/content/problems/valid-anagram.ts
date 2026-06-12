@@ -29,26 +29,79 @@ Output: false
 - \`s\` and \`t\` consist of lowercase English letters only.
 `,
   hints: [
-    "If the lengths differ, the answer is immediately false.",
-    "Count how many times each letter occurs. Two strings are anagrams exactly when their letter counts match.",
-    "Since only lowercase a–z appear, a fixed array of 26 counters works: increment for `s`, decrement for `t`, then check that every counter is zero.",
+    `If the lengths differ, the answer is immediately false.`,
+    `Count how many times each letter occurs. Two strings are anagrams exactly when their letter counts match.`,
+    `Since only lowercase a–z appear, a fixed array of 26 counters works: increment for \`s\`, decrement for \`t\`, then check that every counter is zero.`,
   ],
   signature: {
-    name: "isAnagram",
-    params: [
-      { name: "s", type: "string" },
-      { name: "t", type: "string" },
+    "name": "isAnagram",
+    "params": [
+      {
+        "name": "s",
+        "type": "string"
+      },
+      {
+        "name": "t",
+        "type": "string"
+      }
     ],
-    returns: "bool",
+    "returns": "bool"
   },
   testCases: [
-    { input: ["anagram", "nagaram"], expected: true },
-    { input: ["rat", "car"], expected: false },
-    { input: ["a", "a"], expected: true, hidden: true },
-    { input: ["ab", "a"], expected: false, hidden: true },
-    { input: ["aacc", "ccac"], expected: false, hidden: true },
-    { input: ["listen", "silent"], expected: true, hidden: true },
-    { input: ["aaaaaaab", "baaaaaaa"], expected: true, hidden: true },
+    {
+      "input": [
+        "anagram",
+        "nagaram"
+      ],
+      "expected": true
+    },
+    {
+      "input": [
+        "rat",
+        "car"
+      ],
+      "expected": false
+    },
+    {
+      "input": [
+        "a",
+        "a"
+      ],
+      "expected": true,
+      "hidden": true
+    },
+    {
+      "input": [
+        "ab",
+        "a"
+      ],
+      "expected": false,
+      "hidden": true
+    },
+    {
+      "input": [
+        "aacc",
+        "ccac"
+      ],
+      "expected": false,
+      "hidden": true
+    },
+    {
+      "input": [
+        "listen",
+        "silent"
+      ],
+      "expected": true,
+      "hidden": true
+    },
+    {
+      "input": [
+        "aaaaaaab",
+        "baaaaaaa"
+      ],
+      "expected": true,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def is_anagram(s, t):
@@ -65,6 +118,15 @@ function isAnagram(s, t) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+function isAnagram(s: string, t: string): boolean {
+  // Your code here
+  return false;
+}`,
     java: `class Solution {
     public boolean isAnagram(String s, String t) {
         // Your code here
@@ -72,11 +134,24 @@ function isAnagram(s, t) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsAnagram(string s, string t) {
+        // Your code here
+        return false;
+    }
+}`,
     c: `bool isAnagram(char* s, char* t) {
     // Your code here
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        // Your code here
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_anagram(s, t):
@@ -102,6 +177,16 @@ function isAnagram(s, t) {
   return true;
 }
 `,
+    typescript: `function isAnagram(s: string, t: string): boolean {
+  if (s.length !== t.length) return false;
+  const counts = new Array(26).fill(0);
+  const a = "a".charCodeAt(0);
+  for (const ch of s) counts[ch.charCodeAt(0) - a]++;
+  for (const ch of t) {
+    if (--counts[ch.charCodeAt(0) - a] < 0) return false;
+  }
+  return true;
+}`,
     java: `class Solution {
     public boolean isAnagram(String s, String t) {
         if (s.length() != t.length()) return false;
@@ -114,6 +199,17 @@ function isAnagram(s, t) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsAnagram(string s, string t) {
+        if (s.Length != t.Length) return false;
+        int[] counts = new int[26];
+        foreach (char c in s) counts[c - 'a']++;
+        foreach (char c in t) {
+            if (--counts[c - 'a'] < 0) return false;
+        }
+        return true;
+    }
+}`,
     c: `bool isAnagram(char* s, char* t) {
     if (strlen(s) != strlen(t)) return false;
     int counts[26] = {0};
@@ -124,6 +220,18 @@ function isAnagram(s, t) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.length() != t.length()) return false;
+        int counts[26] = {0};
+        for (char c : s) counts[c - 'a']++;
+        for (char c : t) {
+            if (--counts[c - 'a'] < 0) return false;
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: letter counting
 

@@ -223,6 +223,10 @@ function removeNthFromEnd(nodes, n) {
     return [];
 }
 `,
+    typescript: `function removeNthFromEnd(nodes: number[], n: number): number[] {
+    // TODO: implement this function
+    return [];
+}`,
     java: `class Solution {
     public int[] removeNthFromEnd(int[] nodes, int n) {
         // TODO: implement this function
@@ -230,6 +234,12 @@ function removeNthFromEnd(nodes, n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] RemoveNthFromEnd(int[] nodes, int n) {
+        // TODO: implement this function
+        return new int[0];
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* removeNthFromEnd(int* nodes, int nodesSize, int n, int* returnSize) {
@@ -238,6 +248,13 @@ int* removeNthFromEnd(int* nodes, int nodesSize, int n, int* returnSize) {
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> removeNthFromEnd(vector<int>& nodes, int n) {
+        // TODO: implement this function
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `from typing import List
@@ -268,6 +285,17 @@ function removeNthFromEnd(nodes, n) {
     return result;
 }
 `,
+    typescript: `function removeNthFromEnd(nodes: number[], n: number): number[] {
+    const length = nodes.length;
+    const removeIndex = length - n;
+    const result: number[] = [];
+    for (let i = 0; i < length; i++) {
+        if (i !== removeIndex) {
+            result.push(nodes[i]);
+        }
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] removeNthFromEnd(int[] nodes, int n) {
         int length = nodes.length;
@@ -283,6 +311,22 @@ function removeNthFromEnd(nodes, n) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public int[] RemoveNthFromEnd(int[] nodes, int n) {
+        int length = nodes.Length;
+        int removeIndex = length - n;
+        int[] result = new int[length - 1];
+        int j = 0;
+        for (int i = 0; i < length; i++) {
+            if (i != removeIndex) {
+                result[j++] = nodes[i];
+            }
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* removeNthFromEnd(int* nodes, int nodesSize, int n, int* returnSize) {
@@ -302,6 +346,20 @@ int* removeNthFromEnd(int* nodes, int nodesSize, int n, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> removeNthFromEnd(vector<int>& nodes, int n) {
+        int length = nodes.size();
+        int removeIndex = length - n;
+        vector<int> result;
+        for (int i = 0; i < length; i++) {
+            if (i != removeIndex) {
+                result.push_back(nodes[i]);
+            }
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Calculate Remove Index
 

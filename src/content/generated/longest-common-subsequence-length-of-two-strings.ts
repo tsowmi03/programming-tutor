@@ -151,6 +151,10 @@ Explanation: There is no common subsequence.
     return 0;
 }
 `,
+    typescript: `function longestCommonSubsequence(text1: string, text2: string): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int longestCommonSubsequence(String text1, String text2) {
         // TODO: implement
@@ -158,11 +162,24 @@ Explanation: There is no common subsequence.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LongestCommonSubsequence(string text1, string text2) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int longestCommonSubsequence(char* text1, char* text2) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def longest_common_subsequence(text1: str, text2: str) -> int:
@@ -191,6 +208,20 @@ Explanation: There is no common subsequence.
     return dp[m][n];
 }
 `,
+    typescript: `function longestCommonSubsequence(text1: string, text2: string): number {
+    const m = text1.length, n = text2.length;
+    const dp: number[][] = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (text1[i - 1] === text2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+    return dp[m][n];
+}`,
     java: `class Solution {
     public int longestCommonSubsequence(String text1, String text2) {
         int m = text1.length(), n = text2.length();
@@ -208,6 +239,27 @@ Explanation: There is no common subsequence.
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int LongestCommonSubsequence(string text1, string text2) {
+        int m = text1.Length, n = text2.Length;
+        int[][] dp = new int[m + 1][];
+        for (int i = 0; i <= m; i++) {
+            dp[i] = new int[n + 1];
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (text1[i - 1] == text2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.Max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}`,
     c: `#include <string.h>
 
 int longestCommonSubsequence(char* text1, char* text2) {
@@ -231,6 +283,23 @@ int longestCommonSubsequence(char* text1, char* text2) {
     return dp[m][n];
 }
 `,
+    cpp: `class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        int m = (int)text1.size(), n = (int)text2.size();
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (text1[i - 1] == text2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};`,
   },
   editorial: `## Approach: Bottom-Up Dynamic Programming
 

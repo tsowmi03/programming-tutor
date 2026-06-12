@@ -39,73 +39,193 @@ Output: 3
 - \`grid[i][j]\` is \`0\` or \`1\`.
 `,
   hints: [
-    "Scan every cell. When you find a `1` you've discovered a *new* island — but how do you avoid counting the rest of that island again?",
-    "From each newly found land cell, “flood fill” the whole island (DFS or BFS to all connected land), marking each visited cell so it won't be counted twice.",
-    "Sinking visited land in place (set it to 0) is the simplest marking. Recurse in the four cardinal directions, stopping at water or the grid edge.",
+    `Scan every cell. When you find a \`1\` you've discovered a *new* island — but how do you avoid counting the rest of that island again?`,
+    `From each newly found land cell, “flood fill” the whole island (DFS or BFS to all connected land), marking each visited cell so it won't be counted twice.`,
+    `Sinking visited land in place (set it to 0) is the simplest marking. Recurse in the four cardinal directions, stopping at water or the grid edge.`,
   ],
   signature: {
-    name: "numIslands",
-    params: [{ name: "grid", type: "int[][]" }],
-    returns: "int",
+    "name": "numIslands",
+    "params": [
+      {
+        "name": "grid",
+        "type": "int[][]"
+      }
+    ],
+    "returns": "int"
   },
   testCases: [
     {
-      input: [
+      "input": [
         [
-          [1, 1, 1, 1, 0],
-          [1, 1, 0, 1, 0],
-          [1, 1, 0, 0, 0],
-          [0, 0, 0, 0, 0],
-        ],
+          [
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
       ],
-      expected: 1,
+      "expected": 1
     },
     {
-      input: [
+      "input": [
         [
-          [1, 1, 0, 0, 0],
-          [1, 1, 0, 0, 0],
-          [0, 0, 1, 0, 0],
-          [0, 0, 0, 1, 1],
-        ],
+          [
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            1
+          ]
+        ]
       ],
-      expected: 3,
+      "expected": 3
     },
-    { input: [[[1]]], expected: 1 },
-    { input: [[[0]]], expected: 0, hidden: true },
     {
-      input: [
+      "input": [
         [
-          [1, 0, 1, 0, 1],
-          [0, 1, 0, 1, 0],
-          [1, 0, 1, 0, 1],
-        ],
+          [
+            1
+          ]
+        ]
       ],
-      expected: 8,
-      hidden: true,
+      "expected": 1
     },
     {
-      input: [
+      "input": [
         [
-          [1, 1, 1],
-          [0, 1, 0],
-          [1, 1, 1],
-        ],
+          [
+            0
+          ]
+        ]
       ],
-      expected: 1,
-      hidden: true,
+      "expected": 0,
+      "hidden": true
     },
     {
-      input: [
+      "input": [
         [
-          [1, 1, 0, 1, 1],
-          [1, 0, 0, 0, 1],
-          [0, 0, 1, 0, 0],
-        ],
+          [
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            1,
+            0,
+            1
+          ]
+        ]
       ],
-      expected: 3,
-      hidden: true,
+      "expected": 8,
+      "hidden": true
     },
+    {
+      "input": [
+        [
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ]
+      ],
+      "expected": 1,
+      "hidden": true
+    },
+    {
+      "input": [
+        [
+          [
+            1,
+            1,
+            0,
+            1,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        ]
+      ],
+      "expected": 3,
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def num_islands(grid):
@@ -121,6 +241,14 @@ function numIslands(grid) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {number[][]} grid 1 = land, 0 = water (you may modify it)
+ * @return {number}
+ */
+function numIslands(grid: number[][]): number {
+  // Your code here
+  return 0;
+}`,
     java: `class Solution {
     public int numIslands(int[][] grid) {
         // Your code here
@@ -128,12 +256,25 @@ function numIslands(grid) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int NumIslands(int[][] grid) {
+        // Your code here
+        return 0;
+    }
+}`,
     c: `int numIslands(int** grid, int gridSize, int* gridColSize) {
     // gridSize = number of rows; gridColSize[r] = columns in row r
     // Your code here
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int numIslands(vector<vector<int>>& grid) {
+        // Your code here
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def num_islands(grid):
@@ -181,6 +322,30 @@ function numIslands(grid) {
   return count;
 }
 `,
+    typescript: `function numIslands(grid: number[][]): number {
+  const rows = grid.length;
+  const cols = grid[0].length;
+
+  function sink(r: number, c: number): void {
+    if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] === 0) return;
+    grid[r][c] = 0;
+    sink(r + 1, c);
+    sink(r - 1, c);
+    sink(r, c + 1);
+    sink(r, c - 1);
+  }
+
+  let count = 0;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c] === 1) {
+        count++;
+        sink(r, c);
+      }
+    }
+  }
+  return count;
+}`,
     java: `class Solution {
     public int numIslands(int[][] grid) {
         int count = 0;
@@ -208,6 +373,32 @@ function numIslands(grid) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int NumIslands(int[][] grid) {
+        int count = 0;
+        for (int r = 0; r < grid.Length; r++) {
+            for (int c = 0; c < grid[0].Length; c++) {
+                if (grid[r][c] == 1) {
+                    count++;
+                    Sink(grid, r, c);
+                }
+            }
+        }
+        return count;
+    }
+
+    private void Sink(int[][] grid, int r, int c) {
+        if (r < 0 || r >= grid.Length || c < 0 || c >= grid[0].Length
+                || grid[r][c] == 0) {
+            return;
+        }
+        grid[r][c] = 0;
+        Sink(grid, r + 1, c);
+        Sink(grid, r - 1, c);
+        Sink(grid, r, c + 1);
+        Sink(grid, r, c - 1);
+    }
+}`,
     c: `static void sink(int** grid, int rows, int cols, int r, int c) {
     if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 0) return;
     grid[r][c] = 0;
@@ -230,6 +421,33 @@ int numIslands(int** grid, int gridSize, int* gridColSize) {
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int numIslands(vector<vector<int>>& grid) {
+        int count = 0;
+        int rows = grid.size();
+        int cols = grid[0].size();
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 1) {
+                    count++;
+                    sink(grid, r, c, rows, cols);
+                }
+            }
+        }
+        return count;
+    }
+
+private:
+    void sink(vector<vector<int>>& grid, int r, int c, int rows, int cols) {
+        if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 0) return;
+        grid[r][c] = 0;
+        sink(grid, r + 1, c, rows, cols);
+        sink(grid, r - 1, c, rows, cols);
+        sink(grid, r, c + 1, rows, cols);
+        sink(grid, r, c - 1, rows, cols);
+    }
+};`,
   },
   editorial: `## Approach: flood fill (DFS)
 

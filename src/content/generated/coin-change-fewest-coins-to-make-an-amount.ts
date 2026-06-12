@@ -193,6 +193,10 @@ function coinChange(coins, amount) {
     return -1;
 }
 `,
+    typescript: `function coinChange(coins: number[], amount: number): number {
+    // TODO: implement bottom-up DP
+    return -1;
+}`,
     java: `class Solution {
     public int coinChange(int[] coins, int amount) {
         // TODO: implement bottom-up DP
@@ -200,11 +204,24 @@ function coinChange(coins, amount) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CoinChange(int[] coins, int amount) {
+        // TODO: implement bottom-up DP
+        return -1;
+    }
+}`,
     c: `int coinChange(int* coins, int coinsSize, int amount) {
     // TODO: implement bottom-up DP
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        // TODO: implement bottom-up DP
+        return -1;
+    }
+};`,
   },
   solutions: {
     python: `def coin_change(coins: list[int], amount: int) -> int:
@@ -231,6 +248,19 @@ function coinChange(coins, amount) {
     return dp[amount] < INF ? dp[amount] : -1;
 }
 `,
+    typescript: `function coinChange(coins: number[], amount: number): number {
+    const INF = amount + 1;
+    const dp = new Array(amount + 1).fill(INF);
+    dp[0] = 0;
+    for (let i = 1; i <= amount; i++) {
+        for (const coin of coins) {
+            if (coin <= i) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+    return dp[amount] < INF ? dp[amount] : -1;
+}`,
     java: `class Solution {
     public int coinChange(int[] coins, int amount) {
         int INF = amount + 1;
@@ -248,6 +278,22 @@ function coinChange(coins, amount) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CoinChange(int[] coins, int amount) {
+        int INF = amount + 1;
+        int[] dp = new int[amount + 1];
+        for (int i = 0; i <= amount; i++) dp[i] = INF;
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            foreach (int coin in coins) {
+                if (coin <= i) {
+                    dp[i] = System.Math.Min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        return dp[amount] < INF ? dp[amount] : -1;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int coinChange(int* coins, int coinsSize, int amount) {
@@ -269,6 +315,22 @@ int coinChange(int* coins, int coinsSize, int amount) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        int INF = amount + 1;
+        vector<int> dp(amount + 1, INF);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (coin <= i) {
+                    dp[i] = min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        return dp[amount] < INF ? dp[amount] : -1;
+    }
+};`,
   },
   editorial: `## Approach: Bottom-Up Dynamic Programming
 

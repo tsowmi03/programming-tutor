@@ -203,6 +203,10 @@ Explanation: Single element; nothing to swap.
     return [];
 }
 `,
+    typescript: `function reverseArray(nums: number[]): number[] {
+    // TODO: use two pointers to reverse nums in place
+    return [];
+}`,
     java: `class Solution {
     public int[] reverseArray(int[] nums) {
         // TODO: use two pointers to reverse nums in place
@@ -210,12 +214,25 @@ Explanation: Single element; nothing to swap.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] ReverseArray(int[] nums) {
+        // TODO: use two pointers to reverse nums in place
+        return new int[]{};
+    }
+}`,
     c: `int* reverseArray(int* nums, int numsSize, int* returnSize) {
     // TODO: use two pointers to reverse nums in place
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> reverseArray(vector<int>& nums) {
+        // TODO: use two pointers to reverse nums in place
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def reverse_array(nums):
@@ -238,6 +255,17 @@ Explanation: Single element; nothing to swap.
     return nums;
 }
 `,
+    typescript: `function reverseArray(nums: number[]): number[] {
+    let left = 0, right = nums.length - 1;
+    while (left < right) {
+        const tmp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = tmp;
+        left++;
+        right--;
+    }
+    return nums;
+}`,
     java: `class Solution {
     public int[] reverseArray(int[] nums) {
         int left = 0, right = nums.length - 1;
@@ -252,6 +280,19 @@ Explanation: Single element; nothing to swap.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] ReverseArray(int[] nums) {
+        int left = 0, right = nums.Length - 1;
+        while (left < right) {
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+            left++;
+            right--;
+        }
+        return nums;
+    }
+}`,
     c: `#include <stdlib.h>
 int* reverseArray(int* nums, int numsSize, int* returnSize) {
     *returnSize = numsSize;
@@ -269,6 +310,20 @@ int* reverseArray(int* nums, int numsSize, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> reverseArray(vector<int>& nums) {
+        int left = 0, right = (int)nums.size() - 1;
+        while (left < right) {
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+            left++;
+            right--;
+        }
+        return nums;
+    }
+};`,
   },
   editorial: `## Approach: Two Pointers
 

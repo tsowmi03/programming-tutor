@@ -188,6 +188,10 @@ function hasCycle(next) {
     return false;
 }
 `,
+    typescript: `function hasCycle(next: number[]): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean hasCycle(int[] next) {
         // TODO: implement
@@ -195,11 +199,24 @@ function hasCycle(next) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool HasCycle(int[] next) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `bool hasCycle(int* next, int nextSize) {
     // TODO: implement
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool hasCycle(vector<int>& next) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def has_cycle(next: list[int]) -> bool:
@@ -229,6 +246,17 @@ function hasCycle(next) {
     return false;
 }
 `,
+    typescript: `function hasCycle(next: number[]): boolean {
+    const n = next.length;
+    const visited = new Array(n).fill(false);
+    let cur = 0;
+    while (cur !== -1) {
+        if (visited[cur]) return true;
+        visited[cur] = true;
+        cur = next[cur];
+    }
+    return false;
+}`,
     java: `class Solution {
     public boolean hasCycle(int[] next) {
         int n = next.length;
@@ -243,6 +271,19 @@ function hasCycle(next) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool HasCycle(int[] next) {
+        int n = next.Length;
+        bool[] visited = new bool[n];
+        int cur = 0;
+        while (cur != -1) {
+            if (visited[cur]) return true;
+            visited[cur] = true;
+            cur = next[cur];
+        }
+        return false;
+    }
+}`,
     c: `#include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
@@ -263,6 +304,20 @@ bool hasCycle(int* next, int nextSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool hasCycle(vector<int>& next) {
+        int n = next.size();
+        vector<bool> visited(n, false);
+        int cur = 0;
+        while (cur != -1) {
+            if (visited[cur]) return true;
+            visited[cur] = true;
+            cur = next[cur];
+        }
+        return false;
+    }
+};`,
   },
   editorial: `## Approach: Visited Array
 

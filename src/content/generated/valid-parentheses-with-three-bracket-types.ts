@@ -134,6 +134,10 @@ Explanation: '[' is still open when ')' tries to close '('.
     return false;
 }
 `,
+    typescript: `function isValid(s: string): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean isValid(String s) {
         // TODO: implement
@@ -141,6 +145,12 @@ Explanation: '[' is still open when ')' tries to close '('.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsValid(string s) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
@@ -150,6 +160,13 @@ bool isValid(char* s) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isValid(string s) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def is_valid(s: str) -> bool:
@@ -178,6 +195,19 @@ bool isValid(char* s) {
     return stack.length === 0;
 }
 `,
+    typescript: `function isValid(s: string): boolean {
+    const stack: string[] = [];
+    const mapping: { [key: string]: string } = { ')': '(', '}': '{', ']': '[' };
+    for (const ch of s) {
+        if (ch in mapping) {
+            const top = stack.length > 0 ? stack.pop() : '#';
+            if (mapping[ch] !== top) return false;
+        } else {
+            stack.push(ch);
+        }
+    }
+    return stack.length === 0;
+}`,
     java: `class Solution {
     public boolean isValid(String s) {
         char[] stack = new char[s.length() + 1];
@@ -200,6 +230,27 @@ bool isValid(char* s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool IsValid(string s) {
+        char[] stack = new char[s.Length + 1];
+        int top = 0;
+        for (int i = 0; i < s.Length; i++) {
+            char c = s[i];
+            if (c == '(' || c == '[' || c == '{') {
+                stack[top++] = c;
+            } else {
+                if (top == 0) return false;
+                char t = stack[--top];
+                if ((c == ')' && t != '(') ||
+                    (c == ']' && t != '[') ||
+                    (c == '}' && t != '{')) {
+                    return false;
+                }
+            }
+        }
+        return top == 0;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
@@ -229,6 +280,27 @@ bool isValid(char* s) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool isValid(string s) {
+        vector<char> stack;
+        for (char c : s) {
+            if (c == '(' || c == '[' || c == '{') {
+                stack.push_back(c);
+            } else {
+                if (stack.empty()) return false;
+                char t = stack.back();
+                stack.pop_back();
+                if ((c == ')' && t != '(') ||
+                    (c == ']' && t != '[') ||
+                    (c == '}' && t != '{')) {
+                    return false;
+                }
+            }
+        }
+        return stack.empty();
+    }
+};`,
   },
   editorial: `## Approach: Stack
 

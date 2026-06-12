@@ -184,6 +184,10 @@ Explanation: Each pair of equal elements is exactly 3 indices apart, which excee
     return false;
 }
 `,
+    typescript: `function containsNearbyDuplicate(nums: number[], k: number): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         // TODO: implement
@@ -191,12 +195,27 @@ Explanation: Each pair of equal elements is exactly 3 indices apart, which excee
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public bool ContainsNearbyDuplicate(int[] nums, int k) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
     // TODO: implement
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def contains_nearby_duplicate(nums, k):
@@ -218,6 +237,16 @@ bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
     return false;
 }
 `,
+    typescript: `function containsNearbyDuplicate(nums: number[], k: number): boolean {
+    const seen = new Map<number, number>();
+    for (let i = 0; i < nums.length; i++) {
+        if (seen.has(nums[i]) && i - seen.get(nums[i])! <= k) {
+            return true;
+        }
+        seen.set(nums[i], i);
+    }
+    return false;
+}`,
     java: `class Solution {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         java.util.HashMap<Integer, Integer> seen = new java.util.HashMap<>();
@@ -231,6 +260,20 @@ bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
     }
 }
 `,
+    csharp: `using System.Collections.Generic;
+
+public class Solution {
+    public bool ContainsNearbyDuplicate(int[] nums, int k) {
+        Dictionary<int, int> seen = new Dictionary<int, int>();
+        for (int i = 0; i < nums.Length; i++) {
+            if (seen.ContainsKey(nums[i]) && i - seen[nums[i]] <= k) {
+                return true;
+            }
+            seen[nums[i]] = i;
+        }
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
     for (int i = 0; i < numsSize; i++) {
@@ -241,6 +284,19 @@ bool containsNearbyDuplicate(int* nums, int numsSize, int k) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_map<int, int> seen;
+        for (int i = 0; i < (int)nums.size(); i++) {
+            if (seen.count(nums[i]) && i - seen[nums[i]] <= k) {
+                return true;
+            }
+            seen[nums[i]] = i;
+        }
+        return false;
+    }
+};`,
   },
   editorial: `## Approach: Hash Map — Last Seen Index
 

@@ -237,8 +237,18 @@ Single element list is unchanged.
     // TODO: implement rotation
     return [];
 }`,
+    typescript: `function rotateRight(nodes: number[], k: number): number[] {
+    // TODO: implement rotation
+    return [];
+}`,
     java: `class Solution {
     public int[] rotateRight(int[] nodes, int k) {
+        // TODO: implement rotation
+        return new int[0];
+    }
+}`,
+    csharp: `public class Solution {
+    public int[] RotateRight(int[] nodes, int k) {
         // TODO: implement rotation
         return new int[0];
     }
@@ -248,6 +258,13 @@ Single element list is unchanged.
     *returnSize = 0;
     return NULL;
 }`,
+    cpp: `class Solution {
+public:
+    vector<int> rotateRight(vector<int>& nodes, int k) {
+        // TODO: implement rotation
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def rotate_right(nodes: list[int], k: int) -> list[int]:
@@ -267,12 +284,34 @@ Single element list is unchanged.
     const split = n - effective;
     return nodes.slice(split).concat(nodes.slice(0, split));
 }`,
+    typescript: `function rotateRight(nodes: number[], k: number): number[] {
+    const n = nodes.length;
+    if (n === 0 || k === 0) return nodes.slice();
+    const effective = k % n;
+    if (effective === 0) return nodes.slice();
+    const split = n - effective;
+    return nodes.slice(split).concat(nodes.slice(0, split));
+}`,
     java: `class Solution {
     public int[] rotateRight(int[] nodes, int k) {
         int n = nodes.length;
         if (n == 0 || k == 0) return nodes.clone();
         int effective = k % n;
         if (effective == 0) return nodes.clone();
+        int split = n - effective;
+        int[] result = new int[n];
+        int idx = 0;
+        for (int i = split; i < n; i++) result[idx++] = nodes[i];
+        for (int i = 0; i < split; i++) result[idx++] = nodes[i];
+        return result;
+    }
+}`,
+    csharp: `public class Solution {
+    public int[] RotateRight(int[] nodes, int k) {
+        int n = nodes.Length;
+        if (n == 0 || k == 0) return (int[])nodes.Clone();
+        int effective = k % n;
+        if (effective == 0) return (int[])nodes.Clone();
         int split = n - effective;
         int[] result = new int[n];
         int idx = 0;
@@ -299,6 +338,21 @@ Single element list is unchanged.
     for (int i = 0; i < split; i++) result[idx++] = nodes[i];
     return result;
 }`,
+    cpp: `class Solution {
+public:
+    vector<int> rotateRight(vector<int>& nodes, int k) {
+        int n = nodes.size();
+        if (n == 0 || k == 0) return nodes;
+        int effective = k % n;
+        if (effective == 0) return nodes;
+        int split = n - effective;
+        vector<int> result;
+        result.reserve(n);
+        for (int i = split; i < n; i++) result.push_back(nodes[i]);
+        for (int i = 0; i < split; i++) result.push_back(nodes[i]);
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Modular Arithmetic + Array Slicing
 

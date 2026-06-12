@@ -232,6 +232,10 @@ function longestOnes(nums, k) {
     return 0;
 }
 `,
+    typescript: `function longestOnes(nums: number[], k: number): number {
+    // TODO: implement sliding window
+    return 0;
+}`,
     java: `class Solution {
     public int longestOnes(int[] nums, int k) {
         // TODO: implement sliding window
@@ -239,11 +243,24 @@ function longestOnes(nums, k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LongestOnes(int[] nums, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+}`,
     c: `int longestOnes(int* nums, int numsSize, int k) {
     // TODO: implement sliding window
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def longest_ones(nums: list[int], k: int) -> int:
@@ -273,6 +290,18 @@ function longestOnes(nums, k) {
     return best;
 }
 `,
+    typescript: `function longestOnes(nums: number[], k: number): number {
+    let left = 0, zeros = 0, best = 0;
+    for (let right = 0; right < nums.length; right++) {
+        if (nums[right] === 0) zeros++;
+        while (zeros > k) {
+            if (nums[left] === 0) zeros--;
+            left++;
+        }
+        best = Math.max(best, right - left + 1);
+    }
+    return best;
+}`,
     java: `class Solution {
     public int longestOnes(int[] nums, int k) {
         int left = 0, zeros = 0, best = 0;
@@ -288,6 +317,20 @@ function longestOnes(nums, k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int LongestOnes(int[] nums, int k) {
+        int left = 0, zeros = 0, best = 0;
+        for (int right = 0; right < nums.Length; right++) {
+            if (nums[right] == 0) zeros++;
+            while (zeros > k) {
+                if (nums[left] == 0) zeros--;
+                left++;
+            }
+            best = System.Math.Max(best, right - left + 1);
+        }
+        return best;
+    }
+}`,
     c: `int longestOnes(int* nums, int numsSize, int k) {
     int left = 0, zeros = 0, best = 0;
     for (int right = 0; right < numsSize; right++) {
@@ -302,6 +345,21 @@ function longestOnes(nums, k) {
     return best;
 }
 `,
+    cpp: `class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        int left = 0, zeros = 0, best = 0;
+        for (int right = 0; right < (int)nums.size(); right++) {
+            if (nums[right] == 0) zeros++;
+            while (zeros > k) {
+                if (nums[left] == 0) zeros--;
+                left++;
+            }
+            best = max(best, right - left + 1);
+        }
+        return best;
+    }
+};`,
   },
   editorial: `## Approach: Sliding Window (Two Pointers)
 

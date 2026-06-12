@@ -199,6 +199,10 @@ function numSubarrayProductLessThanK(nums, k) {
     return 0;
 }
 `,
+    typescript: `function numSubarrayProductLessThanK(nums: number[], k: number): number {
+    // TODO: implement sliding window
+    return 0;
+}`,
     java: `class Solution {
     public int numSubarrayProductLessThanK(int[] nums, int k) {
         // TODO: implement sliding window
@@ -206,11 +210,24 @@ function numSubarrayProductLessThanK(nums, k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int NumSubarrayProductLessThanK(int[] nums, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+}`,
     c: `int numSubarrayProductLessThanK(int* nums, int numsSize, int k) {
     // TODO: implement sliding window
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        // TODO: implement sliding window
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def num_subarray_product_less_than_k(nums: list[int], k: int) -> int:
@@ -243,6 +260,21 @@ function numSubarrayProductLessThanK(nums, k) {
     return count;
 }
 `,
+    typescript: `function numSubarrayProductLessThanK(nums: number[], k: number): number {
+    if (k <= 1) return 0;
+    let count = 0;
+    let product = 1;
+    let left = 0;
+    for (let right = 0; right < nums.length; right++) {
+        product *= nums[right];
+        while (product >= k) {
+            product = Math.floor(product / nums[left]);
+            left++;
+        }
+        count += right - left + 1;
+    }
+    return count;
+}`,
     java: `class Solution {
     public int numSubarrayProductLessThanK(int[] nums, int k) {
         if (k <= 1) return 0;
@@ -261,6 +293,23 @@ function numSubarrayProductLessThanK(nums, k) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int NumSubarrayProductLessThanK(int[] nums, int k) {
+        if (k <= 1) return 0;
+        int count = 0;
+        long product = 1;
+        int left = 0;
+        for (int right = 0; right < nums.Length; right++) {
+            product *= nums[right];
+            while (product >= k) {
+                product /= nums[left];
+                left++;
+            }
+            count += right - left + 1;
+        }
+        return count;
+    }
+}`,
     c: `int numSubarrayProductLessThanK(int* nums, int numsSize, int k) {
     if (k <= 1) return 0;
     int count = 0;
@@ -277,6 +326,24 @@ function numSubarrayProductLessThanK(nums, k) {
     return count;
 }
 `,
+    cpp: `class Solution {
+public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        if (k <= 1) return 0;
+        int count = 0;
+        long long product = 1;
+        int left = 0;
+        for (int right = 0; right < (int)nums.size(); right++) {
+            product *= nums[right];
+            while (product >= k) {
+                product /= nums[left];
+                left++;
+            }
+            count += right - left + 1;
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach: Sliding Window
 

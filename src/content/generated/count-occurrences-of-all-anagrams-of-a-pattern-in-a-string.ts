@@ -159,6 +159,10 @@ function countAnagrams(s, p) {
     return 0;
 }
 `,
+    typescript: `function countAnagrams(s: string, p: string): number {
+    // TODO: implement sliding window with frequency arrays
+    return 0;
+}`,
     java: `class Solution {
     public int countAnagrams(String s, String p) {
         // TODO: implement sliding window with frequency arrays
@@ -166,11 +170,24 @@ function countAnagrams(s, p) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountAnagrams(string s, string p) {
+        // TODO: implement sliding window with frequency arrays
+        return 0;
+    }
+}`,
     c: `int countAnagrams(char* s, char* p) {
     // TODO: implement sliding window with frequency arrays
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countAnagrams(string s, string p) {
+        // TODO: implement sliding window with frequency arrays
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_anagrams(s: str, p: str) -> int:
@@ -222,6 +239,34 @@ function countAnagrams(s, p) {
     return result;
 }
 `,
+    typescript: `function countAnagrams(s: string, p: string): number {
+    const n = s.length, m = p.length;
+    if (m > n) return 0;
+
+    const pFreq = new Array(26).fill(0);
+    const wFreq = new Array(26).fill(0);
+    const a = 'a'.charCodeAt(0);
+
+    for (let i = 0; i < m; i++) {
+        pFreq[p.charCodeAt(i) - a]++;
+    }
+
+    let result = 0;
+    for (let i = 0; i < n; i++) {
+        wFreq[s.charCodeAt(i) - a]++;
+        if (i >= m) {
+            wFreq[s.charCodeAt(i - m) - a]--;
+        }
+        if (i >= m - 1) {
+            let match = true;
+            for (let k = 0; k < 26; k++) {
+                if (wFreq[k] !== pFreq[k]) { match = false; break; }
+            }
+            if (match) result++;
+        }
+    }
+    return result;
+}`,
     java: `class Solution {
     public int countAnagrams(String s, String p) {
         int n = s.length(), m = p.length();
@@ -252,6 +297,35 @@ function countAnagrams(s, p) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int CountAnagrams(string s, string p) {
+        int n = s.Length, m = p.Length;
+        if (m > n) return 0;
+
+        int[] pFreq = new int[26];
+        int[] wFreq = new int[26];
+
+        foreach (char c in p) {
+            pFreq[c - 'a']++;
+        }
+
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            wFreq[s[i] - 'a']++;
+            if (i >= m) {
+                wFreq[s[i - m] - 'a']--;
+            }
+            if (i >= m - 1) {
+                bool match = true;
+                for (int k = 0; k < 26; k++) {
+                    if (wFreq[k] != pFreq[k]) { match = false; break; }
+                }
+                if (match) result++;
+            }
+        }
+        return result;
+    }
+}`,
     c: `#include <string.h>
 
 int countAnagrams(char* s, char* p) {
@@ -284,6 +358,36 @@ int countAnagrams(char* s, char* p) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int countAnagrams(string s, string p) {
+        int n = (int)s.size(), m = (int)p.size();
+        if (m > n) return 0;
+
+        int pFreq[26] = {0};
+        int wFreq[26] = {0};
+
+        for (int i = 0; i < m; i++) {
+            pFreq[p[i] - 'a']++;
+        }
+
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            wFreq[s[i] - 'a']++;
+            if (i >= m) {
+                wFreq[s[i - m] - 'a']--;
+            }
+            if (i >= m - 1) {
+                bool match = true;
+                for (int k = 0; k < 26; k++) {
+                    if (wFreq[k] != pFreq[k]) { match = false; break; }
+                }
+                if (match) result++;
+            }
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Sliding Window with Frequency Arrays
 

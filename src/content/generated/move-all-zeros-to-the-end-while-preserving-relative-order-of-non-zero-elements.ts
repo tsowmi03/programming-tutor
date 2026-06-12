@@ -219,6 +219,10 @@ Explanation: No zeros, so the array is unchanged.
     return [];
 }
 `,
+    typescript: `function moveZeros(nums: number[]): number[] {
+    // TODO: move all zeros to the end while preserving relative order of non-zero elements
+    return [];
+}`,
     java: `class Solution {
     public int[] moveZeros(int[] nums) {
         // TODO: move all zeros to the end while preserving relative order of non-zero elements
@@ -226,12 +230,25 @@ Explanation: No zeros, so the array is unchanged.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] MoveZeros(int[] nums) {
+        // TODO: move all zeros to the end while preserving relative order of non-zero elements
+        return new int[]{};
+    }
+}`,
     c: `int* moveZeros(int* nums, int numsSize, int* returnSize) {
     // TODO: move all zeros to the end while preserving relative order of non-zero elements
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> moveZeros(vector<int>& nums) {
+        // TODO: move all zeros to the end while preserving relative order of non-zero elements
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def move_zeros(nums):
@@ -245,6 +262,11 @@ Explanation: No zeros, so the array is unchanged.
     return [...nonZeros, ...zeros];
 }
 `,
+    typescript: `function moveZeros(nums: number[]): number[] {
+    const nonZeros = nums.filter(x => x !== 0);
+    const zeros = new Array(nums.length - nonZeros.length).fill(0);
+    return [...nonZeros, ...zeros];
+}`,
     java: `class Solution {
     public int[] moveZeros(int[] nums) {
         int[] result = new int[nums.length];
@@ -257,6 +279,17 @@ Explanation: No zeros, so the array is unchanged.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] MoveZeros(int[] nums) {
+        int[] result = new int[nums.Length];
+        int idx = 0;
+        foreach (int num in nums) {
+            if (num != 0) result[idx++] = num;
+        }
+        // remaining positions already default to 0
+        return result;
+    }
+}`,
     c: `int* moveZeros(int* nums, int numsSize, int* returnSize) {
     *returnSize = numsSize;
     if (numsSize == 0) {
@@ -271,6 +304,19 @@ Explanation: No zeros, so the array is unchanged.
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> moveZeros(vector<int>& nums) {
+        vector<int> result;
+        int zeroCount = 0;
+        for (int num : nums) {
+            if (num != 0) result.push_back(num);
+            else zeroCount++;
+        }
+        for (int i = 0; i < zeroCount; i++) result.push_back(0);
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Collect Non-Zeros then Fill
 

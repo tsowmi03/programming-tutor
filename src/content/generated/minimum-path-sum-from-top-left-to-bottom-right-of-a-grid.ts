@@ -229,6 +229,10 @@ Explanation: Path (0,0)->(0,1)->(0,2)->(1,2)
     return 0;
 }
 `,
+    typescript: `function minPathSum(grid: number[][]): number {
+    // TODO: implement minimum path sum
+    return 0;
+}`,
     java: `class Solution {
     public int minPathSum(int[][] grid) {
         // TODO: implement minimum path sum
@@ -236,11 +240,24 @@ Explanation: Path (0,0)->(0,1)->(0,2)->(1,2)
     }
 }
 `,
+    csharp: `public class Solution {
+    public int MinPathSum(int[][] grid) {
+        // TODO: implement minimum path sum
+        return 0;
+    }
+}`,
     c: `int minPathSum(int** grid, int gridSize, int* gridColSize) {
     /* TODO: implement minimum path sum */
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        // TODO: implement minimum path sum
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def min_path_sum(grid):
@@ -272,6 +289,20 @@ Explanation: Path (0,0)->(0,1)->(0,2)->(1,2)
     return dp[m-1][n-1];
 }
 `,
+    typescript: `function minPathSum(grid: number[][]): number {
+    const m = grid.length;
+    const n = grid[0].length;
+    const dp: number[][] = Array.from({length: m}, () => new Array(n).fill(0));
+    dp[0][0] = grid[0][0];
+    for (let j = 1; j < n; j++) dp[0][j] = dp[0][j-1] + grid[0][j];
+    for (let i = 1; i < m; i++) dp[i][0] = dp[i-1][0] + grid[i][0];
+    for (let i = 1; i < m; i++) {
+        for (let j = 1; j < n; j++) {
+            dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) + grid[i][j];
+        }
+    }
+    return dp[m-1][n-1];
+}`,
     java: `class Solution {
     public int minPathSum(int[][] grid) {
         int m = grid.length;
@@ -289,6 +320,24 @@ Explanation: Path (0,0)->(0,1)->(0,2)->(1,2)
     }
 }
 `,
+    csharp: `using System;
+public class Solution {
+    public int MinPathSum(int[][] grid) {
+        int m = grid.Length;
+        int n = grid[0].Length;
+        int[][] dp = new int[m][];
+        for (int i = 0; i < m; i++) dp[i] = new int[n];
+        dp[0][0] = grid[0][0];
+        for (int j = 1; j < n; j++) dp[0][j] = dp[0][j-1] + grid[0][j];
+        for (int i = 1; i < m; i++) dp[i][0] = dp[i-1][0] + grid[i][0];
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = Math.Min(dp[i-1][j], dp[i][j-1]) + grid[i][j];
+            }
+        }
+        return dp[m-1][n-1];
+    }
+}`,
     c: `#include <stdlib.h>
 int minPathSum(int** grid, int gridSize, int* gridColSize) {
     int m = gridSize;
@@ -311,6 +360,23 @@ int minPathSum(int** grid, int gridSize, int* gridColSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+        dp[0][0] = grid[0][0];
+        for (int j = 1; j < n; j++) dp[0][j] = dp[0][j-1] + grid[0][j];
+        for (int i = 1; i < m; i++) dp[i][0] = dp[i-1][0] + grid[i][0];
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j];
+            }
+        }
+        return dp[m-1][n-1];
+    }
+};`,
   },
   editorial: `## Approach: Bottom-Up Dynamic Programming
 

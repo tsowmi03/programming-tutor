@@ -246,6 +246,10 @@ Explanation: Every element of nums1 is smaller, so they all come first,
     return [];
 }
 `,
+    typescript: `function mergeSortedArrays(nums1: number[], nums2: number[]): number[] {
+    // TODO: use two pointers to merge
+    return [];
+}`,
     java: `class Solution {
     public int[] mergeSortedArrays(int[] nums1, int[] nums2) {
         // TODO: use two pointers to merge
@@ -253,12 +257,25 @@ Explanation: Every element of nums1 is smaller, so they all come first,
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] MergeSortedArrays(int[] nums1, int[] nums2) {
+        // TODO: use two pointers to merge
+        return new int[]{};
+    }
+}`,
     c: `int* mergeSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
     // TODO: use two pointers to merge
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> mergeSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        // TODO: use two pointers to merge
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def merge_sorted_arrays(nums1, nums2):
@@ -290,6 +307,20 @@ Explanation: Every element of nums1 is smaller, so they all come first,
     return result;
 }
 `,
+    typescript: `function mergeSortedArrays(nums1: number[], nums2: number[]): number[] {
+    const result: number[] = [];
+    let i = 0, j = 0;
+    while (i < nums1.length && j < nums2.length) {
+        if (nums1[i] <= nums2[j]) {
+            result.push(nums1[i++]);
+        } else {
+            result.push(nums2[j++]);
+        }
+    }
+    while (i < nums1.length) result.push(nums1[i++]);
+    while (j < nums2.length) result.push(nums2[j++]);
+    return result;
+}`,
     java: `class Solution {
     public int[] mergeSortedArrays(int[] nums1, int[] nums2) {
         int[] result = new int[nums1.length + nums2.length];
@@ -307,6 +338,22 @@ Explanation: Every element of nums1 is smaller, so they all come first,
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] MergeSortedArrays(int[] nums1, int[] nums2) {
+        int[] result = new int[nums1.Length + nums2.Length];
+        int i = 0, j = 0, k = 0;
+        while (i < nums1.Length && j < nums2.Length) {
+            if (nums1[i] <= nums2[j]) {
+                result[k++] = nums1[i++];
+            } else {
+                result[k++] = nums2[j++];
+            }
+        }
+        while (i < nums1.Length) result[k++] = nums1[i++];
+        while (j < nums2.Length) result[k++] = nums2[j++];
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* mergeSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
@@ -325,6 +372,23 @@ int* mergeSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size, int
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> mergeSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> result;
+        int i = 0, j = 0;
+        while (i < (int)nums1.size() && j < (int)nums2.size()) {
+            if (nums1[i] <= nums2[j]) {
+                result.push_back(nums1[i++]);
+            } else {
+                result.push_back(nums2[j++]);
+            }
+        }
+        while (i < (int)nums1.size()) result.push_back(nums1[i++]);
+        while (j < (int)nums2.size()) result.push_back(nums2[j++]);
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Two Pointers
 

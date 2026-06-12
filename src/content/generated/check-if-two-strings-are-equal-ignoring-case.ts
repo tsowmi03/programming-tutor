@@ -146,6 +146,10 @@ Explanation: The letter characters differ only in case; digits match exactly.
     return false;
 }
 `,
+    typescript: `function areEqualIgnoreCase(s: string, t: string): boolean {
+    // TODO: implement
+    return false;
+}`,
     java: `class Solution {
     public boolean areEqualIgnoreCase(String s, String t) {
         // TODO: implement
@@ -153,6 +157,12 @@ Explanation: The letter characters differ only in case; digits match exactly.
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool AreEqualIgnoreCase(string s, string t) {
+        // TODO: implement
+        return false;
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
@@ -162,6 +172,13 @@ bool areEqualIgnoreCase(char* s, char* t) {
     return false;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool areEqualIgnoreCase(string s, string t) {
+        // TODO: implement
+        return false;
+    }
+};`,
   },
   solutions: {
     python: `def are_equal_ignore_case(s: str, t: str) -> bool:
@@ -171,12 +188,20 @@ bool areEqualIgnoreCase(char* s, char* t) {
     return s.toLowerCase() === t.toLowerCase();
 }
 `,
+    typescript: `function areEqualIgnoreCase(s: string, t: string): boolean {
+    return s.toLowerCase() === t.toLowerCase();
+}`,
     java: `class Solution {
     public boolean areEqualIgnoreCase(String s, String t) {
         return s.equalsIgnoreCase(t);
     }
 }
 `,
+    csharp: `public class Solution {
+    public bool AreEqualIgnoreCase(string s, string t) {
+        return string.Equals(s, t, System.StringComparison.OrdinalIgnoreCase);
+    }
+}`,
     c: `#include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
@@ -191,6 +216,16 @@ bool areEqualIgnoreCase(char* s, char* t) {
     return true;
 }
 `,
+    cpp: `class Solution {
+public:
+    bool areEqualIgnoreCase(string s, string t) {
+        if (s.length() != t.length()) return false;
+        for (int i = 0; i < (int)s.length(); i++) {
+            if (tolower((unsigned char)s[i]) != tolower((unsigned char)t[i])) return false;
+        }
+        return true;
+    }
+};`,
   },
   editorial: `## Approach: Normalize to the Same Case, Then Compare
 

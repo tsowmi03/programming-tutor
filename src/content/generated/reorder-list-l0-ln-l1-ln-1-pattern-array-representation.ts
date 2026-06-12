@@ -254,6 +254,10 @@ function reorderList(nums) {
     return [];
 }
 `,
+    typescript: `function reorderList(nums: number[]): number[] {
+    // TODO: implement reorder
+    return [];
+}`,
     java: `class Solution {
     public int[] reorderList(int[] nums) {
         // TODO: implement reorder
@@ -261,6 +265,12 @@ function reorderList(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] ReorderList(int[] nums) {
+        // TODO: implement reorder
+        return new int[]{};
+    }
+}`,
     c: `#include <stdlib.h>
 int* reorderList(int* nums, int numsSize, int* returnSize) {
     // TODO: implement reorder
@@ -268,6 +278,13 @@ int* reorderList(int* nums, int numsSize, int* returnSize) {
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> reorderList(vector<int>& nums) {
+        // TODO: implement reorder
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def reorder_list(nums: list[int]) -> list[int]:
@@ -313,6 +330,22 @@ function reorderList(nums) {
     return result;
 }
 `,
+    typescript: `function reorderList(nums: number[]): number[] {
+    const n = nums.length;
+    if (n <= 2) return nums.slice();
+    const mid = Math.floor(n / 2);
+    const first = nums.slice(0, mid);
+    const second = nums.slice(mid).reverse();
+    const result: number[] = [];
+    let i = 0, j = 0;
+    while (i < first.length && j < second.length) {
+        result.push(first[i++]);
+        result.push(second[j++]);
+    }
+    while (i < first.length) result.push(first[i++]);
+    while (j < second.length) result.push(second[j++]);
+    return result;
+}`,
     java: `class Solution {
     public int[] reorderList(int[] nums) {
         int n = nums.length;
@@ -343,6 +376,34 @@ function reorderList(nums) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] ReorderList(int[] nums) {
+        int n = nums.Length;
+        if (n <= 2) {
+            int[] copy = new int[n];
+            for (int i = 0; i < n; i++) copy[i] = nums[i];
+            return copy;
+        }
+        int mid = n / 2;
+        int secondLen = n - mid;
+        int[] first = new int[mid];
+        int[] second = new int[secondLen];
+        for (int i = 0; i < mid; i++) first[i] = nums[i];
+        for (int i = 0; i < secondLen; i++) second[i] = nums[mid + i];
+        for (int i = 0, j = secondLen - 1; i < j; i++, j--) {
+            int tmp = second[i]; second[i] = second[j]; second[j] = tmp;
+        }
+        int[] result = new int[n];
+        int ri = 0, fi = 0, si = 0;
+        while (fi < mid && si < secondLen) {
+            result[ri++] = first[fi++];
+            result[ri++] = second[si++];
+        }
+        while (fi < mid) result[ri++] = first[fi++];
+        while (si < secondLen) result[ri++] = second[si++];
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 int* reorderList(int* nums, int numsSize, int* returnSize) {
     *returnSize = numsSize;
@@ -373,6 +434,28 @@ int* reorderList(int* nums, int numsSize, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> reorderList(vector<int>& nums) {
+        int n = nums.size();
+        if (n <= 2) return vector<int>(nums.begin(), nums.end());
+        int mid = n / 2;
+        int secondLen = n - mid;
+        vector<int> first(nums.begin(), nums.begin() + mid);
+        vector<int> second(nums.begin() + mid, nums.end());
+        reverse(second.begin(), second.end());
+        vector<int> result;
+        result.reserve(n);
+        int i = 0, j = 0;
+        while (i < mid && j < secondLen) {
+            result.push_back(first[i++]);
+            result.push_back(second[j++]);
+        }
+        while (i < mid) result.push_back(first[i++]);
+        while (j < secondLen) result.push_back(second[j++]);
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Split, Reverse Second Half, Merge
 

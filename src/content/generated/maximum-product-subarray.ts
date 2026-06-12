@@ -173,6 +173,10 @@ Explanation: The subarray [-2, 3, -4] has the largest product 24.
     return 0;
 }
 `,
+    typescript: `function maxProduct(nums: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int maxProduct(int[] nums) {
         // TODO: implement
@@ -180,11 +184,26 @@ Explanation: The subarray [-2, 3, -4] has the largest product 24.
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int MaxProduct(int[] nums) {
+        // TODO: implement
+        return 0;
+    }
+}`,
     c: `int maxProduct(int* nums, int numsSize) {
     // TODO: implement
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def max_product(nums):
@@ -217,6 +236,21 @@ Explanation: The subarray [-2, 3, -4] has the largest product 24.
     return result;
 }
 `,
+    typescript: `function maxProduct(nums: number[]): number {
+    if (nums.length === 0) return 0;
+    let maxProd = nums[0];
+    let minProd = nums[0];
+    let result = nums[0];
+    for (let i = 1; i < nums.length; i++) {
+        const n = nums[i];
+        const tempMax = Math.max(n, maxProd * n, minProd * n);
+        const tempMin = Math.min(n, maxProd * n, minProd * n);
+        maxProd = tempMax;
+        minProd = tempMin;
+        result = Math.max(result, maxProd);
+    }
+    return result;
+}`,
     java: `class Solution {
     public int maxProduct(int[] nums) {
         int maxProd = nums[0];
@@ -234,6 +268,24 @@ Explanation: The subarray [-2, 3, -4] has the largest product 24.
     }
 }
 `,
+    csharp: `using System;
+
+public class Solution {
+    public int MaxProduct(int[] nums) {
+        int maxProd = nums[0];
+        int minProd = nums[0];
+        int result = nums[0];
+        for (int i = 1; i < nums.Length; i++) {
+            int n = nums[i];
+            int tempMax = Math.Max(n, Math.Max(maxProd * n, minProd * n));
+            int tempMin = Math.Min(n, Math.Min(maxProd * n, minProd * n));
+            maxProd = tempMax;
+            minProd = tempMin;
+            result = Math.Max(result, maxProd);
+        }
+        return result;
+    }
+}`,
     c: `int maxProduct(int* nums, int numsSize) {
     int maxProd = nums[0];
     int minProd = nums[0];
@@ -253,6 +305,23 @@ Explanation: The subarray [-2, 3, -4] has the largest product 24.
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int maxProd = nums[0];
+        int minProd = nums[0];
+        int result = nums[0];
+        for (int i = 1; i < (int)nums.size(); i++) {
+            int n = nums[i];
+            int tempMax = max(n, max(maxProd * n, minProd * n));
+            int tempMin = min(n, min(maxProd * n, minProd * n));
+            maxProd = tempMax;
+            minProd = tempMin;
+            result = max(result, maxProd);
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Dynamic Programming (Track Max and Min)
 

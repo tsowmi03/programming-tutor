@@ -176,6 +176,10 @@ Explanation: The single element is trivially a peak.
     return 0;
 }
 `,
+    typescript: `function findPeakElement(nums: number[]): number {
+    // TODO: implement binary search for a peak element
+    return 0;
+}`,
     java: `class Solution {
     public int findPeakElement(int[] nums) {
         // TODO: implement binary search for a peak element
@@ -183,11 +187,24 @@ Explanation: The single element is trivially a peak.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindPeakElement(int[] nums) {
+        // TODO: implement binary search for a peak element
+        return 0;
+    }
+}`,
     c: `int findPeakElement(int* nums, int numsSize) {
     // TODO: implement binary search for a peak element
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        // TODO: implement binary search for a peak element
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def find_peak_element(nums):
@@ -213,6 +230,18 @@ Explanation: The single element is trivially a peak.
     return lo;
 }
 `,
+    typescript: `function findPeakElement(nums: number[]): number {
+    let lo = 0, hi = nums.length - 1;
+    while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (nums[mid] < nums[mid + 1]) {
+            lo = mid + 1;
+        } else {
+            hi = mid;
+        }
+    }
+    return lo;
+}`,
     java: `class Solution {
     public int findPeakElement(int[] nums) {
         int lo = 0, hi = nums.length - 1;
@@ -228,6 +257,20 @@ Explanation: The single element is trivially a peak.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int FindPeakElement(int[] nums) {
+        int lo = 0, hi = nums.Length - 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] < nums[mid + 1]) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
+    }
+}`,
     c: `int findPeakElement(int* nums, int numsSize) {
     int lo = 0, hi = numsSize - 1;
     while (lo < hi) {
@@ -241,6 +284,21 @@ Explanation: The single element is trivially a peak.
     return lo;
 }
 `,
+    cpp: `class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        int lo = 0, hi = (int)nums.size() - 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] < nums[mid + 1]) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
+    }
+};`,
   },
   editorial: `## Approach: Binary Search on Slope
 

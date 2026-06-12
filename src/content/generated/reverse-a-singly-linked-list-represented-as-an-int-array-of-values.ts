@@ -204,6 +204,10 @@ function reverseLinkedList(values) {
     return [];
 }
 `,
+    typescript: `function reverseLinkedList(values: number[]): number[] {
+    // TODO: implement this function
+    return [];
+}`,
     java: `class Solution {
     public int[] reverseLinkedList(int[] values) {
         // TODO: implement this function
@@ -211,6 +215,12 @@ function reverseLinkedList(values) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] ReverseLinkedList(int[] values) {
+        // TODO: implement this function
+        return new int[]{};
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* reverseLinkedList(int* values, int valuesSize, int* returnSize) {
@@ -219,6 +229,13 @@ int* reverseLinkedList(int* values, int valuesSize, int* returnSize) {
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> reverseLinkedList(vector<int>& values) {
+        // TODO: implement this function
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def reverse_linked_list(values: list[int]) -> list[int]:
@@ -242,6 +259,19 @@ function reverseLinkedList(values) {
     return result;
 }
 `,
+    typescript: `function reverseLinkedList(values: number[]): number[] {
+    let left = 0;
+    let right = values.length - 1;
+    const result = [...values];
+    while (left < right) {
+        const tmp = result[left];
+        result[left] = result[right];
+        result[right] = tmp;
+        left++;
+        right--;
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] reverseLinkedList(int[] values) {
         int n = values.length;
@@ -253,6 +283,16 @@ function reverseLinkedList(values) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] ReverseLinkedList(int[] values) {
+        int n = values.Length;
+        int[] result = new int[n];
+        for (int i = 0; i < n; i++) {
+            result[i] = values[n - 1 - i];
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int* reverseLinkedList(int* values, int valuesSize, int* returnSize) {
@@ -267,6 +307,17 @@ int* reverseLinkedList(int* values, int valuesSize, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> reverseLinkedList(vector<int>& values) {
+        int n = values.size();
+        vector<int> result(n);
+        for (int i = 0; i < n; i++) {
+            result[i] = values[n - 1 - i];
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Two-Pointer Reversal
 

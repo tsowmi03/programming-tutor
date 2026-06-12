@@ -159,8 +159,18 @@ Explanation: n = 9, so the full range is {0, 1, ..., 9}.
     // TODO: implement
     return 0;
 }`,
+    typescript: `function missingNumber(nums: number[]): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int missingNumber(int[] nums) {
+        // TODO: implement
+        return 0;
+    }
+}`,
+    csharp: `public class Solution {
+    public int MissingNumber(int[] nums) {
         // TODO: implement
         return 0;
     }
@@ -169,6 +179,13 @@ Explanation: n = 9, so the full range is {0, 1, ..., 9}.
     /* TODO: implement */
     return 0;
 }`,
+    cpp: `class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def missing_number(nums):
@@ -176,6 +193,12 @@ Explanation: n = 9, so the full range is {0, 1, ..., 9}.
     expected = n * (n + 1) // 2
     return expected - sum(nums)`,
     javascript: `function missingNumber(nums) {
+    const n = nums.length;
+    const expected = n * (n + 1) / 2;
+    const actual = nums.reduce((acc, val) => acc + val, 0);
+    return expected - actual;
+}`,
+    typescript: `function missingNumber(nums: number[]): number {
     const n = nums.length;
     const expected = n * (n + 1) / 2;
     const actual = nums.reduce((acc, val) => acc + val, 0);
@@ -192,6 +215,17 @@ Explanation: n = 9, so the full range is {0, 1, ..., 9}.
         return expected - actual;
     }
 }`,
+    csharp: `public class Solution {
+    public int MissingNumber(int[] nums) {
+        int n = nums.Length;
+        int expected = n * (n + 1) / 2;
+        int actual = 0;
+        foreach (int num in nums) {
+            actual += num;
+        }
+        return expected - actual;
+    }
+}`,
     c: `int missingNumber(int* nums, int numsSize) {
     int expected = numsSize * (numsSize + 1) / 2;
     int actual = 0;
@@ -201,6 +235,18 @@ Explanation: n = 9, so the full range is {0, 1, ..., 9}.
     }
     return expected - actual;
 }`,
+    cpp: `class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n = nums.size();
+        int expected = n * (n + 1) / 2;
+        int actual = 0;
+        for (int num : nums) {
+            actual += num;
+        }
+        return expected - actual;
+    }
+};`,
   },
   editorial: `## Approach: Gauss Sum Formula
 

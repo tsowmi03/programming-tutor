@@ -224,6 +224,10 @@ Explanation: Duplicates within each array are removed; each value appears once.
     return [];
 }
 `,
+    typescript: `function arrayUnion(nums1: number[], nums2: number[]): number[] {
+    // TODO: implement
+    return [];
+}`,
     java: `class Solution {
     public int[] arrayUnion(int[] nums1, int[] nums2) {
         // TODO: implement
@@ -231,6 +235,12 @@ Explanation: Duplicates within each array are removed; each value appears once.
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] ArrayUnion(int[] nums1, int[] nums2) {
+        // TODO: implement
+        return new int[]{};
+    }
+}`,
     c: `#include <stdlib.h>
 int* arrayUnion(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
     // TODO: implement
@@ -238,6 +248,13 @@ int* arrayUnion(int* nums1, int nums1Size, int* nums2, int nums2Size, int* retur
     return (int*)malloc(sizeof(int));
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> arrayUnion(vector<int>& nums1, vector<int>& nums2) {
+        // TODO: implement
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def array_union(nums1, nums2):
@@ -248,6 +265,10 @@ int* arrayUnion(int* nums1, int nums1Size, int* nums2, int nums2Size, int* retur
     return Array.from(seen).sort((a, b) => a - b);
 }
 `,
+    typescript: `function arrayUnion(nums1: number[], nums2: number[]): number[] {
+    const seen = new Set([...nums1, ...nums2]);
+    return Array.from(seen).sort((a, b) => a - b);
+}`,
     java: `class Solution {
     public int[] arrayUnion(int[] nums1, int[] nums2) {
         java.util.Set<Integer> set = new java.util.HashSet<>();
@@ -261,6 +282,21 @@ int* arrayUnion(int* nums1, int nums1Size, int* nums2, int nums2Size, int* retur
     }
 }
 `,
+    csharp: `using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] ArrayUnion(int[] nums1, int[] nums2) {
+        HashSet<int> set = new HashSet<int>();
+        foreach (int n in nums1) set.Add(n);
+        foreach (int n in nums2) set.Add(n);
+        int[] result = new int[set.Count];
+        int i = 0;
+        foreach (int n in set) result[i++] = n;
+        Array.Sort(result);
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 static int cmpInt(const void* a, const void* b) {
     return (*(int*)a - *(int*)b);
@@ -288,6 +324,15 @@ int* arrayUnion(int* nums1, int nums1Size, int* nums2, int nums2Size, int* retur
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> arrayUnion(vector<int>& nums1, vector<int>& nums2) {
+        set<int> seen;
+        for (int n : nums1) seen.insert(n);
+        for (int n : nums2) seen.insert(n);
+        return vector<int>(seen.begin(), seen.end());
+    }
+};`,
   },
   editorial: `## Approach: Hash Set + Sort
 

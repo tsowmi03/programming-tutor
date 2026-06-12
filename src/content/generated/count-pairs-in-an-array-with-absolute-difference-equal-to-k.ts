@@ -190,8 +190,18 @@ Explanation: Pairs with |difference| == 2:
     // TODO: implement
     return 0;
 }`,
+    typescript: `function countKdifference(nums: number[], k: number): number {
+    // TODO: implement
+    return 0;
+}`,
     java: `class Solution {
     public int countKdifference(int[] nums, int k) {
+        // TODO: implement
+        return 0;
+    }
+}`,
+    csharp: `public class Solution {
+    public int CountKdifference(int[] nums, int k) {
         // TODO: implement
         return 0;
     }
@@ -200,6 +210,13 @@ Explanation: Pairs with |difference| == 2:
     // TODO: implement
     return 0;
 }`,
+    cpp: `class Solution {
+public:
+    int countKdifference(vector<int>& nums, int k) {
+        // TODO: implement
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def count_kdifference(nums, k):
@@ -211,6 +228,18 @@ Explanation: Pairs with |difference| == 2:
                 count += 1
     return count`,
     javascript: `function countKdifference(nums, k) {
+    let count = 0;
+    const n = nums.length;
+    for (let i = 0; i < n; i++) {
+        for (let j = i + 1; j < n; j++) {
+            if (Math.abs(nums[i] - nums[j]) === k) {
+                count++;
+            }
+        }
+    }
+    return count;
+}`,
+    typescript: `function countKdifference(nums: number[], k: number): number {
     let count = 0;
     const n = nums.length;
     for (let i = 0; i < n; i++) {
@@ -236,6 +265,22 @@ Explanation: Pairs with |difference| == 2:
         return count;
     }
 }`,
+    csharp: `using System;
+
+public class Solution {
+    public int CountKdifference(int[] nums, int k) {
+        int count = 0;
+        int n = nums.Length;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (Math.Abs(nums[i] - nums[j]) == k) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+}`,
     c: `int countKdifference(int* nums, int numsSize, int k) {
     int count = 0;
     for (int i = 0; i < numsSize; i++) {
@@ -247,6 +292,21 @@ Explanation: Pairs with |difference| == 2:
     }
     return count;
 }`,
+    cpp: `class Solution {
+public:
+    int countKdifference(vector<int>& nums, int k) {
+        int count = 0;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int diff = nums[i] - nums[j];
+                if (diff < 0) diff = -diff;
+                if (diff == k) count++;
+            }
+        }
+        return count;
+    }
+};`,
   },
   editorial: `## Approach 1: Brute Force — O(n²)
 

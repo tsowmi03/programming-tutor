@@ -153,6 +153,10 @@ function numDecodings(s) {
     return 0;
 }
 `,
+    typescript: `function numDecodings(s: string): number {
+    // TODO: implement decode ways
+    return 0;
+}`,
     java: `class Solution {
     public int numDecodings(String s) {
         // TODO: implement decode ways
@@ -160,6 +164,12 @@ function numDecodings(s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int NumDecodings(string s) {
+        // TODO: implement decode ways
+        return 0;
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -168,6 +178,13 @@ int numDecodings(char* s) {
     return 0;
 }
 `,
+    cpp: `class Solution {
+public:
+    int numDecodings(string s) {
+        // TODO: implement decode ways
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def num_decodings(s: str) -> int:
@@ -201,6 +218,20 @@ int numDecodings(char* s) {
     return dp[n];
 }
 `,
+    typescript: `function numDecodings(s: string): number {
+    const n = s.length;
+    if (n === 0 || s[0] === '0') return 0;
+    const dp = new Array(n + 1).fill(0);
+    dp[0] = 1;
+    dp[1] = 1;
+    for (let i = 2; i <= n; i++) {
+        const oneDig = parseInt(s[i-1], 10);
+        const twoDig = parseInt(s.substring(i-2, i), 10);
+        if (oneDig >= 1) dp[i] += dp[i-1];
+        if (twoDig >= 10 && twoDig <= 26) dp[i] += dp[i-2];
+    }
+    return dp[n];
+}`,
     java: `class Solution {
     public int numDecodings(String s) {
         int n = s.length();
@@ -218,6 +249,22 @@ int numDecodings(char* s) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int NumDecodings(string s) {
+        int n = s.Length;
+        if (n == 0 || s[0] == '0') return 0;
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            int oneDig = s[i-1] - '0';
+            int twoDig = int.Parse(s.Substring(i-2, 2));
+            if (oneDig >= 1) dp[i] += dp[i-1];
+            if (twoDig >= 10 && twoDig <= 26) dp[i] += dp[i-2];
+        }
+        return dp[n];
+    }
+}`,
     c: `#include <stdlib.h>
 #include <string.h>
 
@@ -238,6 +285,23 @@ int numDecodings(char* s) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    int numDecodings(string s) {
+        int n = (int)s.length();
+        if (n == 0 || s[0] == '0') return 0;
+        vector<int> dp(n + 1, 0);
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            int oneDig = s[i-1] - '0';
+            int twoDig = (s[i-2] - '0') * 10 + (s[i-1] - '0');
+            if (oneDig >= 1) dp[i] += dp[i-1];
+            if (twoDig >= 10 && twoDig <= 26) dp[i] += dp[i-2];
+        }
+        return dp[n];
+    }
+};`,
   },
   editorial: `## Approach: Dynamic Programming
 

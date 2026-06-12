@@ -132,8 +132,18 @@ Explanation: (25 × 9 / 5) + 32 = 45 + 32 = 77
     // TODO: implement the Celsius to Fahrenheit conversion
     return 0;
 }`,
+    typescript: `function celsiusToFahrenheit(celsius: number): number {
+    // TODO: implement the Celsius to Fahrenheit conversion
+    return 0;
+}`,
     java: `class Solution {
     public int celsiusToFahrenheit(int celsius) {
+        // TODO: implement the Celsius to Fahrenheit conversion
+        return 0;
+    }
+}`,
+    csharp: `public class Solution {
+    public int CelsiusToFahrenheit(int celsius) {
         // TODO: implement the Celsius to Fahrenheit conversion
         return 0;
     }
@@ -142,6 +152,13 @@ Explanation: (25 × 9 / 5) + 32 = 45 + 32 = 77
     /* TODO: implement the Celsius to Fahrenheit conversion */
     return 0;
 }`,
+    cpp: `class Solution {
+public:
+    int celsiusToFahrenheit(int celsius) {
+        // TODO: implement the Celsius to Fahrenheit conversion
+        return 0;
+    }
+};`,
   },
   solutions: {
     python: `def celsius_to_fahrenheit(celsius: int) -> int:
@@ -149,14 +166,28 @@ Explanation: (25 × 9 / 5) + 32 = 45 + 32 = 77
     javascript: `function celsiusToFahrenheit(celsius) {
     return (celsius * 9) / 5 + 32;
 }`,
+    typescript: `function celsiusToFahrenheit(celsius: number): number {
+    return (celsius * 9) / 5 + 32;
+}`,
     java: `class Solution {
     public int celsiusToFahrenheit(int celsius) {
+        return (celsius * 9) / 5 + 32;
+    }
+}`,
+    csharp: `public class Solution {
+    public int CelsiusToFahrenheit(int celsius) {
         return (celsius * 9) / 5 + 32;
     }
 }`,
     c: `int celsiusToFahrenheit(int celsius) {
     return (celsius * 9) / 5 + 32;
 }`,
+    cpp: `class Solution {
+public:
+    int celsiusToFahrenheit(int celsius) {
+        return (celsius * 9) / 5 + 32;
+    }
+};`,
   },
   editorial: `## Approach: Direct Formula Application
 

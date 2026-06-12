@@ -223,6 +223,10 @@ function search(nums, target) {
     return -1;
 }
 `,
+    typescript: `function search(nums: number[], target: number): number {
+    // TODO: implement binary search
+    return -1;
+}`,
     java: `class Solution {
     public int search(int[] nums, int target) {
         // TODO: implement binary search
@@ -230,6 +234,12 @@ function search(nums, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Search(int[] nums, int target) {
+        // TODO: implement binary search
+        return -1;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int search(int* nums, int numsSize, int target) {
@@ -237,6 +247,13 @@ int search(int* nums, int numsSize, int target) {
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        // TODO: implement binary search
+        return -1;
+    }
+};`,
   },
   solutions: {
     python: `def search(nums: list[int], target: int) -> int:
@@ -267,6 +284,16 @@ function search(nums, target) {
     return -1;
 }
 `,
+    typescript: `function search(nums: number[], target: number): number {
+    let left = 0, right = nums.length - 1;
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        if (nums[mid] === target) return mid;
+        else if (nums[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
+}`,
     java: `class Solution {
     public int search(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
@@ -280,6 +307,18 @@ function search(nums, target) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public int Search(int[] nums, int target) {
+        int left = 0, right = nums.Length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] < target) left = mid + 1;
+            else right = mid - 1;
+        }
+        return -1;
+    }
+}`,
     c: `#include <stdlib.h>
 
 int search(int* nums, int numsSize, int target) {
@@ -293,6 +332,19 @@ int search(int* nums, int numsSize, int target) {
     return -1;
 }
 `,
+    cpp: `class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0, right = (int)nums.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] < target) left = mid + 1;
+            else right = mid - 1;
+        }
+        return -1;
+    }
+};`,
   },
   editorial: `## Approach: Classic Binary Search
 

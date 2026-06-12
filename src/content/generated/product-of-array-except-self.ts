@@ -208,6 +208,10 @@ Explanation:
     return [];
 }
 `,
+    typescript: `function productExceptSelf(nums: number[]): number[] {
+    // TODO: implement
+    return [];
+}`,
     java: `class Solution {
     public int[] productExceptSelf(int[] nums) {
         // TODO: implement
@@ -215,12 +219,25 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] ProductExceptSelf(int[] nums) {
+        // TODO: implement
+        return new int[]{};
+    }
+}`,
     c: `int* productExceptSelf(int* nums, int numsSize, int* returnSize) {
     // TODO: implement
     *returnSize = 0;
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        // TODO: implement
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def product_except_self(nums: list[int]) -> list[int]:
@@ -252,6 +269,21 @@ Explanation:
     return result;
 }
 `,
+    typescript: `function productExceptSelf(nums: number[]): number[] {
+    const n = nums.length;
+    const result = new Array(n).fill(1);
+    let prefix = 1;
+    for (let i = 0; i < n; i++) {
+        result[i] = prefix;
+        prefix *= nums[i];
+    }
+    let suffix = 1;
+    for (let i = n - 1; i >= 0; i--) {
+        result[i] *= suffix;
+        suffix *= nums[i];
+    }
+    return result;
+}`,
     java: `class Solution {
     public int[] productExceptSelf(int[] nums) {
         int n = nums.length;
@@ -270,6 +302,23 @@ Explanation:
     }
 }
 `,
+    csharp: `public class Solution {
+    public int[] ProductExceptSelf(int[] nums) {
+        int n = nums.Length;
+        int[] result = new int[n];
+        int prefix = 1;
+        for (int i = 0; i < n; i++) {
+            result[i] = prefix;
+            prefix *= nums[i];
+        }
+        int suffix = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            result[i] *= suffix;
+            suffix *= nums[i];
+        }
+        return result;
+    }
+}`,
     c: `#include <stdlib.h>
 int* productExceptSelf(int* nums, int numsSize, int* returnSize) {
     *returnSize = numsSize;
@@ -287,6 +336,24 @@ int* productExceptSelf(int* nums, int numsSize, int* returnSize) {
     return result;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> result(n, 1);
+        int prefix = 1;
+        for (int i = 0; i < n; i++) {
+            result[i] = prefix;
+            prefix *= nums[i];
+        }
+        int suffix = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            result[i] *= suffix;
+            suffix *= nums[i];
+        }
+        return result;
+    }
+};`,
   },
   editorial: `## Approach: Prefix & Suffix Products
 
