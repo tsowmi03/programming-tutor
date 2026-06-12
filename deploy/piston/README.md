@@ -12,10 +12,13 @@ cgroup v2, and ports 80/443 open.
 6. Install the required runtimes through the loopback-only API:
 
 ```bash
+# gcc provides both the "c" and "c++" runtimes; mono provides "csharp".
 for package in \
   "python 3.10.0" \
   "node 18.15.0" \
+  "typescript 5.0.3" \
   "java 15.0.2" \
+  "mono 6.12.0" \
   "gcc 10.2.0"
 do
   set -- $package

@@ -20,7 +20,15 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
     `cc-lang-${problem.slug}`,
     "python",
   );
-  const lang = (LANGUAGE_IDS as readonly string[]).includes(language)
+  // Only offer languages this problem has starter code for (newer languages
+  // are backfilled per problem and may be missing on some).
+  const availableLangs = useMemo(() => {
+    const available = LANGUAGE_IDS.filter(
+      (id) => problem.starterCode?.[id] != null,
+    );
+    return available.length > 0 ? available : LANGUAGE_IDS;
+  }, [problem.starterCode]);
+  const lang = (availableLangs as readonly string[]).includes(language)
     ? (language as LanguageId)
     : "python";
   const starter = problem.starterCode?.[lang] ?? "";
@@ -185,7 +193,7 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
                   className="rounded-md border border-edge bg-surface-raised px-2.5 py-1.5 text-xs font-medium outline-none transition focus:border-indigo-500/60"
                   aria-label="Language"
                 >
-                  {LANGUAGE_IDS.map((id) => (
+                  {availableLangs.map((id) => (
                     <option key={id} value={id}>
                       {LANGUAGES[id].label}
                     </option>

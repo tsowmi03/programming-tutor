@@ -9,8 +9,11 @@ import { execute, type ExecStage } from "./executors";
 import { parseJudgeOutput } from "./parse";
 import { buildPythonHarness } from "./harness/python";
 import { buildJavaScriptHarness } from "./harness/javascript";
+import { buildTypeScriptHarness } from "./harness/typescript";
 import { buildJavaHarness } from "./harness/java";
+import { buildCSharpHarness } from "./harness/csharp";
 import { buildCHarness } from "./harness/c";
+import { buildCppHarness } from "./harness/cpp";
 import {
   canonical,
   type FunctionSignature,
@@ -30,10 +33,16 @@ export function buildHarness(
       return buildPythonHarness(userCode, signature, tests);
     case "javascript":
       return buildJavaScriptHarness(userCode, signature, tests);
+    case "typescript":
+      return buildTypeScriptHarness(userCode, signature, tests);
     case "java":
       return buildJavaHarness(userCode, signature, tests);
+    case "csharp":
+      return buildCSharpHarness(userCode, signature, tests);
     case "c":
       return buildCHarness(userCode, signature, tests);
+    case "cpp":
+      return buildCppHarness(userCode, signature, tests);
   }
 }
 

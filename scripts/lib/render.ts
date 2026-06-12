@@ -49,10 +49,21 @@ function renderData(value: unknown, indent = "  "): string {
     .join("\n");
 }
 
-function renderCode(def: CodeProblemDef): string {
+/** `export default` for generated modules; `export const <name>` for curated. */
+function exportHeader(typeName: string, exportAs?: string): string {
+  return exportAs
+    ? `export const ${exportAs}: ${typeName} = {`
+    : `const problem: ${typeName} = {`;
+}
+
+function exportFooter(exportAs?: string): string {
+  return exportAs ? "" : "\n\nexport default problem;";
+}
+
+function renderCode(def: CodeProblemDef, exportAs?: string): string {
   return `import type { CodeProblemDef } from "../types";
 
-const problem: CodeProblemDef = {
+${exportHeader("CodeProblemDef", exportAs)}
   type: "code",
   slug: ${str(def.slug)},
   title: ${str(def.title)},
@@ -66,16 +77,14 @@ const problem: CodeProblemDef = {
   starterCode: ${renderCodeMap(def.starterCode)},
   solutions: ${renderCodeMap(def.solutions)},
   editorial: ${tmpl(def.editorial)},
-};
-
-export default problem;
+};${exportFooter(exportAs)}
 `;
 }
 
-function renderExplanation(def: ExplanationProblemDef): string {
+function renderExplanation(def: ExplanationProblemDef, exportAs?: string): string {
   return `import type { ExplanationProblemDef } from "../types";
 
-const problem: ExplanationProblemDef = {
+${exportHeader("ExplanationProblemDef", exportAs)}
   type: "explanation",
   slug: ${str(def.slug)},
   title: ${str(def.title)},
@@ -86,12 +95,12 @@ const problem: ExplanationProblemDef = {
   hints: ${renderStringArray(def.hints)},
   modelAnswer: ${tmpl(def.modelAnswer)},
   keyPoints: ${renderStringArray(def.keyPoints)},
-};
-
-export default problem;
+};${exportFooter(exportAs)}
 `;
 }
 
-export function renderProblemModule(def: ProblemDef): string {
-  return def.type === "code" ? renderCode(def) : renderExplanation(def);
+export function renderProblemModule(def: ProblemDef, exportAs?: string): string {
+  return def.type === "code"
+    ? renderCode(def, exportAs)
+    : renderExplanation(def, exportAs);
 }

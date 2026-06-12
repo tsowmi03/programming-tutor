@@ -17,14 +17,19 @@ async function main() {
   );
 
   let failures = 0;
+  let runs = 0;
   for (const problem of codeProblems) {
     if (problem.type !== "code") continue;
     for (const language of LANGUAGE_IDS) {
+      const code = problem.solutions[language];
+      // Newer languages are backfilled per problem and may be missing.
+      if (code == null) continue;
+      runs++;
       const started = Date.now();
       try {
         const outcome = await judgeCode({
           language,
-          code: problem.solutions[language],
+          code,
           signature: problem.signature,
           tests: problem.testCases,
         });
@@ -53,7 +58,7 @@ async function main() {
 
   console.log(
     failures === 0
-      ? `\nAll ${codeProblems.length * LANGUAGE_IDS.length} solution runs passed`
+      ? `\nAll ${runs} solution runs passed`
       : `\n${failures} runs failed`,
   );
   process.exit(failures === 0 ? 0 : 1);

@@ -6,7 +6,7 @@
  * makes it reviewable, versioned, and type-checked.
  */
 
-import type { LanguageId } from "@/lib/judge/languages";
+import type { LanguageCodeMap } from "@/lib/judge/languages";
 import type { FunctionSignature, TestCase } from "@/lib/judge/types";
 
 export type Difficulty = "easy" | "medium" | "hard";
@@ -40,9 +40,10 @@ export interface CodeProblemDef extends ProblemBase {
   type: "code";
   signature: FunctionSignature;
   testCases: TestCase[];
-  starterCode: Record<LanguageId, string>;
+  /** Per-language editor stubs; core languages required, newer ones optional. */
+  starterCode: LanguageCodeMap;
   /** Reference solutions; shown after solving and used to verify the judge. */
-  solutions: Record<LanguageId, string>;
+  solutions: LanguageCodeMap;
   /** Markdown walkthrough of the intended approach. */
   editorial: string;
 }

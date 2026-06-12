@@ -2,8 +2,11 @@ import { describe, expect, it } from "vitest";
 import type { FunctionSignature, TestCase } from "../types";
 import { buildPythonHarness } from "./python";
 import { buildJavaScriptHarness } from "./javascript";
+import { buildTypeScriptHarness } from "./typescript";
 import { buildJavaHarness, escapeJavaString, javaLiteral } from "./java";
+import { buildCSharpHarness, csharpLiteral, pascalCase } from "./csharp";
 import { buildCHarness, escapeCString, cParamList } from "./c";
+import { buildCppHarness, cppLiteral, escapeCppString } from "./cpp";
 
 const twoSum: FunctionSignature = {
   name: "twoSum",
@@ -39,6 +42,19 @@ describe("javascript harness", () => {
   });
 });
 
+describe("typescript harness", () => {
+  it("disables type checking for Piston's bare tsc and keeps the camelCase name", () => {
+    const src = buildTypeScriptHarness(
+      "function twoSum(nums: number[], target: number): number[] { return []; }",
+      twoSum,
+      tests,
+    );
+    expect(src.startsWith("// @ts-nocheck")).toBe(true);
+    expect(src).toContain('typeof twoSum === "function"');
+    expect(src).toContain('\'{"pass":true}\'');
+  });
+});
+
 describe("java harness", () => {
   it("generates typed literals for each test", () => {
     const src = buildJavaHarness(
@@ -62,6 +78,65 @@ describe("java harness", () => {
   it("renders 2D arrays and empty arrays", () => {
     expect(javaLiteral([[1, 2], []], "int[][]")).toBe("new int[][]{{1,2},{}}");
     expect(javaLiteral([], "int[]")).toBe("new int[]{}");
+  });
+});
+
+describe("csharp harness", () => {
+  it("calls the PascalCase method with typed literals", () => {
+    const src = buildCSharpHarness(
+      "public class Solution { public int[] TwoSum(int[] nums, int target) { return null; } }",
+      twoSum,
+      tests,
+    );
+    expect(src).toContain(
+      "RunTest(0, new int[]{0,1}, true, () => (object)sol.TwoSum(new int[]{2,7,11,15}, 9));",
+    );
+    expect(src).toContain("public class __Judge");
+    expect(src).toContain('"{\\"pass\\":true}"');
+  });
+
+  it("converts names and renders jagged arrays", () => {
+    expect(pascalCase("twoSum")).toBe("TwoSum");
+    expect(csharpLiteral([[1, 2], []], "int[][]")).toBe(
+      "new int[][]{new int[]{1,2},new int[]{}}",
+    );
+    expect(csharpLiteral(['a"b'], "string[]")).toBe('new string[]{"a\\"b"}');
+  });
+});
+
+describe("cpp harness", () => {
+  it("declares vector parameters as lvalues and compares canonical JSON", () => {
+    const src = buildCppHarness(
+      "class Solution { public: vector<int> twoSum(vector<int>& nums, int target) { return {}; } };",
+      twoSum,
+      tests,
+    );
+    expect(src).toContain("vector<int> __p0{2,7,11,15};");
+    expect(src).toContain("int __p1 = 9;");
+    expect(src).toContain("auto __got = sol.twoSum(__p0, __p1);");
+    expect(src).toContain('__finish(0, __repr(__got), "[0,1]");');
+    expect(src).toContain("using namespace std;");
+  });
+
+  it("renders literals and escapes strings", () => {
+    expect(cppLiteral([[1, 2], []], "int[][]")).toBe("{{1,2},{}}");
+    expect(cppLiteral(["a", "b"], "string[]")).toBe('{"a","b"}');
+    expect(escapeCppString('a"b\\c')).toBe('a\\"b\\\\c');
+  });
+
+  it("sorts both sides for unordered comparisons", () => {
+    const src = buildCppHarness(
+      "class Solution { public: vector<int> f(vector<int>& a) { return {}; } };",
+      {
+        name: "f",
+        params: [{ name: "a", type: "int[]" }],
+        returns: "int[]",
+        ordered: false,
+      },
+      [{ input: [[3, 1, 2]], expected: [3, 1, 2] }],
+    );
+    expect(src).toContain("sort(__got.begin(), __got.end());");
+    expect(src).toContain('__finish(0, __repr(__got), "[1,2,3]");');
   });
 });
 

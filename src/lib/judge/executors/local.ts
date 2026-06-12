@@ -32,6 +32,9 @@ const INSTALL_HINTS: Record<string, string> = {
   javac: "Install a JDK, e.g. `brew install --cask temurin`.",
   java: "Install a JDK, e.g. `brew install --cask temurin`.",
   cc: "Install the Xcode Command Line Tools: `xcode-select --install` (macOS) or gcc/clang via your package manager.",
+  "c++": "Install the Xcode Command Line Tools: `xcode-select --install` (macOS) or g++/clang++ via your package manager.",
+  mcs: "Install Mono, e.g. `brew install mono` (provides mcs and the mono runtime).",
+  mono: "Install Mono, e.g. `brew install mono` (provides mcs and the mono runtime).",
 };
 
 interface CommandPlan {
@@ -45,14 +48,31 @@ function planFor(language: LanguageId, dir: string): CommandPlan {
       return { run: { cmd: "python3", args: ["main.py"] } };
     case "javascript":
       return { run: { cmd: "node", args: ["main.js"] } };
+    case "typescript":
+      // Node 23.6+ runs .ts directly via type stripping (no type checking,
+      // matching the @ts-nocheck transpile-only behavior on Piston).
+      return { run: { cmd: "node", args: ["main.ts"] } };
     case "java":
       return {
         compile: { cmd: "javac", args: ["Main.java"] },
         run: { cmd: "java", args: ["-cp", ".", "Main"] },
       };
+    case "csharp":
+      return {
+        compile: { cmd: "mcs", args: ["-out:main.exe", "Main.cs"] },
+        run: { cmd: "mono", args: ["main.exe"] },
+      };
     case "c":
       return {
         compile: { cmd: "cc", args: ["main.c", "-O1", "-o", "main"] },
+        run: { cmd: path.join(dir, "main"), args: [] },
+      };
+    case "cpp":
+      return {
+        compile: {
+          cmd: "c++",
+          args: ["main.cpp", "-std=c++17", "-O1", "-o", "main"],
+        },
         run: { cmd: path.join(dir, "main"), args: [] },
       };
   }

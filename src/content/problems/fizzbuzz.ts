@@ -33,37 +33,122 @@ Output: ["1","2","Fizz","4","Buzz"]
 - \`1 <= n <= 10000\`
 `,
   hints: [
-    "Check divisibility with the modulo operator: `i % 3 == 0`.",
-    "Test for divisibility by both 3 and 5 *before* testing each individually — otherwise `15` matches `\"Fizz\"` first.",
-    "A number divisible by both 3 and 5 is divisible by 15.",
+    `Check divisibility with the modulo operator: \`i % 3 == 0\`.`,
+    `Test for divisibility by both 3 and 5 *before* testing each individually — otherwise \`15\` matches \`"Fizz"\` first.`,
+    `A number divisible by both 3 and 5 is divisible by 15.`,
   ],
   signature: {
-    name: "fizzBuzz",
-    params: [{ name: "n", type: "int" }],
-    returns: "string[]",
+    "name": "fizzBuzz",
+    "params": [
+      {
+        "name": "n",
+        "type": "int"
+      }
+    ],
+    "returns": "string[]"
   },
   testCases: [
-    { input: [3], expected: ["1", "2", "Fizz"] },
-    { input: [5], expected: ["1", "2", "Fizz", "4", "Buzz"] },
     {
-      input: [15],
-      expected: [
-        "1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz",
-        "11", "Fizz", "13", "14", "FizzBuzz",
+      "input": [
+        3
       ],
+      "expected": [
+        "1",
+        "2",
+        "Fizz"
+      ]
     },
-    { input: [1], expected: ["1"], hidden: true },
-    { input: [2], expected: ["1", "2"], hidden: true },
     {
-      input: [30],
-      expected: [
-        "1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz",
-        "11", "Fizz", "13", "14", "FizzBuzz", "16", "17", "Fizz", "19",
-        "Buzz", "Fizz", "22", "23", "Fizz", "Buzz", "26", "Fizz", "28",
-        "29", "FizzBuzz",
+      "input": [
+        5
       ],
-      hidden: true,
+      "expected": [
+        "1",
+        "2",
+        "Fizz",
+        "4",
+        "Buzz"
+      ]
     },
+    {
+      "input": [
+        15
+      ],
+      "expected": [
+        "1",
+        "2",
+        "Fizz",
+        "4",
+        "Buzz",
+        "Fizz",
+        "7",
+        "8",
+        "Fizz",
+        "Buzz",
+        "11",
+        "Fizz",
+        "13",
+        "14",
+        "FizzBuzz"
+      ]
+    },
+    {
+      "input": [
+        1
+      ],
+      "expected": [
+        "1"
+      ],
+      "hidden": true
+    },
+    {
+      "input": [
+        2
+      ],
+      "expected": [
+        "1",
+        "2"
+      ],
+      "hidden": true
+    },
+    {
+      "input": [
+        30
+      ],
+      "expected": [
+        "1",
+        "2",
+        "Fizz",
+        "4",
+        "Buzz",
+        "Fizz",
+        "7",
+        "8",
+        "Fizz",
+        "Buzz",
+        "11",
+        "Fizz",
+        "13",
+        "14",
+        "FizzBuzz",
+        "16",
+        "17",
+        "Fizz",
+        "19",
+        "Buzz",
+        "Fizz",
+        "22",
+        "23",
+        "Fizz",
+        "Buzz",
+        "26",
+        "Fizz",
+        "28",
+        "29",
+        "FizzBuzz"
+      ],
+      "hidden": true
+    }
   ],
   starterCode: {
     python: `def fizz_buzz(n):
@@ -79,6 +164,14 @@ function fizzBuzz(n) {
   // Your code here
 }
 `,
+    typescript: `/**
+ * @param {number} n
+ * @return {string[]}
+ */
+function fizzBuzz(n: number): string[] {
+  // Your code here
+  return [];
+}`,
     java: `class Solution {
     public String[] fizzBuzz(int n) {
         // Your code here
@@ -86,6 +179,12 @@ function fizzBuzz(n) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public string[] FizzBuzz(int n) {
+        // Your code here
+        return new string[]{};
+    }
+}`,
     c: `/**
  * Return a heap-allocated array of heap-allocated strings.
  * Set *returnSize to the length of the returned array.
@@ -96,6 +195,13 @@ char** fizzBuzz(int n, int* returnSize) {
     return NULL;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<string> fizzBuzz(int n) {
+        // Your code here
+        return {};
+    }
+};`,
   },
   solutions: {
     python: `def fizz_buzz(n):
@@ -122,6 +228,16 @@ char** fizzBuzz(int n, int* returnSize) {
   return out;
 }
 `,
+    typescript: `function fizzBuzz(n: number): string[] {
+  const out: string[] = [];
+  for (let i = 1; i <= n; i++) {
+    if (i % 15 === 0) out.push("FizzBuzz");
+    else if (i % 3 === 0) out.push("Fizz");
+    else if (i % 5 === 0) out.push("Buzz");
+    else out.push(String(i));
+  }
+  return out;
+}`,
     java: `class Solution {
     public String[] fizzBuzz(int n) {
         String[] out = new String[n];
@@ -135,6 +251,18 @@ char** fizzBuzz(int n, int* returnSize) {
     }
 }
 `,
+    csharp: `public class Solution {
+    public string[] FizzBuzz(int n) {
+        string[] out_ = new string[n];
+        for (int i = 1; i <= n; i++) {
+            if (i % 15 == 0) out_[i - 1] = "FizzBuzz";
+            else if (i % 3 == 0) out_[i - 1] = "Fizz";
+            else if (i % 5 == 0) out_[i - 1] = "Buzz";
+            else out_[i - 1] = i.ToString();
+        }
+        return out_;
+    }
+}`,
     c: `char** fizzBuzz(int n, int* returnSize) {
     char** out = malloc(n * sizeof(char*));
     for (int i = 1; i <= n; i++) {
@@ -149,6 +277,19 @@ char** fizzBuzz(int n, int* returnSize) {
     return out;
 }
 `,
+    cpp: `class Solution {
+public:
+    vector<string> fizzBuzz(int n) {
+        vector<string> out;
+        for (int i = 1; i <= n; i++) {
+            if (i % 15 == 0) out.push_back("FizzBuzz");
+            else if (i % 3 == 0) out.push_back("Fizz");
+            else if (i % 5 == 0) out.push_back("Buzz");
+            else out.push_back(to_string(i));
+        }
+        return out;
+    }
+};`,
   },
   editorial: `## Approach
 

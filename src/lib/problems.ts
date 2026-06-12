@@ -34,7 +34,7 @@ export interface ProblemDetail {
   signature?: FunctionSignature;
   visibleTests?: TestCase[];
   hiddenTestCount?: number;
-  starterCode?: Record<LanguageId, string>;
+  starterCode?: Partial<Record<LanguageId, string>>;
 }
 
 interface SubmissionLite {
@@ -115,9 +115,8 @@ export async function getProblemDetail(
     detail.signature = JSON.parse(p.signature) as FunctionSignature;
     detail.visibleTests = allTests.filter((t) => !t.hidden);
     detail.hiddenTestCount = allTests.filter((t) => t.hidden).length;
-    detail.starterCode = JSON.parse(p.starterCode) as Record<
-      LanguageId,
-      string
+    detail.starterCode = JSON.parse(p.starterCode) as Partial<
+      Record<LanguageId, string>
     >;
   }
 
