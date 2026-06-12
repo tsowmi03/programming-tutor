@@ -60,7 +60,6 @@ def __judge_main():
         return
     for i, t in enumerate(tests):
         print("@@JUDGE:BEGIN:%d@@" % i, flush=True)
-        expected_json = __judge_safe_json(t["expected"])
         try:
             got = __judge_norm(fn(*__copy.deepcopy(t["input"])))
             exp = __judge_norm(t["expected"])
@@ -71,19 +70,16 @@ def __judge_main():
                 except TypeError:
                     pass
             ok = got_c == exp_c
-            payload = '{"pass":%s,"got":%s,"expected":%s}' % (
-                "true" if ok else "false",
-                __judge_safe_json(got),
-                expected_json,
+            payload = (
+                '{"pass":true}'
+                if ok
+                else '{"pass":false,"got":%s}' % __judge_safe_json(got)
             )
         except BaseException:
             lines = __tb.format_exc().strip().splitlines()
             user_lines = [l for l in lines if "__judge" not in l]
             msg = "\\n".join(user_lines[-4:])[:800]
-            payload = '{"pass":false,"error":%s,"expected":%s}' % (
-                __json.dumps(msg),
-                expected_json,
-            )
+            payload = '{"pass":false,"error":%s}' % __json.dumps(msg)
         print("@@JUDGE:RESULT:%d:%s@@" % (i, payload), flush=True)
 
 

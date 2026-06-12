@@ -5,17 +5,18 @@
  */
 
 import { LANGUAGES, type LanguageId } from "./languages";
-import { execute } from "./executors";
+import { execute, type ExecStage } from "./executors";
 import { parseJudgeOutput } from "./parse";
 import { buildPythonHarness } from "./harness/python";
 import { buildJavaScriptHarness } from "./harness/javascript";
 import { buildJavaHarness } from "./harness/java";
 import { buildCHarness } from "./harness/c";
-import type {
-  FunctionSignature,
-  JudgeOutcome,
-  TestCase,
-  TestResult,
+import {
+  canonical,
+  type FunctionSignature,
+  type JudgeOutcome,
+  type TestCase,
+  type TestResult,
 } from "./types";
 
 export function buildHarness(
@@ -66,12 +67,8 @@ export async function judgeCode(params: {
 
   const { results, fatal } = parseJudgeOutput(response.run.stdout, tests.length);
 
-  // Mark hidden tests so the UI can redact their data.
-  for (const result of results) {
-    if (tests[result.index]?.hidden) result.hidden = true;
-  }
-
   if (fatal) {
+    decorateResults(results, tests);
     return {
       status: "error",
       results,
@@ -82,6 +79,7 @@ export async function judgeCode(params: {
   }
 
   annotateCrash(results, response.run);
+  decorateResults(results, tests);
 
   const passedCount = results.filter((r) => r.status === "pass").length;
   const hasError = results.some(
@@ -101,22 +99,62 @@ export async function judgeCode(params: {
   };
 }
 
-/** Attach a more specific message when the whole process was killed. */
+/** Attach a specific message when the executor stopped the whole process. */
 function annotateCrash(
   results: TestResult[],
-  run: { signal: string | null; stderr: string },
+  run: ExecStage,
 ) {
-  const crashed = results.find((r) => r.status === "error" && !r.got);
+  const crashed =
+    results.find((r) => r.status === "error" && !r.got) ??
+    results.find((r) => r.status === "not_run");
   if (!crashed) return;
 
-  if (run.signal === "SIGKILL") {
+  crashed.status = "error";
+
+  if (run.status === "TO") {
     crashed.error =
-      "Time or memory limit exceeded — the program was killed. Check for infinite loops or excessive memory use.";
+      "Time limit exceeded — the program did not finish within the allowed time.";
+  } else if (run.status === "OL") {
+    crashed.error =
+      "Output limit exceeded — the program produced more standard output than the judge allows.";
+  } else if (run.status === "EL") {
+    crashed.error =
+      "Error output limit exceeded — the program produced more diagnostic output than the judge allows.";
+  } else if (run.status === "XX") {
+    crashed.error =
+      "The code execution sandbox encountered an internal error. Please try again.";
+  } else if (run.signal === "SIGKILL") {
+    crashed.error =
+      "The program was killed by the sandbox, possibly after exceeding a resource limit.";
   } else if (run.signal === "SIGSEGV") {
     crashed.error =
       "Segmentation fault — the program accessed invalid memory during this test.";
+  } else if (run.message && crashed.error?.startsWith("The program stopped")) {
+    crashed.error = trimOutput(run.message);
   } else if (run.stderr && crashed.error?.startsWith("The program stopped")) {
     crashed.error += `\n${trimOutput(run.stderr)}`;
+  }
+}
+
+function decorateResults(results: TestResult[], tests: TestCase[]) {
+  for (const result of results) {
+    const test = tests[result.index];
+    if (!test) continue;
+
+    if (test.hidden) {
+      result.hidden = true;
+      delete result.expected;
+      delete result.got;
+      delete result.stdout;
+      continue;
+    }
+
+    if (result.status !== "not_run") {
+      result.expected = canonical(test.expected);
+      if (result.status === "pass" && result.got === undefined) {
+        result.got = result.expected;
+      }
+    }
   }
 }
 

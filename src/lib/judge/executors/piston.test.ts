@@ -24,6 +24,11 @@ describe("executeOnPiston", () => {
             output: "ok\n",
             code: 0,
             signal: null,
+            message: null,
+            status: null,
+            cpu_time: 12,
+            wall_time: 18,
+            memory: 4_500_000,
           },
         }),
         {
@@ -34,7 +39,7 @@ describe("executeOnPiston", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
 
-    await executeOnPiston({
+    const result = await executeOnPiston({
       language: "python",
       files: [{ name: "main.py", content: "print('ok')" }],
     });
@@ -48,5 +53,12 @@ describe("executeOnPiston", () => {
         },
       }),
     );
+    expect(result.run).toMatchObject({
+      status: null,
+      message: null,
+      cpu_time: 12,
+      wall_time: 18,
+      memory: 4_500_000,
+    });
   });
 });

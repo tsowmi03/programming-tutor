@@ -51,6 +51,7 @@ cd deploy/piston
 cp .env.example .env
 # Set PISTON_HOST and generate PISTON_AUTH_TOKEN with:
 # openssl rand -hex 32
+# Keep PISTON_OUTPUT_MAX_SIZE=1048576 from .env.example.
 docker compose up -d
 
 # install the four runtimes (matching versions in src/lib/judge/languages.ts)

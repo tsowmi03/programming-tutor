@@ -5,9 +5,9 @@ describe("parseJudgeOutput", () => {
   it("parses passing and failing results", () => {
     const stdout = [
       "@@JUDGE:BEGIN:0@@",
-      '@@JUDGE:RESULT:0:{"pass":true,"got":[0,1],"expected":[0,1]}@@',
+      '@@JUDGE:RESULT:0:{"pass":true}@@',
       "@@JUDGE:BEGIN:1@@",
-      '@@JUDGE:RESULT:1:{"pass":false,"got":5,"expected":7}@@',
+      '@@JUDGE:RESULT:1:{"pass":false,"got":5}@@',
     ].join("\n");
 
     const { results, fatal } = parseJudgeOutput(stdout, 2);
@@ -15,8 +15,6 @@ describe("parseJudgeOutput", () => {
     expect(results[0]).toMatchObject({
       index: 0,
       status: "pass",
-      got: "[0,1]",
-      expected: "[0,1]",
     });
     expect(results[1]).toMatchObject({ index: 1, status: "fail", got: "5" });
   });
@@ -26,7 +24,7 @@ describe("parseJudgeOutput", () => {
       "@@JUDGE:BEGIN:0@@",
       "debugging value: 42",
       "another line",
-      '@@JUDGE:RESULT:0:{"pass":true,"got":1,"expected":1}@@',
+      '@@JUDGE:RESULT:0:{"pass":true}@@',
     ].join("\n");
 
     const { results } = parseJudgeOutput(stdout, 1);
@@ -36,7 +34,7 @@ describe("parseJudgeOutput", () => {
   it("marks a crashed test as error and the rest as not run", () => {
     const stdout = [
       "@@JUDGE:BEGIN:0@@",
-      '@@JUDGE:RESULT:0:{"pass":true,"got":1,"expected":1}@@',
+      '@@JUDGE:RESULT:0:{"pass":true}@@',
       "@@JUDGE:BEGIN:1@@",
       "partial output then segfault",
     ].join("\n");
@@ -50,7 +48,7 @@ describe("parseJudgeOutput", () => {
   it("reports runtime errors with their message", () => {
     const stdout = [
       "@@JUDGE:BEGIN:0@@",
-      '@@JUDGE:RESULT:0:{"pass":false,"error":"IndexError: list index out of range","expected":[1]}@@',
+      '@@JUDGE:RESULT:0:{"pass":false,"error":"IndexError: list index out of range"}@@',
     ].join("\n");
 
     const { results } = parseJudgeOutput(stdout, 1);
@@ -69,7 +67,7 @@ describe("parseJudgeOutput", () => {
   it("handles results even when user prints without trailing newline", () => {
     const stdout = [
       "@@JUDGE:BEGIN:0@@",
-      'no newline@@JUDGE:RESULT:0:{"pass":true,"got":1,"expected":1}@@',
+      'no newline@@JUDGE:RESULT:0:{"pass":true}@@',
     ].join("\n");
 
     const { results } = parseJudgeOutput(stdout, 1);

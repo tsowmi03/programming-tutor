@@ -5,6 +5,8 @@ services:
     container_name: piston_api
     restart: unless-stopped
     privileged: true
+    environment:
+      PISTON_OUTPUT_MAX_SIZE: "${PISTON_OUTPUT_MAX_SIZE:-1048576}"
     ports:
       - "127.0.0.1:2000:2000"
     volumes:

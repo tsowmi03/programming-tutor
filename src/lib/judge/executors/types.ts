@@ -12,12 +12,19 @@ export interface ExecRequest {
   files: ExecFile[];
 }
 
+export type ExecStatus = "RE" | "SG" | "TO" | "OL" | "EL" | "XX";
+
 export interface ExecStage {
   stdout: string;
   stderr: string;
   output: string;
   code: number | null;
   signal: string | null;
+  message?: string | null;
+  status?: ExecStatus | null;
+  cpu_time?: number | null;
+  wall_time?: number | null;
+  memory?: number | null;
 }
 
 export interface ExecResult {

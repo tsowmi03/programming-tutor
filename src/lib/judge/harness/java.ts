@@ -164,11 +164,11 @@ public class Main {
             Object got = thunk.run();
             boolean ok = Objects.deepEquals(
                 normalize(got, ordered), normalize(expected, ordered));
-            payload = "{\\"pass\\":" + ok + ",\\"got\\":" + repr(got)
-                + ",\\"expected\\":" + repr(expected) + "}";
+            payload = ok
+                ? "{\\"pass\\":true}"
+                : "{\\"pass\\":false,\\"got\\":" + repr(got) + "}";
         } catch (Throwable e) {
-            payload = "{\\"pass\\":false,\\"error\\":" + jsonStr(String.valueOf(e))
-                + ",\\"expected\\":" + repr(expected) + "}";
+            payload = "{\\"pass\\":false,\\"error\\":" + jsonStr(String.valueOf(e)) + "}";
         }
         System.out.println("@@JUDGE:RESULT:" + i + ":" + payload + "@@");
         System.out.flush();

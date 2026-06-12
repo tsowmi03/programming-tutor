@@ -284,8 +284,11 @@ __UNUSED static int __cmp_int(const void* x, const void* y) {
 static void __emit(int i, const char* expected) {
     __buf[__bp < sizeof __buf ? __bp : sizeof __buf - 1] = 0;
     int pass = strcmp(__buf, expected) == 0;
-    printf("@@JUDGE:RESULT:%d:{\\"pass\\":%s,\\"got\\":%s,\\"expected\\":%s}@@\\n",
-        i, pass ? "true" : "false", __buf, expected);
+    if (pass) {
+        printf("@@JUDGE:RESULT:%d:{\\"pass\\":true}@@\\n", i);
+    } else {
+        printf("@@JUDGE:RESULT:%d:{\\"pass\\":false,\\"got\\":%s}@@\\n", i, __buf);
+    }
     fflush(stdout);
 }
 
