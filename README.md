@@ -85,8 +85,13 @@ scripts/           judge smoke test + full solution verification
 | `npm run db:seed` | (re)seed problems — idempotent, keeps submissions |
 | `npx tsx scripts/verify-solutions.ts` | run every reference solution through the judge |
 | `npx tsx scripts/smoke-judge.ts` | quick judge sanity check incl. error paths |
+| `npm run problems:batch` | generate problems in bulk from `scripts/topics.json` |
+| `npm run problems:generate -- --category … --difficulty … --topic …` | generate one problem |
+| `npm run problems:index` | rebuild the generated-problems index |
 
 ## Adding a problem
+
+### By hand
 
 1. Create `src/content/problems/<slug>.ts` exporting a `CodeProblemDef` or
    `ExplanationProblemDef` (copy a neighbour as a template).
@@ -97,6 +102,32 @@ scripts/           judge smoke test + full solution verification
 Supported signature types: `int`, `bool`, `string`, `int[]`, `string[]`,
 `int[][]` (C supports all but `int[][]` as a *return* type). Set
 `ordered: false` on a signature to accept array answers in any order.
+
+### In bulk (AI-generated)
+
+Problems can be authored by Claude and **machine-verified** before they're kept
+— every generated code problem has its four reference solutions run through the
+real judge, and only problems that pass land in the seeded set. Generated
+problems live in `src/content/generated/` (separate from the curated set) and
+are wired into `ALL_PROBLEMS` automatically.
+
+1. Set `ANTHROPIC_API_KEY` in your environment (see `.env.example`).
+2. Edit `scripts/topics.json` — a list of `{ category, difficulty, topic }`
+   entries (optionally `type: "explanation"`). This is the lever for scale:
+   add as many topics as you want.
+3. `npm run problems:batch` — generates each topic, verifies it, retries once
+   with the failing test output if a solution doesn't pass, and rebuilds the
+   index. By default it uses **Sonnet 4.6 for easy/medium and Opus 4.8 for
+   hard** (Sonnet is ~5x cheaper and handles easy/medium well). Useful flags:
+   `--category`, `--difficulty`, `--limit N`, `--concurrency N`, `--force`
+   (regenerate existing), `--model <id>` (force one model for every problem).
+   Re-running is idempotent — existing slugs are skipped.
+4. `npm run db:seed` to load them into the database.
+
+Problems that fail verification after the retry are written to
+`src/content/generated/_review/` (not seeded) for you to inspect or discard.
+One-offs: `npm run problems:generate -- --category arrays-hashing
+--difficulty easy --topic "prefix sums"`.
 
 ## Hosting
 

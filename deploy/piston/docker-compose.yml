@@ -1,0 +1,35 @@
+services:
+  piston:
+    image: ghcr.io/engineer-man/piston
+    platform: linux/amd64
+    container_name: piston_api
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "127.0.0.1:2000:2000"
+    volumes:
+      - piston_packages:/piston/packages
+    tmpfs:
+      - /tmp:exec
+
+  caddy:
+    image: caddy:2
+    container_name: piston_caddy
+    restart: unless-stopped
+    depends_on:
+      - piston
+    environment:
+      PISTON_AUTH_TOKEN: ${PISTON_AUTH_TOKEN:?Set PISTON_AUTH_TOKEN in .env}
+      PISTON_HOST: ${PISTON_HOST:?Set PISTON_HOST in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  piston_packages:
+  caddy_data:
+  caddy_config:
