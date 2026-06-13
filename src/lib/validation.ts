@@ -50,5 +50,19 @@ export const selfAssessSchema = z.object({
   selfScore: z.number().int().min(0).max(2),
 });
 
+/** Judging a course exercise (run = sample tests; submit = all tests). */
+export const courseExerciseRunSchema = z.object({
+  courseSlug: z.string().min(1),
+  lessonSlug: z.string().min(1),
+  exerciseId: z.string().min(1),
+  code: z.string().min(1, "Code cannot be empty").max(100_000),
+});
+
+export const lessonProgressSchema = z.object({
+  courseSlug: z.string().min(1),
+  lessonSlug: z.string().min(1),
+  completed: z.boolean(),
+});
+
 export type RunRequest = z.infer<typeof runRequestSchema>;
 export type SubmissionRequest = z.infer<typeof submissionSchema>;

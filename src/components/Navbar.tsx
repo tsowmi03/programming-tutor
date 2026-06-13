@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { logout } from "@/lib/auth-actions";
 
 const links = [
+  { href: "/courses", label: "Courses" },
   { href: "/problems", label: "Problems" },
   { href: "/progress", label: "Progress" },
 ];

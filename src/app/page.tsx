@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowRight, Flame, Sparkles } from "lucide-react";
+import { ArrowRight, Flame, GraduationCap, Sparkles } from "lucide-react";
 import { listProblems } from "@/lib/problems";
+import { listCourses } from "@/lib/courses";
 import { requireUserPage } from "@/lib/auth";
 import { CATEGORY_LIST } from "@/content/categories";
 import { DifficultyBadge, StatusIcon } from "@/components/badges";
@@ -10,6 +11,7 @@ export const dynamic = "force-dynamic";
 export default async function DashboardPage() {
   const user = await requireUserPage();
   const problems = await listProblems(user.id);
+  const courses = await listCourses(user.id);
   const solved = problems.filter((p) => p.status === "solved").length;
   const attempted = problems.filter((p) => p.status === "attempted").length;
   const total = problems.length;
@@ -101,6 +103,59 @@ export default async function DashboardPage() {
           </div>
         </div>
       </section>
+
+      {/* Courses */}
+      {courses.length > 0 && (
+        <section className="mt-10">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+              <GraduationCap className="h-5 w-5 text-indigo-300" />
+              Learn a language
+            </h2>
+            <Link
+              href="/courses"
+              className="text-sm text-indigo-300 transition hover:text-indigo-200"
+            >
+              All courses →
+            </Link>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {courses.map((course) => {
+              const pct =
+                course.lessonCount === 0
+                  ? 0
+                  : Math.round(
+                      (course.completedCount / course.lessonCount) * 100,
+                    );
+              return (
+                <Link
+                  key={course.slug}
+                  href={`/courses/${course.slug}`}
+                  className="group rounded-xl border border-edge bg-surface p-5 transition hover:border-indigo-500/40 hover:bg-surface-raised"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-medium">{course.title}</h3>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-muted transition group-hover:translate-x-0.5 group-hover:text-indigo-300" />
+                  </div>
+                  <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-muted">
+                    {course.tagline}
+                  </p>
+                  <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-zinc-800">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-emerald-400 transition-all"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <p className="mt-1.5 text-[11px] text-muted">
+                    {course.completedCount}/{course.lessonCount} lessons ·{" "}
+                    {course.exerciseCount} exercises
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Categories */}
       <section className="mt-10">
