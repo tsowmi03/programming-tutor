@@ -25,8 +25,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sessions    Session[]
-  submissions Submission[]
+  sessions       Session[]
+  submissions    Submission[]
+  lessonProgress LessonProgress[]
 }
 
 model Session {
@@ -95,4 +96,24 @@ model Submission {
 
   @@index([problemId, createdAt])
   @@index([userId, problemId, createdAt])
+}
+
+/**
+ * Per-user completion of a course lesson. Course content itself lives in
+ * src/content/courses (in-memory, like problems); only progress is persisted.
+ * A row exists once a lesson is completed — its absence means "not done".
+ */
+model LessonProgress {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  courseSlug String
+  lessonSlug String // unique within a course
+
+  completedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, courseSlug, lessonSlug])
+  @@index([userId, courseSlug])
 }
