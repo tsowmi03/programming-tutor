@@ -3,10 +3,17 @@
 import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Search } from "lucide-react";
+import { ListRestart, Search, Shuffle } from "lucide-react";
 import { CATEGORY_LIST, CATEGORIES } from "@/content/categories";
 import type { ProblemSummary } from "@/lib/problems";
 import { DifficultyBadge, StatusIcon, TypeBadge } from "@/components/badges";
+import {
+  buildProblemHref,
+  buildProblemSequenceQuery,
+  getProblemSequence,
+  parseProblemSequenceParams,
+  type ProblemSequenceParams,
+} from "@/lib/problem-navigation";
 
 const DIFFICULTIES = ["easy", "medium", "hard"] as const;
 const TYPES = [
@@ -25,40 +32,55 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
   const pathname = usePathname();
 
   const [category, setCategory] = useState(searchParams.get("category") ?? "");
-  const [difficulty, setDifficulty] = useState("");
-  const [type, setType] = useState("");
-  const [status, setStatus] = useState("");
-  const [query, setQuery] = useState("");
+  const [difficulty, setDifficulty] = useState(
+    searchParams.get("difficulty") ?? "",
+  );
+  const [type, setType] = useState(searchParams.get("type") ?? "");
+  const [status, setStatus] = useState(searchParams.get("status") ?? "");
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const [shuffleSeed, setShuffleSeed] = useState(
+    searchParams.get("shuffle") ?? "",
+  );
 
-  // Keep the category filter shareable via the URL.
+  const sequenceParams = useMemo<ProblemSequenceParams>(
+    () =>
+      parseProblemSequenceParams({
+        category,
+        difficulty,
+        type,
+        status,
+        q: query,
+        shuffle: shuffleSeed,
+      }),
+    [category, difficulty, query, shuffleSeed, status, type],
+  );
+
+  // Keep the full exercise sequence shareable so workspace navigation can
+  // continue through the same filtered or shuffled queue.
   useEffect(() => {
-    const params = new URLSearchParams();
-    if (category) params.set("category", category);
-    router.replace(`${pathname}${params.size ? `?${params}` : ""}`, {
+    const params = buildProblemSequenceQuery(sequenceParams);
+    router.replace(`${pathname}${params ? `?${params}` : ""}`, {
       scroll: false,
     });
-  }, [category, pathname, router]);
+  }, [pathname, router, sequenceParams]);
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return problems.filter(
-      (p) =>
-        (!category || p.category === category) &&
-        (!difficulty || p.difficulty === difficulty) &&
-        (!type || p.type === type) &&
-        (!status || p.status === status) &&
-        (!q || p.title.toLowerCase().includes(q)),
-    );
-  }, [problems, category, difficulty, type, status, query]);
+  const ordered = useMemo(
+    () => getProblemSequence(problems, sequenceParams),
+    [problems, sequenceParams],
+  );
 
   const grouped = useMemo(() => {
     return CATEGORY_LIST.map((cat) => ({
       category: cat,
-      problems: filtered
-        .filter((p) => p.category === cat.id)
-        .sort((a, b) => a.order - b.order),
+      problems: ordered.filter((p) => p.category === cat.id),
     })).filter((g) => g.problems.length > 0);
-  }, [filtered]);
+  }, [ordered]);
+
+  const startShuffle = () => {
+    setShuffleSeed(
+      `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
+    );
+  };
 
   const selectClass =
     "rounded-lg border border-edge bg-surface px-3 py-2 text-sm text-foreground outline-none transition focus:border-indigo-500/60";
@@ -128,13 +150,55 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
             </option>
           ))}
         </select>
+        <div className="ml-auto flex items-center gap-2">
+          {shuffleSeed && (
+            <button
+              type="button"
+              onClick={() => setShuffleSeed("")}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-edge bg-surface px-3 py-2 text-sm text-muted transition hover:border-zinc-600 hover:text-foreground"
+            >
+              <ListRestart className="h-4 w-4" />
+              Standard order
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={startShuffle}
+            disabled={ordered.length < 2}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Shuffle className="h-4 w-4" />
+            {shuffleSeed ? "Reshuffle" : "Shuffle exercises"}
+          </button>
+        </div>
       </div>
 
-      {/* Grouped list */}
-      {grouped.length === 0 ? (
+      {/* Exercise list */}
+      {ordered.length === 0 ? (
         <p className="mt-16 text-center text-sm text-muted">
           Nothing matches those filters.
         </p>
+      ) : shuffleSeed ? (
+        <section className="mt-8">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-indigo-300">
+              Shuffled exercises
+            </h2>
+            <span className="text-xs text-muted">
+              {ordered.length} in this queue
+            </span>
+          </div>
+          <div className="overflow-hidden rounded-xl border border-indigo-500/30">
+            {ordered.map((problem, index) => (
+              <ProblemLink
+                key={problem.slug}
+                problem={problem}
+                href={buildProblemHref(problem.slug, sequenceParams)}
+                bordered={index > 0}
+              />
+            ))}
+          </div>
+        </section>
       ) : (
         <div className="mt-8 space-y-8">
           {grouped.map(({ category: cat, problems: ps }) => (
@@ -144,22 +208,12 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
               </h2>
               <div className="overflow-hidden rounded-xl border border-edge">
                 {ps.map((p, i) => (
-                  <Link
+                  <ProblemLink
                     key={p.slug}
-                    href={`/problems/${p.slug}`}
-                    className={`flex items-center justify-between gap-4 bg-surface px-4 py-3.5 transition hover:bg-surface-raised ${
-                      i > 0 ? "border-t border-edge" : ""
-                    }`}
-                  >
-                    <div className="flex min-w-0 items-center gap-3.5">
-                      <StatusIcon status={p.status} />
-                      <span className="truncate font-medium">{p.title}</span>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-4">
-                      <TypeBadge type={p.type} />
-                      <DifficultyBadge difficulty={p.difficulty} />
-                    </div>
-                  </Link>
+                    problem={p}
+                    href={buildProblemHref(p.slug, sequenceParams)}
+                    bordered={i > 0}
+                  />
                 ))}
               </div>
             </section>
@@ -167,5 +221,33 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
         </div>
       )}
     </div>
+  );
+}
+
+function ProblemLink({
+  problem,
+  href,
+  bordered,
+}: {
+  problem: ProblemSummary;
+  href: string;
+  bordered: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`flex items-center justify-between gap-4 bg-surface px-4 py-3.5 transition hover:bg-surface-raised ${
+        bordered ? "border-t border-edge" : ""
+      }`}
+    >
+      <div className="flex min-w-0 items-center gap-3.5">
+        <StatusIcon status={problem.status} />
+        <span className="truncate font-medium">{problem.title}</span>
+      </div>
+      <div className="flex shrink-0 items-center gap-4">
+        <TypeBadge type={problem.type} />
+        <DifficultyBadge difficulty={problem.difficulty} />
+      </div>
+    </Link>
   );
 }

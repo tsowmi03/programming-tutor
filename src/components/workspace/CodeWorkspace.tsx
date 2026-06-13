@@ -7,14 +7,23 @@ import { Play, Send, RotateCcw, PartyPopper } from "lucide-react";
 import type { JudgeOutcome } from "@/lib/judge/types";
 import { LANGUAGES, LANGUAGE_IDS, type LanguageId } from "@/lib/judge/languages";
 import type { ProblemDetail, ProblemStatus } from "@/lib/problems";
-import { WorkspaceHeader } from "./WorkspaceHeader";
+import {
+  WorkspaceHeader,
+  type WorkspaceNavigation,
+} from "./WorkspaceHeader";
 import { TestPanel } from "./TestPanel";
 import { ProblemTabs } from "./ProblemTabs";
 import { celebrate, fetchJson, useStoredState } from "./shared";
 
 type Phase = "idle" | "running" | "submitting";
 
-export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
+export function CodeWorkspace({
+  problem,
+  navigation,
+}: {
+  problem: ProblemDetail;
+  navigation: WorkspaceNavigation;
+}) {
   const [status, setStatus] = useState<ProblemStatus>(problem.status);
   const [language, setLanguage, langLoaded] = useStoredState(
     `cc-lang-${problem.slug}`,
@@ -149,6 +158,7 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
         difficulty={problem.difficulty}
         category={problem.category}
         status={status}
+        {...navigation}
       />
 
       {justSolved && (

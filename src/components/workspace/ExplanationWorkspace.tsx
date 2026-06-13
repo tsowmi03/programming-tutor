@@ -5,7 +5,10 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { Send, Lightbulb, CheckCircle2, RefreshCw } from "lucide-react";
 import { MarkdownView } from "@/components/MarkdownView";
 import type { ProblemDetail, ProblemStatus } from "@/lib/problems";
-import { WorkspaceHeader } from "./WorkspaceHeader";
+import {
+  WorkspaceHeader,
+  type WorkspaceNavigation,
+} from "./WorkspaceHeader";
 import { celebrate, fetchJson, useStoredState } from "./shared";
 
 interface SubmitResponse {
@@ -20,7 +23,13 @@ const SCORES = [
   { value: 2, label: "Got it", classes: "border-emerald-500/40 hover:bg-emerald-500/10 text-emerald-300" },
 ];
 
-export function ExplanationWorkspace({ problem }: { problem: ProblemDetail }) {
+export function ExplanationWorkspace({
+  problem,
+  navigation,
+}: {
+  problem: ProblemDetail;
+  navigation: WorkspaceNavigation;
+}) {
   const [status, setStatus] = useState<ProblemStatus>(problem.status);
   const [answer, setAnswer, loaded] = useStoredState(
     `cc-answer-${problem.slug}`,
@@ -84,6 +93,7 @@ export function ExplanationWorkspace({ problem }: { problem: ProblemDetail }) {
         difficulty={problem.difficulty}
         category={problem.category}
         status={status}
+        {...navigation}
       />
 
       <PanelGroup direction="horizontal" className="min-h-0 flex-1">
