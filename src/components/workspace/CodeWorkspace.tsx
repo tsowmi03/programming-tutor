@@ -10,7 +10,12 @@ import type { ProblemDetail, ProblemStatus } from "@/lib/problems";
 import { WorkspaceHeader } from "./WorkspaceHeader";
 import { TestPanel } from "./TestPanel";
 import { ProblemTabs } from "./ProblemTabs";
-import { celebrate, fetchJson, useStoredState } from "./shared";
+import {
+  celebrate,
+  fetchJson,
+  useMediaQuery,
+  useStoredState,
+} from "./shared";
 
 type Phase = "idle" | "running" | "submitting";
 
@@ -43,6 +48,7 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
   const [justSolved, setJustSolved] = useState(false);
   const [submissionsVersion, setSubmissionsVersion] = useState(0);
   const busy = phase !== "idle";
+  const compact = useMediaQuery("(max-width: 767px)");
 
   const run = useCallback(async () => {
     if (busy) return;
@@ -126,6 +132,21 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
     }
   };
 
+  const restoreCode = useCallback(
+    (restored: string, restoredLang: LanguageId) => {
+      setLanguage(restoredLang);
+      if (restoredLang === lang) setCode(restored);
+      else {
+        // Defer setting code until the language (and storage key) flips.
+        window.localStorage.setItem(
+          `cc-code-${problem.slug}-${restoredLang}`,
+          restored,
+        );
+      }
+    },
+    [lang, problem.slug, setCode, setLanguage],
+  );
+
   const editorReady = langLoaded && codeLoaded;
   const monacoOptions = useMemo(
     () => ({
@@ -159,30 +180,38 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
         </div>
       )}
 
-      <PanelGroup direction="horizontal" className="min-h-0 flex-1">
-        <Panel defaultSize={42} minSize={25} className="min-w-0">
+      <PanelGroup
+        key={compact ? "compact" : "wide"}
+        direction={compact ? "vertical" : "horizontal"}
+        className="min-h-0 flex-1"
+      >
+        <Panel
+          defaultSize={compact ? 36 : 42}
+          minSize={compact ? 20 : 25}
+          className="min-w-0"
+        >
           <ProblemTabs
             problem={problem}
             status={status}
             language={lang}
             submissionsVersion={submissionsVersion}
-            onRestoreCode={(restored, restoredLang) => {
-              setLanguage(restoredLang);
-              if (restoredLang === lang) setCode(restored);
-              else {
-                // Defer setting code until the language (and storage key) flips.
-                window.localStorage.setItem(
-                  `cc-code-${problem.slug}-${restoredLang}`,
-                  restored,
-                );
-              }
-            }}
+            onRestoreCode={restoreCode}
           />
         </Panel>
 
-        <PanelResizeHandle className="w-1 bg-edge transition hover:bg-indigo-500/60" />
+        <PanelResizeHandle
+          className={
+            compact
+              ? "h-1.5 cursor-row-resize bg-edge transition hover:bg-indigo-500/60"
+              : "w-1 cursor-col-resize bg-edge transition hover:bg-indigo-500/60"
+          }
+        />
 
-        <Panel defaultSize={58} minSize={30} className="min-w-0">
+        <Panel
+          defaultSize={compact ? 64 : 58}
+          minSize={compact ? 40 : 30}
+          className="min-w-0"
+        >
           <PanelGroup direction="vertical">
             <Panel defaultSize={62} minSize={25} className="flex min-h-0 flex-col">
               {/* Editor toolbar */}
@@ -230,7 +259,7 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
               </div>
 
               <div className="min-h-0 flex-1">
-                {editorReady && (
+                {editorReady ? (
                   <Editor
                     language={LANGUAGES[lang].monaco}
                     value={code}
@@ -243,6 +272,10 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
                       </div>
                     }
                   />
+                ) : (
+                  <div className="flex h-full items-center justify-center bg-[#1e1e1e] text-sm text-muted">
+                    Loading editor…
+                  </div>
                 )}
               </div>
             </Panel>

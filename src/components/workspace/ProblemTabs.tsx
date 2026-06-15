@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
   BookOpen,
   Lightbulb,
@@ -34,7 +34,7 @@ export interface SubmissionRow {
   createdAt: string;
 }
 
-export function ProblemTabs({
+export const ProblemTabs = memo(function ProblemTabs({
   problem,
   status,
   language,
@@ -58,12 +58,12 @@ export function ProblemTabs({
 
   return (
     <div className="flex h-full flex-col bg-surface">
-      <div className="flex shrink-0 items-center gap-1 border-b border-edge px-2">
+      <div className="tab-scroll flex shrink-0 items-center gap-1 overflow-x-auto border-b border-edge px-2">
         {tabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`flex items-center gap-1.5 border-b-2 px-3 py-2.5 text-[13px] font-medium transition ${
+            className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-2.5 text-[13px] font-medium transition ${
               tab === t.id
                 ? "border-indigo-400 text-foreground"
                 : "border-transparent text-muted hover:text-foreground"
@@ -94,7 +94,7 @@ export function ProblemTabs({
       </div>
     </div>
   );
-}
+});
 
 function HintsTab({ hints }: { hints: string[] }) {
   const [revealed, setRevealed] = useState(0);

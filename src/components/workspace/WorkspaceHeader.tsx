@@ -17,20 +17,23 @@ export function WorkspaceHeader({
   status: ProblemStatus;
 }) {
   return (
-    <div className="flex h-12 shrink-0 items-center gap-3 border-b border-edge bg-surface px-4">
+    <div className="flex h-12 shrink-0 items-center gap-2 border-b border-edge bg-surface px-3 sm:gap-3 sm:px-4">
       <Link
         href="/problems"
-        className="flex items-center gap-1 text-sm text-muted transition hover:text-foreground"
+        aria-label="Back to problems"
+        className="flex shrink-0 items-center gap-1 text-sm text-muted transition hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
-        Problems
+        <span className="hidden sm:inline">Problems</span>
       </Link>
-      <span className="text-zinc-700">/</span>
+      <span className="hidden text-zinc-700 sm:inline">/</span>
       <div className="flex min-w-0 items-center gap-2.5">
-        <StatusIcon status={status} />
+        <span className="hidden sm:inline-flex">
+          <StatusIcon status={status} />
+        </span>
         <h1 className="truncate text-[15px] font-semibold">{title}</h1>
       </div>
-      <div className="ml-auto flex shrink-0 items-center gap-3">
+      <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
         <span className="hidden text-xs text-muted sm:block">
           {CATEGORIES[category]?.label}
         </span>

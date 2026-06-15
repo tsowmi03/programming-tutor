@@ -1,13 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import confetti from "canvas-confetti";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import type { JudgeValue, FunctionSignature } from "@/lib/judge/types";
 
 /** localStorage-backed state (drafts survive reloads). */
 export function useStoredState(key: string, initial: string) {
   const [value, setValue] = useState(initial);
-  const [loaded, setLoaded] = useState(false);
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  const loaded = loadedKey === key;
+  const latestRef = useRef({ key, value, loaded });
+  const previousRef = useRef({ key, value, loaded });
 
   useEffect(() => {
     // Hydrate from localStorage after mount (and when the key changes, e.g.
@@ -17,28 +25,91 @@ export function useStoredState(key: string, initial: string) {
     const saved = window.localStorage.getItem(key);
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue(saved ?? initial);
-    setLoaded(true);
+    setLoadedKey(key);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
   useEffect(() => {
-    if (loaded) window.localStorage.setItem(key, value);
+    const previous = previousRef.current;
+    if (previous.loaded && previous.key !== key) {
+      window.localStorage.setItem(previous.key, previous.value);
+    }
+    previousRef.current = { key, value, loaded };
+    latestRef.current = { key, value, loaded };
   }, [key, value, loaded]);
+
+  useEffect(() => {
+    if (!loaded) return;
+    const timeout = window.setTimeout(() => {
+      const latest = latestRef.current;
+      if (latest.loaded && latest.key === key) {
+        window.localStorage.setItem(key, latest.value);
+      }
+    }, 150);
+    return () => window.clearTimeout(timeout);
+  }, [key, value, loaded]);
+
+  useEffect(() => {
+    const flush = () => {
+      const latest = latestRef.current;
+      if (latest.loaded) {
+        window.localStorage.setItem(latest.key, latest.value);
+      }
+    };
+    window.addEventListener("pagehide", flush);
+    return () => {
+      flush();
+      window.removeEventListener("pagehide", flush);
+    };
+  }, []);
 
   return [value, setValue, loaded] as const;
 }
 
 export function celebrate() {
-  const opts = { spread: 70, ticks: 120, zIndex: 100, disableForReducedMotion: true };
-  confetti({ ...opts, particleCount: 90, origin: { x: 0.5, y: 0.7 } });
-  setTimeout(
-    () => confetti({ ...opts, particleCount: 50, origin: { x: 0.2, y: 0.8 } }),
-    180,
+  void import("canvas-confetti").then(({ default: confetti }) => {
+    const opts = {
+      spread: 70,
+      ticks: 120,
+      zIndex: 100,
+      disableForReducedMotion: true,
+    };
+    confetti({ ...opts, particleCount: 90, origin: { x: 0.5, y: 0.7 } });
+    setTimeout(
+      () =>
+        confetti({
+          ...opts,
+          particleCount: 50,
+          origin: { x: 0.2, y: 0.8 },
+        }),
+      180,
+    );
+    setTimeout(
+      () =>
+        confetti({
+          ...opts,
+          particleCount: 50,
+          origin: { x: 0.8, y: 0.8 },
+        }),
+      320,
+    );
+  });
+}
+
+export function useMediaQuery(query: string): boolean {
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const media = window.matchMedia(query);
+      media.addEventListener("change", onChange);
+      return () => media.removeEventListener("change", onChange);
+    },
+    [query],
   );
-  setTimeout(
-    () => confetti({ ...opts, particleCount: 50, origin: { x: 0.8, y: 0.8 } }),
-    320,
+  const getSnapshot = useCallback(
+    () => window.matchMedia(query).matches,
+    [query],
   );
+  return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }
 
 /** "nums = [2,7,11,15], target = 9" */

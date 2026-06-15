@@ -184,7 +184,7 @@ export function ExerciseWidget({
 
       {/* Editor */}
       <div className="h-72 border-b border-edge">
-        {codeLoaded && (
+        {codeLoaded ? (
           <Editor
             language={LANGUAGES[language].monaco}
             value={code}
@@ -197,6 +197,10 @@ export function ExerciseWidget({
               </div>
             }
           />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-[#1e1e1e] text-sm text-muted">
+            Loading editor…
+          </div>
         )}
       </div>
 
