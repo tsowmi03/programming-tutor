@@ -6,7 +6,12 @@ import { Send, Lightbulb, CheckCircle2, RefreshCw } from "lucide-react";
 import { MarkdownView } from "@/components/MarkdownView";
 import type { ProblemDetail, ProblemStatus } from "@/lib/problems";
 import { WorkspaceHeader } from "./WorkspaceHeader";
-import { celebrate, fetchJson, useStoredState } from "./shared";
+import {
+  celebrate,
+  fetchJson,
+  useMediaQuery,
+  useStoredState,
+} from "./shared";
 
 interface SubmitResponse {
   submission: { id: string };
@@ -31,6 +36,7 @@ export function ExplanationWorkspace({ problem }: { problem: ProblemDetail }) {
   const [review, setReview] = useState<SubmitResponse | null>(null);
   const [checked, setChecked] = useState<Set<number>>(new Set());
   const [scored, setScored] = useState<number | null>(null);
+  const compact = useMediaQuery("(max-width: 767px)");
 
   const submit = async () => {
     if (submitting || !answer.trim()) return;
@@ -86,8 +92,16 @@ export function ExplanationWorkspace({ problem }: { problem: ProblemDetail }) {
         status={status}
       />
 
-      <PanelGroup direction="horizontal" className="min-h-0 flex-1">
-        <Panel defaultSize={45} minSize={28} className="min-w-0">
+      <PanelGroup
+        key={compact ? "compact" : "wide"}
+        direction={compact ? "vertical" : "horizontal"}
+        className="min-h-0 flex-1"
+      >
+        <Panel
+          defaultSize={compact ? 38 : 45}
+          minSize={compact ? 20 : 28}
+          className="min-w-0"
+        >
           <div className="h-full overflow-y-auto bg-surface p-5 panel-scroll">
             <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-2.5 py-1 text-[11px] font-medium text-indigo-300 ring-1 ring-indigo-500/30">
               <Lightbulb className="h-3 w-3" />
@@ -97,14 +111,24 @@ export function ExplanationWorkspace({ problem }: { problem: ProblemDetail }) {
           </div>
         </Panel>
 
-        <PanelResizeHandle className="w-1 bg-edge transition hover:bg-indigo-500/60" />
+        <PanelResizeHandle
+          className={
+            compact
+              ? "h-1.5 cursor-row-resize bg-edge transition hover:bg-indigo-500/60"
+              : "w-1 cursor-col-resize bg-edge transition hover:bg-indigo-500/60"
+          }
+        />
 
-        <Panel defaultSize={55} minSize={30} className="min-w-0">
+        <Panel
+          defaultSize={compact ? 62 : 55}
+          minSize={compact ? 40 : 30}
+          className="min-w-0"
+        >
           <div className="flex h-full flex-col">
             {!review ? (
               <>
-                <div className="flex h-11 shrink-0 items-center justify-between border-b border-edge bg-surface px-4">
-                  <span className="text-xs text-muted">
+                <div className="flex min-h-11 shrink-0 items-center justify-between gap-3 border-b border-edge bg-surface px-4 py-2">
+                  <span className="hidden min-w-0 truncate text-xs text-muted sm:block">
                     Explaining out loud is the test — write as if teaching someone.
                   </span>
                   <button
@@ -116,13 +140,17 @@ export function ExplanationWorkspace({ problem }: { problem: ProblemDetail }) {
                     {submitting ? "Submitting…" : "Submit answer"}
                   </button>
                 </div>
-                {loaded && (
+                {loaded ? (
                   <textarea
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                     placeholder="Write your explanation here… (Markdown welcome)"
                     className="min-h-0 flex-1 resize-none bg-background p-5 font-mono text-[13px] leading-relaxed outline-none placeholder:text-zinc-600 panel-scroll"
                   />
+                ) : (
+                  <div className="flex min-h-0 flex-1 items-center justify-center text-sm text-muted">
+                    Loading draft…
+                  </div>
                 )}
                 {error && (
                   <p className="border-t border-rose-500/30 bg-rose-500/10 px-4 py-2 text-xs text-rose-300">

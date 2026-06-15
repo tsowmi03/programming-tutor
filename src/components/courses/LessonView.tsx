@@ -79,20 +79,21 @@ export function LessonView({
 
   const saveCompletion = useCallback(
     async (value: boolean) => {
+      const previous = completed;
+      setCompleted(value);
       setSaving(true);
       try {
         await fetchJson("/api/courses/progress", {
           method: "POST",
           body: JSON.stringify({ courseSlug, lessonSlug, completed: value }),
         });
-        setCompleted(value);
       } catch {
-        // Non-fatal: progress is best-effort. Leave the UI as-is.
+        setCompleted(previous);
       } finally {
         setSaving(false);
       }
     },
-    [courseSlug, lessonSlug],
+    [completed, courseSlug, lessonSlug],
   );
 
   // Auto-complete once every exercise in the lesson has been solved.
@@ -104,10 +105,17 @@ export function LessonView({
     }
   }, [allSolved, completed, saveCompletion]);
 
-  const goNext = async () => {
-    if (!completed) await saveCompletion(true);
-    if (nextSlug) router.push(`/courses/${courseSlug}/${nextSlug}`);
-    else router.push(`/courses/${courseSlug}`);
+  const nextHref = nextSlug
+    ? `/courses/${courseSlug}/${nextSlug}`
+    : `/courses/${courseSlug}`;
+
+  useEffect(() => {
+    router.prefetch(nextHref);
+  }, [nextHref, router]);
+
+  const goNext = () => {
+    if (!completed) void saveCompletion(true);
+    router.push(nextHref);
   };
 
   return (
@@ -198,8 +206,7 @@ export function LessonView({
 
             <button
               onClick={goNext}
-              disabled={saving}
-              className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-950/40 transition hover:bg-indigo-400 disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-950/40 transition hover:bg-indigo-400"
             >
               {nextSlug ? "Next lesson" : "Finish course"}
               <ArrowRight className="h-4 w-4" />

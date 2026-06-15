@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import {
   CheckCircle2,
   XCircle,
@@ -28,7 +28,7 @@ const STATUS_META: Record<
   not_run: { icon: MinusCircle, classes: "text-zinc-500", label: "Not run" },
 };
 
-export function TestPanel({
+export const TestPanel = memo(function TestPanel({
   signature,
   visibleTests,
   hiddenTestCount,
@@ -150,7 +150,7 @@ export function TestPanel({
       </div>
     </div>
   );
-}
+});
 
 function CaseChips({
   count,

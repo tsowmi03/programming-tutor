@@ -50,6 +50,19 @@ body {
   scrollbar-color: #3f3f46 transparent;
 }
 
+.tab-scroll {
+  scrollbar-width: none;
+}
+
+.tab-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
 ::selection {
   background: rgba(129, 140, 248, 0.35);
 }

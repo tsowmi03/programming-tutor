@@ -21,23 +21,28 @@ const STATUS_LABELS: Record<string, { label: string; classes: string }> = {
 
 export default async function ProgressPage() {
   const user = await requireUserPage();
-  const problems = await prisma.problem.findMany({
-    include: {
-      submissions: {
-        where: { userId: user.id },
-        select: { status: true, selfScore: true },
+  const [problems, recent, totalSubmissions] = await Promise.all([
+    prisma.problem.findMany({
+      include: {
+        submissions: {
+          where: { userId: user.id },
+          select: { status: true, selfScore: true },
+        },
       },
-    },
-    orderBy: [{ category: "asc" }, { order: "asc" }],
-  });
-  const recent = await prisma.submission.findMany({
-    where: { userId: user.id },
-    orderBy: { createdAt: "desc" },
-    take: 12,
-    include: {
-      problem: { select: { slug: true, title: true, difficulty: true } },
-    },
-  });
+      orderBy: [{ category: "asc" }, { order: "asc" }],
+    }),
+    prisma.submission.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: "desc" },
+      take: 12,
+      include: {
+        problem: { select: { slug: true, title: true, difficulty: true } },
+      },
+    }),
+    prisma.submission.count({
+      where: { userId: user.id },
+    }),
+  ]);
 
   const withStatus = problems.map((p) => ({
     ...p,
@@ -45,10 +50,6 @@ export default async function ProgressPage() {
   }));
   const solved = withStatus.filter((p) => p.derived === "solved").length;
   const attempted = withStatus.filter((p) => p.derived === "attempted").length;
-  const totalSubmissions = await prisma.submission.count({
-    where: { userId: user.id },
-  });
-
   const difficulties = ["easy", "medium", "hard"] as const;
   const byDifficulty = difficulties
     .map((d) => ({

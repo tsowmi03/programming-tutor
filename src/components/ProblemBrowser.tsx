@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import Link from "next/link";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 import { CATEGORY_LIST, CATEGORIES } from "@/content/categories";
 import type { ProblemSummary } from "@/lib/problems";
@@ -21,26 +21,16 @@ const STATUSES = [
 
 export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
 
   const [category, setCategory] = useState(searchParams.get("category") ?? "");
   const [difficulty, setDifficulty] = useState("");
   const [type, setType] = useState("");
   const [status, setStatus] = useState("");
   const [query, setQuery] = useState("");
-
-  // Keep the category filter shareable via the URL.
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (category) params.set("category", category);
-    router.replace(`${pathname}${params.size ? `?${params}` : ""}`, {
-      scroll: false,
-    });
-  }, [category, pathname, router]);
+  const deferredQuery = useDeferredValue(query);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = deferredQuery.trim().toLowerCase();
     return problems.filter(
       (p) =>
         (!category || p.category === category) &&
@@ -49,7 +39,7 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
         (!status || p.status === status) &&
         (!q || p.title.toLowerCase().includes(q)),
     );
-  }, [problems, category, difficulty, type, status, query]);
+  }, [problems, category, difficulty, type, status, deferredQuery]);
 
   const grouped = useMemo(() => {
     return CATEGORY_LIST.map((cat) => ({
@@ -62,6 +52,19 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
 
   const selectClass =
     "rounded-lg border border-edge bg-surface px-3 py-2 text-sm text-foreground outline-none transition focus:border-indigo-500/60";
+
+  const updateCategory = (nextCategory: string) => {
+    setCategory(nextCategory);
+    const params = new URLSearchParams(window.location.search);
+    if (nextCategory) params.set("category", nextCategory);
+    else params.delete("category");
+    const search = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}${search ? `?${search}` : ""}${window.location.hash}`,
+    );
+  };
 
   return (
     <div>
@@ -78,7 +81,7 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
         </div>
         <select
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) => updateCategory(e.target.value)}
           className={selectClass}
           aria-label="Filter by topic"
         >
@@ -138,7 +141,7 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
       ) : (
         <div className="mt-8 space-y-8">
           {grouped.map(({ category: cat, problems: ps }) => (
-            <section key={cat.id}>
+            <section key={cat.id} className="content-auto">
               <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted">
                 {CATEGORIES[cat.id].label}
               </h2>
@@ -155,7 +158,7 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
                       <StatusIcon status={p.status} />
                       <span className="truncate font-medium">{p.title}</span>
                     </div>
-                    <div className="flex shrink-0 items-center gap-4">
+                    <div className="flex shrink-0 items-center gap-2 sm:gap-4">
                       <TypeBadge type={p.type} />
                       <DifficultyBadge difficulty={p.difficulty} />
                     </div>

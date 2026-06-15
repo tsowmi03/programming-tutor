@@ -10,8 +10,10 @@ export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const user = await requireUserPage();
-  const problems = await listProblems(user.id);
-  const courses = await listCourses(user.id);
+  const [problems, courses] = await Promise.all([
+    listProblems(user.id),
+    listCourses(user.id),
+  ]);
   const solved = problems.filter((p) => p.status === "solved").length;
   const attempted = problems.filter((p) => p.status === "attempted").length;
   const total = problems.length;
