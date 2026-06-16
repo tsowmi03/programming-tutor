@@ -2,8 +2,9 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { Mountain } from "lucide-react";
+import { Apple, GitBranch, Globe, Mountain } from "lucide-react";
 import { login, signup, type AuthFormState } from "@/lib/auth-actions";
+import type { OAuthProvider } from "@/lib/oauth";
 
 const initialState: AuthFormState = {};
 
@@ -27,9 +28,11 @@ const COPY = {
 export function AuthForm({
   mode,
   next,
+  oauthError,
 }: {
   mode: "login" | "signup";
   next?: string;
+  oauthError?: string | null;
 }) {
   const [state, formAction, pending] = useActionState(
     mode === "login" ? login : signup,
@@ -39,6 +42,7 @@ export function AuthForm({
   const altHref = next
     ? `${copy.alt.href}?next=${encodeURIComponent(next)}`
     : copy.alt.href;
+  const oauthQuery = next ? `?next=${encodeURIComponent(next)}` : "";
 
   return (
     <main className="flex min-h-full items-center justify-center px-4 py-12">
@@ -53,10 +57,36 @@ export function AuthForm({
           <p className="mt-1 text-sm text-muted">{copy.subtitle}</p>
         </div>
 
-        <form
-          action={formAction}
-          className="space-y-4 rounded-2xl border border-edge bg-surface p-6"
-        >
+        <div className="space-y-4 rounded-2xl border border-edge bg-surface p-6">
+          <div className="grid gap-2">
+            {OAUTH_OPTIONS.map((provider) => (
+              <a
+                key={provider.id}
+                href={`/api/auth/${provider.id}${oauthQuery}`}
+                className="flex min-h-10 items-center justify-center gap-2 rounded-lg border border-edge bg-surface-raised px-3 py-2 text-sm font-semibold transition hover:border-indigo-400/50 hover:text-indigo-200"
+              >
+                <provider.icon className="h-4 w-4" />
+                Continue with {provider.label}
+              </a>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="h-px flex-1 bg-edge" />
+            <span className="text-xs uppercase tracking-wider text-muted">or</span>
+            <span className="h-px flex-1 bg-edge" />
+          </div>
+
+          {oauthError && (
+            <p
+              role="alert"
+              className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-300"
+            >
+              {oauthError}
+            </p>
+          )}
+
+          <form action={formAction} className="space-y-4">
           {next && <input type="hidden" name="next" value={next} />}
 
           {mode === "signup" && (
@@ -66,6 +96,7 @@ export function AuthForm({
                 name="name"
                 autoComplete="name"
                 required
+                minLength={2}
                 maxLength={80}
                 placeholder="Ada Lovelace"
                 defaultValue={state.values?.name}
@@ -96,8 +127,9 @@ export function AuthForm({
                 mode === "signup" ? "new-password" : "current-password"
               }
               required
-              minLength={mode === "signup" ? 8 : 1}
-              placeholder={mode === "signup" ? "At least 8 characters" : "••••••••"}
+              minLength={mode === "signup" ? 12 : 1}
+              maxLength={200}
+              placeholder={mode === "signup" ? "At least 12 characters" : "••••••••"}
               className={inputClasses}
             />
           </Field>
@@ -118,7 +150,8 @@ export function AuthForm({
           >
             {pending ? copy.submitting : copy.submit}
           </button>
-        </form>
+          </form>
+        </div>
 
         <p className="mt-4 text-center text-sm text-muted">
           {copy.alt.prompt}{" "}
@@ -133,6 +166,16 @@ export function AuthForm({
     </main>
   );
 }
+
+const OAUTH_OPTIONS: {
+  id: OAuthProvider;
+  label: string;
+  icon: typeof Globe;
+}[] = [
+  { id: "google", label: "Google", icon: Globe },
+  { id: "github", label: "GitHub", icon: GitBranch },
+  { id: "apple", label: "Apple", icon: Apple },
+];
 
 const inputClasses =
   "w-full rounded-lg border border-edge bg-surface-raised px-3 py-2 text-sm text-foreground placeholder:text-zinc-600 outline-none transition focus:border-indigo-500/60 focus:ring-2 focus:ring-indigo-500/20";

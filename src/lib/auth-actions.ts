@@ -10,8 +10,15 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { prisma } from "./prisma";
+import {
+  assertAuthAllowed,
+  AuthRateLimitError,
+  clearAuthFailures,
+  recordAuthFailure,
+} from "./auth-rate-limit";
 import { hashPassword, verifyPassword } from "./password";
 import { createSession, destroySession } from "./auth";
+import { clientIp, hashRateLimitKey, safeRedirectPath } from "./auth-utils";
 import { loginSchema, signupSchema } from "./validation";
 
 export interface AuthFormState {
@@ -31,11 +38,9 @@ function enteredValues(formData: FormData): AuthFormState["values"] {
 }
 
 /** Only allow same-site paths as post-login destinations. */
-function safeNext(formData: FormData): string {
-  const next = formData.get("next");
-  return typeof next === "string" && next.startsWith("/") && !next.startsWith("//")
-    ? next
-    : "/";
+function rateLimitErrorState(err: unknown): AuthFormState | null {
+  if (!(err instanceof AuthRateLimitError)) return null;
+  return { error: err.message };
 }
 
 export async function signup(
@@ -51,11 +56,26 @@ export async function signup(
     return { error: parsed.error.issues[0].message, values: enteredValues(formData) };
   }
   const { name, email, password } = parsed.data;
+  const signupKey = hashRateLimitKey(["signup", await clientIp()]);
+
+  try {
+    await assertAuthAllowed("signup", signupKey);
+    await recordAuthFailure("signup", signupKey);
+  } catch (err) {
+    const state = rateLimitErrorState(err);
+    if (state) return { ...state, values: enteredValues(formData) };
+    throw err;
+  }
 
   let userId: string;
   try {
     const user = await prisma.user.create({
-      data: { name, email, passwordHash: await hashPassword(password) },
+      data: {
+        name,
+        email,
+        passwordHash: await hashPassword(password),
+        emailVerifiedAt: null,
+      },
       select: { id: true },
     });
     userId = user.id;
@@ -78,7 +98,7 @@ export async function signup(
 
   await createSession(userId);
   revalidatePath("/", "layout");
-  redirect(safeNext(formData));
+  redirect(safeRedirectPath(formData.get("next")));
 }
 
 export async function login(
@@ -93,6 +113,19 @@ export async function login(
     return { error: parsed.error.issues[0].message, values: enteredValues(formData) };
   }
   const { email, password } = parsed.data;
+  const ip = await clientIp();
+  const attemptKeys = [
+    hashRateLimitKey(["login", email]),
+    hashRateLimitKey(["login-ip", ip]),
+  ];
+
+  try {
+    await Promise.all(attemptKeys.map((key) => assertAuthAllowed("login", key)));
+  } catch (err) {
+    const state = rateLimitErrorState(err);
+    if (state) return { ...state, values: enteredValues(formData) };
+    throw err;
+  }
 
   const user = await prisma.user.findUnique({
     where: { email },
@@ -101,19 +134,23 @@ export async function login(
 
   // Hash even when the email is unknown so response timing doesn't reveal
   // which addresses have accounts.
-  const valid = user
+  const valid = user?.passwordHash
     ? await verifyPassword(password, user.passwordHash)
     : (await hashPassword(password), false);
   if (!user || !valid) {
+    await Promise.all(
+      attemptKeys.map((key) => recordAuthFailure("login", key)),
+    );
     return {
       error: "Invalid email or password.",
       values: enteredValues(formData),
     };
   }
 
+  await Promise.all(attemptKeys.map((key) => clearAuthFailures("login", key)));
   await createSession(user.id);
   revalidatePath("/", "layout");
-  redirect(safeNext(formData));
+  redirect(safeRedirectPath(formData.get("next")));
 }
 
 export async function logout(): Promise<void> {

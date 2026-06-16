@@ -12,6 +12,7 @@ place.
 | Vercel project | hosts the Next.js app | **you** (Vercel account, free Hobby tier) |
 | Turso database | SQLite doesn't persist on serverless; Turso is libSQL (SQLite-compatible) with a generous free tier | **you** (Turso account) |
 | Piston instance | sandboxed code execution — local executor is single-user only and doesn't exist on Vercel | **you** (any small VPS or your own machine + tunnel) |
+| OAuth apps | Google, GitHub, and Apple login buttons need provider credentials | **you** (provider dashboards) |
 
 > **Alternative without Vercel:** run the whole thing on one small VPS with
 > `npm run build && npm start` plus a local Piston container. Then SQLite
@@ -83,6 +84,15 @@ Set the environment variables in the Vercel project:
 | `EXECUTOR` | `piston` |
 | `PISTON_URL` | `https://<your-piston-host>/api/v2` |
 | `PISTON_AUTH_TOKEN` | the token configured on the Piston host |
+| `APP_URL` | your public app URL, e.g. `https://codeclimb.example` |
+
+Optional provider variables:
+
+| Provider | Variables | Callback URL |
+| --- | --- | --- |
+| Google | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | `<APP_URL>/api/auth/google/callback` |
+| GitHub | `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` | `<APP_URL>/api/auth/github/callback` |
+| Apple | `APPLE_CLIENT_ID`, `APPLE_TEAM_ID`, `APPLE_KEY_ID`, `APPLE_PRIVATE_KEY` | `<APP_URL>/api/auth/apple/callback` |
 
 Deploy. Done.
 
@@ -91,9 +101,7 @@ Deploy. Done.
 - The local executor refuses nothing — it's gated to local use by the fact
   that `EXECUTOR=piston` is required config on hosts. Never expose the app
   publicly with `EXECUTOR=local`.
-- There is **no auth** yet (single-user by design). If you want it public,
-  add auth first (NextAuth or Clerk) or at minimum put the deployment behind
-  Vercel's password protection / your own access layer; otherwise strangers
-  can write to your database and burn your Piston CPU.
-- Add a rate limit on `/api/run` and `/api/submissions` (e.g. Upstash
-  Ratelimit) before sharing the URL.
+- Password and OAuth auth are built in. Keep provider secrets out of the repo
+  and rotate them if they are exposed.
+- Auth forms are rate-limited in the database. Add a rate limit on `/api/run`
+  and `/api/submissions` (e.g. Upstash Ratelimit) before sharing the URL.
