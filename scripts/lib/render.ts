@@ -29,6 +29,11 @@ function renderStringArray(items: string[]): string {
   return `[\n${body}\n  ]`;
 }
 
+function renderGuidance(items: ProblemDef["guidance"]): string {
+  if (!items || items.length === 0) return "";
+  return `  guidance: ${renderData(items)},\n`;
+}
+
 /** Render a Record<lang, code> as an object of template literals. */
 function renderCodeMap(map: Record<string, string>): string {
   const body = Object.entries(map)
@@ -72,6 +77,7 @@ ${exportHeader("CodeProblemDef", exportAs)}
   order: ${def.order},
   description: ${tmpl(def.description)},
   hints: ${renderStringArray(def.hints)},
+${renderGuidance(def.guidance)}
   signature: ${renderData(def.signature)},
   testCases: ${renderData(def.testCases)},
   starterCode: ${renderCodeMap(def.starterCode)},
@@ -93,6 +99,7 @@ ${exportHeader("ExplanationProblemDef", exportAs)}
   order: ${def.order},
   description: ${tmpl(def.description)},
   hints: ${renderStringArray(def.hints)},
+${renderGuidance(def.guidance)}
   modelAnswer: ${tmpl(def.modelAnswer)},
   keyPoints: ${renderStringArray(def.keyPoints)},
 };${exportFooter(exportAs)}

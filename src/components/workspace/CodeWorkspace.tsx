@@ -49,6 +49,17 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
   const [submissionsVersion, setSubmissionsVersion] = useState(0);
   const busy = phase !== "idle";
   const compact = useMediaQuery("(max-width: 767px)");
+  const guidanceContextRef = useRef<{
+    code: string;
+    latestOutcome: JudgeOutcome | null;
+    runError: string | null;
+  }>({ code, latestOutcome: outcome, runError });
+
+  useEffect(() => {
+    guidanceContextRef.current = { code, latestOutcome: outcome, runError };
+  }, [code, outcome, runError]);
+
+  const getGuidanceContext = useCallback(() => guidanceContextRef.current, []);
 
   const run = useCallback(async () => {
     if (busy) return;
@@ -196,6 +207,7 @@ export function CodeWorkspace({ problem }: { problem: ProblemDetail }) {
             language={lang}
             submissionsVersion={submissionsVersion}
             onRestoreCode={restoreCode}
+            getGuidanceContext={getGuidanceContext}
           />
         </Panel>
 

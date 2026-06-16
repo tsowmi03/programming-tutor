@@ -23,6 +23,14 @@ export type CategoryId =
   | "trees-graphs"
   | "recursion-dp";
 
+export type GuidanceLevel = "nudge" | "strategy" | "pitfall" | "pseudocode";
+
+export interface GuidanceItem {
+  title: string;
+  body: string;
+  level: GuidanceLevel;
+}
+
 interface ProblemBase {
   slug: string;
   title: string;
@@ -34,6 +42,11 @@ interface ProblemBase {
   description: string;
   /** Progressive hints, revealed one at a time. */
   hints: string[];
+  /**
+   * Optional structured guidance, revealed only when requested. Existing
+   * content can keep using hints; the app normalizes hints into guidance.
+   */
+  guidance?: GuidanceItem[];
 }
 
 export interface CodeProblemDef extends ProblemBase {

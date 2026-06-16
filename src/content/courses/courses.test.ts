@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { ALL_COURSES, orderedLessons } from ".";
 import { csharpCourse } from "./csharp";
 import { pythonCourse } from "./python";
+import { normalizeGuidance } from "@/lib/guidance";
 
 function exerciseCount(course = csharpCourse): number {
   return course.modules.reduce(
@@ -94,7 +95,8 @@ describe("course content", () => {
           expect(exercise.tests.some((test) => test.hidden), `${id} hidden test`).toBe(
             true,
           );
-          expect(exercise.hints?.length ?? 0, `${id} hints`).toBeGreaterThanOrEqual(2);
+          const guidance = normalizeGuidance(exercise.guidance, exercise.hints);
+          expect(guidance.length, `${id} guidance`).toBeGreaterThanOrEqual(2);
           for (const test of exercise.tests) {
             expect(test.input.length, `${id} test argument count`).toBe(
               exercise.signature.params.length,

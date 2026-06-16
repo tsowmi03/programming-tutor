@@ -55,6 +55,7 @@ Used for conceptual understanding (no code execution). Provide:
 - modelAnswer: a thorough markdown reference answer.
 - keyPoints: a checklist (array of short strings) a good answer should hit, for self-assessment.
 - hints: 2-4 progressive hints nudging the student toward the key ideas without giving away the full answer.
+- guidance: 3-5 structured guidance items revealed only if the student asks. Use levels from "nudge", "strategy", "pitfall", "pseudocode". Each item needs { "title", "level", "body" }. Body is markdown. Do not give the full answer unless the item is explicitly pseudocode, and even then keep it as implementation shape rather than language-specific code.
 Do NOT include signature/testCases/starterCode/solutions/editorial for explanation problems.
 
 # Shared fields
@@ -62,6 +63,7 @@ Do NOT include signature/testCases/starterCode/solutions/editorial for explanati
 - title, difficulty ("easy"|"medium"|"hard"), category (given to you).
 - description: markdown. Include a couple of worked examples in fenced \`\`\`text blocks and a "Constraints" section for code problems.
 - hints: 2-4 progressive hints (array), each nudging without giving away the answer.
+- guidance: 3-5 progressive items with title, level, and body. Order them from smallest nudge to most concrete implementation shape.
 - editorial (code only): markdown walkthrough of the intended approach with complexity analysis.
 
 # JSON shape — match exactly
@@ -75,6 +77,7 @@ Do NOT include signature/testCases/starterCode/solutions/editorial for explanati
   "category": "...",
   "description": "...",
   "hints": ["...", "..."],
+  "guidance": [{ "title": "...", "level": "nudge", "body": "..." }],
   "signature": { "name": "...", "params": [{ "name": "...", "type": "int[]" }], "returns": "int", "ordered": true },
   "testCases": [{ "input": [[1,2,3]], "expected": 6, "hidden": false }],
   "starterCode": { "python": "...", "javascript": "...", "typescript": "...", "java": "...", "csharp": "...", "c": "...", "cpp": "..." },

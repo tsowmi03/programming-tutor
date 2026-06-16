@@ -6,6 +6,7 @@
  */
 
 import { ALL_PROBLEMS } from "../src/content";
+import { normalizeGuidance } from "../src/lib/guidance";
 import { createPrismaClient } from "../src/lib/prisma-client";
 
 const prisma = createPrismaClient();
@@ -14,6 +15,7 @@ async function main() {
   const slugs = ALL_PROBLEMS.map((p) => p.slug);
 
   for (const def of ALL_PROBLEMS) {
+    const guidance = normalizeGuidance(def.guidance, def.hints);
     const base = {
       title: def.title,
       type: def.type,
@@ -21,7 +23,9 @@ async function main() {
       category: def.category,
       order: def.order,
       description: def.description,
-      hints: JSON.stringify(def.hints),
+      // The legacy column name is kept for schema compatibility; its payload
+      // is now structured guidance, with old string[] data still readable.
+      hints: JSON.stringify(guidance),
       signature: def.type === "code" ? JSON.stringify(def.signature) : null,
       testCases: def.type === "code" ? JSON.stringify(def.testCases) : null,
       starterCode: def.type === "code" ? JSON.stringify(def.starterCode) : null,

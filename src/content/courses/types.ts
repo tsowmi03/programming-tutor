@@ -14,6 +14,7 @@
 
 import type { LanguageId } from "@/lib/judge/languages";
 import type { FunctionSignature, TestCase } from "@/lib/judge/types";
+import type { GuidanceItem } from "@/content/types";
 
 export interface CourseExercise {
   /** Stable id, unique within its lesson (used in storage keys and the API). */
@@ -30,6 +31,8 @@ export interface CourseExercise {
   solution: string;
   /** Progressive hints, revealed one at a time. */
   hints?: string[];
+  /** Optional structured guidance, revealed only when requested. */
+  guidance?: GuidanceItem[];
 }
 
 /** A lesson is an ordered list of blocks: teaching prose or an exercise. */

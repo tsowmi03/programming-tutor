@@ -5,6 +5,7 @@
  */
 
 import type { FunctionSignature, TestCase } from "@/lib/judge/types";
+import type { GuidanceItem } from "@/content/types";
 
 export interface ClientExercise {
   id: string;
@@ -17,6 +18,8 @@ export interface ClientExercise {
   starterCode: string;
   /** The reference solution (revealable in the UI). */
   solution: string;
+  guidance: GuidanceItem[];
+  /** Legacy shape retained for older callers. */
   hints?: string[];
 }
 

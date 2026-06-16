@@ -7,13 +7,13 @@ import {
   Send,
   RotateCcw,
   CheckCircle2,
-  Lightbulb,
   GraduationCap,
   Terminal,
 } from "lucide-react";
 import type { JudgeOutcome } from "@/lib/judge/types";
 import { LANGUAGES, type LanguageId } from "@/lib/judge/languages";
 import { MarkdownView } from "@/components/MarkdownView";
+import { GuidanceReveal } from "@/components/GuidanceReveal";
 import { TestPanel } from "@/components/workspace/TestPanel";
 import { fetchJson, useStoredState, celebrate } from "@/components/workspace/shared";
 import type { ClientExercise } from "./types";
@@ -50,7 +50,6 @@ export function ExerciseWidget({
   const [phase, setPhase] = useState<Phase>("idle");
   const [outcome, setOutcome] = useState<JudgeOutcome | null>(null);
   const [runError, setRunError] = useState<string | null>(null);
-  const [revealHints, setRevealHints] = useState(0);
   const [showSolution, setShowSolution] = useState(false);
   const busy = phase !== "idle";
 
@@ -218,32 +217,7 @@ export function ExerciseWidget({
 
       {/* Hints & solution */}
       <div className="space-y-3 border-t border-edge px-4 py-3">
-        {exercise.hints && exercise.hints.length > 0 && (
-          <div className="space-y-2">
-            {exercise.hints.map((hint, i) =>
-              i < revealHints ? (
-                <div
-                  key={i}
-                  className="rounded-lg border border-amber-500/25 bg-amber-500/5 px-3 py-2 text-sm"
-                >
-                  <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-wider text-amber-400">
-                    Hint {i + 1}
-                  </p>
-                  <MarkdownView>{hint}</MarkdownView>
-                </div>
-              ) : i === revealHints ? (
-                <button
-                  key={i}
-                  onClick={() => setRevealHints(revealHints + 1)}
-                  className="flex items-center gap-1.5 text-xs text-muted transition hover:text-amber-300"
-                >
-                  <Lightbulb className="h-3.5 w-3.5" />
-                  Reveal hint {i + 1} of {exercise.hints!.length}
-                </button>
-              ) : null,
-            )}
-          </div>
-        )}
+        <GuidanceReveal guidance={exercise.guidance} compact />
 
         <div>
           {showSolution || isSolved ? (

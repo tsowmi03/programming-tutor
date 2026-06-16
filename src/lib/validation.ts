@@ -50,6 +50,34 @@ export const selfAssessSchema = z.object({
   selfScore: z.number().int().min(0).max(2),
 });
 
+const judgeResultSchema = z.object({
+  index: z.number().int().nonnegative(),
+  status: z.enum(["pass", "fail", "error", "not_run"]),
+  got: z.string().max(5_000).optional(),
+  expected: z.string().max(5_000).optional(),
+  error: z.string().max(5_000).optional(),
+  stdout: z.string().max(5_000).optional(),
+  hidden: z.boolean().optional(),
+});
+
+const judgeOutcomeSchema = z.object({
+  status: z.enum(["passed", "failed", "error", "compile_error"]),
+  results: z.array(judgeResultSchema).max(100),
+  compileOutput: z.string().max(10_000).optional(),
+  passedCount: z.number().int().nonnegative(),
+  totalCount: z.number().int().nonnegative(),
+});
+
+export const aiGuidanceRequestSchema = z.object({
+  language: z.enum(LANGUAGE_IDS),
+  code: z.string().max(100_000).optional(),
+  mode: z
+    .enum(["nudge", "debug", "strategy", "edge_case"])
+    .default("nudge"),
+  latestOutcome: judgeOutcomeSchema.nullish(),
+  runError: z.string().max(10_000).nullish(),
+});
+
 /** Judging a course exercise (run = sample tests; submit = all tests). */
 export const courseExerciseRunSchema = z.object({
   courseSlug: z.string().min(1),
@@ -66,3 +94,4 @@ export const lessonProgressSchema = z.object({
 
 export type RunRequest = z.infer<typeof runRequestSchema>;
 export type SubmissionRequest = z.infer<typeof submissionSchema>;
+export type AiGuidanceRequest = z.infer<typeof aiGuidanceRequestSchema>;

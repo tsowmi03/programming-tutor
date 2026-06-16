@@ -51,7 +51,7 @@ model Problem {
   category    String // slug of a category, e.g. "arrays-hashing"
   order       Int     @default(0)
   description String // markdown problem statement
-  hints       String  @default("[]") // JSON string[]
+  hints       String  @default("[]") // JSON GuidanceItem[]; legacy string[] supported
 
   // Code problems only
   signature   String? // JSON FunctionSignature

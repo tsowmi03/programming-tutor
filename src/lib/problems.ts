@@ -6,7 +6,8 @@
 import { prisma } from "./prisma";
 import type { LanguageId } from "./judge/languages";
 import type { FunctionSignature, TestCase } from "./judge/types";
-import type { CategoryId, Difficulty } from "@/content/types";
+import type { CategoryId, Difficulty, GuidanceItem } from "@/content/types";
+import { guidanceBodies, normalizeGuidance } from "./guidance";
 
 export type ProblemStatus = "not_started" | "attempted" | "solved";
 
@@ -28,6 +29,8 @@ export interface ProblemDetail {
   difficulty: Difficulty;
   category: CategoryId;
   description: string;
+  guidance: GuidanceItem[];
+  /** Legacy shape retained for older components and API consumers. */
   hints: string[];
   status: ProblemStatus;
   /** Code problems: sample (visible) tests and editor scaffolding. */
@@ -98,6 +101,7 @@ export async function getProblemDetail(
     },
   });
   if (!p) return null;
+  const guidance = normalizeGuidance(JSON.parse(p.hints));
 
   const detail: ProblemDetail = {
     slug: p.slug,
@@ -106,7 +110,8 @@ export async function getProblemDetail(
     difficulty: p.difficulty as Difficulty,
     category: p.category as CategoryId,
     description: p.description,
-    hints: JSON.parse(p.hints) as string[],
+    guidance,
+    hints: guidanceBodies(guidance),
     status: deriveStatus(p.submissions),
   };
 

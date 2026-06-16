@@ -61,6 +61,14 @@ const testCase = z.object({
   hidden: z.boolean().optional(),
 });
 
+const guidanceLevel = z.enum(["nudge", "strategy", "pitfall", "pseudocode"]);
+
+const guidanceItem = z.object({
+  title: z.string().min(1),
+  body: z.string().min(1),
+  level: guidanceLevel,
+});
+
 const signature = z.object({
   name: z.string().regex(/^[a-zA-Z][a-zA-Z0-9]*$/, "name must be camelCase"),
   params: z
@@ -77,6 +85,7 @@ const base = {
   category: z.enum(CATEGORY_IDS),
   description: z.string().min(1),
   hints: z.array(z.string().min(1)).min(1),
+  guidance: z.array(guidanceItem).min(1).optional(),
 };
 
 export const codeProblemSchema = z.object({

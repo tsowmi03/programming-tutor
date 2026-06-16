@@ -5,6 +5,7 @@ import { requireUserPage } from "@/lib/auth";
 import { LessonView } from "@/components/courses/LessonView";
 import type { ClientBlock } from "@/components/courses/types";
 import type { LessonBlock } from "@/content/courses";
+import { guidanceBodies, normalizeGuidance } from "@/lib/guidance";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ function toClientBlocks(blocks: LessonBlock[]): ClientBlock[] {
       return { kind: "prose", markdown: block.markdown };
     }
     const ex = block.exercise;
+    const guidance = normalizeGuidance(ex.guidance, ex.hints);
     return {
       kind: "exercise",
       exercise: {
@@ -26,7 +28,8 @@ function toClientBlocks(blocks: LessonBlock[]): ClientBlock[] {
         hiddenTestCount: ex.tests.filter((t) => t.hidden).length,
         starterCode: ex.starterCode,
         solution: ex.solution,
-        hints: ex.hints,
+        guidance,
+        hints: guidanceBodies(guidance),
       },
     };
   });

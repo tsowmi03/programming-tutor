@@ -20,7 +20,7 @@ against model answers.
     tests, per-case results with your debug prints captured
   - *Explanation*: write the concept in your own words, then compare with a
     model answer, tick off key points, and self-assess
-- **Learning-first design**: progressive hints, solutions locked until you
+- **Learning-first design**: progressive guidance, solutions locked until you
   solve (with an honest escape hatch), editorials that teach the *pattern*,
   drafts auto-saved per language, confetti when you earn it
 - **Progress tracking**: per-topic and per-difficulty breakdowns, submission
@@ -133,6 +133,14 @@ Problems that fail verification after the retry are written to
 `src/content/generated/_review/` (not seeded) for you to inspect or discard.
 One-offs: `npm run problems:generate -- --category arrays-hashing
 --difficulty easy --topic "prefix sums"`.
+
+## Runtime AI guidance
+
+The Guidance tab can request contextual AI help for the current code attempt.
+Set `ANTHROPIC_API_KEY` for the Next.js app, then ask from a problem page. The
+request sends the problem text, visible tests, current editor contents, and the
+latest run/submission result. Hidden test details stay redacted. To change the
+runtime model, set `AI_GUIDANCE_MODEL` (default: `claude-sonnet-4-6`).
 
 ## Hosting
 
