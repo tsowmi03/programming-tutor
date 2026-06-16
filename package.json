@@ -16,6 +16,7 @@
     "problems:index": "tsx scripts/build-generated-index.ts",
     "problems:backfill": "tsx scripts/backfill-languages.ts",
     "problems:verify": "tsx scripts/verify-solutions.ts",
+    "courses:verify": "tsx scripts/verify-courses.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {

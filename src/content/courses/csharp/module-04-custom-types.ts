@@ -38,9 +38,9 @@ int d = p.ManhattanFromOrigin();   // 7
         },
         {
           kind: "prose",
-          markdown: `## Records: classes optimised for data
+          markdown: `## Record classes: classes optimised for data
 
-A \`record\` is a class tuned for holding immutable data. The positional form declares properties, a constructor, value-based equality, and a readable \`ToString()\` in a single line:
+A \`record class\` is a class tuned for holding immutable data. The positional form declares properties, a constructor, value-based equality, and a readable \`ToString()\` in a single line:
 
 \`\`\`csharp
 public record Person(string Name, int Age);
@@ -53,9 +53,11 @@ var older = a with { Age = 37 };  // non-destructive copy
 
 That value equality is the headline difference from a class, where \`==\` compares references. Reach for a record when a type is essentially "a bag of values" — coordinates, a parsed token, a key made of two fields.
 
+Records can also be declared as \`record struct\`, which combines the generated record behavior with value-type copy semantics.
+
 ## Structs: value-type bundles
 
-A \`struct\` looks like a class but is a **value type** — copied on assignment, lives on the stack when local. Use them for small, immutable bundles where copy semantics are desirable (the built-in \`int\`, \`bool\`, and \`DateTime\` are all structs). For most algorithm work, classes and records cover you; just know \`struct\` exists and that it copies.
+A \`struct\` looks like a class but is a **value type**, so assignment copies its data. Its storage depends on context: a struct may be inline in a local, array, field, or containing object, and boxing places a copy on the managed heap. Use structs for small values where copy semantics are desirable (the built-in \`int\`, \`bool\`, and \`DateTime\` are all structs). For most algorithm work, classes and records cover you; the rule to remember is value semantics, not a fixed storage location.
 
 > **Picking one:** class by default; record when it's immutable data with value equality; struct for small value-semantic bundles. When in doubt, use a class.`,
         },

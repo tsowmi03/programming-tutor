@@ -1,27 +1,38 @@
 import type { Course } from "../types";
 import { csharpEssentials } from "./module-01-essentials";
+import { csharpLanguageDepth } from "./module-02-language-depth";
 import { csharpCollections } from "./module-02-collections";
 import { csharpStringsLinq } from "./module-03-strings-linq";
 import { csharpCustomTypes } from "./module-04-custom-types";
+import { csharpObjectDesign } from "./module-06-object-design";
+import { csharpPracticalDotNet } from "./module-07-practical-dotnet";
+import { csharpAdvancedCollections } from "./module-08-advanced-collections";
 import { csharpDataStructures } from "./module-05-data-structures";
 import { csharpAlgorithms } from "./module-06-algorithms";
+import { csharpAlgorithmPatterns } from "./module-11-algorithm-patterns";
 
 export const csharpCourse: Course = {
   slug: "csharp-for-developers",
   title: "C# for Developers",
   language: "csharp",
-  tagline: "Already code? Learn C# through data structures and algorithms.",
-  description: `A fast, practical path into C# for people who **already know how to program**. We skip "what is a variable" and focus on what's actually different about C#: its type system, the standard collections, LINQ, and the idioms you'll use to solve data-structures-and-algorithms problems.
+  tagline:
+    "Build complete C# fluency, from the type system to production .NET patterns.",
+  description: `A comprehensive C# course for people who **already know how to program**. It begins with the language rules that differ from other ecosystems, then develops practical fluency across collections, LINQ, object-oriented design, error handling, files and serialization, async/await, testing, data structures, and algorithm patterns.
 
-Every lesson ends with a coding exercise judged against real test cases — the same engine that powers the problem set — so you're writing and running C# from the first lesson, not just reading about it.
+Most lessons include a coding activity judged against real test cases using the same engine as the problem set. Longer platform topics also include applied tracing and design activities where a tiny isolated method would teach the wrong lesson.
 
-By the end you'll be comfortable reaching for \`Dictionary\`, \`HashSet\`, \`Stack\`, and LINQ; defining your own types; and implementing the classic algorithms (binary search, Kadane's, bottom-up DP) idiomatically in C#.`,
+By the end you will be able to explain C#'s value and reference semantics, design clear type and method contracts, choose and implement collection strategies, coordinate asynchronous work, keep I/O at testable boundaries, and solve common algorithmic problems idiomatically in C#.`,
   modules: [
     csharpEssentials,
+    csharpLanguageDepth,
     csharpCollections,
     csharpStringsLinq,
     csharpCustomTypes,
+    csharpObjectDesign,
+    csharpPracticalDotNet,
+    csharpAdvancedCollections,
     csharpDataStructures,
     csharpAlgorithms,
+    csharpAlgorithmPatterns,
   ],
 };

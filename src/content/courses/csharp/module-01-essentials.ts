@@ -134,7 +134,7 @@ int[] y = x;   // y references the SAME array as x
 y[0] = 99;     // x[0] is now 99 too
 \`\`\`
 
-This is exactly the same model as most languages with objects — primitives copy, objects share — C# just makes the categories explicit and lets you define your own value types with \`struct\`.`,
+This is the same broad model used by many managed languages: value-type assignment copies the value, while reference-type assignment copies a reference to a shared object. C# makes the categories explicit and lets you define your own value types with \`struct\`.`,
         },
         {
           kind: "prose",
