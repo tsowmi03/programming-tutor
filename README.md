@@ -151,9 +151,18 @@ code execution — those two account setups are the only manual steps.
 ## Accounts
 
 Sign up at `/signup`; everything else requires a session. Auth is
-self-contained: scrypt password hashes (Node's crypto, no dependencies) and
-random session tokens stored hashed in the database, delivered as an
-httpOnly cookie. There are no auth-related environment variables.
+self-contained: scrypt password hashes (Node's crypto), stricter signup
+validation, database-backed auth throttling, and random session tokens stored
+hashed in the database, delivered as an httpOnly cookie.
+
+Google, GitHub, and Apple sign-in are available through the same session layer.
+Set the relevant OAuth environment variables from `.env.example`; providers
+that are not configured fail closed with a login-page error. Use `APP_URL` in
+hosted environments so provider callback URLs are stable:
+
+- Google: `/api/auth/google/callback`
+- GitHub: `/api/auth/github/callback`
+- Apple: `/api/auth/apple/callback`
 
 If you have submissions from before accounts existed (they have no owner),
 sign up first, then claim them:
@@ -167,4 +176,3 @@ npx tsx scripts/claim-submissions.ts you@example.com
 - Spaced-repetition queue fed by self-assessment scores
 - Optional AI feedback on explanation answers (Claude API)
 - More languages (C++, Go, Rust) — each is one harness generator away
-- OAuth sign-in (Google/GitHub) on top of the existing session layer

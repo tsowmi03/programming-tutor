@@ -20,14 +20,30 @@ model User {
   id           String   @id @default(cuid())
   email        String   @unique // stored lowercase
   name         String
-  passwordHash String // scrypt, formatted "scrypt:N:r:p:salt:hash" (base64url)
+  passwordHash String? // scrypt:N:r:p:salt:hash (base64url); null for OAuth-only accounts
+  emailVerifiedAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   sessions       Session[]
+  oauthAccounts  OAuthAccount[]
   submissions    Submission[]
   lessonProgress LessonProgress[]
+}
+
+model OAuthAccount {
+  id                String @id @default(cuid())
+  provider          String // "google" | "github" | "apple"
+  providerAccountId String
+  userId            String
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -40,6 +56,19 @@ model Session {
   createdAt DateTime @default(now())
 
   @@index([userId])
+}
+
+model AuthRateLimit {
+  id           String    @id @default(cuid())
+  action       String
+  keyHash      String
+  count        Int       @default(0)
+  windowStart  DateTime  @default(now())
+  blockedUntil DateTime?
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([action, keyHash])
+  @@index([blockedUntil])
 }
 
 model Problem {
