@@ -149,8 +149,7 @@ const judgeOutcomeSchema = z.object({
   totalCount: z.number().int().nonnegative(),
 });
 
-export const aiGuidanceRequestSchema = z.object({
-  language: z.enum(LANGUAGE_IDS),
+const aiGuidanceContextSchema = z.object({
   code: z.string().max(100_000).optional(),
   mode: z
     .enum(["nudge", "debug", "strategy", "edge_case"])
@@ -159,12 +158,22 @@ export const aiGuidanceRequestSchema = z.object({
   runError: z.string().max(10_000).nullish(),
 });
 
+export const aiGuidanceRequestSchema = aiGuidanceContextSchema.extend({
+  language: z.enum(LANGUAGE_IDS),
+});
+
 /** Judging a course exercise (run = sample tests; submit = all tests). */
 export const courseExerciseRunSchema = z.object({
   courseSlug: z.string().min(1),
   lessonSlug: z.string().min(1),
   exerciseId: z.string().min(1),
   code: z.string().min(1, "Code cannot be empty").max(100_000),
+});
+
+export const courseAiGuidanceRequestSchema = aiGuidanceContextSchema.extend({
+  courseSlug: z.string().min(1),
+  lessonSlug: z.string().min(1),
+  exerciseId: z.string().min(1),
 });
 
 export const lessonProgressSchema = z.object({
@@ -176,3 +185,6 @@ export const lessonProgressSchema = z.object({
 export type RunRequest = z.infer<typeof runRequestSchema>;
 export type SubmissionRequest = z.infer<typeof submissionSchema>;
 export type AiGuidanceRequest = z.infer<typeof aiGuidanceRequestSchema>;
+export type CourseAiGuidanceRequest = z.infer<
+  typeof courseAiGuidanceRequestSchema
+>;

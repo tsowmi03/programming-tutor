@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  DEFAULT_AI_GUIDANCE_MODEL,
   buildAiGuidancePrompt,
   sanitizeOutcomeForGuidance,
   type AiGuidanceProblemContext,
@@ -31,6 +32,10 @@ const problem: AiGuidanceProblemContext = {
 };
 
 describe("AI guidance helpers", () => {
+  it("defaults runtime guidance to Haiku", () => {
+    expect(DEFAULT_AI_GUIDANCE_MODEL).toBe("claude-haiku-4-5");
+  });
+
   it("redacts hidden result details before prompt construction", () => {
     const outcome: JudgeOutcome = {
       status: "failed",

@@ -14,6 +14,7 @@ import type { JudgeOutcome } from "@/lib/judge/types";
 import { LANGUAGES, type LanguageId } from "@/lib/judge/languages";
 import { MarkdownView } from "@/components/MarkdownView";
 import { GuidanceReveal } from "@/components/GuidanceReveal";
+import { AiGuidancePanel } from "@/components/workspace/AiGuidancePanel";
 import { TestPanel } from "@/components/workspace/TestPanel";
 import { fetchJson, useStoredState, celebrate } from "@/components/workspace/shared";
 import type { ClientExercise } from "./types";
@@ -119,6 +120,11 @@ export function ExerciseWidget({
 
   const visibleTests = exercise.visibleTests;
   const hiddenCount = exercise.hiddenTestCount;
+  const guidanceContextKey = `${courseSlug}:${lessonSlug}:${exercise.id}`;
+  const getGuidanceContext = useCallback(
+    () => ({ code, latestOutcome: outcome, runError }),
+    [code, outcome, runError],
+  );
 
   return (
     <div
@@ -218,6 +224,21 @@ export function ExerciseWidget({
       {/* Hints & solution */}
       <div className="space-y-3 border-t border-edge px-4 py-3">
         <GuidanceReveal guidance={exercise.guidance} compact />
+
+        <AiGuidancePanel
+          contextKey={guidanceContextKey}
+          endpoint="/api/courses/guidance"
+          getGuidanceContext={getGuidanceContext}
+          buildRequestBody={(mode, context) => ({
+            courseSlug,
+            lessonSlug,
+            exerciseId: exercise.id,
+            mode,
+            code: context.code,
+            latestOutcome: context.latestOutcome,
+            runError: context.runError,
+          })}
+        />
 
         <div>
           {showSolution || isSolved ? (
