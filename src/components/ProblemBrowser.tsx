@@ -2,10 +2,16 @@
 
 import { useDeferredValue, useMemo, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { Search } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Search, Shuffle } from "lucide-react";
 import { CATEGORY_LIST, CATEGORIES } from "@/content/categories";
 import type { ProblemSummary } from "@/lib/problems";
+import {
+  buildProblemHref,
+  getProblemSequence,
+  getShuffleCandidates,
+  parseProblemSequenceParams,
+} from "@/lib/problem-navigation";
 import { DifficultyBadge, StatusIcon, TypeBadge } from "@/components/badges";
 
 const DIFFICULTIES = ["easy", "medium", "hard"] as const;
@@ -21,50 +27,86 @@ const STATUSES = [
 
 export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [category, setCategory] = useState(searchParams.get("category") ?? "");
-  const [difficulty, setDifficulty] = useState("");
-  const [type, setType] = useState("");
-  const [status, setStatus] = useState("");
-  const [query, setQuery] = useState("");
+  const [difficulty, setDifficulty] = useState(
+    searchParams.get("difficulty") ?? "",
+  );
+  const [type, setType] = useState(searchParams.get("type") ?? "");
+  const [status, setStatus] = useState(searchParams.get("status") ?? "");
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const deferredQuery = useDeferredValue(query);
 
-  const filtered = useMemo(() => {
-    const q = deferredQuery.trim().toLowerCase();
-    return problems.filter(
-      (p) =>
-        (!category || p.category === category) &&
-        (!difficulty || p.difficulty === difficulty) &&
-        (!type || p.type === type) &&
-        (!status || p.status === status) &&
-        (!q || p.title.toLowerCase().includes(q)),
-    );
-  }, [problems, category, difficulty, type, status, deferredQuery]);
+  const sequenceParams = useMemo(
+    () =>
+      parseProblemSequenceParams({
+        category,
+        difficulty,
+        type,
+        status,
+        q: deferredQuery,
+      }),
+    [category, deferredQuery, difficulty, status, type],
+  );
+
+  const ordered = useMemo(
+    () => getProblemSequence(problems, sequenceParams),
+    [problems, sequenceParams],
+  );
+
+  const shuffleCandidates = useMemo(
+    () => getShuffleCandidates(problems, sequenceParams),
+    [problems, sequenceParams],
+  );
 
   const grouped = useMemo(() => {
     return CATEGORY_LIST.map((cat) => ({
       category: cat,
-      problems: filtered
-        .filter((p) => p.category === cat.id)
-        .sort((a, b) => a.order - b.order),
+      problems: ordered.filter((p) => p.category === cat.id),
     })).filter((g) => g.problems.length > 0);
-  }, [filtered]);
+  }, [ordered]);
 
   const selectClass =
     "rounded-lg border border-edge bg-surface px-3 py-2 text-sm text-foreground outline-none transition focus:border-indigo-500/60";
 
-  const updateCategory = (nextCategory: string) => {
-    setCategory(nextCategory);
-    const params = new URLSearchParams(window.location.search);
-    if (nextCategory) params.set("category", nextCategory);
-    else params.delete("category");
-    const search = params.toString();
-    window.history.replaceState(
-      null,
-      "",
-      `${window.location.pathname}${search ? `?${search}` : ""}${window.location.hash}`,
-    );
+  const randomProblem = () => {
+    if (shuffleCandidates.length === 0) return;
+    const shuffleSeed = `${Date.now().toString(36)}-${Math.random()
+      .toString(36)
+      .slice(2)}`;
+    const shuffleParams = { ...sequenceParams, shuffle: shuffleSeed };
+    const [target] = getProblemSequence(problems, shuffleParams);
+    if (!target) return;
+    router.push(buildProblemHref(target.slug, shuffleParams));
   };
+
+  const randomDisabled = shuffleCandidates.length === 0;
+  const randomTitle = randomDisabled
+    ? "No unsolved problems match these filters"
+    : `Pick from ${shuffleCandidates.length} unsolved ${
+        shuffleCandidates.length === 1 ? "problem" : "problems"
+      } matching these filters`;
+
+  const rowHref = (slug: string) => buildProblemHref(slug, sequenceParams);
+
+  const filterSummary = [
+    sequenceParams.category ? CATEGORIES[sequenceParams.category]?.label : null,
+    sequenceParams.difficulty
+      ? sequenceParams.difficulty[0].toUpperCase() +
+        sequenceParams.difficulty.slice(1)
+      : null,
+    sequenceParams.type
+      ? TYPES.find((option) => option.id === sequenceParams.type)?.label
+      : null,
+    sequenceParams.status
+      ? STATUSES.find((option) => option.id === sequenceParams.status)?.label
+      : null,
+    sequenceParams.query ? `Search: "${sequenceParams.query}"` : null,
+  ].filter(Boolean);
+
+  const randomLabel =
+    filterSummary.length > 0 ? "Random from filters" : "Random unsolved";
 
   return (
     <div>
@@ -81,7 +123,7 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
         </div>
         <select
           value={category}
-          onChange={(e) => updateCategory(e.target.value)}
+          onChange={(e) => setCategory(e.target.value)}
           className={selectClass}
           aria-label="Filter by topic"
         >
@@ -131,7 +173,23 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
             </option>
           ))}
         </select>
+        <button
+          type="button"
+          onClick={randomProblem}
+          disabled={randomDisabled}
+          title={randomTitle}
+          className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <Shuffle className="h-4 w-4" />
+          {randomLabel}
+        </button>
       </div>
+
+      {filterSummary.length > 0 && (
+        <p className="mt-3 text-xs text-muted">
+          Random will use: {filterSummary.join(" · ")}
+        </p>
+      )}
 
       {/* Grouped list */}
       {grouped.length === 0 ? (
@@ -149,7 +207,7 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
                 {ps.map((p, i) => (
                   <Link
                     key={p.slug}
-                    href={`/problems/${p.slug}`}
+                    href={rowHref(p.slug)}
                     className={`flex items-center justify-between gap-4 bg-surface px-4 py-3.5 transition hover:bg-surface-raised ${
                       i > 0 ? "border-t border-edge" : ""
                     }`}
