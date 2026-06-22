@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { ExecutorUnavailableError } from "@/lib/judge/executors";
 import { UnauthorizedError } from "@/lib/auth";
+import { AiGuidanceLimitError } from "@/lib/ai-guidance-limit";
 
 export class NotFoundError extends Error {
   constructor(message = "Not found") {
@@ -14,8 +15,8 @@ export class NotFoundError extends Error {
 
 /**
  * Uniform error envelope: { error: string }. Validation problems are 400,
- * missing auth 401, missing resources 404, executor outages 503, everything
- * else a logged 500.
+ * missing auth 401, missing resources 404, usage limits 429, executor outages
+ * 503, everything else a logged 500.
  */
 export function toErrorResponse(err: unknown): NextResponse {
   if (err instanceof ZodError) {
@@ -32,6 +33,20 @@ export function toErrorResponse(err: unknown): NextResponse {
   }
   if (err instanceof ExecutorUnavailableError) {
     return NextResponse.json({ error: err.message }, { status: 503 });
+  }
+  if (err instanceof AiGuidanceLimitError) {
+    return NextResponse.json(
+      {
+        error: err.message,
+        code: err.code,
+        retryAt: err.retryAt.toISOString(),
+        retryAfterSeconds: err.retryAfterSeconds,
+      },
+      {
+        status: 429,
+        headers: { "Retry-After": String(err.retryAfterSeconds) },
+      },
+    );
   }
   console.error("API error:", err);
   return NextResponse.json(

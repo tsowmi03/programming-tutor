@@ -8,6 +8,11 @@ import {
   requestAiGuidance,
   type AiGuidanceProblemContext,
 } from "@/lib/ai-guidance";
+import {
+  aiGuidanceUsageResponse,
+  refundAiGuidanceUsage,
+  reserveAiGuidanceUsage,
+} from "@/lib/ai-guidance-limit";
 import { normalizeGuidance } from "@/lib/guidance";
 import { courseAiGuidanceRequestSchema } from "@/lib/validation";
 
@@ -16,7 +21,7 @@ export const maxDuration = 30;
 /** Runtime AI guidance for one course exercise attempt. */
 export async function POST(req: Request) {
   try {
-    await requireUser();
+    const user = await requireUser();
     const body = courseAiGuidanceRequestSchema.parse(await req.json());
 
     const course = getCourse(body.courseSlug);
@@ -51,18 +56,27 @@ ${exercise.prompt}`,
       hiddenTestCount: exercise.tests.length - visibleTests.length,
     };
 
-    const guidance = await requestAiGuidance({
-      client: new Anthropic({ apiKey }),
-      model: process.env.AI_GUIDANCE_MODEL ?? DEFAULT_AI_GUIDANCE_MODEL,
-      problem,
-      language: course.language,
-      code: body.code,
-      mode: body.mode,
-      latestOutcome: body.latestOutcome ?? null,
-      runError: body.runError ?? null,
-    });
+    const usage = await reserveAiGuidanceUsage(user.id);
+    let guidance: string;
+    try {
+      guidance = await requestAiGuidance({
+        client: new Anthropic({ apiKey }),
+        model: process.env.AI_GUIDANCE_MODEL ?? DEFAULT_AI_GUIDANCE_MODEL,
+        problem,
+        language: course.language,
+        code: body.code,
+        mode: body.mode,
+        latestOutcome: body.latestOutcome ?? null,
+        runError: body.runError ?? null,
+      });
+    } catch (err) {
+      await refundAiGuidanceUsage(user.id, usage).catch((refundErr) => {
+        console.error("Failed to refund AI guidance quota:", refundErr);
+      });
+      throw err;
+    }
 
-    return NextResponse.json({ guidance });
+    return NextResponse.json({ guidance, usage: aiGuidanceUsageResponse(usage) });
   } catch (err) {
     return toErrorResponse(err);
   }

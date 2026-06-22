@@ -140,7 +140,10 @@ The Guidance tab can request contextual AI help for the current code attempt.
 Set `ANTHROPIC_API_KEY` for the Next.js app, then ask from a problem page. The
 request sends the problem text, visible tests, current editor contents, and the
 latest run/submission result. Hidden test details stay redacted. To change the
-runtime model, set `AI_GUIDANCE_MODEL` (default: `claude-sonnet-4-6`).
+runtime model, set `AI_GUIDANCE_MODEL` (default: `claude-haiku-4-5`).
+Signed-in users are limited by default to 30 AI guidance requests per 24 hours
+and 6 requests per 10 minutes. Override with `AI_GUIDANCE_DAILY_LIMIT` and
+`AI_GUIDANCE_BURST_LIMIT`.
 
 ## Hosting
 

@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Bug, Lightbulb, Map, Sparkles, Target } from "lucide-react";
+import { Bug, Clock, Lightbulb, Map, Sparkles, Target } from "lucide-react";
 import { MarkdownView } from "@/components/MarkdownView";
 import type { AiGuidanceMode } from "@/lib/ai-guidance";
 import type { JudgeOutcome } from "@/lib/judge/types";
-import { fetchJson } from "./shared";
+import { ApiError, fetchJson } from "./shared";
 
 export type AiGuidanceContext = {
   code: string;
@@ -43,9 +43,11 @@ export function AiGuidancePanel({
     key: string;
     text: string;
   } | null>(null);
-  const [aiError, setAiError] = useState<{ key: string; text: string } | null>(
-    null,
-  );
+  const [aiError, setAiError] = useState<{
+    key: string;
+    text: string;
+    limited: boolean;
+  } | null>(null);
 
   const requestGuidance = async (mode: AiGuidanceMode) => {
     if (pendingMode) return;
@@ -65,13 +67,14 @@ export function AiGuidancePanel({
       setAiError({
         key: contextKey,
         text: err instanceof Error ? err.message : String(err),
+        limited: err instanceof ApiError && err.status === 429,
       });
     } finally {
       setPendingMode(null);
     }
   };
 
-  const visibleError = aiError?.key === contextKey ? aiError.text : null;
+  const visibleError = aiError?.key === contextKey ? aiError : null;
   const visibleGuidance =
     aiGuidance?.key === contextKey ? aiGuidance.text : null;
 
@@ -99,7 +102,18 @@ export function AiGuidancePanel({
         })}
       </div>
       {visibleError && (
-        <p className="mt-3 text-sm text-rose-300">{visibleError}</p>
+        <div
+          className={`mt-3 flex items-start gap-2 rounded-md border px-3 py-2 text-sm ${
+            visibleError.limited
+              ? "border-amber-500/30 bg-amber-500/10 text-amber-200"
+              : "border-rose-500/25 bg-rose-500/10 text-rose-300"
+          }`}
+        >
+          {visibleError.limited && (
+            <Clock className="mt-0.5 h-4 w-4 shrink-0" />
+          )}
+          <p>{visibleError.text}</p>
+        </div>
       )}
       {visibleGuidance && (
         <div className="mt-4 rounded-lg border border-indigo-500/25 bg-indigo-500/5 p-4 text-sm leading-relaxed">

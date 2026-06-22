@@ -123,17 +123,29 @@ export function formatInput(
     .join(", ");
 }
 
-export async function fetchJson<T>(
-  url: string,
-  init?: RequestInit,
-): Promise<T> {
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public body: unknown,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
+export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, {
     headers: { "Content-Type": "application/json" },
     ...init,
   });
   const body = (await res.json().catch(() => ({}))) as T & { error?: string };
   if (!res.ok) {
-    throw new Error(body.error ?? `Request failed (${res.status})`);
+    throw new ApiError(
+      body.error ?? `Request failed (${res.status})`,
+      res.status,
+      body,
+    );
   }
   return body;
 }

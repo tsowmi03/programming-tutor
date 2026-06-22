@@ -17,19 +17,20 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique // stored lowercase
-  name         String
-  passwordHash String? // scrypt:N:r:p:salt:hash (base64url); null for OAuth-only accounts
+  id              String    @id @default(cuid())
+  email           String    @unique // stored lowercase
+  name            String
+  passwordHash    String? // scrypt:N:r:p:salt:hash (base64url); null for OAuth-only accounts
   emailVerifiedAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sessions       Session[]
-  oauthAccounts  OAuthAccount[]
-  submissions    Submission[]
-  lessonProgress LessonProgress[]
+  sessions               Session[]
+  oauthAccounts          OAuthAccount[]
+  submissions            Submission[]
+  lessonProgress         LessonProgress[]
+  aiGuidanceUsageBuckets AiGuidanceUsageBucket[]
 }
 
 model OAuthAccount {
@@ -71,16 +72,32 @@ model AuthRateLimit {
   @@index([blockedUntil])
 }
 
+model AiGuidanceUsageBucket {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bucket  String // "daily" | "burst"
+  count   Int      @default(0)
+  resetAt DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, bucket])
+  @@index([resetAt])
+}
+
 model Problem {
-  id          String  @id @default(cuid())
-  slug        String  @unique
+  id          String @id @default(cuid())
+  slug        String @unique
   title       String
   type        String // "code" | "explanation"
   difficulty  String // "easy" | "medium" | "hard"
   category    String // slug of a category, e.g. "arrays-hashing"
-  order       Int     @default(0)
+  order       Int    @default(0)
   description String // markdown problem statement
-  hints       String  @default("[]") // JSON GuidanceItem[]; legacy string[] supported
+  hints       String @default("[]") // JSON GuidanceItem[]; legacy string[] supported
 
   // Code problems only
   signature   String? // JSON FunctionSignature
