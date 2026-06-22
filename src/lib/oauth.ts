@@ -26,6 +26,27 @@ export function oauthProviderFromParam(value: string): OAuthProvider | null {
     : null;
 }
 
+export function isOAuthProviderConfigured(provider: OAuthProvider): boolean {
+  if (provider === "google") {
+    return Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+  }
+
+  if (provider === "github") {
+    return Boolean(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET);
+  }
+
+  return Boolean(
+    process.env.APPLE_CLIENT_ID &&
+      process.env.APPLE_TEAM_ID &&
+      process.env.APPLE_KEY_ID &&
+      process.env.APPLE_PRIVATE_KEY,
+  );
+}
+
+export function configuredOAuthProviders(): OAuthProvider[] {
+  return OAUTH_PROVIDERS.filter(isOAuthProviderConfigured);
+}
+
 export function oauthErrorMessage(code: string | undefined): string | null {
   switch (code) {
     case "oauth_denied":

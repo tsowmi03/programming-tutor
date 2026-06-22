@@ -9,6 +9,8 @@ import type {
 
 export type AiGuidanceMode = "nudge" | "debug" | "strategy" | "edge_case";
 
+export const DEFAULT_AI_GUIDANCE_MODEL = "claude-haiku-4-5";
+
 export interface AiGuidanceProblemContext {
   title: string;
   difficulty: string;

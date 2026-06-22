@@ -2,23 +2,21 @@
 
 import { memo, useEffect, useState } from "react";
 import {
-  Bug,
   BookOpen,
   Lightbulb,
   Lock,
   GraduationCap,
   History,
   ChevronDown,
-  Map,
-  Sparkles,
-  Target,
 } from "lucide-react";
 import { MarkdownView } from "@/components/MarkdownView";
 import { GuidanceReveal } from "@/components/GuidanceReveal";
-import type { AiGuidanceMode } from "@/lib/ai-guidance";
 import { LANGUAGES, LANGUAGE_IDS, type LanguageId } from "@/lib/judge/languages";
-import type { JudgeOutcome } from "@/lib/judge/types";
 import type { ProblemDetail, ProblemStatus } from "@/lib/problems";
+import {
+  AiGuidancePanel,
+  type AiGuidanceContext,
+} from "./AiGuidancePanel";
 import { fetchJson } from "./shared";
 
 type TabId = "description" | "guidance" | "solution" | "submissions";
@@ -27,12 +25,6 @@ interface SolutionPayload {
   solutions: Partial<Record<LanguageId, string>> | null;
   editorial: string | null;
 }
-
-type GuidanceContext = {
-  code: string;
-  latestOutcome: JudgeOutcome | null;
-  runError: string | null;
-};
 
 export interface SubmissionRow {
   id: string;
@@ -60,7 +52,7 @@ export const ProblemTabs = memo(function ProblemTabs({
   language: LanguageId;
   submissionsVersion: number;
   onRestoreCode: (code: string, language: LanguageId) => void;
-  getGuidanceContext: () => GuidanceContext;
+  getGuidanceContext: () => AiGuidanceContext;
 }) {
   const [tab, setTab] = useState<TabId>("description");
 
@@ -122,17 +114,6 @@ export const ProblemTabs = memo(function ProblemTabs({
   );
 });
 
-const AI_GUIDANCE_OPTIONS: {
-  mode: AiGuidanceMode;
-  label: string;
-  icon: typeof Lightbulb;
-}[] = [
-  { mode: "nudge", label: "Nudge", icon: Lightbulb },
-  { mode: "debug", label: "Debug", icon: Bug },
-  { mode: "strategy", label: "Strategy", icon: Map },
-  { mode: "edge_case", label: "Edge case", icon: Target },
-];
-
 function GuidanceTab({
   slug,
   guidance,
@@ -142,54 +123,9 @@ function GuidanceTab({
   slug: string;
   guidance: ProblemDetail["guidance"];
   language: LanguageId;
-  getGuidanceContext: () => GuidanceContext;
+  getGuidanceContext: () => AiGuidanceContext;
 }) {
   const contextKey = `${slug}:${language}`;
-  const [pendingMode, setPendingMode] = useState<AiGuidanceMode | null>(null);
-  const [aiGuidance, setAiGuidance] = useState<{
-    key: string;
-    text: string;
-  } | null>(null);
-  const [aiError, setAiError] = useState<{ key: string; text: string } | null>(
-    null,
-  );
-
-  const requestGuidance = async (mode: AiGuidanceMode) => {
-    if (pendingMode) return;
-    setPendingMode(mode);
-    setAiError(null);
-    try {
-      const context = getGuidanceContext();
-      const data = await fetchJson<{ guidance: string }>(
-        `/api/problems/${encodeURIComponent(slug)}/guidance`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            language,
-            mode,
-            code: context.code,
-            latestOutcome: context.latestOutcome,
-            runError: context.runError,
-          }),
-        },
-      );
-      setAiGuidance({
-        key: contextKey,
-        text: data.guidance || "No guidance returned.",
-      });
-    } catch (err) {
-      setAiError({
-        key: contextKey,
-        text: err instanceof Error ? err.message : String(err),
-      });
-    } finally {
-      setPendingMode(null);
-    }
-  };
-
-  const visibleError = aiError?.key === contextKey ? aiError.text : null;
-  const visibleGuidance =
-    aiGuidance?.key === contextKey ? aiGuidance.text : null;
 
   return (
     <div className="space-y-6">
@@ -198,37 +134,18 @@ function GuidanceTab({
         emptyText="No guidance for this problem yet."
       />
 
-      <section className="border-t border-edge pt-5">
-        <div className="mb-3 flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-indigo-300" />
-          <h3 className="text-sm font-semibold">Ask AI</h3>
-        </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {AI_GUIDANCE_OPTIONS.map((option) => {
-            const Icon = option.icon;
-            const loading = pendingMode === option.mode;
-            return (
-              <button
-                key={option.mode}
-                onClick={() => requestGuidance(option.mode)}
-                disabled={pendingMode !== null}
-                className="flex min-h-10 items-center justify-center gap-1.5 rounded-md border border-edge bg-surface-raised px-2.5 py-2 text-xs font-semibold transition hover:border-indigo-400/50 hover:text-indigo-200 disabled:cursor-not-allowed disabled:opacity-55"
-              >
-                <Icon className="h-3.5 w-3.5 shrink-0" />
-                <span>{loading ? "Asking..." : option.label}</span>
-              </button>
-            );
-          })}
-        </div>
-        {visibleError && (
-          <p className="mt-3 text-sm text-rose-300">{visibleError}</p>
-        )}
-        {visibleGuidance && (
-          <div className="mt-4 rounded-lg border border-indigo-500/25 bg-indigo-500/5 p-4 text-sm leading-relaxed">
-            <MarkdownView>{visibleGuidance}</MarkdownView>
-          </div>
-        )}
-      </section>
+      <AiGuidancePanel
+        contextKey={contextKey}
+        endpoint={`/api/problems/${encodeURIComponent(slug)}/guidance`}
+        getGuidanceContext={getGuidanceContext}
+        buildRequestBody={(mode, context) => ({
+          language,
+          mode,
+          code: context.code,
+          latestOutcome: context.latestOutcome,
+          runError: context.runError,
+        })}
+      />
     </div>
   );
 }

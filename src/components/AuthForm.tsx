@@ -29,10 +29,12 @@ export function AuthForm({
   mode,
   next,
   oauthError,
+  enabledOAuthProviders,
 }: {
   mode: "login" | "signup";
   next?: string;
   oauthError?: string | null;
+  enabledOAuthProviders: OAuthProvider[];
 }) {
   const [state, formAction, pending] = useActionState(
     mode === "login" ? login : signup,
@@ -43,6 +45,9 @@ export function AuthForm({
     ? `${copy.alt.href}?next=${encodeURIComponent(next)}`
     : copy.alt.href;
   const oauthQuery = next ? `?next=${encodeURIComponent(next)}` : "";
+  const oauthOptions = OAUTH_OPTIONS.filter((provider) =>
+    enabledOAuthProviders.includes(provider.id),
+  );
 
   return (
     <main className="flex min-h-full items-center justify-center px-4 py-12">
@@ -58,24 +63,30 @@ export function AuthForm({
         </div>
 
         <div className="space-y-4 rounded-2xl border border-edge bg-surface p-6">
-          <div className="grid gap-2">
-            {OAUTH_OPTIONS.map((provider) => (
-              <a
-                key={provider.id}
-                href={`/api/auth/${provider.id}${oauthQuery}`}
-                className="flex min-h-10 items-center justify-center gap-2 rounded-lg border border-edge bg-surface-raised px-3 py-2 text-sm font-semibold transition hover:border-indigo-400/50 hover:text-indigo-200"
-              >
-                <provider.icon className="h-4 w-4" />
-                Continue with {provider.label}
-              </a>
-            ))}
-          </div>
+          {oauthOptions.length > 0 && (
+            <>
+              <div className="grid gap-2">
+                {oauthOptions.map((provider) => (
+                  <a
+                    key={provider.id}
+                    href={`/api/auth/${provider.id}${oauthQuery}`}
+                    className="flex min-h-10 items-center justify-center gap-2 rounded-lg border border-edge bg-surface-raised px-3 py-2 text-sm font-semibold transition hover:border-indigo-400/50 hover:text-indigo-200"
+                  >
+                    <provider.icon className="h-4 w-4" />
+                    Continue with {provider.label}
+                  </a>
+                ))}
+              </div>
 
-          <div className="flex items-center gap-3">
-            <span className="h-px flex-1 bg-edge" />
-            <span className="text-xs uppercase tracking-wider text-muted">or</span>
-            <span className="h-px flex-1 bg-edge" />
-          </div>
+              <div className="flex items-center gap-3">
+                <span className="h-px flex-1 bg-edge" />
+                <span className="text-xs uppercase tracking-wider text-muted">
+                  or
+                </span>
+                <span className="h-px flex-1 bg-edge" />
+              </div>
+            </>
+          )}
 
           {oauthError && (
             <p

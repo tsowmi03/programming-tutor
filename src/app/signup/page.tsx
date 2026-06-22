@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { AuthForm } from "@/components/AuthForm";
-import { oauthErrorMessage } from "@/lib/oauth";
+import { configuredOAuthProviders, oauthErrorMessage } from "@/lib/oauth";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +15,11 @@ export default async function SignupPage({
   if (await getCurrentUser()) redirect("/");
   const { error, next } = await searchParams;
   return (
-    <AuthForm mode="signup" next={next} oauthError={oauthErrorMessage(error)} />
+    <AuthForm
+      mode="signup"
+      next={next}
+      oauthError={oauthErrorMessage(error)}
+      enabledOAuthProviders={configuredOAuthProviders()}
+    />
   );
 }

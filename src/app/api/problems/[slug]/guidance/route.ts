@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { NotFoundError, toErrorResponse } from "@/lib/api";
 import { requireUser } from "@/lib/auth";
 import {
+  DEFAULT_AI_GUIDANCE_MODEL,
   requestAiGuidance,
   type AiGuidanceProblemContext,
 } from "@/lib/ai-guidance";
@@ -61,7 +62,7 @@ export async function POST(
 
     const guidance = await requestAiGuidance({
       client: new Anthropic({ apiKey }),
-      model: process.env.AI_GUIDANCE_MODEL ?? "claude-sonnet-4-6",
+      model: process.env.AI_GUIDANCE_MODEL ?? DEFAULT_AI_GUIDANCE_MODEL,
       problem,
       language: body.language,
       code: body.code,
