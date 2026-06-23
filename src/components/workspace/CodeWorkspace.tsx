@@ -56,6 +56,11 @@ export function CodeWorkspace({
   const [runError, setRunError] = useState<string | null>(null);
   const [justSolved, setJustSolved] = useState(false);
   const [submissionsVersion, setSubmissionsVersion] = useState(0);
+  const [showHiddenTestsSetting, setShowHiddenTestsSetting] = useStoredState(
+    "cc-show-hidden-tests",
+    "",
+  );
+  const showHiddenTests = showHiddenTestsSetting === "1";
   const busy = phase !== "idle";
   const compact = useMediaQuery("(max-width: 767px)");
   const guidanceContextRef = useRef<{
@@ -108,6 +113,7 @@ export function CodeWorkspace({
             slug: problem.slug,
             language: lang,
             code,
+            showHiddenTests,
           }),
         },
       );
@@ -126,7 +132,7 @@ export function CodeWorkspace({
     } finally {
       setPhase("idle");
     }
-  }, [busy, code, lang, problem.slug, status]);
+  }, [busy, code, lang, problem.slug, showHiddenTests, status]);
 
   // Cmd/Ctrl+Enter runs the sample tests.
   const runRef = useRef(run);
@@ -312,6 +318,10 @@ export function CodeWorkspace({
                 outcome={outcome}
                 phase={phase}
                 errorMessage={runError}
+                showHiddenTestDetails={showHiddenTests}
+                onShowHiddenTestDetailsChange={(value) =>
+                  setShowHiddenTestsSetting(value ? "1" : "")
+                }
               />
             </Panel>
           </PanelGroup>

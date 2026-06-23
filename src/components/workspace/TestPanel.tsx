@@ -7,6 +7,7 @@ import {
   AlertTriangle,
   MinusCircle,
   EyeOff,
+  Eye,
 } from "lucide-react";
 import type {
   FunctionSignature,
@@ -35,6 +36,8 @@ export const TestPanel = memo(function TestPanel({
   outcome,
   phase,
   errorMessage,
+  showHiddenTestDetails,
+  onShowHiddenTestDetailsChange,
 }: {
   signature?: FunctionSignature;
   visibleTests: TestCase[];
@@ -42,6 +45,8 @@ export const TestPanel = memo(function TestPanel({
   outcome: JudgeOutcome | null;
   phase: Phase;
   errorMessage: string | null;
+  showHiddenTestDetails: boolean;
+  onShowHiddenTestDetailsChange: (value: boolean) => void;
 }) {
   const [selected, setSelected] = useState(0);
 
@@ -69,6 +74,24 @@ export const TestPanel = memo(function TestPanel({
 
   // Before any run: show the sample test cases.
   if (!outcome) {
+    if (visibleTests.length === 0) {
+      return (
+        <div className="h-full overflow-y-auto p-4 panel-scroll">
+          <div className="space-y-3">
+            <HiddenTestSetting
+              hiddenTestCount={hiddenTestCount}
+              showDetails={showHiddenTestDetails}
+              onChange={onShowHiddenTestDetailsChange}
+            />
+            <div className="rounded-lg border border-edge bg-surface/60 p-4 text-sm text-muted">
+              No sample tests are shown for this exercise. Submit to run the
+              hidden tests.
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     const test = visibleTests[Math.min(selected, visibleTests.length - 1)];
     return (
       <div className="flex h-full flex-col">
@@ -78,6 +101,11 @@ export const TestPanel = memo(function TestPanel({
           onSelect={setSelected}
         />
         <div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-4 panel-scroll">
+          <HiddenTestSetting
+            hiddenTestCount={hiddenTestCount}
+            showDetails={showHiddenTestDetails}
+            onChange={onShowHiddenTestDetailsChange}
+          />
           <Field label="Input" value={formatInput(signature, test.input)} />
           <Field label="Expected" value={JSON.stringify(test.expected)} />
           {hiddenTestCount > 0 && (
@@ -109,7 +137,22 @@ export const TestPanel = memo(function TestPanel({
 
   const results = outcome.results;
   const result = results[Math.min(selected, results.length - 1)];
+  if (!result) {
+    return (
+      <div className="h-full overflow-y-auto p-4 panel-scroll">
+        <div className="rounded-lg border border-edge bg-surface/60 p-4 text-sm text-muted">
+          No test result details were returned for this run.
+        </div>
+      </div>
+    );
+  }
+
   const test = visibleTests[result.index] as TestCase | undefined;
+  const inputValue = result.input
+    ? formatInput(signature, result.input)
+    : test
+      ? formatInput(signature, test.input)
+      : null;
   const meta = STATUS_META[result.status];
 
   return (
@@ -126,12 +169,37 @@ export const TestPanel = memo(function TestPanel({
           {meta.label}
           {result.hidden && (
             <span className="flex items-center gap-1 text-xs font-normal text-muted">
-              <EyeOff className="h-3 w-3" /> hidden test
+              {result.input ? (
+                <>
+                  <Eye className="h-3 w-3" /> hidden test revealed
+                </>
+              ) : (
+                <>
+                  <EyeOff className="h-3 w-3" /> hidden test
+                </>
+              )}
             </span>
           )}
         </p>
-        {test && (
-          <Field label="Input" value={formatInput(signature, test.input)} />
+        <HiddenTestSetting
+          hiddenTestCount={hiddenTestCount}
+          showDetails={showHiddenTestDetails}
+          onChange={onShowHiddenTestDetailsChange}
+        />
+        {result.hidden && showHiddenTestDetails && !result.input && (
+          <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs leading-relaxed text-amber-200">
+            Hidden details are enabled now. Submit again to include this hidden
+            test&apos;s input, expected output, and your output in the result.
+          </div>
+        )}
+        {result.hidden && !showHiddenTestDetails && !result.input && (
+          <div className="rounded-lg border border-edge bg-surface/60 p-3 text-xs leading-relaxed text-muted">
+            This is a hidden test. Turn on Reveal hidden details and submit
+            again to see the exact failing case.
+          </div>
+        )}
+        {inputValue && (
+          <Field label="Input" value={inputValue} />
         )}
         {result.expected !== undefined && (
           <Field label="Expected" value={result.expected} />
@@ -151,6 +219,37 @@ export const TestPanel = memo(function TestPanel({
     </div>
   );
 });
+
+function HiddenTestSetting({
+  hiddenTestCount,
+  showDetails,
+  onChange,
+}: {
+  hiddenTestCount: number;
+  showDetails: boolean;
+  onChange: (value: boolean) => void;
+}) {
+  if (hiddenTestCount <= 0) return null;
+
+  return (
+    <label className="flex flex-wrap items-center gap-2 rounded-lg border border-edge bg-surface/70 px-3 py-2 text-xs text-muted">
+      <input
+        type="checkbox"
+        checked={showDetails}
+        onChange={(event) => onChange(event.currentTarget.checked)}
+        className="h-3.5 w-3.5 accent-indigo-500"
+      />
+      <span className="font-medium text-foreground">
+        Reveal hidden details on submit
+      </span>
+      <span>
+        {showDetails
+          ? "On: hidden failures will show input, expected output, and your output."
+          : "Off: hidden tests stay in challenge mode."}
+      </span>
+    </label>
+  );
+}
 
 function CaseChips({
   count,

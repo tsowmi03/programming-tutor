@@ -45,6 +45,7 @@ export async function POST(req: Request) {
         code: body.code,
         signature: judging.signature,
         tests: judging.tests,
+        revealHiddenTests: body.showHiddenTests,
       });
 
       const submission = await prisma.submission.create({

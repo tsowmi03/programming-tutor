@@ -53,6 +53,8 @@ export type TestStatus = "pass" | "fail" | "error" | "not_run";
 export interface TestResult {
   index: number;
   status: TestStatus;
+  /** Test input values, exposed only when hidden test reveal is enabled. */
+  input?: JudgeValue[];
   /** Canonical JSON rendering of the returned / expected values. */
   got?: string;
   expected?: string;

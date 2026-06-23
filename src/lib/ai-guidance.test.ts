@@ -47,6 +47,7 @@ describe("AI guidance helpers", () => {
           index: 1,
           status: "fail",
           hidden: true,
+          input: ["secret input"],
           got: "secret got",
           expected: "secret expected",
           stdout: "secret stdout",
@@ -63,6 +64,7 @@ describe("AI guidance helpers", () => {
       hidden: true,
       note: "Hidden test details redacted.",
     });
+    expect(json).not.toContain("secret input");
     expect(json).not.toContain("secret got");
     expect(json).not.toContain("secret expected");
     expect(json).not.toContain("secret stdout");

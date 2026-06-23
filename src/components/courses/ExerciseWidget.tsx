@@ -52,6 +52,11 @@ export function ExerciseWidget({
   const [outcome, setOutcome] = useState<JudgeOutcome | null>(null);
   const [runError, setRunError] = useState<string | null>(null);
   const [showSolution, setShowSolution] = useState(false);
+  const [showHiddenTestsSetting, setShowHiddenTestsSetting] = useStoredState(
+    "cc-show-hidden-tests",
+    "",
+  );
+  const showHiddenTests = showHiddenTestsSetting === "1";
   const busy = phase !== "idle";
 
   // Notify the parent lesson once the solved state is known and on changes.
@@ -79,6 +84,7 @@ export function ExerciseWidget({
               lessonSlug,
               exerciseId: exercise.id,
               code,
+              ...(endpoint === "submit" ? { showHiddenTests } : {}),
             }),
           },
         );
@@ -93,7 +99,16 @@ export function ExerciseWidget({
         setPhase("idle");
       }
     },
-    [busy, code, courseSlug, lessonSlug, exercise.id, isSolved, setSolved],
+    [
+      busy,
+      code,
+      courseSlug,
+      lessonSlug,
+      exercise.id,
+      isSolved,
+      setSolved,
+      showHiddenTests,
+    ],
   );
 
   const resetCode = () => {
@@ -218,6 +233,10 @@ export function ExerciseWidget({
           outcome={outcome}
           phase={phase}
           errorMessage={runError}
+          showHiddenTestDetails={showHiddenTests}
+          onShowHiddenTestDetailsChange={(value) =>
+            setShowHiddenTestsSetting(value ? "1" : "")
+          }
         />
       </div>
 

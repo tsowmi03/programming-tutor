@@ -91,8 +91,44 @@ describe("judgeCode", () => {
       status: "fail",
       hidden: true,
     });
+    expect(outcome.results[1].input).toBeUndefined();
     expect(outcome.results[1].got).toBeUndefined();
     expect(outcome.results[1].expected).toBeUndefined();
     expect(outcome.results[1].stdout).toBeUndefined();
+  });
+
+  it("reveals hidden result data when requested", async () => {
+    executeMock.mockResolvedValue({
+      run: stage({
+        stdout: [
+          "@@JUDGE:BEGIN:0@@",
+          '@@JUDGE:RESULT:0:{"pass":true}@@',
+          "@@JUDGE:BEGIN:1@@",
+          "hidden input: 2",
+          '@@JUDGE:RESULT:1:{"pass":false,"got":99}@@',
+        ].join("\n"),
+      }),
+    });
+
+    const tests: TestCase[] = [
+      { input: [1], expected: 1 },
+      { input: [2], expected: 2, hidden: true },
+    ];
+    const outcome = await judgeCode({
+      language: "python",
+      code: "def answer(n): return n",
+      signature,
+      tests,
+      revealHiddenTests: true,
+    });
+
+    expect(outcome.results[1]).toMatchObject({
+      status: "fail",
+      hidden: true,
+      input: [2],
+      got: "99",
+      expected: "2",
+      stdout: "hidden input: 2",
+    });
   });
 });

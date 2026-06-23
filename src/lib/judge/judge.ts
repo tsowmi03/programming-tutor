@@ -51,8 +51,9 @@ export async function judgeCode(params: {
   code: string;
   signature: FunctionSignature;
   tests: TestCase[];
+  revealHiddenTests?: boolean;
 }): Promise<JudgeOutcome> {
-  const { language, code, signature, tests } = params;
+  const { language, code, signature, tests, revealHiddenTests = false } = params;
   const info = LANGUAGES[language];
   const source = buildHarness(language, code, signature, tests);
 
@@ -77,7 +78,7 @@ export async function judgeCode(params: {
   const { results, fatal } = parseJudgeOutput(response.run.stdout, tests.length);
 
   if (fatal) {
-    decorateResults(results, tests);
+    decorateResults(results, tests, revealHiddenTests);
     return {
       status: "error",
       results,
@@ -88,7 +89,7 @@ export async function judgeCode(params: {
   }
 
   annotateCrash(results, response.run);
-  decorateResults(results, tests);
+  decorateResults(results, tests, revealHiddenTests);
 
   const passedCount = results.filter((r) => r.status === "pass").length;
   const hasError = results.some(
@@ -145,16 +146,30 @@ function annotateCrash(
   }
 }
 
-function decorateResults(results: TestResult[], tests: TestCase[]) {
+function decorateResults(
+  results: TestResult[],
+  tests: TestCase[],
+  revealHiddenTests = false,
+) {
   for (const result of results) {
     const test = tests[result.index];
     if (!test) continue;
 
     if (test.hidden) {
       result.hidden = true;
-      delete result.expected;
-      delete result.got;
-      delete result.stdout;
+      if (!revealHiddenTests) {
+        delete result.input;
+        delete result.expected;
+        delete result.got;
+        delete result.stdout;
+        continue;
+      }
+
+      result.input = test.input;
+      result.expected = canonical(test.expected);
+      if (result.status === "pass" && result.got === undefined) {
+        result.got = result.expected;
+      }
       continue;
     }
 

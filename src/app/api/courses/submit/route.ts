@@ -16,7 +16,7 @@ import { NotFoundError, toErrorResponse } from "@/lib/api";
 export async function POST(req: Request) {
   try {
     await requireUser();
-    const { courseSlug, lessonSlug, exerciseId, code } =
+    const { courseSlug, lessonSlug, exerciseId, code, showHiddenTests } =
       courseExerciseRunSchema.parse(await req.json());
 
     const course = getCourse(courseSlug);
@@ -33,6 +33,7 @@ export async function POST(req: Request) {
       code,
       signature: exercise.signature,
       tests: ordered,
+      revealHiddenTests: showHiddenTests,
     });
 
     return NextResponse.json({ outcome });

@@ -12,6 +12,7 @@ export const codeSubmissionSchema = z.object({
   slug: z.string().min(1),
   language: z.enum(LANGUAGE_IDS),
   code: z.string().min(1, "Code cannot be empty").max(100_000),
+  showHiddenTests: z.boolean().optional().default(false),
 });
 
 export const explanationSubmissionSchema = z.object({
@@ -131,9 +132,19 @@ export const selfAssessSchema = z.object({
   selfScore: z.number().int().min(0).max(2),
 });
 
+const judgeValueSchema = z.union([
+  z.number(),
+  z.boolean(),
+  z.string(),
+  z.array(z.number()),
+  z.array(z.string()),
+  z.array(z.array(z.number())),
+]);
+
 const judgeResultSchema = z.object({
   index: z.number().int().nonnegative(),
   status: z.enum(["pass", "fail", "error", "not_run"]),
+  input: z.array(judgeValueSchema).max(20).optional(),
   got: z.string().max(5_000).optional(),
   expected: z.string().max(5_000).optional(),
   error: z.string().max(5_000).optional(),
@@ -168,6 +179,7 @@ export const courseExerciseRunSchema = z.object({
   lessonSlug: z.string().min(1),
   exerciseId: z.string().min(1),
   code: z.string().min(1, "Code cannot be empty").max(100_000),
+  showHiddenTests: z.boolean().optional().default(false),
 });
 
 export const courseAiGuidanceRequestSchema = aiGuidanceContextSchema.extend({
