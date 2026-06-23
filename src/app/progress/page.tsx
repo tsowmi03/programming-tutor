@@ -17,6 +17,7 @@ const STATUS_LABELS: Record<string, { label: string; classes: string }> = {
   error: { label: "Runtime error", classes: "text-orange-400" },
   compile_error: { label: "Compile error", classes: "text-rose-400" },
   self_assessed: { label: "Self-assessed", classes: "text-indigo-300" },
+  ai_assessed: { label: "AI marked", classes: "text-indigo-300" },
 };
 
 export default async function ProgressPage() {
@@ -26,7 +27,7 @@ export default async function ProgressPage() {
       include: {
         submissions: {
           where: { userId: user.id },
-          select: { status: true, selfScore: true },
+          select: { status: true, selfScore: true, aiScore: true },
         },
       },
       orderBy: [{ category: "asc" }, { order: "asc" }],
@@ -184,6 +185,11 @@ export default async function ProgressPage() {
                     {s.passedCount !== null && (
                       <span className="text-xs tabular-nums text-muted">
                         {s.passedCount}/{s.totalCount}
+                      </span>
+                    )}
+                    {s.aiScore !== null && (
+                      <span className="text-xs tabular-nums text-muted">
+                        AI {s.aiScore}/2
                       </span>
                     )}
                     <DifficultyBadge difficulty={s.problem.difficulty} />

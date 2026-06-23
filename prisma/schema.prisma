@@ -132,8 +132,11 @@ model Submission {
 
   answerText String? // explanation submissions
   selfScore  Int? // 0 = missed, 1 = partial, 2 = got it
+  aiScore    Int? // explanation AI mark: 0 = missed, 1 = partial, 2 = got it
+  aiFeedback String?
+  aiMarking  String? // JSON AiExplanationMarking
 
-  status      String // "passed" | "failed" | "error" | "compile_error" | "self_assessed"
+  status      String // "passed" | "failed" | "error" | "compile_error" | "self_assessed" | "ai_assessed"
   results     String? // JSON TestResult[]
   passedCount Int?
   totalCount  Int?

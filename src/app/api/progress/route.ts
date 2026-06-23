@@ -19,7 +19,7 @@ export async function GET() {
       include: {
         submissions: {
           where: { userId: user.id },
-          select: { status: true, selfScore: true },
+          select: { status: true, selfScore: true, aiScore: true },
         },
       },
       orderBy: [{ category: "asc" }, { order: "asc" }],
@@ -67,6 +67,7 @@ export async function GET() {
         language: true,
         status: true,
         selfScore: true,
+        aiScore: true,
         passedCount: true,
         totalCount: true,
         createdAt: true,

@@ -74,11 +74,11 @@ export function formatRetryDelay(from: Date, until: Date): string {
 
 function limitMessage(bucket: AiGuidanceLimitBucket, now: Date, retryAt: Date) {
   const limitName =
-    bucket === "daily" ? "daily AI guidance limit" : "short-term AI guidance limit";
+    bucket === "daily" ? "daily AI assistance limit" : "short-term AI assistance limit";
   return `You've reached the ${limitName}. You can ask again in ${formatRetryDelay(
     now,
     retryAt,
-  )}. The built-in hints and any guidance already shown are still available.`;
+  )}. Existing hints, model answers, and any guidance already shown are still available.`;
 }
 
 export class AiGuidanceLimitError extends Error {

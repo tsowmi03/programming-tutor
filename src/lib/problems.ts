@@ -43,6 +43,7 @@ export interface ProblemDetail {
 interface SubmissionLite {
   status: string;
   selfScore: number | null;
+  aiScore?: number | null;
 }
 
 /**
@@ -53,9 +54,7 @@ interface SubmissionLite {
 export function deriveStatus(submissions: SubmissionLite[]): ProblemStatus {
   if (submissions.length === 0) return "not_started";
   const solved = submissions.some(
-    (s) =>
-      s.status === "passed" ||
-      (s.status === "self_assessed" && (s.selfScore ?? 0) >= 2),
+    (s) => s.status === "passed" || (s.selfScore ?? s.aiScore ?? 0) >= 2,
   );
   return solved ? "solved" : "attempted";
 }
@@ -66,7 +65,7 @@ export async function listProblems(userId: string): Promise<ProblemSummary[]> {
     include: {
       submissions: {
         where: { userId },
-        select: { status: true, selfScore: true },
+        select: { status: true, selfScore: true, aiScore: true },
       },
     },
   });
@@ -96,7 +95,7 @@ export async function getProblemDetail(
     include: {
       submissions: {
         where: { userId },
-        select: { status: true, selfScore: true },
+        select: { status: true, selfScore: true, aiScore: true },
       },
     },
   });

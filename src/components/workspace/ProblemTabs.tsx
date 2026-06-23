@@ -34,6 +34,9 @@ export interface SubmissionRow {
   answerText: string | null;
   status: string;
   selfScore: number | null;
+  aiScore: number | null;
+  aiFeedback: string | null;
+  aiMarking: string | null;
   passedCount: number | null;
   totalCount: number | null;
   createdAt: string;
@@ -239,6 +242,7 @@ const STATUS_LABELS: Record<string, { label: string; classes: string }> = {
   error: { label: "Runtime error", classes: "text-orange-400" },
   compile_error: { label: "Compile error", classes: "text-rose-400" },
   self_assessed: { label: "Self-assessed", classes: "text-indigo-300" },
+  ai_assessed: { label: "AI marked", classes: "text-indigo-300" },
 };
 
 function SubmissionsTab({
@@ -293,6 +297,9 @@ function SubmissionsTab({
                     {row.passedCount}/{row.totalCount} tests
                   </span>
                 )}
+                {row.aiScore !== null && (
+                  <span className="text-xs text-muted">AI {row.aiScore}/2</span>
+                )}
                 {row.language && (
                   <span className="rounded bg-surface-raised px-1.5 py-0.5 text-[11px] text-muted">
                     {LANGUAGES[row.language as LanguageId]?.label ?? row.language}
@@ -325,6 +332,11 @@ function SubmissionsTab({
                   >
                     Restore this code to the editor
                   </button>
+                )}
+                {row.aiFeedback && (
+                  <p className="mt-2 rounded border border-indigo-500/20 bg-indigo-500/5 p-3 text-sm leading-relaxed text-indigo-100">
+                    {row.aiFeedback}
+                  </p>
                 )}
               </div>
             )}
