@@ -11,6 +11,9 @@ export interface ProblemSequenceParams {
   shuffle?: string;
   queue?: "review";
   mode?: "interview" | "no_hints";
+  session?: "review10" | "weak_topic" | "timed_interview" | "no_hints";
+  limit?: number;
+  timerMinutes?: number;
 }
 
 export interface ProblemAdjacent {
@@ -33,12 +36,30 @@ const STUDY_MODES = new Set<NonNullable<ProblemSequenceParams["mode"]>>([
   "interview",
   "no_hints",
 ]);
+const STUDY_SESSIONS = new Set<NonNullable<ProblemSequenceParams["session"]>>([
+  "review10",
+  "weak_topic",
+  "timed_interview",
+  "no_hints",
+]);
+const MAX_SEQUENCE_LIMIT = 50;
+const MAX_TIMER_MINUTES = 180;
 const CATEGORY_ORDER = new Map(
   CATEGORY_LIST.map((category, index) => [category.id, index]),
 );
 
 function firstValue(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function parseBoundedInt(
+  value: string | undefined,
+  max: number,
+): number | undefined {
+  if (!value) return undefined;
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return undefined;
+  return Math.min(parsed, max);
 }
 
 export function parseProblemSequenceParams(
@@ -52,6 +73,12 @@ export function parseProblemSequenceParams(
   const shuffle = firstValue(raw.shuffle)?.trim();
   const queue = firstValue(raw.queue)?.trim();
   const mode = firstValue(raw.mode)?.trim();
+  const session = firstValue(raw.session)?.trim();
+  const limit = parseBoundedInt(firstValue(raw.limit)?.trim(), MAX_SEQUENCE_LIMIT);
+  const timerMinutes = parseBoundedInt(
+    firstValue(raw.timer)?.trim(),
+    MAX_TIMER_MINUTES,
+  );
 
   return {
     category: CATEGORY_ORDER.has(category as CategoryId)
@@ -72,6 +99,13 @@ export function parseProblemSequenceParams(
     mode: STUDY_MODES.has(mode as NonNullable<ProblemSequenceParams["mode"]>)
       ? (mode as NonNullable<ProblemSequenceParams["mode"]>)
       : undefined,
+    session: STUDY_SESSIONS.has(
+      session as NonNullable<ProblemSequenceParams["session"]>,
+    )
+      ? (session as NonNullable<ProblemSequenceParams["session"]>)
+      : undefined,
+    limit,
+    timerMinutes,
   };
 }
 
@@ -87,6 +121,9 @@ export function buildProblemSequenceQuery(
   if (params.shuffle) query.set("shuffle", params.shuffle);
   if (params.queue) query.set("queue", params.queue);
   if (params.mode) query.set("mode", params.mode);
+  if (params.session) query.set("session", params.session);
+  if (params.limit) query.set("limit", String(params.limit));
+  if (params.timerMinutes) query.set("timer", String(params.timerMinutes));
   return query.toString();
 }
 
@@ -179,7 +216,7 @@ export function getProblemSequence(
   params: ProblemSequenceParams,
   currentSlug?: string,
 ): ProblemSummary[] {
-  if (params.queue === "review") return problems;
+  if (params.queue === "review") return problems.slice(0, params.limit);
 
   let sequence = filterProblems(problems, params);
 
@@ -191,7 +228,7 @@ export function getProblemSequence(
     );
   }
 
-  return orderProblems(sequence, params.shuffle);
+  return orderProblems(sequence, params.shuffle).slice(0, params.limit);
 }
 
 export function getAdjacentProblems(

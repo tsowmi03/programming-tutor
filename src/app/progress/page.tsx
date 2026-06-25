@@ -196,7 +196,7 @@ export default async function ProgressPage() {
             {weakTopics.map((topic) => (
               <Link
                 key={topic.id}
-                href={`/problems?category=${topic.id}&status=attempted`}
+                href={`/problems?category=${topic.id}&status=attempted&session=weak_topic&limit=10`}
                 className="rounded-lg border border-edge bg-background/40 p-4 transition hover:border-indigo-500/40 hover:bg-surface-raised"
               >
                 <div className="flex items-start justify-between gap-3">

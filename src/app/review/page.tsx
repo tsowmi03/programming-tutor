@@ -113,6 +113,14 @@ export default async function ReviewPage() {
   const refreshCount = countByReason(queue.due, ["refresh_solved_problem"]);
   const dueCount = queue.due.length + courseQueue.due.length;
   const hasReviewItems = queue.items.length > 0 || courseQueue.items.length > 0;
+  const review10Item = queue.due[0] ?? queue.items[0] ?? null;
+  const review10Href = review10Item
+    ? buildProblemHref(review10Item.problem.slug, {
+        queue: "review",
+        session: "review10",
+        limit: 10,
+      })
+    : "/review";
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
@@ -160,24 +168,24 @@ export default async function ReviewPage() {
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <StudyModeCard
-            title="Review queue"
-            body="Work through due and upcoming items from your history."
-            href="/review"
+            title="Review 10"
+            body="Work through a capped review set from your due queue."
+            href={review10Href}
           />
           <StudyModeCard
             title="Weak topic"
-            body="Open the progress diagnosis and start from the roughest area."
+            body="Use the progress diagnosis to start a topic-focused queue."
             href="/progress#weak-topics"
           />
           <StudyModeCard
-            title="Interview drill"
-            body="Start unsolved medium code problems with guidance hidden."
-            href="/problems?type=code&difficulty=medium&status=not_started&mode=interview"
+            title="Timed interview"
+            body="Start medium code problems with guidance hidden and a 45-minute timer."
+            href="/problems?type=code&difficulty=medium&status=not_started&mode=interview&session=timed_interview&timer=45"
           />
           <StudyModeCard
             title="No hints"
             body="Pick unsolved code problems with guidance locked until you try."
-            href="/problems?type=code&status=not_started&mode=no_hints"
+            href="/problems?type=code&status=not_started&mode=no_hints&session=no_hints"
           />
         </div>
       </section>

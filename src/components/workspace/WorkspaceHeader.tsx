@@ -1,14 +1,29 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ChevronLeft, Shuffle } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronLeft,
+  Pause,
+  Play,
+  RotateCcw,
+  Shuffle,
+  Timer,
+} from "lucide-react";
 import { CATEGORIES } from "@/content/categories";
 import type { CategoryId } from "@/content/types";
 import type { ProblemStatus } from "@/lib/problems";
+import type { ProblemSequenceParams } from "@/lib/problem-navigation";
 import { DifficultyBadge, StatusIcon } from "@/components/badges";
 
 export interface WorkspaceNavigation {
   problemsHref: string;
   backLabel?: string;
-  studyMode?: "interview" | "no_hints";
+  studyMode?: ProblemSequenceParams["mode"];
+  studySession?: ProblemSequenceParams["session"];
+  timerMinutes?: number;
   previousProblemHref: string | null;
   nextProblemHref: string | null;
   randomProblemHref: string | null;
@@ -25,6 +40,8 @@ export function WorkspaceHeader({
   problemsHref,
   backLabel = "Problems",
   studyMode,
+  studySession,
+  timerMinutes,
   previousProblemHref,
   nextProblemHref,
   randomProblemHref,
@@ -38,6 +55,7 @@ export function WorkspaceHeader({
   status: ProblemStatus;
 } & WorkspaceNavigation) {
   const showPosition = position > 0 && total > 0;
+  const sessionLabel = getStudySessionLabel(studySession, studyMode);
 
   return (
     <div className="flex min-h-12 shrink-0 flex-wrap items-center gap-2 border-b border-edge bg-surface px-3 py-2 sm:gap-3 sm:px-4">
@@ -57,10 +75,13 @@ export function WorkspaceHeader({
         <h1 className="truncate text-[15px] font-semibold">{title}</h1>
       </div>
       <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
-        {studyMode && (
+        {sessionLabel && (
           <span className="hidden rounded-full bg-indigo-500/10 px-2 py-0.5 text-xs font-semibold text-indigo-300 ring-1 ring-indigo-500/30 lg:inline-flex">
-            {studyMode === "interview" ? "Interview" : "No hints"}
+            {sessionLabel}
           </span>
+        )}
+        {timerMinutes && (
+          <StudySessionTimer key={timerMinutes} minutes={timerMinutes} />
         )}
         <span className="hidden text-xs text-muted xl:block">
           {CATEGORIES[category]?.label}
@@ -110,6 +131,78 @@ export function WorkspaceHeader({
           </Link>
         )}
       </div>
+    </div>
+  );
+}
+
+function getStudySessionLabel(
+  session: ProblemSequenceParams["session"],
+  mode: ProblemSequenceParams["mode"],
+): string | null {
+  if (session === "review10") return "Review 10";
+  if (session === "weak_topic") return "Weak topic";
+  if (session === "timed_interview") return "Timed interview";
+  if (session === "no_hints") return "No hints";
+  if (mode === "interview") return "Interview";
+  if (mode === "no_hints") return "No hints";
+  return null;
+}
+
+function formatTime(totalSeconds: number): string {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+function StudySessionTimer({ minutes }: { minutes: number }) {
+  const initialSeconds = useMemo(() => minutes * 60, [minutes]);
+  const [remaining, setRemaining] = useState(initialSeconds);
+  const [running, setRunning] = useState(true);
+
+  useEffect(() => {
+    if (!running || remaining <= 0) return undefined;
+    const id = window.setInterval(() => {
+      setRemaining((value) => Math.max(0, value - 1));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [remaining, running]);
+
+  const done = remaining <= 0;
+
+  return (
+    <div
+      className={`hidden h-7 items-center gap-1.5 rounded-full border px-2 text-xs font-semibold tabular-nums lg:inline-flex ${
+        done
+          ? "border-rose-500/35 bg-rose-500/10 text-rose-200"
+          : "border-indigo-500/30 bg-indigo-500/10 text-indigo-200"
+      }`}
+      title="Timed interview session"
+    >
+      <Timer className="h-3.5 w-3.5" />
+      <span className="min-w-12 text-center">
+        {done ? "Time up" : formatTime(remaining)}
+      </span>
+      <button
+        type="button"
+        onClick={() => setRunning((value) => !value)}
+        className="rounded p-0.5 transition hover:bg-white/10"
+        title={running ? "Pause timer" : "Resume timer"}
+        aria-label={running ? "Pause timer" : "Resume timer"}
+      >
+        {running ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          setRemaining(initialSeconds);
+          setRunning(true);
+        }}
+        className="rounded p-0.5 transition hover:bg-white/10"
+        title="Reset timer"
+        aria-label="Reset timer"
+      >
+        <RotateCcw className="h-3 w-3" />
+      </button>
     </div>
   );
 }

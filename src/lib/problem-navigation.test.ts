@@ -127,11 +127,14 @@ describe("problem navigation", () => {
       shuffle: "seed",
       queue: "review",
       mode: "no_hints",
+      session: "review10",
+      limit: "10",
+      timer: "45",
       ignored: "value",
     });
 
     expect(buildProblemHref("two-sum", params)).toBe(
-      "/problems/two-sum?category=arrays-hashing&difficulty=easy&type=code&status=not_started&q=pair+sum&shuffle=seed&queue=review&mode=no_hints",
+      "/problems/two-sum?category=arrays-hashing&difficulty=easy&type=code&status=not_started&q=pair+sum&shuffle=seed&queue=review&mode=no_hints&session=review10&limit=10&timer=45",
     );
     expect(buildProblemsHref(params)).toBe("/review");
     expect(
@@ -141,6 +144,9 @@ describe("problem navigation", () => {
         status: "unknown",
         queue: "daily",
         mode: "practice",
+        session: "cram",
+        limit: "-1",
+        timer: "0",
       }),
     ).toEqual({});
   });
@@ -159,15 +165,29 @@ describe("problem navigation", () => {
     );
   });
 
-  it("preserves study mode in problem links", () => {
+  it("limits review queues for focused review sessions", () => {
+    const reviewOrder = [PROBLEMS[2], PROBLEMS[0], PROBLEMS[1]];
+
+    expect(
+      getProblemSequence(reviewOrder, {
+        queue: "review",
+        session: "review10",
+        limit: 2,
+      }).map((problem) => problem.slug),
+    ).toEqual(["hash-maps", "binary-search"]);
+  });
+
+  it("preserves focused study state in problem links", () => {
     expect(
       buildProblemHref("binary-search", {
         type: "code",
         status: "not_started",
         mode: "interview",
+        session: "timed_interview",
+        timerMinutes: 45,
       }),
     ).toBe(
-      "/problems/binary-search?type=code&status=not_started&mode=interview",
+      "/problems/binary-search?type=code&status=not_started&mode=interview&session=timed_interview&timer=45",
     );
   });
 });

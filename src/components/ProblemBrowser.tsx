@@ -37,6 +37,9 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
   const [status, setStatus] = useState(searchParams.get("status") ?? "");
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const mode = searchParams.get("mode") ?? "";
+  const session = searchParams.get("session") ?? "";
+  const limit = searchParams.get("limit") ?? "";
+  const timer = searchParams.get("timer") ?? "";
   const deferredQuery = useDeferredValue(query);
 
   const sequenceParams = useMemo(
@@ -48,8 +51,21 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
         status,
         q: deferredQuery,
         mode,
+        session,
+        limit,
+        timer,
       }),
-    [category, deferredQuery, difficulty, mode, status, type],
+    [
+      category,
+      deferredQuery,
+      difficulty,
+      limit,
+      mode,
+      session,
+      status,
+      timer,
+      type,
+    ],
   );
 
   const ordered = useMemo(
@@ -105,11 +121,23 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
       ? STATUSES.find((option) => option.id === sequenceParams.status)?.label
       : null,
     sequenceParams.query ? `Search: "${sequenceParams.query}"` : null,
-    sequenceParams.mode === "interview"
-      ? "Interview mode"
-      : sequenceParams.mode === "no_hints"
-        ? "No hints mode"
-        : null,
+    sequenceParams.session === "review10"
+      ? "Review 10"
+      : sequenceParams.session === "weak_topic"
+        ? "Weak topic"
+        : sequenceParams.session === "timed_interview"
+          ? "Timed interview"
+          : sequenceParams.session === "no_hints"
+            ? "No hints"
+            : sequenceParams.mode === "interview"
+              ? "Interview mode"
+              : sequenceParams.mode === "no_hints"
+                ? "No hints mode"
+                : null,
+    sequenceParams.limit ? `${sequenceParams.limit} problem cap` : null,
+    sequenceParams.timerMinutes
+      ? `${sequenceParams.timerMinutes} min timer`
+      : null,
   ].filter(Boolean);
 
   const randomLabel =

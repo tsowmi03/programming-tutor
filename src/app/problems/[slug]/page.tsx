@@ -55,6 +55,8 @@ function buildWorkspaceNavigation(
     problemsHref: buildProblemsHref(params),
     backLabel: params.queue === "review" ? "Review" : "Problems",
     studyMode: params.mode,
+    studySession: params.session,
+    timerMinutes: params.timerMinutes,
     previousProblemHref: adjacent.previous
       ? buildProblemHref(adjacent.previous.slug, params)
       : null,
