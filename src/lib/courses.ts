@@ -101,6 +101,7 @@ export interface LessonView {
   course: Course;
   lesson: Lesson;
   completed: boolean;
+  solvedExerciseIds: string[];
   prevSlug: string | null;
   nextSlug: string | null;
   /** 1-based position in the course, and the total, for the progress label. */
@@ -121,17 +122,25 @@ export async function getLessonView(
   const ordered = orderedLessons(course);
   const index = ordered.findIndex((o) => o.lesson.slug === lessonSlug);
 
-  const completedRow = await prisma.lessonProgress.findUnique({
-    where: {
-      userId_courseSlug_lessonSlug: { userId, courseSlug, lessonSlug },
-    },
-    select: { id: true },
-  });
+  const [completedRow, solvedRows] = await Promise.all([
+    prisma.lessonProgress.findUnique({
+      where: {
+        userId_courseSlug_lessonSlug: { userId, courseSlug, lessonSlug },
+      },
+      select: { id: true },
+    }),
+    prisma.courseExerciseSubmission.findMany({
+      where: { userId, courseSlug, lessonSlug, status: "passed" },
+      select: { exerciseId: true },
+    }),
+  ]);
+  const solvedExerciseIds = [...new Set(solvedRows.map((row) => row.exerciseId))];
 
   return {
     course,
     lesson,
     completed: completedRow != null,
+    solvedExerciseIds,
     prevSlug: index > 0 ? ordered[index - 1].lesson.slug : null,
     nextSlug:
       index < ordered.length - 1 ? ordered[index + 1].lesson.slug : null,

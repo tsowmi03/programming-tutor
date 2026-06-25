@@ -224,6 +224,7 @@ export function CodeWorkspace({
             submissionsVersion={submissionsVersion}
             onRestoreCode={restoreCode}
             getGuidanceContext={getGuidanceContext}
+            studyMode={navigation.studyMode}
           />
         </Panel>
 

@@ -8,6 +8,7 @@ import { DifficultyBadge, StatusIcon } from "@/components/badges";
 export interface WorkspaceNavigation {
   problemsHref: string;
   backLabel?: string;
+  studyMode?: "interview" | "no_hints";
   previousProblemHref: string | null;
   nextProblemHref: string | null;
   randomProblemHref: string | null;
@@ -23,6 +24,7 @@ export function WorkspaceHeader({
   status,
   problemsHref,
   backLabel = "Problems",
+  studyMode,
   previousProblemHref,
   nextProblemHref,
   randomProblemHref,
@@ -55,6 +57,11 @@ export function WorkspaceHeader({
         <h1 className="truncate text-[15px] font-semibold">{title}</h1>
       </div>
       <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+        {studyMode && (
+          <span className="hidden rounded-full bg-indigo-500/10 px-2 py-0.5 text-xs font-semibold text-indigo-300 ring-1 ring-indigo-500/30 lg:inline-flex">
+            {studyMode === "interview" ? "Interview" : "No hints"}
+          </span>
+        )}
         <span className="hidden text-xs text-muted xl:block">
           {CATEGORIES[category]?.label}
         </span>

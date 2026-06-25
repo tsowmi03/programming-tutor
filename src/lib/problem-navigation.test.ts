@@ -126,11 +126,12 @@ describe("problem navigation", () => {
       q: "  pair sum  ",
       shuffle: "seed",
       queue: "review",
+      mode: "no_hints",
       ignored: "value",
     });
 
     expect(buildProblemHref("two-sum", params)).toBe(
-      "/problems/two-sum?category=arrays-hashing&difficulty=easy&type=code&status=not_started&q=pair+sum&shuffle=seed&queue=review",
+      "/problems/two-sum?category=arrays-hashing&difficulty=easy&type=code&status=not_started&q=pair+sum&shuffle=seed&queue=review&mode=no_hints",
     );
     expect(buildProblemsHref(params)).toBe("/review");
     expect(
@@ -139,6 +140,7 @@ describe("problem navigation", () => {
         type: "essay",
         status: "unknown",
         queue: "daily",
+        mode: "practice",
       }),
     ).toEqual({});
   });
@@ -154,6 +156,18 @@ describe("problem navigation", () => {
     expect(buildProblemsHref({ queue: "review" })).toBe("/review");
     expect(buildProblemHref("hash-maps", { queue: "review" })).toBe(
       "/problems/hash-maps?queue=review",
+    );
+  });
+
+  it("preserves study mode in problem links", () => {
+    expect(
+      buildProblemHref("binary-search", {
+        type: "code",
+        status: "not_started",
+        mode: "interview",
+      }),
+    ).toBe(
+      "/problems/binary-search?type=code&status=not_started&mode=interview",
     );
   });
 });

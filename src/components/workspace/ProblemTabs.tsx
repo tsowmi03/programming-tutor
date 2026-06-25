@@ -19,7 +19,7 @@ import {
 } from "./AiGuidancePanel";
 import { fetchJson } from "./shared";
 
-type TabId = "description" | "guidance" | "solution" | "submissions";
+type TabId = "description" | "guidance" | "solution" | "submissions" | "journal";
 
 interface SolutionPayload {
   solutions: Partial<Record<LanguageId, string>> | null;
@@ -42,6 +42,28 @@ export interface SubmissionRow {
   createdAt: string;
 }
 
+interface MistakeNoteRow {
+  id: string;
+  category: string;
+  note: string;
+  submissionId: string | null;
+  createdAt: string;
+}
+
+const MISTAKE_CATEGORIES = [
+  { id: "edge_case", label: "Edge case" },
+  { id: "wrong_data_structure", label: "Wrong data structure" },
+  { id: "off_by_one", label: "Off-by-one" },
+  { id: "complexity", label: "Complexity" },
+  { id: "syntax", label: "Syntax" },
+  { id: "misread_prompt", label: "Misread prompt" },
+  { id: "other", label: "Other" },
+] as const;
+
+const MISTAKE_CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
+  MISTAKE_CATEGORIES.map((category) => [category.id, category.label]),
+);
+
 export const ProblemTabs = memo(function ProblemTabs({
   problem,
   status,
@@ -49,6 +71,7 @@ export const ProblemTabs = memo(function ProblemTabs({
   submissionsVersion,
   onRestoreCode,
   getGuidanceContext,
+  studyMode,
 }: {
   problem: ProblemDetail;
   status: ProblemStatus;
@@ -56,18 +79,29 @@ export const ProblemTabs = memo(function ProblemTabs({
   submissionsVersion: number;
   onRestoreCode: (code: string, language: LanguageId) => void;
   getGuidanceContext: () => AiGuidanceContext;
+  studyMode?: "interview" | "no_hints";
 }) {
   const [tab, setTab] = useState<TabId>("description");
+  const guidanceLocked =
+    studyMode === "interview" ||
+    (studyMode === "no_hints" && status === "not_started");
+
+  const activeTab = guidanceLocked && tab === "guidance" ? "description" : tab;
 
   const tabs: { id: TabId; label: string; icon: typeof BookOpen }[] = [
     { id: "description", label: "Description", icon: BookOpen },
-    {
-      id: "guidance",
-      label: `Guidance (${problem.guidance.length})`,
-      icon: Lightbulb,
-    },
+    ...(!guidanceLocked
+      ? [
+          {
+            id: "guidance" as const,
+            label: `Guidance (${problem.guidance.length})`,
+            icon: Lightbulb,
+          },
+        ]
+      : []),
     { id: "solution", label: "Solution", icon: GraduationCap },
     { id: "submissions", label: "Submissions", icon: History },
+    { id: "journal", label: "Journal", icon: BookOpen },
   ];
 
   return (
@@ -78,7 +112,7 @@ export const ProblemTabs = memo(function ProblemTabs({
             key={t.id}
             onClick={() => setTab(t.id)}
             className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-2.5 text-[13px] font-medium transition ${
-              tab === t.id
+              activeTab === t.id
                 ? "border-indigo-400 text-foreground"
                 : "border-transparent text-muted hover:text-foreground"
             }`}
@@ -93,8 +127,8 @@ export const ProblemTabs = memo(function ProblemTabs({
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-5 panel-scroll">
-        {tab === "description" && <MarkdownView>{problem.description}</MarkdownView>}
-        {tab === "guidance" && (
+        {activeTab === "description" && <MarkdownView>{problem.description}</MarkdownView>}
+        {activeTab === "guidance" && (
           <GuidanceTab
             slug={problem.slug}
             guidance={problem.guidance}
@@ -102,16 +136,17 @@ export const ProblemTabs = memo(function ProblemTabs({
             getGuidanceContext={getGuidanceContext}
           />
         )}
-        {tab === "solution" && (
+        {activeTab === "solution" && (
           <SolutionTab slug={problem.slug} status={status} language={language} />
         )}
-        {tab === "submissions" && (
+        {activeTab === "submissions" && (
           <SubmissionsTab
             slug={problem.slug}
             version={submissionsVersion}
             onRestoreCode={onRestoreCode}
           />
         )}
+        {activeTab === "journal" && <MistakeJournalTab slug={problem.slug} />}
       </div>
     </div>
   );
@@ -343,6 +378,131 @@ function SubmissionsTab({
           </div>
         );
       })}
+    </div>
+  );
+}
+
+function MistakeJournalTab({ slug }: { slug: string }) {
+  const [rows, setRows] = useState<MistakeNoteRow[] | null>(null);
+  const [category, setCategory] = useState<(typeof MISTAKE_CATEGORIES)[number]["id"]>(
+    "edge_case",
+  );
+  const [note, setNote] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchJson<{ notes: MistakeNoteRow[] }>(`/api/problems/${slug}/mistakes`)
+      .then((data) => setRows(data.notes))
+      .catch((err) => {
+        setRows([]);
+        setError(err instanceof Error ? err.message : String(err));
+      });
+  }, [slug]);
+
+  const saveNote = async () => {
+    if (saving || !note.trim()) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const data = await fetchJson<{ note: MistakeNoteRow }>(
+        `/api/problems/${slug}/mistakes`,
+        {
+          method: "POST",
+          body: JSON.stringify({ category, note }),
+        },
+      );
+      setRows((current) => [data.note, ...(current ?? [])]);
+      setNote("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="space-y-5">
+      <section className="rounded-xl border border-edge bg-background/40 p-4">
+        <h3 className="text-sm font-semibold">Record the mistake</h3>
+        <p className="mt-1 text-sm leading-relaxed text-muted">
+          Keep the note short and specific so it is useful before your next
+          retry.
+        </p>
+        <div className="mt-4 grid gap-3">
+          <select
+            value={category}
+            onChange={(event) =>
+              setCategory(
+                event.currentTarget.value as (typeof MISTAKE_CATEGORIES)[number]["id"],
+              )
+            }
+            className="rounded-md border border-edge bg-surface-raised px-3 py-2 text-sm outline-none transition focus:border-indigo-500/60"
+            aria-label="Mistake category"
+          >
+            {MISTAKE_CATEGORIES.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <textarea
+            value={note}
+            onChange={(event) => setNote(event.currentTarget.value)}
+            placeholder="What should you watch for next time?"
+            className="min-h-24 resize-y rounded-md border border-edge bg-background px-3 py-2 text-sm leading-relaxed outline-none placeholder:text-zinc-600 focus:border-indigo-500/60"
+          />
+          <div className="flex items-center justify-between gap-3">
+            {error ? (
+              <p className="text-xs text-rose-300">{error}</p>
+            ) : (
+              <span />
+            )}
+            <button
+              type="button"
+              onClick={saveNote}
+              disabled={saving || !note.trim()}
+              className="rounded-md bg-indigo-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {saving ? "Saving..." : "Save note"}
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3 className="mb-2 text-sm font-semibold">Previous notes</h3>
+        {!rows ? (
+          <p className="text-sm text-muted">Loading notes...</p>
+        ) : rows.length === 0 ? (
+          <p className="rounded-lg border border-edge bg-background/40 p-4 text-sm text-muted">
+            No notes yet.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {rows.map((row) => (
+              <div key={row.id} className="rounded-lg border border-edge p-3">
+                <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+                  <span className="rounded bg-surface-raised px-1.5 py-0.5 text-[11px] font-medium text-indigo-200">
+                    {MISTAKE_CATEGORY_LABELS[row.category] ?? row.category}
+                  </span>
+                  <span className="text-[11px] text-muted">
+                    {new Date(row.createdAt).toLocaleString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+                <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-200">
+                  {row.note}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

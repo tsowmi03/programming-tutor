@@ -36,6 +36,7 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
   const [type, setType] = useState(searchParams.get("type") ?? "");
   const [status, setStatus] = useState(searchParams.get("status") ?? "");
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const mode = searchParams.get("mode") ?? "";
   const deferredQuery = useDeferredValue(query);
 
   const sequenceParams = useMemo(
@@ -46,8 +47,9 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
         type,
         status,
         q: deferredQuery,
+        mode,
       }),
-    [category, deferredQuery, difficulty, status, type],
+    [category, deferredQuery, difficulty, mode, status, type],
   );
 
   const ordered = useMemo(
@@ -103,6 +105,11 @@ export function ProblemBrowser({ problems }: { problems: ProblemSummary[] }) {
       ? STATUSES.find((option) => option.id === sequenceParams.status)?.label
       : null,
     sequenceParams.query ? `Search: "${sequenceParams.query}"` : null,
+    sequenceParams.mode === "interview"
+      ? "Interview mode"
+      : sequenceParams.mode === "no_hints"
+        ? "No hints mode"
+        : null,
   ].filter(Boolean);
 
   const randomLabel =

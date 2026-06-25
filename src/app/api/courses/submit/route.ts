@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 import { judgeCode } from "@/lib/judge/judge";
 import { getCourse, getExercise } from "@/content/courses";
 import { courseExerciseRunSchema } from "@/lib/validation";
@@ -8,14 +9,13 @@ import { NotFoundError, toErrorResponse } from "@/lib/api";
 /**
  * "Submit" a course exercise: judge against the full test set (visible +
  * hidden), ordered visible-first so result indices line up with the sample
- * tests the client shows. Course exercises are practice — the pass/fail is
- * returned to the client (which tracks it locally), not stored as a
- * submission row. Lesson completion is recorded separately via the progress
- * endpoint.
+ * tests the client shows. The attempt is stored so course exercise progress
+ * survives across devices. Lesson completion is still recorded separately via
+ * the progress endpoint.
  */
 export async function POST(req: Request) {
   try {
-    await requireUser();
+    const user = await requireUser();
     const { courseSlug, lessonSlug, exerciseId, code, showHiddenTests } =
       courseExerciseRunSchema.parse(await req.json());
 
@@ -36,7 +36,22 @@ export async function POST(req: Request) {
       revealHiddenTests: showHiddenTests,
     });
 
-    return NextResponse.json({ outcome });
+    const submission = await prisma.courseExerciseSubmission.create({
+      data: {
+        userId: user.id,
+        courseSlug,
+        lessonSlug,
+        exerciseId,
+        language: course.language,
+        code,
+        status: outcome.status,
+        results: JSON.stringify(outcome.results),
+        passedCount: outcome.passedCount,
+        totalCount: outcome.totalCount,
+      },
+    });
+
+    return NextResponse.json({ submission: { id: submission.id }, outcome });
   } catch (err) {
     return toErrorResponse(err);
   }

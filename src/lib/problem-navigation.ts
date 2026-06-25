@@ -10,6 +10,7 @@ export interface ProblemSequenceParams {
   query?: string;
   shuffle?: string;
   queue?: "review";
+  mode?: "interview" | "no_hints";
 }
 
 export interface ProblemAdjacent {
@@ -27,6 +28,10 @@ const STATUSES = new Set<ProblemStatus>([
   "not_started",
   "attempted",
   "solved",
+]);
+const STUDY_MODES = new Set<NonNullable<ProblemSequenceParams["mode"]>>([
+  "interview",
+  "no_hints",
 ]);
 const CATEGORY_ORDER = new Map(
   CATEGORY_LIST.map((category, index) => [category.id, index]),
@@ -46,6 +51,7 @@ export function parseProblemSequenceParams(
   const query = firstValue(raw.q)?.trim();
   const shuffle = firstValue(raw.shuffle)?.trim();
   const queue = firstValue(raw.queue)?.trim();
+  const mode = firstValue(raw.mode)?.trim();
 
   return {
     category: CATEGORY_ORDER.has(category as CategoryId)
@@ -63,6 +69,9 @@ export function parseProblemSequenceParams(
     query: query || undefined,
     shuffle: shuffle ? shuffle.slice(0, 100) : undefined,
     queue: queue === "review" ? "review" : undefined,
+    mode: STUDY_MODES.has(mode as NonNullable<ProblemSequenceParams["mode"]>)
+      ? (mode as NonNullable<ProblemSequenceParams["mode"]>)
+      : undefined,
   };
 }
 
@@ -77,6 +86,7 @@ export function buildProblemSequenceQuery(
   if (params.query) query.set("q", params.query);
   if (params.shuffle) query.set("shuffle", params.shuffle);
   if (params.queue) query.set("queue", params.queue);
+  if (params.mode) query.set("mode", params.mode);
   return query.toString();
 }
 

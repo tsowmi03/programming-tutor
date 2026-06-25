@@ -132,6 +132,26 @@ export const selfAssessSchema = z.object({
   selfScore: z.number().int().min(0).max(2),
 });
 
+export const mistakeCategories = [
+  "edge_case",
+  "wrong_data_structure",
+  "off_by_one",
+  "complexity",
+  "syntax",
+  "misread_prompt",
+  "other",
+] as const;
+
+export const mistakeNoteSchema = z.object({
+  category: z.enum(mistakeCategories),
+  note: z
+    .string()
+    .trim()
+    .min(1, "Note cannot be empty.")
+    .max(1_000, "Note must be 1000 characters or fewer."),
+  submissionId: z.string().min(1).optional(),
+});
+
 const judgeValueSchema = z.union([
   z.number(),
   z.boolean(),

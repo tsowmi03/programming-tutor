@@ -45,7 +45,16 @@ export default async function LessonPage({
   const view = await getLessonView(courseSlug, lessonSlug, user.id);
   if (!view) notFound();
 
-  const { course, lesson, completed, prevSlug, nextSlug, position, total } =
+  const {
+    course,
+    lesson,
+    completed,
+    solvedExerciseIds,
+    prevSlug,
+    nextSlug,
+    position,
+    total,
+  } =
     view;
 
   // Locate the module title for the breadcrumb.
@@ -63,6 +72,7 @@ export default async function LessonPage({
       moduleTitle={moduleTitle}
       blocks={toClientBlocks(lesson.blocks)}
       initialCompleted={completed}
+      initialSolvedExerciseIds={solvedExerciseIds}
       prevSlug={prevSlug}
       nextSlug={nextSlug}
       position={position}

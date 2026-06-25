@@ -25,6 +25,7 @@ export function LessonView({
   moduleTitle,
   blocks,
   initialCompleted,
+  initialSolvedExerciseIds,
   prevSlug,
   nextSlug,
   position,
@@ -38,6 +39,7 @@ export function LessonView({
   moduleTitle: string;
   blocks: ClientBlock[];
   initialCompleted: boolean;
+  initialSolvedExerciseIds: string[];
   prevSlug: string | null;
   nextSlug: string | null;
   position: number;
@@ -46,7 +48,9 @@ export function LessonView({
   const router = useRouter();
   const [completed, setCompleted] = useState(initialCompleted);
   const [saving, setSaving] = useState(false);
-  const [solvedIds, setSolvedIds] = useState<Set<string>>(new Set());
+  const [solvedIds, setSolvedIds] = useState<Set<string>>(
+    () => new Set(initialSolvedExerciseIds),
+  );
 
   const exerciseIds = useMemo(
     () =>
@@ -155,6 +159,7 @@ export function LessonView({
               exercise={block.exercise}
               language={language}
               index={exerciseNumbers[i] ?? 1}
+              initialSolved={initialSolvedExerciseIds.includes(block.exercise.id)}
               onSolvedChange={onSolvedChange}
             />
           );

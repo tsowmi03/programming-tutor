@@ -116,6 +116,34 @@ export default async function ReviewPage() {
         <StatCard label="Refresh" value={refreshCount} accent="text-emerald-300" />
       </div>
 
+      <section className="mt-8">
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted">
+          Study modes
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <StudyModeCard
+            title="Review queue"
+            body="Work through due and upcoming items from your history."
+            href="/review"
+          />
+          <StudyModeCard
+            title="Weak topic"
+            body="Open the progress diagnosis and start from the roughest area."
+            href="/progress#weak-topics"
+          />
+          <StudyModeCard
+            title="Interview drill"
+            body="Start unsolved medium code problems with guidance hidden."
+            href="/problems?type=code&difficulty=medium&status=not_started&mode=interview"
+          />
+          <StudyModeCard
+            title="No hints"
+            body="Pick unsolved code problems with guidance locked until you try."
+            href="/problems?type=code&status=not_started&mode=no_hints"
+          />
+        </div>
+      </section>
+
       {queue.items.length === 0 ? (
         <section className="mt-8 rounded-xl border border-edge bg-surface p-8 text-center">
           <CheckCircle2 className="mx-auto h-8 w-8 text-emerald-400" />
@@ -167,6 +195,31 @@ function StatCard({
         {value}
       </p>
     </div>
+  );
+}
+
+function StudyModeCard({
+  title,
+  body,
+  href,
+}: {
+  title: string;
+  body: string;
+  href: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="rounded-xl border border-edge bg-surface p-4 transition hover:border-indigo-500/40 hover:bg-surface-raised"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold">{title}</h3>
+          <p className="mt-1 text-xs leading-relaxed text-muted">{body}</p>
+        </div>
+        <ArrowRight className="h-4 w-4 shrink-0 text-muted" />
+      </div>
+    </Link>
   );
 }
 

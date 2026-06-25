@@ -27,7 +27,12 @@ export default async function ProgressPage() {
       include: {
         submissions: {
           where: { userId: user.id },
-          select: { status: true, selfScore: true, aiScore: true },
+          select: {
+            status: true,
+            selfScore: true,
+            aiScore: true,
+            createdAt: true,
+          },
         },
       },
       orderBy: [{ category: "asc" }, { order: "asc" }],
@@ -71,6 +76,44 @@ export default async function ProgressPage() {
       };
     })
     .filter((c) => c.total > 0);
+
+  const weakTopics = categories
+    .map((category) => {
+      const inCat = withStatus.filter((problem) => problem.category === category.id);
+      const totalAttempts = inCat.reduce(
+        (sum, problem) => sum + problem.submissions.length,
+        0,
+      );
+      const latestUnsolved = inCat.filter((problem) => {
+        if (problem.derived === "solved" || problem.submissions.length === 0) {
+          return false;
+        }
+        const latest = [...problem.submissions].sort(
+          (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+        )[0];
+        const score = latest.selfScore ?? latest.aiScore ?? null;
+        return (
+          latest.status !== "passed" ||
+          (score !== null && score < 2)
+        );
+      }).length;
+      const unsolved = category.total - category.solved;
+      const score =
+        latestUnsolved * 4 +
+        category.attempted * 3 +
+        unsolved +
+        totalAttempts / Math.max(category.solved, 1);
+      return {
+        ...category,
+        unsolved,
+        totalAttempts,
+        latestUnsolved,
+        score,
+      };
+    })
+    .filter((topic) => topic.score > 0 && topic.solved < topic.total)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4);
 
   const diffColor: Record<string, string> = {
     easy: "bg-emerald-400",
@@ -143,6 +186,44 @@ export default async function ProgressPage() {
           ))}
         </div>
       </section>
+
+      {weakTopics.length > 0 && (
+        <section id="weak-topics" className="mt-6 rounded-xl border border-edge bg-surface p-5">
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted">
+            Weakest topics
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {weakTopics.map((topic) => (
+              <Link
+                key={topic.id}
+                href={`/problems?category=${topic.id}&status=attempted`}
+                className="rounded-lg border border-edge bg-background/40 p-4 transition hover:border-indigo-500/40 hover:bg-surface-raised"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-semibold">{topic.label}</h3>
+                    <p className="mt-1 text-xs leading-relaxed text-muted">
+                      {topic.unsolved} unsolved, {topic.attempted} in progress,{" "}
+                      {topic.totalAttempts} attempts
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-300 ring-1 ring-amber-500/30">
+                    Review
+                  </span>
+                </div>
+                <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-zinc-800">
+                  <div
+                    className="h-full rounded-full bg-amber-400"
+                    style={{
+                      width: `${topic.total ? (topic.solved / topic.total) * 100 : 0}%`,
+                    }}
+                  />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Recent submissions */}
       <section className="mt-6">

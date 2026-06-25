@@ -27,6 +27,7 @@ export function ExerciseWidget({
   exercise,
   language,
   index,
+  initialSolved,
   onSolvedChange,
 }: {
   courseSlug: string;
@@ -35,6 +36,7 @@ export function ExerciseWidget({
   language: LanguageId;
   /** 1-based position of this exercise within its lesson. */
   index: number;
+  initialSolved: boolean;
   onSolvedChange?: (exerciseId: string, solved: boolean) => void;
 }) {
   const storageKey = `cc-course-${courseSlug}-${lessonSlug}-${exercise.id}`;
@@ -42,11 +44,7 @@ export function ExerciseWidget({
     `${storageKey}-code`,
     exercise.starterCode,
   );
-  const [solved, setSolved, solvedLoaded] = useStoredState(
-    `${storageKey}-solved`,
-    "",
-  );
-  const isSolved = solved === "1";
+  const [isSolved, setIsSolved] = useState(initialSolved);
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [outcome, setOutcome] = useState<JudgeOutcome | null>(null);
@@ -65,8 +63,8 @@ export function ExerciseWidget({
     onSolvedRef.current = onSolvedChange;
   });
   useEffect(() => {
-    if (solvedLoaded) onSolvedRef.current?.(exercise.id, isSolved);
-  }, [solvedLoaded, isSolved, exercise.id]);
+    onSolvedRef.current?.(exercise.id, isSolved);
+  }, [isSolved, exercise.id]);
 
   const judge = useCallback(
     async (endpoint: "run" | "submit") => {
@@ -90,7 +88,7 @@ export function ExerciseWidget({
         );
         setOutcome(outcome);
         if (endpoint === "submit" && outcome.status === "passed" && !isSolved) {
-          setSolved("1");
+          setIsSolved(true);
           celebrate();
         }
       } catch (err) {
@@ -106,7 +104,6 @@ export function ExerciseWidget({
       lessonSlug,
       exercise.id,
       isSolved,
-      setSolved,
       showHiddenTests,
     ],
   );

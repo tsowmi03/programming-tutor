@@ -29,7 +29,9 @@ model User {
   sessions               Session[]
   oauthAccounts          OAuthAccount[]
   submissions            Submission[]
+  mistakeNotes           MistakeNote[]
   lessonProgress         LessonProgress[]
+  courseExerciseSubmissions CourseExerciseSubmission[]
   aiGuidanceUsageBuckets AiGuidanceUsageBucket[]
 }
 
@@ -114,6 +116,7 @@ model Problem {
   updatedAt DateTime @updatedAt
 
   submissions Submission[]
+  mistakeNotes MistakeNote[]
 }
 
 model Submission {
@@ -143,8 +146,31 @@ model Submission {
 
   createdAt DateTime @default(now())
 
+  mistakeNotes MistakeNote[]
+
   @@index([problemId, createdAt])
   @@index([userId, problemId, createdAt])
+}
+
+model MistakeNote {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  problemId String
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  submissionId String?
+  submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: SetNull)
+
+  category String
+  note     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, problemId, createdAt])
+  @@index([submissionId])
 }
 
 /**
@@ -165,4 +191,26 @@ model LessonProgress {
 
   @@unique([userId, courseSlug, lessonSlug])
   @@index([userId, courseSlug])
+}
+
+model CourseExerciseSubmission {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  courseSlug String
+  lessonSlug String
+  exerciseId String
+  language   String
+  code       String
+
+  status      String // "passed" | "failed" | "error" | "compile_error"
+  results     String? // JSON TestResult[]
+  passedCount Int?
+  totalCount  Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, courseSlug, lessonSlug, exerciseId, createdAt])
+  @@index([userId, courseSlug, lessonSlug])
 }
