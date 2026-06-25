@@ -125,21 +125,35 @@ describe("problem navigation", () => {
       status: "not_started",
       q: "  pair sum  ",
       shuffle: "seed",
+      queue: "review",
       ignored: "value",
     });
 
     expect(buildProblemHref("two-sum", params)).toBe(
-      "/problems/two-sum?category=arrays-hashing&difficulty=easy&type=code&status=not_started&q=pair+sum&shuffle=seed",
+      "/problems/two-sum?category=arrays-hashing&difficulty=easy&type=code&status=not_started&q=pair+sum&shuffle=seed&queue=review",
     );
-    expect(buildProblemsHref(params)).toBe(
-      "/problems?category=arrays-hashing&difficulty=easy&type=code&status=not_started&q=pair+sum",
-    );
+    expect(buildProblemsHref(params)).toBe("/review");
     expect(
       parseProblemSequenceParams({
         difficulty: "impossible",
         type: "essay",
         status: "unknown",
+        queue: "daily",
       }),
     ).toEqual({});
+  });
+
+  it("preserves supplied ordering for review queues", () => {
+    const reviewOrder = [PROBLEMS[2], PROBLEMS[0], PROBLEMS[1]];
+
+    expect(
+      getProblemSequence(reviewOrder, { queue: "review" }).map(
+        (problem) => problem.slug,
+      ),
+    ).toEqual(["hash-maps", "binary-search", "two-sum"]);
+    expect(buildProblemsHref({ queue: "review" })).toBe("/review");
+    expect(buildProblemHref("hash-maps", { queue: "review" })).toBe(
+      "/problems/hash-maps?queue=review",
+    );
   });
 });

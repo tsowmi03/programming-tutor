@@ -4,6 +4,7 @@ import { requireUserPage } from "@/lib/auth";
 import { CodeWorkspace } from "@/components/workspace/CodeWorkspace";
 import { ExplanationWorkspace } from "@/components/workspace/ExplanationWorkspace";
 import type { WorkspaceNavigation } from "@/components/workspace/WorkspaceHeader";
+import { listReviewQueue } from "@/lib/review-queue";
 import {
   buildProblemHref,
   buildProblemsHref,
@@ -52,13 +53,17 @@ function buildWorkspaceNavigation(
 
   return {
     problemsHref: buildProblemsHref(params),
+    backLabel: params.queue === "review" ? "Review" : "Problems",
     previousProblemHref: adjacent.previous
       ? buildProblemHref(adjacent.previous.slug, params)
       : null,
     nextProblemHref: adjacent.next
       ? buildProblemHref(adjacent.next.slug, params)
       : null,
-    randomProblemHref: buildRandomProblemHref(problems, params, currentSlug),
+    randomProblemHref:
+      params.queue === "review"
+        ? null
+        : buildRandomProblemHref(problems, params, currentSlug),
     position: adjacent.position,
     total: adjacent.total,
     shuffled: Boolean(params.shuffle),
@@ -74,15 +79,24 @@ export default async function ProblemPage({
 }) {
   const user = await requireUserPage();
   const [{ slug }, rawSearchParams] = await Promise.all([params, searchParams]);
-  const [problem, problems] = await Promise.all([
+  const sequenceParams = parseProblemSequenceParams(rawSearchParams);
+  const [problem, problems, reviewQueue] = await Promise.all([
     getProblemDetail(slug, user.id),
     listProblems(user.id),
+    sequenceParams.queue === "review"
+      ? listReviewQueue(user.id)
+      : Promise.resolve(null),
   ]);
   if (!problem) notFound();
 
+  const navigationProblems =
+    sequenceParams.queue === "review" && reviewQueue
+      ? reviewQueue.items.map((item) => item.problem)
+      : problems;
+
   const navigation = buildWorkspaceNavigation(
-    problems,
-    parseProblemSequenceParams(rawSearchParams),
+    navigationProblems,
+    sequenceParams,
     slug,
   );
 

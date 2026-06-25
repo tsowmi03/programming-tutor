@@ -9,6 +9,7 @@ export interface ProblemSequenceParams {
   status?: ProblemStatus;
   query?: string;
   shuffle?: string;
+  queue?: "review";
 }
 
 export interface ProblemAdjacent {
@@ -44,6 +45,7 @@ export function parseProblemSequenceParams(
   const status = firstValue(raw.status);
   const query = firstValue(raw.q)?.trim();
   const shuffle = firstValue(raw.shuffle)?.trim();
+  const queue = firstValue(raw.queue)?.trim();
 
   return {
     category: CATEGORY_ORDER.has(category as CategoryId)
@@ -60,6 +62,7 @@ export function parseProblemSequenceParams(
       : undefined,
     query: query || undefined,
     shuffle: shuffle ? shuffle.slice(0, 100) : undefined,
+    queue: queue === "review" ? "review" : undefined,
   };
 }
 
@@ -73,10 +76,12 @@ export function buildProblemSequenceQuery(
   if (params.status) query.set("status", params.status);
   if (params.query) query.set("q", params.query);
   if (params.shuffle) query.set("shuffle", params.shuffle);
+  if (params.queue) query.set("queue", params.queue);
   return query.toString();
 }
 
 export function buildProblemsHref(params: ProblemSequenceParams): string {
+  if (params.queue === "review") return "/review";
   const query = buildProblemSequenceQuery({ ...params, shuffle: undefined });
   return query ? `/problems?${query}` : "/problems";
 }
@@ -108,6 +113,7 @@ export function getShuffleCandidates(
   problems: ProblemSummary[],
   params: ProblemSequenceParams,
 ): ProblemSummary[] {
+  if (params.queue === "review") return problems;
   return orderProblems(filterProblems(problems, params)).filter(
     (problem) => problem.status !== "solved",
   );
@@ -163,6 +169,8 @@ export function getProblemSequence(
   params: ProblemSequenceParams,
   currentSlug?: string,
 ): ProblemSummary[] {
+  if (params.queue === "review") return problems;
+
   let sequence = filterProblems(problems, params);
 
   if (params.shuffle) {

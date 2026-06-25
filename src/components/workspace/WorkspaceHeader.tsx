@@ -7,6 +7,7 @@ import { DifficultyBadge, StatusIcon } from "@/components/badges";
 
 export interface WorkspaceNavigation {
   problemsHref: string;
+  backLabel?: string;
   previousProblemHref: string | null;
   nextProblemHref: string | null;
   randomProblemHref: string | null;
@@ -21,6 +22,7 @@ export function WorkspaceHeader({
   category,
   status,
   problemsHref,
+  backLabel = "Problems",
   previousProblemHref,
   nextProblemHref,
   randomProblemHref,
@@ -43,7 +45,7 @@ export function WorkspaceHeader({
         className="flex shrink-0 items-center gap-1 text-sm text-muted transition hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
-        <span className="hidden sm:inline">Problems</span>
+        <span className="hidden sm:inline">{backLabel}</span>
       </Link>
       <span className="hidden text-zinc-700 sm:inline">/</span>
       <div className="flex min-w-0 items-center gap-2.5">

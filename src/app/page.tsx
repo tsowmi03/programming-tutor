@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Flame, GraduationCap, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, Flame, GraduationCap, Sparkles } from "lucide-react";
 import { listProblems } from "@/lib/problems";
 import { listCourses } from "@/lib/courses";
+import { listReviewQueue } from "@/lib/review-queue";
+import { buildProblemHref } from "@/lib/problem-navigation";
 import { requireUserPage } from "@/lib/auth";
 import { CATEGORY_LIST } from "@/content/categories";
 import { DifficultyBadge, StatusIcon } from "@/components/badges";
@@ -10,9 +12,10 @@ export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const user = await requireUserPage();
-  const [problems, courses] = await Promise.all([
+  const [problems, courses, reviewQueue] = await Promise.all([
     listProblems(user.id),
     listCourses(user.id),
+    listReviewQueue(user.id),
   ]);
   const solved = problems.filter((p) => p.status === "solved").length;
   const attempted = problems.filter((p) => p.status === "attempted").length;
@@ -28,6 +31,10 @@ export default async function DashboardPage() {
   const next =
     ordered.find((p) => p.status === "attempted") ??
     ordered.find((p) => p.status !== "solved");
+  const reviewItems =
+    reviewQueue.due.length > 0
+      ? reviewQueue.due.slice(0, 3)
+      : reviewQueue.upcoming.slice(0, 3);
 
   const ring = 2 * Math.PI * 52;
 
@@ -105,6 +112,59 @@ export default async function DashboardPage() {
           </div>
         </div>
       </section>
+
+      {reviewQueue.items.length > 0 && (
+        <section className="mt-8 rounded-xl border border-edge bg-surface p-5">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+                <Clock className="h-5 w-5 text-indigo-300" />
+                Review queue
+              </h2>
+              <p className="mt-1 text-sm text-muted">
+                {reviewQueue.due.length > 0
+                  ? `${reviewQueue.due.length} due today`
+                  : "Nothing due today"}
+                {reviewQueue.upcoming.length > 0
+                  ? ` · ${reviewQueue.upcoming.length} upcoming`
+                  : ""}
+              </p>
+            </div>
+            <Link
+              href="/review"
+              className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400"
+            >
+              Open review
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          {reviewItems.length > 0 && (
+            <div className="mt-4 divide-y divide-edge overflow-hidden rounded-lg border border-edge">
+              {reviewItems.map((item) => (
+                <Link
+                  key={item.problem.slug}
+                  href={buildProblemHref(item.problem.slug, { queue: "review" })}
+                  className="flex items-center justify-between gap-3 bg-background/40 px-3 py-2.5 transition hover:bg-surface-raised"
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <StatusIcon status={item.problem.status} />
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-medium">
+                        {item.problem.title}
+                      </p>
+                      <p className="truncate text-xs text-muted">
+                        {item.reasonLabel}
+                      </p>
+                    </div>
+                  </div>
+                  <DifficultyBadge difficulty={item.problem.difficulty} />
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Courses */}
       {courses.length > 0 && (
