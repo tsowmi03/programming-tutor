@@ -41,6 +41,16 @@ const STATUS_LABELS: Record<string, string> = {
   ai_assessed: "AI marked",
 };
 
+const MISTAKE_CATEGORY_LABELS: Record<string, string> = {
+  edge_case: "Edge case",
+  wrong_data_structure: "Wrong data structure",
+  off_by_one: "Off-by-one",
+  complexity: "Complexity",
+  syntax: "Syntax",
+  misread_prompt: "Misread prompt",
+  other: "Other",
+};
+
 function startOfDay(date: Date): number {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
 }
@@ -297,6 +307,26 @@ function ReviewRow({
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
               {item.detail}
             </p>
+            {item.mistakeNotes.length > 0 && (
+              <div className="mt-3 max-w-2xl border-l border-amber-400/50 pl-3">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-amber-200">
+                  Mistake journal
+                </p>
+                <ul className="mt-1.5 space-y-1.5">
+                  {item.mistakeNotes.map((note) => (
+                    <li
+                      key={note.id}
+                      className="break-words text-xs leading-relaxed text-zinc-300"
+                    >
+                      <span className="font-semibold text-amber-100">
+                        {MISTAKE_CATEGORY_LABELS[note.category] ?? "Mistake"}:
+                      </span>{" "}
+                      {note.note}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">

@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { buildReviewQueue, type ReviewProblemInput } from "./review-queue";
+import {
+  buildReviewQueue,
+  type ReviewMistakeNote,
+  type ReviewProblemInput,
+} from "./review-queue";
 
 const NOW = new Date("2026-06-25T10:00:00.000Z");
 
@@ -28,6 +32,17 @@ function problem(
     category: "arrays-hashing",
     order: 1,
     submissions: [],
+    ...overrides,
+  };
+}
+
+function mistakeNote(overrides: Partial<ReviewMistakeNote>): ReviewMistakeNote {
+  return {
+    id: "note-1",
+    category: "edge_case",
+    note: "Forgot the empty input case.",
+    submissionId: null,
+    createdAt: new Date("2026-06-20T10:00:00.000Z"),
     ...overrides,
   };
 }
@@ -191,6 +206,46 @@ describe("buildReviewQueue", () => {
     expect(queue.due.map((item) => item.problem.slug)).toEqual([
       "latest-failed",
       "old-solved",
+    ]);
+  });
+
+  it("keeps the latest mistake notes with review items", () => {
+    const queue = buildReviewQueue(
+      [
+        problem({
+          submissions: [
+            submission({
+              status: "failed",
+              createdAt: new Date("2026-06-25T09:00:00.000Z"),
+            }),
+          ],
+          mistakeNotes: [
+            mistakeNote({
+              id: "old-note",
+              note: "Used nested loops after spotting the hash-map pattern.",
+              createdAt: new Date("2026-06-20T09:00:00.000Z"),
+            }),
+            mistakeNote({
+              id: "new-note",
+              category: "off_by_one",
+              note: "Stopped the loop before checking the final index.",
+              createdAt: new Date("2026-06-25T09:30:00.000Z"),
+            }),
+            mistakeNote({
+              id: "middle-note",
+              category: "misread_prompt",
+              note: "Missed that duplicate values can appear.",
+              createdAt: new Date("2026-06-24T09:00:00.000Z"),
+            }),
+          ],
+        }),
+      ],
+      NOW,
+    );
+
+    expect(queue.due[0].mistakeNotes.map((note) => note.id)).toEqual([
+      "new-note",
+      "middle-note",
     ]);
   });
 });

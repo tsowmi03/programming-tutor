@@ -16,6 +16,7 @@ export interface ReviewQueueItem {
   reason: ReviewReason;
   reasonLabel: string;
   detail: string;
+  mistakeNotes: ReviewMistakeNote[];
   dueAt: Date;
   latestSubmissionAt: Date;
   latestStatus: string;
@@ -40,6 +41,14 @@ interface ReviewSubmissionInput {
   totalCount: number | null;
 }
 
+export interface ReviewMistakeNote {
+  id: string;
+  category: string;
+  note: string;
+  submissionId: string | null;
+  createdAt: Date;
+}
+
 export interface ReviewProblemInput {
   slug: string;
   title: string;
@@ -48,6 +57,7 @@ export interface ReviewProblemInput {
   category: CategoryId;
   order: number;
   submissions: ReviewSubmissionInput[];
+  mistakeNotes?: ReviewMistakeNote[];
 }
 
 const REVIEW_REASON_COPY: Record<
@@ -158,12 +168,17 @@ export function buildReviewQueue(
 
     const copy = REVIEW_REASON_COPY[reason];
     const dueAt = addDays(latest.createdAt, copy.waitDays);
+    const mistakeNotes = [...(problem.mistakeNotes ?? [])]
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice(0, 2);
+
     return [
       {
         problem: toProblemSummary(problem, status),
         reason,
         reasonLabel: copy.label,
         detail: copy.detail,
+        mistakeNotes,
         dueAt,
         latestSubmissionAt: latest.createdAt,
         latestStatus: latest.status,
@@ -199,6 +214,18 @@ export async function listReviewQueue(userId: string): Promise<ReviewQueue> {
           totalCount: true,
         },
       },
+      mistakeNotes: {
+        where: { userId },
+        orderBy: { createdAt: "desc" },
+        take: 2,
+        select: {
+          id: true,
+          category: true,
+          note: true,
+          submissionId: true,
+          createdAt: true,
+        },
+      },
     },
   });
 
@@ -211,6 +238,7 @@ export async function listReviewQueue(userId: string): Promise<ReviewQueue> {
       category: problem.category as CategoryId,
       order: problem.order,
       submissions: problem.submissions,
+      mistakeNotes: problem.mistakeNotes,
     })),
   );
 }
