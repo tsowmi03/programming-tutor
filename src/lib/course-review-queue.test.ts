@@ -36,6 +36,7 @@ function submission(
     lessonSlug: "loops",
     exerciseId: "sum-array",
     language: "python",
+    mode: "submit",
     status: "failed",
     passedCount: 1,
     totalCount: 3,
@@ -66,11 +67,12 @@ describe("buildCourseExerciseReviewQueue", () => {
       exerciseTitle: "Sum an array",
       latestStatus: "failed",
       attempts: 1,
+      latestMode: "submit",
       due: true,
     });
   });
 
-  it("ignores older failures once an exercise is accepted", () => {
+  it("ignores failures once an exercise has an accepted full submit", () => {
     const queue = buildCourseExerciseReviewQueue(
       [
         submission({
@@ -78,6 +80,11 @@ describe("buildCourseExerciseReviewQueue", () => {
           createdAt: new Date("2026-06-25T09:00:00.000Z"),
           passedCount: 3,
           totalCount: 3,
+        }),
+        submission({
+          mode: "run",
+          status: "failed",
+          createdAt: new Date("2026-06-26T09:00:00.000Z"),
         }),
         submission({
           status: "failed",
@@ -89,6 +96,27 @@ describe("buildCourseExerciseReviewQueue", () => {
     );
 
     expect(queue.items).toHaveLength(0);
+  });
+
+  it("queues failed sample runs when there is no accepted full submit", () => {
+    const queue = buildCourseExerciseReviewQueue(
+      [
+        submission({
+          mode: "run",
+          status: "failed",
+          passedCount: 1,
+          totalCount: 2,
+        }),
+      ],
+      resolveMetadata,
+      NOW,
+    );
+
+    expect(queue.due[0]).toMatchObject({
+      reason: "retry_course_exercise",
+      latestMode: "run",
+      detail: "Your latest sample-test run did not pass. Rework it before the full submission.",
+    });
   });
 
   it("sorts runtime and compile issues before wrong answers", () => {

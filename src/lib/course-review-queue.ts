@@ -11,6 +11,7 @@ export interface CourseExerciseReviewSubmissionInput {
   lessonSlug: string;
   exerciseId: string;
   language: string;
+  mode: string;
   status: string;
   passedCount: number | null;
   totalCount: number | null;
@@ -32,6 +33,7 @@ export interface CourseExerciseReviewItem
   reason: CourseExerciseReviewReason;
   reasonLabel: string;
   detail: string;
+  latestMode: string;
   latestStatus: string;
   latestSubmissionAt: Date;
   dueAt: Date;
@@ -88,6 +90,19 @@ function getReason(
   return "retry_course_exercise";
 }
 
+function getDetail(
+  reason: CourseExerciseReviewReason,
+  submission: CourseExerciseReviewSubmissionInput,
+): string {
+  if (submission.mode === "run" && reason === "retry_course_exercise") {
+    return "Your latest sample-test run did not pass. Rework it before the full submission.";
+  }
+  if (submission.mode === "run" && reason === "fix_course_exercise_runtime") {
+    return "The latest sample-test run stopped before all visible tests could pass.";
+  }
+  return REVIEW_REASON_COPY[reason].detail;
+}
+
 export function resolveCourseExerciseMetadata(
   submission: CourseExerciseReviewSubmissionInput,
 ): CourseExerciseReviewMetadata | null {
@@ -140,6 +155,11 @@ export function buildCourseExerciseReviewQueue(
     const sortedAttempts = [...attempts].sort(
       (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
     );
+    const hasPassedSubmit = sortedAttempts.some(
+      (attempt) => attempt.mode === "submit" && attempt.status === "passed",
+    );
+    if (hasPassedSubmit) return [];
+
     const latest = sortedAttempts[0];
     const reason = getReason(latest);
     if (!reason) return [];
@@ -153,7 +173,8 @@ export function buildCourseExerciseReviewQueue(
         ...metadata,
         reason,
         reasonLabel: copy.label,
-        detail: copy.detail,
+        detail: getDetail(reason, latest),
+        latestMode: latest.mode,
         latestStatus: latest.status,
         latestSubmissionAt: latest.createdAt,
         dueAt: latest.createdAt,
@@ -187,6 +208,7 @@ export async function listCourseExerciseReviewQueue(
       lessonSlug: true,
       exerciseId: true,
       language: true,
+      mode: true,
       status: true,
       passedCount: true,
       totalCount: true,

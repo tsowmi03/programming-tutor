@@ -47,6 +47,11 @@ const STATUS_LABELS: Record<string, string> = {
   ai_assessed: "AI marked",
 };
 
+const COURSE_ATTEMPT_MODE_LABELS: Record<string, string> = {
+  run: "Sample run",
+  submit: "Full submit",
+};
+
 const MISTAKE_CATEGORY_LABELS: Record<string, string> = {
   edge_case: "Edge case",
   wrong_data_structure: "Wrong data structure",
@@ -335,6 +340,8 @@ function CourseExerciseReviewRow({
 }) {
   const status = STATUS_LABELS[item.latestStatus] ?? item.latestStatus;
   const language = LANGUAGES[item.language]?.label ?? item.language;
+  const modeLabel =
+    COURSE_ATTEMPT_MODE_LABELS[item.latestMode] ?? "Course attempt";
 
   return (
     <Link
@@ -357,7 +364,8 @@ function CourseExerciseReviewRow({
             </div>
             <p className="mt-1 text-xs text-muted">
               {item.courseTitle} - {item.lessonTitle} - {item.attempts}{" "}
-              {item.attempts === 1 ? "attempt" : "attempts"} - Latest: {status}
+              {item.attempts === 1 ? "attempt" : "attempts"} - Latest:{" "}
+              {modeLabel}, {status}
             </p>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
               {item.detail}

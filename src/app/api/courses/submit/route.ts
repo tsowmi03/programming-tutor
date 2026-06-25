@@ -44,6 +44,7 @@ export async function POST(req: Request) {
         exerciseId,
         language: course.language,
         code,
+        mode: "submit",
         status: outcome.status,
         results: JSON.stringify(outcome.results),
         passedCount: outcome.passedCount,

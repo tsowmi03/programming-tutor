@@ -203,6 +203,7 @@ model CourseExerciseSubmission {
   exerciseId String
   language   String
   code       String
+  mode       String @default("submit") // "run" = visible tests only, "submit" = full test set
 
   status      String // "passed" | "failed" | "error" | "compile_error"
   results     String? // JSON TestResult[]
@@ -213,4 +214,5 @@ model CourseExerciseSubmission {
 
   @@index([userId, courseSlug, lessonSlug, exerciseId, createdAt])
   @@index([userId, courseSlug, lessonSlug])
+  @@index([userId, courseSlug, lessonSlug, exerciseId, mode, createdAt])
 }

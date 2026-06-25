@@ -130,7 +130,7 @@ export async function getLessonView(
       select: { id: true },
     }),
     prisma.courseExerciseSubmission.findMany({
-      where: { userId, courseSlug, lessonSlug, status: "passed" },
+      where: { userId, courseSlug, lessonSlug, mode: "submit", status: "passed" },
       select: { exerciseId: true },
     }),
   ]);
