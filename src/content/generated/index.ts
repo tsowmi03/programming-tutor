@@ -7,6 +7,7 @@ import type { ProblemDef } from "../types";
 import addTwoNumbersStoredInReversedLinkedListsArrayRepresentationReturnResultArray from "./add-two-numbers-stored-in-reversed-linked-lists-array-representation-return-result-array";
 import amortizedAnalysisUsingDynamicArrayGrowth from "./amortized-analysis-using-dynamic-array-growth";
 import analyzingTheComplexityOfRecursiveDivideAndConquerWithTheRecursionTree from "./analyzing-the-complexity-of-recursive-divide-and-conquer-with-the-recursion-tree";
+import arrangeCoinsIntoCompleteStaircaseRows from "./arrange-coins-into-complete-staircase-rows";
 import asteroidCollisionFindTheFinalStateOfAnArrayOfAsteroids from "./asteroid-collision-find-the-final-state-of-an-array-of-asteroids";
 import averageOfAnArrayReturnedAsAnIntFloor from "./average-of-an-array-returned-as-an-int-floor";
 import bestAverageAndWorstCaseExplainedWithExamples from "./best-average-and-worst-case-explained-with-examples";
@@ -27,26 +28,56 @@ import checkIfTwoStringsAreAnagramsUsingCounts from "./check-if-two-strings-are-
 import checkIfTwoStringsAreEqualIgnoringCase from "./check-if-two-strings-are-equal-ignoring-case";
 import checkIfTwoStringsAreIsomorphic from "./check-if-two-strings-are-isomorphic";
 import checkWhetherAnIntegerIsAPalindrome from "./check-whether-an-integer-is-a-palindrome";
+import checkWhetherAnyPairHasAbsoluteDifferenceK from "./check-whether-any-pair-has-absolute-difference-k";
+import checkWhetherOneStringIsASubsequenceOfAnother from "./check-whether-one-string-is-a-subsequence-of-another";
+import checkWhetherTwoArraysHaveTheSameMultisetOfValues from "./check-whether-two-arrays-have-the-same-multiset-of-values";
+import checkWhetherTwoStringsAreEqualAfterBackspaceEdits from "./check-whether-two-strings-are-equal-after-backspace-edits";
 import classicBinarySearchForATargetInASortedArray from "./classic-binary-search-for-a-target-in-a-sorted-array";
 import climbingStairsNumberOfWaysToReachStepN from "./climbing-stairs-number-of-ways-to-reach-step-n";
 import coinChangeFewestCoinsToMakeAnAmount from "./coin-change-fewest-coins-to-make-an-amount";
 import combinationSumCountNumberOfOrderedWaysToSumToTargetUsingGivenCoins from "./combination-sum-count-number-of-ordered-ways-to-sum-to-target-using-given-coins";
+import computeTheIntegerCubeRoot from "./compute-the-integer-cube-root";
+import computeTheRangeWidthOfAnIntegerArray from "./compute-the-range-width-of-an-integer-array";
+import computeTheScoreOfABalancedParenthesesString from "./compute-the-score-of-a-balanced-parentheses-string";
 import convertAnIntegerToItsBinaryStringRepresentation from "./convert-an-integer-to-its-binary-string-representation";
+import countAdjacentIncreasingPairs from "./count-adjacent-increasing-pairs";
+import countCharacterTransitionsInAString from "./count-character-transitions-in-a-string";
 import countConnectedComponentsInAnUndirectedGraphGivenAsAnEdgeListInt from "./count-connected-components-in-an-undirected-graph-given-as-an-edge-list-int";
+import countConsonantsInALowercaseString from "./count-consonants-in-a-lowercase-string";
+import countDigitsInAString from "./count-digits-in-a-string";
+import countDivisorsOfAPositiveInteger from "./count-divisors-of-a-positive-integer";
 import countElementsStrictlyGreaterThanAGivenThreshold from "./count-elements-strictly-greater-than-a-given-threshold";
 import countEvenNumbersInAnArray from "./count-even-numbers-in-an-array";
+import countIndicesWhereValueEqualsIndex from "./count-indices-where-value-equals-index";
 import countLeafNodesInABinaryTreeEncodedAsALevelOrderIntArray from "./count-leaf-nodes-in-a-binary-tree-encoded-as-a-level-order-int-array";
+import countLengthKSubstringsWithAllDistinctCharacters from "./count-length-k-substrings-with-all-distinct-characters";
+import countMatchingCharacterPositions from "./count-matching-character-positions";
+import countMatchingPositionsInTwoArrays from "./count-matching-positions-in-two-arrays";
+import countNegativeNumbersInARowWiseAndColumnWiseSortedMatrix from "./count-negative-numbers-in-a-row-wise-and-column-wise-sorted-matrix";
+import countNegativeNumbersInAnIntegerArray from "./count-negative-numbers-in-an-integer-array";
+import countNonZeroValuesInAnIntegerArray from "./count-non-zero-values-in-an-integer-array";
+import countNumbersDivisibleByK from "./count-numbers-divisible-by-k";
+import countNumbersWithAnEvenNumberOfDigits from "./count-numbers-with-an-even-number-of-digits";
 import countOccurrencesOfATargetInASortedArray from "./count-occurrences-of-a-target-in-a-sorted-array";
 import countOccurrencesOfAllAnagramsOfAPatternInAString from "./count-occurrences-of-all-anagrams-of-a-pattern-in-a-string";
 import countOccurrencesOfEachValueAndReturnTheMostFrequent from "./count-occurrences-of-each-value-and-return-the-most-frequent";
+import countPairsInASortedArrayWithSumLessThanTarget from "./count-pairs-in-a-sorted-array-with-sum-less-than-target";
 import countPairsInAnArrayWithAbsoluteDifferenceEqualToK from "./count-pairs-in-an-array-with-absolute-difference-equal-to-k";
 import countPairsOfIdenticalAdjacentCharactersInAString from "./count-pairs-of-identical-adjacent-characters-in-a-string";
 import countPairsWithEqualValuesInAnArray from "./count-pairs-with-equal-values-in-an-array";
+import countPeaksInAnIntegerArray from "./count-peaks-in-an-integer-array";
+import countPositiveNumbersInAnIntegerArray from "./count-positive-numbers-in-an-integer-array";
+import countRowsWithOddSumInAMatrix from "./count-rows-with-odd-sum-in-a-matrix";
+import countSetBitsInANonNegativeInteger from "./count-set-bits-in-a-non-negative-integer";
 import countSubarraysOfExactlySizeKWhereAllElementsAreDistinct from "./count-subarrays-of-exactly-size-k-where-all-elements-are-distinct";
 import countSubarraysWhoseProductIsStrictlyLessThanK from "./count-subarrays-whose-product-is-strictly-less-than-k";
+import countValuesThatAppearExactlyOnce from "./count-values-that-appear-exactly-once";
+import countValuesThatAppearMoreThanOnce from "./count-values-that-appear-more-than-once";
+import countValuesWithinAnInclusiveRange from "./count-values-within-an-inclusive-range";
 import countVowelsInAString from "./count-vowels-in-a-string";
 import countWaysToTileA2NFloorWith12Dominoes from "./count-ways-to-tile-a-2-n-floor-with-1-2-dominoes";
 import countWordsInASentenceSplitOnSingleSpaces from "./count-words-in-a-sentence-split-on-single-spaces";
+import countZerosInAnIntegerMatrix from "./count-zeros-in-an-integer-matrix";
 import dailyTemperaturesDaysUntilAWarmerTemperature from "./daily-temperatures-days-until-a-warmer-temperature";
 import decodeStringExpandKEncodedStringNotation from "./decode-string-expand-k-encoded-string-notation";
 import decodeWaysCountDecodingsOfADigitString126Mapping from "./decode-ways-count-decodings-of-a-digit-string-1-26-mapping";
@@ -54,14 +85,26 @@ import detectACycleGivenNextPointersEncodedAsAnIntArrayReturnTrueFalse from "./d
 import detectACycleInADirectedGraphGivenAsAnAdjacencyEdgeList from "./detect-a-cycle-in-a-directed-graph-given-as-an-adjacency-edge-list";
 import evaluateAStringOfPushesAndPopsReturnFinalStackAsAnArray from "./evaluate-a-string-of-pushes-and-pops-return-final-stack-as-an-array";
 import evaluateReversePolishNotation from "./evaluate-reverse-polish-notation";
+import explainHowRecursionDepthAffectsSpaceComplexity from "./explain-how-recursion-depth-affects-space-complexity";
+import explainLoopInvariantsInBinarySearch from "./explain-loop-invariants-in-binary-search";
+import explainTheDifferenceBetweenLinearScanAndBinarySearchPreconditions from "./explain-the-difference-between-linear-scan-and-binary-search-preconditions";
+import explainTheTradeoffBetweenAdjacencyListsAndAdjacencyMatrices from "./explain-the-tradeoff-between-adjacency-lists-and-adjacency-matrices";
+import explainWhyHashTableLookupIsAverageO1ButNotGuaranteed from "./explain-why-hash-table-lookup-is-average-o-1-but-not-guaranteed";
 import factorialOfNIterative from "./factorial-of-n-iterative";
 import findAllPairsInAnArrayThatSumToATargetReturnCountOfUniquePairs from "./find-all-pairs-in-an-array-that-sum-to-a-target-return-count-of-unique-pairs";
 import findAllUniquePairsInAnArrayThatSumToATargetReturnCount from "./find-all-unique-pairs-in-an-array-that-sum-to-a-target-return-count";
+import findTheClosestPairSumToATargetInASortedArray from "./find-the-closest-pair-sum-to-a-target-in-a-sorted-array";
 import findTheFirstAndLastPositionOfATargetInASortedArray from "./find-the-first-and-last-position-of-a-target-in-a-sorted-array";
+import findTheFirstOneInASortedBinaryArray from "./find-the-first-one-in-a-sorted-binary-array";
+import findTheFirstPivotIndexInAnArray from "./find-the-first-pivot-index-in-an-array";
+import findTheFirstRepeatedValueInAnIntegerArray from "./find-the-first-repeated-value-in-an-integer-array";
+import findTheFirstUppercaseLetterIndex from "./find-the-first-uppercase-letter-index";
 import findTheIndexOfTheFirstOccurrenceOfATargetInAnArray from "./find-the-index-of-the-first-occurrence-of-a-target-in-an-array";
 import findTheInsertPositionOfATargetInASortedArray from "./find-the-insert-position-of-a-target-in-a-sorted-array";
 import findTheKthSmallestElementInARowWiseAndColumnWiseSortedMatrix from "./find-the-kth-smallest-element-in-a-row-wise-and-column-wise-sorted-matrix";
+import findTheLargestAbsoluteValueInAnArray from "./find-the-largest-absolute-value-in-an-array";
 import findTheLeftmostIndexOfATargetInASortedArrayWithDuplicates from "./find-the-leftmost-index-of-a-target-in-a-sorted-array-with-duplicates";
+import findTheMajorityElementInAnArrayWithAGuaranteedMajority from "./find-the-majority-element-in-an-array-with-a-guaranteed-majority";
 import findTheMaximumPairSumWhereOnePointerStartsFromEachEnd from "./find-the-maximum-pair-sum-where-one-pointer-starts-from-each-end";
 import findTheMaximumValueInAnArray from "./find-the-maximum-value-in-an-array";
 import findTheMiddleValueOfAListGivenAsAnIntArraySlowFastPointers from "./find-the-middle-value-of-a-list-given-as-an-int-array-slow-fast-pointers";
@@ -70,12 +113,14 @@ import findTheMissingNumberInAnArrayContaining0ThroughNWithOneMissing from "./fi
 import findThePeakElementIndex from "./find-the-peak-element-index";
 import findTheSecondLargestElementInAnArray from "./find-the-second-largest-element-in-an-array";
 import findTheSingleNumberThatAppearsOnceWhenAllOthersAppearTwice from "./find-the-single-number-that-appears-once-when-all-others-appear-twice";
+import findTheSmallestValueAtLeastTargetInASortedArray from "./find-the-smallest-value-at-least-target-in-a-sorted-array";
 import flattenA2DIntegerArrayIntoA1DArray from "./flatten-a-2-d-integer-array-into-a-1-d-array";
 import floodFillOnA2DGrid from "./flood-fill-on-a-2-d-grid";
 import fourSumCountCountTuplesOneFromEachOf4ArraysThatSumToZero from "./four-sum-count-count-tuples-one-from-each-of-4-arrays-that-sum-to-zero";
 import fourSumCountQuadrupletsInAnArraySummingToATarget from "./four-sum-count-quadruplets-in-an-array-summing-to-a-target";
 import groupAnagramsReturnGroupSizesSortedDescending from "./group-anagrams-return-group-sizes-sorted-descending";
 import groupCountsReturnTheKMostFrequentElements from "./group-counts-return-the-k-most-frequent-elements";
+import hammingDistanceBetweenTwoIntegers from "./hamming-distance-between-two-integers";
 import houseRobberMaxNonAdjacentSum from "./house-robber-max-non-adjacent-sum";
 import insertAValueAtTheFrontOfAListAndReturnTheNewListArray from "./insert-a-value-at-the-front-of-a-list-and-return-the-new-list-array";
 import integerSquareRootViaBinarySearch from "./integer-square-root-via-binary-search";
@@ -83,23 +128,31 @@ import intersectionOfTwoIntegerArraysUniqueValues from "./intersection-of-two-in
 import jumpGameCanYouReachTheLastIndexGivenJumpLengths from "./jump-game-can-you-reach-the-last-index-given-jump-lengths";
 import kokoEatingBananasMinimumEatingSpeedToFinishWithinHHours from "./koko-eating-bananas-minimum-eating-speed-to-finish-within-h-hours";
 import levelOrderTraversalOfBinaryTreeLevelOrderEncodingReturnValuesPerLevelAsInt from "./level-order-traversal-of-binary-tree-level-order-encoding-return-values-per-level-as-int";
+import longestBinarySubarrayAfterDeletingOneElement from "./longest-binary-subarray-after-deleting-one-element";
 import longestCommonPrefixAmongAnArrayOfStrings from "./longest-common-prefix-among-an-array-of-strings";
 import longestCommonSubsequenceLengthOfTwoStrings from "./longest-common-subsequence-length-of-two-strings";
 import longestConsecutiveSequenceInAnUnsortedArray from "./longest-consecutive-sequence-in-an-unsorted-array";
 import longestIncreasingSubsequenceLength from "./longest-increasing-subsequence-length";
+import longestRunOfTheSameCharacter from "./longest-run-of-the-same-character";
 import longestSubstringWithAtMostKDistinctCharacters from "./longest-substring-with-at-most-k-distinct-characters";
 import longestSubstringWithAtMostTwoDistinctCharacters from "./longest-substring-with-at-most-two-distinct-characters";
 import longestSubstringWithSameLettersAfterAtMostKReplacements from "./longest-substring-with-same-letters-after-at-most-k-replacements";
+import matrixDiagonalSum from "./matrix-diagonal-sum";
 import maxConsecutiveOnesAfterFlippingAtMostKZeros from "./max-consecutive-ones-after-flipping-at-most-k-zeros";
+import maximumAbsoluteDifferenceBetweenAdjacentValues from "./maximum-absolute-difference-between-adjacent-values";
 import maximumAverageSubarrayOfExactlySizeKReturnIntegerFloor from "./maximum-average-subarray-of-exactly-size-k-return-integer-floor";
 import maximumDepthOfABinaryTreeEncodedAsALevelOrderIntArray from "./maximum-depth-of-a-binary-tree-encoded-as-a-level-order-int-array";
+import maximumNumberOfVowelsInAnySubstringOfLengthK from "./maximum-number-of-vowels-in-any-substring-of-length-k";
 import maximumProductSubarray from "./maximum-product-subarray";
+import maximumSumOfALengthKSubarrayWithAllDistinctValues from "./maximum-sum-of-a-length-k-subarray-with-all-distinct-values";
 import maximumSumOfAnySubarrayOfLengthExactlyKFixedWindow from "./maximum-sum-of-any-subarray-of-length-exactly-k-fixed-window";
 import maximumSumOfAnyWindowOfSizeK from "./maximum-sum-of-any-window-of-size-k";
 import memoizationVersusTabulationExplained from "./memoization-versus-tabulation-explained";
 import mergeTwoSortedArraysIntoOneSortedArray from "./merge-two-sorted-arrays-into-one-sorted-array";
 import mergeTwoSortedListsGivenAsIntArraysOfValues from "./merge-two-sorted-lists-given-as-int-arrays-of-values";
+import mergeTwoStringsByAlternatingCharacters from "./merge-two-strings-by-alternating-characters";
 import minStackSupportGetMinInO1ViaAnOperationsEncoding from "./min-stack-support-get-min-in-o-1-via-an-operations-encoding";
+import minimumAdditionsToMakeParenthesesValid from "./minimum-additions-to-make-parentheses-valid";
 import minimumDepthOfABinaryTreeEncodedAsALevelOrderIntArray from "./minimum-depth-of-a-binary-tree-encoded-as-a-level-order-int-array";
 import minimumInARotatedSortedArray from "./minimum-in-a-rotated-sorted-array";
 import minimumPathSumFromTopLeftToBottomRightOfAGrid from "./minimum-path-sum-from-top-left-to-bottom-right-of-a-grid";
@@ -117,21 +170,27 @@ import productOfArrayExceptSelf from "./product-of-array-except-self";
 import recognizingONLogNAlgorithmsAndWhyComparisonSortsCanTDoBetter from "./recognizing-o-n-log-n-algorithms-and-why-comparison-sorts-can-t-do-better";
 import removeAllAdjacentDuplicateCharactersFromAStringUsingAStack from "./remove-all-adjacent-duplicate-characters-from-a-string-using-a-stack";
 import removeAllInstancesOfAValueFromAnArrayReturnNewLength from "./remove-all-instances-of-a-value-from-an-array-return-new-length";
+import removeDuplicatesFromASortedArrayAllowingAtMostTwoCopies from "./remove-duplicates-from-a-sorted-array-allowing-at-most-two-copies";
 import removeDuplicatesFromASortedArrayInPlaceReturnNewLength from "./remove-duplicates-from-a-sorted-array-in-place-return-new-length";
 import removeElementFromAnArrayInPlaceReturnNewLength from "./remove-element-from-an-array-in-place-return-new-length";
 import removeKDigitsFromANumberStringToProduceTheSmallestPossibleNumber from "./remove-k-digits-from-a-number-string-to-produce-the-smallest-possible-number";
+import removeOutermostParenthesesFromEveryPrimitiveGroup from "./remove-outermost-parentheses-from-every-primitive-group";
+import removeStarsFromAStringUsingAStack from "./remove-stars-from-a-string-using-a-stack";
 import removeTheNthNodeFromTheEndListsGivenAsValueArrays from "./remove-the-nth-node-from-the-end-lists-given-as-value-arrays";
+import removeVowelsFromALowercaseString from "./remove-vowels-from-a-lowercase-string";
 import reorderListL0LnL1Ln1PatternArrayRepresentation from "./reorder-list-l0-ln-l1-ln-1-pattern-array-representation";
 import returnTheKthValueFromTheEndOfAListArrayRepresentation from "./return-the-kth-value-from-the-end-of-a-list-array-representation";
 import reverseASinglyLinkedListRepresentedAsAnIntArrayOfValues from "./reverse-a-singly-linked-list-represented-as-an-int-array-of-values";
 import reverseAStringInPlace from "./reverse-a-string-in-place";
 import reverseAnArrayInPlaceWithTwoPointers from "./reverse-an-array-in-place-with-two-pointers";
 import reverseWordsInASentence from "./reverse-words-in-a-sentence";
+import richestRowSumInAMatrix from "./richest-row-sum-in-a-matrix";
 import romanNumeralStringToInteger from "./roman-numeral-string-to-integer";
 import rotateALinkedListRightByKPositionsArrayRepresentation from "./rotate-a-linked-list-right-by-k-positions-array-representation";
 import rotateAnArrayRightByKPositions from "./rotate-an-array-right-by-k-positions";
 import rottingOrangesMinimumMinutesUntilAllOrangesAreRotten2DGridBfs from "./rotting-oranges-minimum-minutes-until-all-oranges-are-rotten-2-d-grid-bfs";
 import runLengthEncodeAString from "./run-length-encode-a-string";
+import searchARowWiseSorted2DMatrix from "./search-a-row-wise-sorted-2-d-matrix";
 import searchInARotatedSortedArray from "./search-in-a-rotated-sorted-array";
 import shortestPathLengthInAnUnweightedGridViaBfs from "./shortest-path-length-in-an-unweighted-grid-via-bfs";
 import simplifyAUnixStyleFilePathString from "./simplify-a-unix-style-file-path-string";
@@ -140,10 +199,14 @@ import spaceTimeTradeoffTradingMemoryForSpeedWithALookupTable from "./space-time
 import squareEachElementOfAnIntegerArray from "./square-each-element-of-an-integer-array";
 import squaresOfASortedArrayReturnInSortedOrder from "./squares-of-a-sorted-array-return-in-sorted-order";
 import subarraySumEqualsKCountSubarraysUsingPrefixSums from "./subarray-sum-equals-k-count-subarrays-using-prefix-sums";
+import sumAbsoluteValuesInAnIntegerArray from "./sum-absolute-values-in-an-integer-array";
+import sumDigitsFoundInAString from "./sum-digits-found-in-a-string";
 import sumOfAnIntegerArray from "./sum-of-an-integer-array";
 import sumOfArray from "./sum-of-array";
 import sumOfDigitsOfAPositiveIntegerUsingRecursion from "./sum-of-digits-of-a-positive-integer-using-recursion";
 import sumTheDigitsOfAPositiveInteger from "./sum-the-digits-of-a-positive-integer";
+import sumValuesAtEvenIndicesInAnIntegerArray from "./sum-values-at-even-indices-in-an-integer-array";
+import sumValuesAtOddIndicesInAnIntegerArray from "./sum-values-at-odd-indices-in-an-integer-array";
 import symmetricTreeCheckIfABinaryTreeIsItsOwnMirrorLevelOrderIntArray from "./symmetric-tree-check-if-a-binary-tree-is-its-own-mirror-level-order-int-array";
 import theDifferenceBetweenTimeAndSpaceComplexity from "./the-difference-between-time-and-space-complexity";
 import theMasterTheoremForSolvingDivideAndConquerRecurrences from "./the-master-theorem-for-solving-divide-and-conquer-recurrences";
@@ -155,6 +218,7 @@ import unionOfTwoIntegerArraysUniqueValues from "./union-of-two-integer-arrays-u
 import uniquePathsInAnMByNGrid from "./unique-paths-in-an-m-by-n-grid";
 import validParenthesesWithThreeBracketTypes from "./valid-parentheses-with-three-bracket-types";
 import validateABinarySearchTreeLevelOrderIntArray from "./validate-a-binary-search-tree-level-order-int-array";
+import validatePushAndPopStackSequences from "./validate-push-and-pop-stack-sequences";
 import whatBigODescribesAndWhyConstantsAreDropped from "./what-big-o-describes-and-why-constants-are-dropped";
 import whatIsABinarySearchTreeAndItsInvariants from "./what-is-a-binary-search-tree-and-its-invariants";
 import whenToPreferALinkedListOverAnArray from "./when-to-prefer-a-linked-list-over-an-array";
@@ -166,6 +230,7 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   addTwoNumbersStoredInReversedLinkedListsArrayRepresentationReturnResultArray,
   amortizedAnalysisUsingDynamicArrayGrowth,
   analyzingTheComplexityOfRecursiveDivideAndConquerWithTheRecursionTree,
+  arrangeCoinsIntoCompleteStaircaseRows,
   asteroidCollisionFindTheFinalStateOfAnArrayOfAsteroids,
   averageOfAnArrayReturnedAsAnIntFloor,
   bestAverageAndWorstCaseExplainedWithExamples,
@@ -186,26 +251,56 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   checkIfTwoStringsAreEqualIgnoringCase,
   checkIfTwoStringsAreIsomorphic,
   checkWhetherAnIntegerIsAPalindrome,
+  checkWhetherAnyPairHasAbsoluteDifferenceK,
+  checkWhetherOneStringIsASubsequenceOfAnother,
+  checkWhetherTwoArraysHaveTheSameMultisetOfValues,
+  checkWhetherTwoStringsAreEqualAfterBackspaceEdits,
   classicBinarySearchForATargetInASortedArray,
   climbingStairsNumberOfWaysToReachStepN,
   coinChangeFewestCoinsToMakeAnAmount,
   combinationSumCountNumberOfOrderedWaysToSumToTargetUsingGivenCoins,
+  computeTheIntegerCubeRoot,
+  computeTheRangeWidthOfAnIntegerArray,
+  computeTheScoreOfABalancedParenthesesString,
   convertAnIntegerToItsBinaryStringRepresentation,
+  countAdjacentIncreasingPairs,
+  countCharacterTransitionsInAString,
   countConnectedComponentsInAnUndirectedGraphGivenAsAnEdgeListInt,
+  countConsonantsInALowercaseString,
+  countDigitsInAString,
+  countDivisorsOfAPositiveInteger,
   countElementsStrictlyGreaterThanAGivenThreshold,
   countEvenNumbersInAnArray,
+  countIndicesWhereValueEqualsIndex,
   countLeafNodesInABinaryTreeEncodedAsALevelOrderIntArray,
+  countLengthKSubstringsWithAllDistinctCharacters,
+  countMatchingCharacterPositions,
+  countMatchingPositionsInTwoArrays,
+  countNegativeNumbersInARowWiseAndColumnWiseSortedMatrix,
+  countNegativeNumbersInAnIntegerArray,
+  countNonZeroValuesInAnIntegerArray,
+  countNumbersDivisibleByK,
+  countNumbersWithAnEvenNumberOfDigits,
   countOccurrencesOfATargetInASortedArray,
   countOccurrencesOfAllAnagramsOfAPatternInAString,
   countOccurrencesOfEachValueAndReturnTheMostFrequent,
+  countPairsInASortedArrayWithSumLessThanTarget,
   countPairsInAnArrayWithAbsoluteDifferenceEqualToK,
   countPairsOfIdenticalAdjacentCharactersInAString,
   countPairsWithEqualValuesInAnArray,
+  countPeaksInAnIntegerArray,
+  countPositiveNumbersInAnIntegerArray,
+  countRowsWithOddSumInAMatrix,
+  countSetBitsInANonNegativeInteger,
   countSubarraysOfExactlySizeKWhereAllElementsAreDistinct,
   countSubarraysWhoseProductIsStrictlyLessThanK,
+  countValuesThatAppearExactlyOnce,
+  countValuesThatAppearMoreThanOnce,
+  countValuesWithinAnInclusiveRange,
   countVowelsInAString,
   countWaysToTileA2NFloorWith12Dominoes,
   countWordsInASentenceSplitOnSingleSpaces,
+  countZerosInAnIntegerMatrix,
   dailyTemperaturesDaysUntilAWarmerTemperature,
   decodeStringExpandKEncodedStringNotation,
   decodeWaysCountDecodingsOfADigitString126Mapping,
@@ -213,14 +308,26 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   detectACycleInADirectedGraphGivenAsAnAdjacencyEdgeList,
   evaluateAStringOfPushesAndPopsReturnFinalStackAsAnArray,
   evaluateReversePolishNotation,
+  explainHowRecursionDepthAffectsSpaceComplexity,
+  explainLoopInvariantsInBinarySearch,
+  explainTheDifferenceBetweenLinearScanAndBinarySearchPreconditions,
+  explainTheTradeoffBetweenAdjacencyListsAndAdjacencyMatrices,
+  explainWhyHashTableLookupIsAverageO1ButNotGuaranteed,
   factorialOfNIterative,
   findAllPairsInAnArrayThatSumToATargetReturnCountOfUniquePairs,
   findAllUniquePairsInAnArrayThatSumToATargetReturnCount,
+  findTheClosestPairSumToATargetInASortedArray,
   findTheFirstAndLastPositionOfATargetInASortedArray,
+  findTheFirstOneInASortedBinaryArray,
+  findTheFirstPivotIndexInAnArray,
+  findTheFirstRepeatedValueInAnIntegerArray,
+  findTheFirstUppercaseLetterIndex,
   findTheIndexOfTheFirstOccurrenceOfATargetInAnArray,
   findTheInsertPositionOfATargetInASortedArray,
   findTheKthSmallestElementInARowWiseAndColumnWiseSortedMatrix,
+  findTheLargestAbsoluteValueInAnArray,
   findTheLeftmostIndexOfATargetInASortedArrayWithDuplicates,
+  findTheMajorityElementInAnArrayWithAGuaranteedMajority,
   findTheMaximumPairSumWhereOnePointerStartsFromEachEnd,
   findTheMaximumValueInAnArray,
   findTheMiddleValueOfAListGivenAsAnIntArraySlowFastPointers,
@@ -229,12 +336,14 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   findThePeakElementIndex,
   findTheSecondLargestElementInAnArray,
   findTheSingleNumberThatAppearsOnceWhenAllOthersAppearTwice,
+  findTheSmallestValueAtLeastTargetInASortedArray,
   flattenA2DIntegerArrayIntoA1DArray,
   floodFillOnA2DGrid,
   fourSumCountCountTuplesOneFromEachOf4ArraysThatSumToZero,
   fourSumCountQuadrupletsInAnArraySummingToATarget,
   groupAnagramsReturnGroupSizesSortedDescending,
   groupCountsReturnTheKMostFrequentElements,
+  hammingDistanceBetweenTwoIntegers,
   houseRobberMaxNonAdjacentSum,
   insertAValueAtTheFrontOfAListAndReturnTheNewListArray,
   integerSquareRootViaBinarySearch,
@@ -242,23 +351,31 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   jumpGameCanYouReachTheLastIndexGivenJumpLengths,
   kokoEatingBananasMinimumEatingSpeedToFinishWithinHHours,
   levelOrderTraversalOfBinaryTreeLevelOrderEncodingReturnValuesPerLevelAsInt,
+  longestBinarySubarrayAfterDeletingOneElement,
   longestCommonPrefixAmongAnArrayOfStrings,
   longestCommonSubsequenceLengthOfTwoStrings,
   longestConsecutiveSequenceInAnUnsortedArray,
   longestIncreasingSubsequenceLength,
+  longestRunOfTheSameCharacter,
   longestSubstringWithAtMostKDistinctCharacters,
   longestSubstringWithAtMostTwoDistinctCharacters,
   longestSubstringWithSameLettersAfterAtMostKReplacements,
+  matrixDiagonalSum,
   maxConsecutiveOnesAfterFlippingAtMostKZeros,
+  maximumAbsoluteDifferenceBetweenAdjacentValues,
   maximumAverageSubarrayOfExactlySizeKReturnIntegerFloor,
   maximumDepthOfABinaryTreeEncodedAsALevelOrderIntArray,
+  maximumNumberOfVowelsInAnySubstringOfLengthK,
   maximumProductSubarray,
+  maximumSumOfALengthKSubarrayWithAllDistinctValues,
   maximumSumOfAnySubarrayOfLengthExactlyKFixedWindow,
   maximumSumOfAnyWindowOfSizeK,
   memoizationVersusTabulationExplained,
   mergeTwoSortedArraysIntoOneSortedArray,
   mergeTwoSortedListsGivenAsIntArraysOfValues,
+  mergeTwoStringsByAlternatingCharacters,
   minStackSupportGetMinInO1ViaAnOperationsEncoding,
+  minimumAdditionsToMakeParenthesesValid,
   minimumDepthOfABinaryTreeEncodedAsALevelOrderIntArray,
   minimumInARotatedSortedArray,
   minimumPathSumFromTopLeftToBottomRightOfAGrid,
@@ -276,21 +393,27 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   recognizingONLogNAlgorithmsAndWhyComparisonSortsCanTDoBetter,
   removeAllAdjacentDuplicateCharactersFromAStringUsingAStack,
   removeAllInstancesOfAValueFromAnArrayReturnNewLength,
+  removeDuplicatesFromASortedArrayAllowingAtMostTwoCopies,
   removeDuplicatesFromASortedArrayInPlaceReturnNewLength,
   removeElementFromAnArrayInPlaceReturnNewLength,
   removeKDigitsFromANumberStringToProduceTheSmallestPossibleNumber,
+  removeOutermostParenthesesFromEveryPrimitiveGroup,
+  removeStarsFromAStringUsingAStack,
   removeTheNthNodeFromTheEndListsGivenAsValueArrays,
+  removeVowelsFromALowercaseString,
   reorderListL0LnL1Ln1PatternArrayRepresentation,
   returnTheKthValueFromTheEndOfAListArrayRepresentation,
   reverseASinglyLinkedListRepresentedAsAnIntArrayOfValues,
   reverseAStringInPlace,
   reverseAnArrayInPlaceWithTwoPointers,
   reverseWordsInASentence,
+  richestRowSumInAMatrix,
   romanNumeralStringToInteger,
   rotateALinkedListRightByKPositionsArrayRepresentation,
   rotateAnArrayRightByKPositions,
   rottingOrangesMinimumMinutesUntilAllOrangesAreRotten2DGridBfs,
   runLengthEncodeAString,
+  searchARowWiseSorted2DMatrix,
   searchInARotatedSortedArray,
   shortestPathLengthInAnUnweightedGridViaBfs,
   simplifyAUnixStyleFilePathString,
@@ -299,10 +422,14 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   squareEachElementOfAnIntegerArray,
   squaresOfASortedArrayReturnInSortedOrder,
   subarraySumEqualsKCountSubarraysUsingPrefixSums,
+  sumAbsoluteValuesInAnIntegerArray,
+  sumDigitsFoundInAString,
   sumOfAnIntegerArray,
   sumOfArray,
   sumOfDigitsOfAPositiveIntegerUsingRecursion,
   sumTheDigitsOfAPositiveInteger,
+  sumValuesAtEvenIndicesInAnIntegerArray,
+  sumValuesAtOddIndicesInAnIntegerArray,
   symmetricTreeCheckIfABinaryTreeIsItsOwnMirrorLevelOrderIntArray,
   theDifferenceBetweenTimeAndSpaceComplexity,
   theMasterTheoremForSolvingDivideAndConquerRecurrences,
@@ -314,6 +441,7 @@ export const GENERATED_PROBLEMS: ProblemDef[] = [
   uniquePathsInAnMByNGrid,
   validParenthesesWithThreeBracketTypes,
   validateABinarySearchTreeLevelOrderIntArray,
+  validatePushAndPopStackSequences,
   whatBigODescribesAndWhyConstantsAreDropped,
   whatIsABinarySearchTreeAndItsInvariants,
   whenToPreferALinkedListOverAnArray,

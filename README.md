@@ -1,9 +1,9 @@
 # CodeClimb
 
 A LeetCode-style training ground for programming fundamentals. Solve coding
-problems in **Python, JavaScript, Java, or C** — judged against real test
-cases — and cement the concepts with written **explanation problems** reviewed
-against model answers.
+problems in the languages available for each problem — judged against real
+test cases — and cement the concepts with written **explanation problems**
+reviewed against model answers.
 
 ## Features
 
@@ -11,7 +11,7 @@ against model answers.
   sessions (no external auth service). Submissions and progress are tracked
   per user; problems are shared.
 
-- **23 problems** across 10 topics: foundations, complexity analysis,
+- **244 problems** across 10 topics: foundations, complexity analysis,
   arrays & hashing, two pointers, stack & queue, binary search, sliding
   window, linked lists, trees & graphs, recursion & DP
 - **Two problem types**
@@ -63,8 +63,8 @@ your code ──► harness generator ──► executor ──► protocol pars
 4. Output is parsed from a marker protocol that separates judge results from
    your own prints, so debug output shows up attached to the right test.
 
-All 56 reference-solution × language combinations are verified through the
-real judge: `npx tsx scripts/verify-solutions.ts`.
+All coding-problem reference solutions are verified through the real judge:
+`npx tsx scripts/verify-solutions.ts`.
 
 ## Project layout
 
@@ -102,7 +102,7 @@ scripts/           judge smoke test + full solution verification
    `ExplanationProblemDef` (copy a neighbour as a template).
 2. Register it in `src/content/index.ts`.
 3. `npm run db:seed`, then `npx tsx scripts/verify-solutions.ts <slug>` to
-   prove the reference solutions pass in all four languages.
+   prove the reference solutions pass in the languages provided by the problem.
 
 Supported signature types: `int`, `bool`, `string`, `int[]`, `string[]`,
 `int[][]` (C supports all but `int[][]` as a *return* type). Set
@@ -111,7 +111,7 @@ Supported signature types: `int`, `bool`, `string`, `int[]`, `string[]`,
 ### In bulk (AI-generated)
 
 Problems can be authored by Claude and **machine-verified** before they're kept
-— every generated code problem has its four reference solutions run through the
+— every generated code problem has its reference solutions run through the
 real judge, and only problems that pass land in the seeded set. Generated
 problems live in `src/content/generated/` (separate from the curated set) and
 are wired into `ALL_PROBLEMS` automatically.
