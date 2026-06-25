@@ -4,9 +4,14 @@ import {
   CalendarClock,
   CheckCircle2,
   Clock,
+  GraduationCap,
   Repeat2,
 } from "lucide-react";
 import { requireUserPage } from "@/lib/auth";
+import {
+  listCourseExerciseReviewQueue,
+  type CourseExerciseReviewItem,
+} from "@/lib/course-review-queue";
 import {
   listReviewQueue,
   type ReviewQueueItem,
@@ -15,6 +20,7 @@ import {
 import { buildProblemHref } from "@/lib/problem-navigation";
 import { CATEGORIES } from "@/content/categories";
 import { DifficultyBadge, StatusIcon, TypeBadge } from "@/components/badges";
+import { LANGUAGES } from "@/lib/judge/languages";
 
 export const dynamic = "force-dynamic";
 
@@ -72,19 +78,36 @@ function countByReason(items: ReviewQueueItem[], reasons: ReviewReason[]) {
   return items.filter((item) => reasons.includes(item.reason)).length;
 }
 
+function buildCourseExerciseHref(item: CourseExerciseReviewItem): string {
+  return `/courses/${item.courseSlug}/${item.lessonSlug}#exercise-${item.exerciseId}`;
+}
+
 export default async function ReviewPage() {
   const user = await requireUserPage();
-  const queue = await listReviewQueue(user.id);
-  const firstItem = queue.due[0] ?? queue.items[0] ?? null;
-  const retryCount = countByReason(queue.due, [
-    "retry_failed_code",
-    "fix_runtime_error",
+  const [queue, courseQueue] = await Promise.all([
+    listReviewQueue(user.id),
+    listCourseExerciseReviewQueue(user.id),
   ]);
+  const firstDueProblemItem = queue.due[0] ?? null;
+  const firstProblemItem = firstDueProblemItem ?? queue.items[0] ?? null;
+  const firstCourseItem = courseQueue.due[0] ?? null;
+  const startHref = firstDueProblemItem
+    ? buildProblemHref(firstDueProblemItem.problem.slug, { queue: "review" })
+    : firstCourseItem
+      ? buildCourseExerciseHref(firstCourseItem)
+      : firstProblemItem
+        ? buildProblemHref(firstProblemItem.problem.slug, { queue: "review" })
+        : null;
+  const retryCount =
+    countByReason(queue.due, ["retry_failed_code", "fix_runtime_error"]) +
+    courseQueue.due.length;
   const conceptCount = countByReason(queue.due, [
     "revisit_missed_concept",
     "strengthen_partial_concept",
   ]);
   const refreshCount = countByReason(queue.due, ["refresh_solved_problem"]);
+  const dueCount = queue.due.length + courseQueue.due.length;
+  const hasReviewItems = queue.items.length > 0 || courseQueue.items.length > 0;
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8">
@@ -100,9 +123,9 @@ export default async function ReviewPage() {
             and solved work that is ready for another pass.
           </p>
         </div>
-        {firstItem ? (
+        {startHref ? (
           <Link
-            href={buildProblemHref(firstItem.problem.slug, { queue: "review" })}
+            href={startHref}
             className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-950/40 transition hover:bg-indigo-400"
           >
             Start review
@@ -120,7 +143,7 @@ export default async function ReviewPage() {
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-4">
-        <StatCard label="Due today" value={queue.due.length} accent="text-indigo-300" />
+        <StatCard label="Due today" value={dueCount} accent="text-indigo-300" />
         <StatCard label="Retry" value={retryCount} accent="text-rose-300" />
         <StatCard label="Concepts" value={conceptCount} accent="text-amber-300" />
         <StatCard label="Refresh" value={refreshCount} accent="text-emerald-300" />
@@ -154,7 +177,7 @@ export default async function ReviewPage() {
         </div>
       </section>
 
-      {queue.items.length === 0 ? (
+      {!hasReviewItems ? (
         <section className="mt-8 rounded-xl border border-edge bg-surface p-8 text-center">
           <CheckCircle2 className="mx-auto h-8 w-8 text-emerald-400" />
           <h2 className="mt-3 text-lg font-semibold tracking-tight">
@@ -167,20 +190,27 @@ export default async function ReviewPage() {
         </section>
       ) : (
         <div className="mt-8 space-y-8">
-          <ReviewSection
-            title="Due"
-            icon={Clock}
-            items={queue.due}
-            emptyText="Nothing is due today."
-            now={queue.generatedAt}
-          />
-          <ReviewSection
-            title="Upcoming"
-            icon={Repeat2}
-            items={queue.upcoming.slice(0, 8)}
-            emptyText="No upcoming review items yet."
-            now={queue.generatedAt}
-          />
+          {queue.items.length > 0 && (
+            <ReviewSection
+              title="Problem review"
+              icon={Clock}
+              items={queue.due}
+              emptyText="No problem-set items are due today."
+              now={queue.generatedAt}
+            />
+          )}
+          {courseQueue.items.length > 0 && (
+            <CourseExerciseReviewSection items={courseQueue.due} />
+          )}
+          {queue.upcoming.length > 0 && (
+            <ReviewSection
+              title="Upcoming"
+              icon={Repeat2}
+              items={queue.upcoming.slice(0, 8)}
+              emptyText="No upcoming review items yet."
+              now={queue.generatedAt}
+            />
+          )}
         </div>
       )}
     </main>
@@ -269,6 +299,83 @@ function ReviewSection({
         </div>
       )}
     </section>
+  );
+}
+
+function CourseExerciseReviewSection({
+  items,
+}: {
+  items: CourseExerciseReviewItem[];
+}) {
+  return (
+    <section>
+      <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted">
+        <GraduationCap className="h-4 w-4" />
+        Course exercises
+      </h2>
+      <div className="overflow-hidden rounded-xl border border-edge">
+        {items.map((item, index) => (
+          <CourseExerciseReviewRow
+            key={`${item.courseSlug}:${item.lessonSlug}:${item.exerciseId}`}
+            item={item}
+            className={index > 0 ? "border-t border-edge" : ""}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CourseExerciseReviewRow({
+  item,
+  className,
+}: {
+  item: CourseExerciseReviewItem;
+  className?: string;
+}) {
+  const status = STATUS_LABELS[item.latestStatus] ?? item.latestStatus;
+  const language = LANGUAGES[item.language]?.label ?? item.language;
+
+  return (
+    <Link
+      href={buildCourseExerciseHref(item)}
+      className={`group block bg-surface px-4 py-4 transition hover:bg-surface-raised ${className ?? ""}`}
+    >
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="mt-0.5 rounded-md bg-indigo-500/10 p-1.5 text-indigo-300 ring-1 ring-indigo-500/25">
+            <GraduationCap className="h-4 w-4" />
+          </span>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="font-medium transition group-hover:text-indigo-200">
+                {item.exerciseTitle}
+              </h3>
+              <span className="rounded-full border border-edge bg-background px-2 py-0.5 text-[11px] font-medium text-muted">
+                {language}
+              </span>
+            </div>
+            <p className="mt-1 text-xs text-muted">
+              {item.courseTitle} - {item.lessonTitle} - {item.attempts}{" "}
+              {item.attempts === 1 ? "attempt" : "attempts"} - Latest: {status}
+            </p>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+              {item.detail}
+            </p>
+          </div>
+        </div>
+        <div className="flex shrink-0 flex-col items-end gap-2">
+          <span className="rounded-full border border-orange-500/35 bg-orange-500/10 px-2.5 py-1 text-xs font-semibold text-orange-200">
+            {item.reasonLabel}
+          </span>
+          {item.totalCount !== null && (
+            <span className="text-xs tabular-nums text-muted">
+              {item.passedCount}/{item.totalCount} tests
+            </span>
+          )}
+        </div>
+      </div>
+    </Link>
   );
 }
 

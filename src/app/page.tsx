@@ -2,6 +2,10 @@ import Link from "next/link";
 import { ArrowRight, Clock, Flame, GraduationCap, Sparkles } from "lucide-react";
 import { listProblems } from "@/lib/problems";
 import { listCourses } from "@/lib/courses";
+import {
+  listCourseExerciseReviewQueue,
+  type CourseExerciseReviewItem,
+} from "@/lib/course-review-queue";
 import { listReviewQueue } from "@/lib/review-queue";
 import { buildProblemHref } from "@/lib/problem-navigation";
 import { requireUserPage } from "@/lib/auth";
@@ -10,12 +14,17 @@ import { DifficultyBadge, StatusIcon } from "@/components/badges";
 
 export const dynamic = "force-dynamic";
 
+function buildCourseExerciseHref(item: CourseExerciseReviewItem): string {
+  return `/courses/${item.courseSlug}/${item.lessonSlug}#exercise-${item.exerciseId}`;
+}
+
 export default async function DashboardPage() {
   const user = await requireUserPage();
-  const [problems, courses, reviewQueue] = await Promise.all([
+  const [problems, courses, reviewQueue, courseReviewQueue] = await Promise.all([
     listProblems(user.id),
     listCourses(user.id),
     listReviewQueue(user.id),
+    listCourseExerciseReviewQueue(user.id),
   ]);
   const solved = problems.filter((p) => p.status === "solved").length;
   const attempted = problems.filter((p) => p.status === "attempted").length;
@@ -31,10 +40,26 @@ export default async function DashboardPage() {
   const next =
     ordered.find((p) => p.status === "attempted") ??
     ordered.find((p) => p.status !== "solved");
-  const reviewItems =
-    reviewQueue.due.length > 0
-      ? reviewQueue.due.slice(0, 3)
-      : reviewQueue.upcoming.slice(0, 3);
+  const reviewDueCount = reviewQueue.due.length + courseReviewQueue.due.length;
+  const problemDuePreview = reviewQueue.due.slice(0, 3);
+  const courseReviewItems = courseReviewQueue.due.slice(
+    0,
+    Math.max(0, 3 - problemDuePreview.length),
+  );
+  const upcomingReviewItems =
+    reviewDueCount === 0
+      ? reviewQueue.upcoming.slice(
+          0,
+          Math.max(0, 3 - problemDuePreview.length - courseReviewItems.length),
+        )
+      : [];
+  const problemReviewItems = [...problemDuePreview, ...upcomingReviewItems];
+  const reviewPreviewRows = [
+    ...problemReviewItems.map((item) => ({ kind: "problem" as const, item })),
+    ...courseReviewItems.map((item) => ({ kind: "course" as const, item })),
+  ].slice(0, 3);
+  const reviewTotalCount =
+    reviewQueue.items.length + courseReviewQueue.items.length;
 
   const ring = 2 * Math.PI * 52;
 
@@ -113,7 +138,7 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      {reviewQueue.items.length > 0 && (
+      {reviewTotalCount > 0 && (
         <section className="mt-8 rounded-xl border border-edge bg-surface p-5">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
@@ -122,8 +147,8 @@ export default async function DashboardPage() {
                 Review queue
               </h2>
               <p className="mt-1 text-sm text-muted">
-                {reviewQueue.due.length > 0
-                  ? `${reviewQueue.due.length} due today`
+                {reviewDueCount > 0
+                  ? `${reviewDueCount} due today`
                   : "Nothing due today"}
                 {reviewQueue.upcoming.length > 0
                   ? ` · ${reviewQueue.upcoming.length} upcoming`
@@ -139,28 +164,53 @@ export default async function DashboardPage() {
             </Link>
           </div>
 
-          {reviewItems.length > 0 && (
+          {reviewPreviewRows.length > 0 && (
             <div className="mt-4 divide-y divide-edge overflow-hidden rounded-lg border border-edge">
-              {reviewItems.map((item) => (
-                <Link
-                  key={item.problem.slug}
-                  href={buildProblemHref(item.problem.slug, { queue: "review" })}
-                  className="flex items-center justify-between gap-3 bg-background/40 px-3 py-2.5 transition hover:bg-surface-raised"
-                >
-                  <div className="flex min-w-0 items-center gap-3">
-                    <StatusIcon status={item.problem.status} />
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium">
-                        {item.problem.title}
-                      </p>
-                      <p className="truncate text-xs text-muted">
-                        {item.reasonLabel}
-                      </p>
+              {reviewPreviewRows.map((row) =>
+                row.kind === "problem" ? (
+                  <Link
+                    key={row.item.problem.slug}
+                    href={buildProblemHref(row.item.problem.slug, { queue: "review" })}
+                    className="flex items-center justify-between gap-3 bg-background/40 px-3 py-2.5 transition hover:bg-surface-raised"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <StatusIcon status={row.item.problem.status} />
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium">
+                          {row.item.problem.title}
+                        </p>
+                        <p className="truncate text-xs text-muted">
+                          {row.item.reasonLabel}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <DifficultyBadge difficulty={item.problem.difficulty} />
-                </Link>
-              ))}
+                    <DifficultyBadge difficulty={row.item.problem.difficulty} />
+                  </Link>
+                ) : (
+                  <Link
+                    key={`${row.item.courseSlug}:${row.item.lessonSlug}:${row.item.exerciseId}`}
+                    href={buildCourseExerciseHref(row.item)}
+                    className="flex items-center justify-between gap-3 bg-background/40 px-3 py-2.5 transition hover:bg-surface-raised"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span className="rounded-md bg-indigo-500/10 p-1 text-indigo-300 ring-1 ring-indigo-500/20">
+                        <GraduationCap className="h-3.5 w-3.5" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium">
+                          {row.item.exerciseTitle}
+                        </p>
+                        <p className="truncate text-xs text-muted">
+                          {row.item.reasonLabel}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="shrink-0 rounded-full border border-edge px-2 py-0.5 text-[11px] font-medium text-muted">
+                      Course
+                    </span>
+                  </Link>
+                ),
+              )}
             </div>
           )}
         </section>

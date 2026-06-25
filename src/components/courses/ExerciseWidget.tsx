@@ -140,6 +140,7 @@ export function ExerciseWidget({
 
   return (
     <div
+      id={`exercise-${exercise.id}`}
       className={`my-6 overflow-hidden rounded-xl border bg-surface transition ${
         isSolved ? "border-emerald-500/40" : "border-edge"
       }`}
