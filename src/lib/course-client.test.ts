@@ -4,7 +4,7 @@ import { toClientCourseBlocks } from "./course-client";
 
 describe("course client serialization", () => {
   it("removes accepted knowledge answers and hidden script expectations", () => {
-    const lesson = beginnerPythonCourse.modules[1].lessons[1];
+    const lesson = beginnerPythonCourse.modules[0].lessons[0];
     const clientBlocks = toClientCourseBlocks(lesson.blocks);
     const serialized = JSON.stringify(clientBlocks);
 
@@ -12,6 +12,8 @@ describe("course client serialization", () => {
     expect(serialized).not.toContain('"hidden":true');
     expect(serialized).not.toContain("Sam");
     expect(serialized).not.toContain('"solution"');
+    expect(serialized).not.toContain("workedStart");
+    expect(serialized).not.toContain("Add the final step here");
     expect(
       clientBlocks.some(
         (block) =>

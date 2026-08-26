@@ -7,6 +7,7 @@ import {
   Send,
   RotateCcw,
   CheckCircle2,
+  Code2,
   GraduationCap,
   Terminal,
 } from "lucide-react";
@@ -30,8 +31,11 @@ export function ExerciseWidget({
   initialSolved,
   initialAttempted,
   initialAssisted,
+  initialCode,
   beginnerMode,
+  firstLessonMode,
   guidedFirstRun,
+  onActivityFocus,
   onSolvedChange,
 }: {
   courseSlug: string;
@@ -43,14 +47,17 @@ export function ExerciseWidget({
   initialSolved: boolean;
   initialAttempted: boolean;
   initialAssisted: boolean;
+  initialCode?: string;
   beginnerMode: boolean;
+  firstLessonMode: boolean;
   guidedFirstRun: boolean;
+  onActivityFocus?: (activityId: string) => void;
   onSolvedChange?: (exerciseId: string, solved: boolean) => void;
 }) {
   const storageKey = `cc-course-${courseSlug}-${lessonSlug}-${exercise.id}`;
   const [code, setCode, codeLoaded] = useStoredState(
     `${storageKey}-code`,
-    exercise.starterCode,
+    initialCode ?? exercise.starterCode,
   );
   const [isSolved, setIsSolved] = useState(initialSolved);
   const [attempted, setAttempted] = useState(initialAttempted || initialSolved);
@@ -63,6 +70,7 @@ export function ExerciseWidget({
   const [outcome, setOutcome] = useState<JudgeOutcome | null>(null);
   const [runError, setRunError] = useState<string | null>(null);
   const [solution, setSolution] = useState<string | null>(null);
+  const [workedStart, setWorkedStart] = useState<string | null>(null);
   const [showHiddenTestsSetting, setShowHiddenTestsSetting] = useStoredState(
     "cc-show-hidden-tests",
     "",
@@ -138,17 +146,37 @@ export function ExerciseWidget({
       const revealed = await fetchJson<{ solution: string; assisted: boolean }>(
         "/api/courses/assistance",
         {
-        method: "POST",
-        body: JSON.stringify({
-          courseSlug,
-          lessonSlug,
-          exerciseId: exercise.id,
-          kind: "solution_reveal",
-        }),
+          method: "POST",
+          body: JSON.stringify({
+            courseSlug,
+            lessonSlug,
+            exerciseId: exercise.id,
+            kind: "solution_reveal",
+          }),
         },
       );
       setSolution(revealed.solution);
       if (revealed.assisted) setAssisted(true);
+    } catch (err) {
+      setRunError(err instanceof Error ? err.message : String(err));
+    }
+  };
+
+  const revealWorkedStart = async () => {
+    try {
+      const revealed = await fetchJson<{ workedStart: string }>(
+        "/api/courses/assistance",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            courseSlug,
+            lessonSlug,
+            exerciseId: exercise.id,
+            kind: "worked_start",
+          }),
+        },
+      );
+      setWorkedStart(revealed.workedStart);
     } catch (err) {
       setRunError(err instanceof Error ? err.message : String(err));
     }
@@ -193,8 +221,10 @@ export function ExerciseWidget({
 
   return (
     <div
-      id={`exercise-${exercise.id}`}
-      className={`my-6 overflow-hidden rounded-xl border bg-surface transition ${
+      id={`activity-${exercise.id}`}
+      onFocusCapture={() => onActivityFocus?.(exercise.id)}
+      onPointerDown={() => onActivityFocus?.(exercise.id)}
+      className={`my-6 scroll-mt-20 overflow-hidden rounded-xl border bg-surface transition ${
         isSolved ? "border-emerald-500/40" : "border-edge"
       }`}
     >
@@ -247,7 +277,7 @@ export function ExerciseWidget({
       )}
 
       {/* Editor toolbar */}
-      <div className="flex h-10 items-center gap-2 border-b border-edge px-3">
+      <div className="flex min-h-10 items-center gap-2 border-b border-edge px-3 py-2 sm:py-0">
         <button
           onClick={resetCode}
           title="Reset to starter code"
@@ -276,7 +306,7 @@ export function ExerciseWidget({
       </div>
 
       {/* Editor */}
-      <div className="h-72 border-b border-edge">
+      <div className="h-64 border-b border-edge sm:h-72">
         {codeLoaded ? (
           <Editor
             language={LANGUAGES[language].monaco}
@@ -298,7 +328,7 @@ export function ExerciseWidget({
       </div>
 
       {/* Results */}
-      <div className="h-64 bg-background">
+      <div className="h-72 bg-background sm:h-64">
         <TestPanel
           mode={exercise.mode}
           signature={exercise.mode === "function" ? exercise.signature : undefined}
@@ -321,6 +351,7 @@ export function ExerciseWidget({
           <GuidanceReveal
             guidance={exercise.guidance}
             compact
+            beginnerMode={beginnerMode}
             onAllRevealed={completeGuidance}
           />
         ) : (
@@ -346,6 +377,29 @@ export function ExerciseWidget({
           })}
         />}
 
+        {firstLessonMode && allGuidanceRevealed && !isSolved && (
+          <div>
+            {workedStart === null ? (
+              <button
+                onClick={() => void revealWorkedStart()}
+                className="flex items-center gap-1.5 text-xs font-medium text-indigo-300 underline-offset-2 transition hover:text-indigo-200 hover:underline"
+              >
+                <Code2 className="h-3.5 w-3.5" />
+                Show a worked start
+              </button>
+            ) : (
+              <details className="group" open>
+                <summary className="cursor-pointer text-xs font-medium text-indigo-300">
+                  Worked start — finish the final step yourself
+                </summary>
+                <pre className="mt-2 overflow-x-auto rounded-lg border border-indigo-500/20 bg-zinc-900/80 p-3 font-mono text-xs leading-relaxed">
+                  {workedStart}
+                </pre>
+              </details>
+            )}
+          </div>
+        )}
+
         <div>
           {solution !== null ? (
             <details className="group" open>
@@ -360,7 +414,12 @@ export function ExerciseWidget({
           ) : (
             <button
               onClick={() => void revealSolution()}
-              disabled={!isSolved && (!attempted || !allGuidanceRevealed)}
+              disabled={
+                !isSolved &&
+                (!attempted ||
+                  !allGuidanceRevealed ||
+                  (firstLessonMode && workedStart === null))
+              }
               className="flex items-center gap-1.5 text-xs text-muted underline-offset-2 transition hover:text-foreground hover:underline disabled:cursor-not-allowed disabled:opacity-40"
             >
               <GraduationCap className="h-3.5 w-3.5" />
@@ -372,6 +431,8 @@ export function ExerciseWidget({
                   : "Run once before revealing help"
                 : !allGuidanceRevealed
                   ? "Reveal each guidance step before the solution"
+                  : firstLessonMode && workedStart === null
+                    ? "Try the worked start before the full solution"
                   : "Stuck? Reveal the reference solution"}
             </button>
           )}

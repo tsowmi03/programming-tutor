@@ -24,7 +24,9 @@ export default async function LessonPage({
     completed,
     solvedExerciseIds,
     attemptedExerciseIds,
+    initialExerciseCodes,
     solvedKnowledgeCheckIds,
+    initialKnowledgeCheckAnswers,
     assistedExerciseIds,
     unlocked,
     prevSlug,
@@ -76,7 +78,9 @@ export default async function LessonPage({
       initialCompleted={completed}
       initialSolvedExerciseIds={solvedExerciseIds}
       initialAttemptedExerciseIds={attemptedExerciseIds}
+      initialExerciseCodes={initialExerciseCodes}
       initialSolvedKnowledgeCheckIds={solvedKnowledgeCheckIds}
+      initialKnowledgeCheckAnswers={initialKnowledgeCheckAnswers}
       initialAssistedExerciseIds={assistedExerciseIds}
       masteryGated={course.progression === "mastery"}
       beginnerMode={course.level === "beginner"}
@@ -84,6 +88,7 @@ export default async function LessonPage({
       nextSlug={nextSlug}
       position={position}
       total={total}
+      estimatedMinutes={lesson.estimatedMinutes ?? 20}
       />
     </>
   );

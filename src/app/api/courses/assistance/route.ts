@@ -46,6 +46,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ recorded: true });
     }
 
+    if (body.kind === "worked_start") {
+      if (!exercise.workedStart) {
+        throw new NotFoundError("Worked start not found");
+      }
+      return NextResponse.json({ workedStart: exercise.workedStart });
+    }
+
     const alreadySolved = submissions.some(
       (submission) =>
         submission.mode === "submit" && submission.status === "passed",

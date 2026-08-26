@@ -149,6 +149,20 @@ describe("course content", () => {
     expect(course.modules).toHaveLength(8);
     expect(orderedLessons(course)).toHaveLength(24);
     expect(exerciseCount(course)).toBe(48);
+    const firstLesson = course.modules[0].lessons[0];
+    expect(firstLesson.estimatedMinutes).toBe(15);
+    expect(
+      firstLesson.blocks.filter(
+        (block) =>
+          (block.kind === "exercise" && block.exercise.required !== false) ||
+          (block.kind === "knowledge_check" && block.check.required !== false),
+      ),
+    ).toHaveLength(4);
+    expect(
+      firstLesson.blocks
+        .filter((block) => block.kind === "exercise")
+        .every((block) => block.kind === "exercise" && block.exercise.workedStart),
+    ).toBe(true);
 
     for (const courseModule of course.modules) {
       expect(courseModule.objectiveIds).toHaveLength(5);

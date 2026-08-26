@@ -17,6 +17,7 @@ function exercise(
   starterCode: string,
   solution: string,
   cases: Case[],
+  workedStart?: string,
 ): CourseExercise {
   return {
     mode: "script",
@@ -27,6 +28,7 @@ function exercise(
     prompt,
     starterCode,
     solution,
+    workedStart,
     tests: cases.map(([input, expectedOutput, hidden]) => ({
       input,
       expectedOutput,
@@ -68,13 +70,14 @@ function lesson(
   objectives: string[],
   prose: string,
   activities: (CourseExercise | KnowledgeCheck)[],
+  estimatedMinutes = 40,
 ): Lesson {
   return {
     slug,
     title,
     summary,
     objectives,
-    estimatedMinutes: 40,
+    estimatedMinutes,
     blocks: [
       { kind: "prose", markdown: prose },
       ...activities.map((activity) =>
@@ -151,11 +154,30 @@ print("Go")
 
 The editor contains source code. The results panel contains the program's output. They are related, but they are not the same thing.`,
       [
-        exercise("m1-order-steps", "Put output in order", "m1-order", "Write a complete program that prints `Ready`, `Set`, and `Go` on separate lines in that exact order.", "# Print the three steps in order.\nprint(\"Ready\")\n", "print(\"Ready\")\nprint(\"Set\")\nprint(\"Go\")\n", [["", "Ready\nSet\nGo"], ["", "Ready\nSet\nGo", true]]),
+        exercise(
+          "m1-order-steps",
+          "Put output in order",
+          "m1-order",
+          "Write a complete program that prints `Ready`, `Set`, and `Go` on separate lines in that exact order.",
+          "# Print the three steps in order.\nprint(\"Ready\")\n",
+          "print(\"Ready\")\nprint(\"Set\")\nprint(\"Go\")\n",
+          [["", "Ready\nSet\nGo"], ["", "Ready\nSet\nGo", true]],
+          "print(\"Ready\")\nprint(\"Set\")\n# Add the final step here.\n",
+        ),
         check("m1-order-check", "m1-order", "What is the first line printed by `print(\"A\")` followed by `print(\"B\")`?", ["A"], "Python executes the first print statement before moving to the second."),
-        exercise("m1-output-label", "Label a result", "m1-output", "Print two lines: first `Score`, then the number `10`. Use two print statements.", "# Print the label and value on separate lines.\nprint(\"Score\")\n", "print(\"Score\")\nprint(10)\n", [["", "Score\n10"], ["", "Score\n10", true]]),
+        exercise(
+          "m1-output-label",
+          "Label a result",
+          "m1-output",
+          "Print two lines: first `Score`, then the number `10`. Use two print statements.",
+          "# Print the label and value on separate lines.\nprint(\"Score\")\n",
+          "print(\"Score\")\nprint(10)\n",
+          [["", "Score\n10"], ["", "Score\n10", true]],
+          "print(\"Score\")\n# Add the number on the next line.\n",
+        ),
         check("m1-output-check", "m1-output", "Which word describes what a running program displays: source or output?", ["output"], "Source is what you write; output is what the program produces.", ["source", "output"]),
       ],
+      15,
     ),
     lesson(
       "values-and-expressions",
