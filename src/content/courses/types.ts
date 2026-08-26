@@ -30,6 +30,8 @@ interface CourseExerciseBase {
   starterCode: string;
   /** Reference solution — verified by scripts/verify-courses.ts. */
   solution: string;
+  /** Optional incomplete worked example revealed before the full solution. */
+  workedStart?: string;
   /** Progressive hints, revealed one at a time. */
   hints?: string[];
   /** Optional structured guidance, revealed only when requested. */

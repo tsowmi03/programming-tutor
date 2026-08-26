@@ -35,11 +35,13 @@ export function GuidanceReveal({
   guidance,
   emptyText = "No guidance yet.",
   compact = false,
+  beginnerMode = false,
   onAllRevealed,
 }: {
   guidance: GuidanceItem[];
   emptyText?: string;
   compact?: boolean;
+  beginnerMode?: boolean;
   onAllRevealed?: () => void;
 }) {
   const [revealed, setRevealed] = useState(0);
@@ -59,6 +61,12 @@ export function GuidanceReveal({
       {guidance.map((item, index) => {
         const meta = GUIDANCE_META[item.level];
         const Icon = meta.icon;
+        const beginnerLabel = {
+          nudge: "Small hint",
+          strategy: "A plan to try",
+          pitfall: "Common mistake",
+          pseudocode: "Steps in plain language",
+        }[item.level];
         return index < revealed ? (
           <div
             key={index}
@@ -68,7 +76,7 @@ export function GuidanceReveal({
           >
             <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
               <Icon className="h-3.5 w-3.5" />
-              {meta.label} {index + 1}: {item.title}
+              {beginnerMode ? beginnerLabel : meta.label} {index + 1}: {item.title}
             </p>
             <MarkdownView>{item.body}</MarkdownView>
           </div>
@@ -87,7 +95,9 @@ export function GuidanceReveal({
             }
           >
             <Icon className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} />
-            Reveal {item.title.toLowerCase()}
+            {beginnerMode
+              ? `Show ${beginnerLabel.toLowerCase()}`
+              : `Reveal ${item.title.toLowerCase()}`}
           </button>
         ) : null;
       })}

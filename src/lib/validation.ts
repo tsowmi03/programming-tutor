@@ -242,7 +242,7 @@ export const courseAssistanceEventSchema = z.object({
   courseSlug: z.string().min(1).max(100),
   lessonSlug: z.string().min(1).max(100),
   exerciseId: z.string().min(1).max(100),
-  kind: z.enum(["guidance_complete", "solution_reveal"]),
+  kind: z.enum(["guidance_complete", "worked_start", "solution_reveal"]),
 });
 
 export type RunRequest = z.infer<typeof runRequestSchema>;

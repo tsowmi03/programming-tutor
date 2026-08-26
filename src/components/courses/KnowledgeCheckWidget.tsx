@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CheckCircle2, Send, XCircle } from "lucide-react";
 import { MarkdownView } from "@/components/MarkdownView";
-import { fetchJson } from "@/components/workspace/shared";
+import { fetchJson, useStoredState } from "@/components/workspace/shared";
 import type { ClientKnowledgeCheck } from "./types";
 
 export function KnowledgeCheckWidget({
@@ -11,17 +11,25 @@ export function KnowledgeCheckWidget({
   lessonSlug,
   check,
   initialSolved,
+  initialAnswer,
+  onActivityFocus,
   onSolvedChange,
 }: {
   courseSlug: string;
   lessonSlug: string;
   check: ClientKnowledgeCheck;
   initialSolved: boolean;
+  initialAnswer?: string;
+  onActivityFocus?: (activityId: string) => void;
   onSolvedChange: (activityId: string, solved: boolean) => void;
 }) {
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useStoredState(
+    `cc-course-${courseSlug}-${lessonSlug}-${check.id}-answer`,
+    initialAnswer ?? "",
+  );
   const [solved, setSolved] = useState(initialSolved);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{
     correct: boolean;
     explanation: string;
@@ -30,6 +38,7 @@ export function KnowledgeCheckWidget({
   const submit = async () => {
     if (busy || !answer.trim()) return;
     setBusy(true);
+    setError(null);
     try {
       const next = await fetchJson<{ correct: boolean; explanation: string }>(
         "/api/courses/check",
@@ -48,6 +57,8 @@ export function KnowledgeCheckWidget({
         setSolved(true);
         onSolvedChange(check.id, true);
       }
+    } catch {
+      setError("CodeClimb could not check that answer just now. Your answer is saved—please try again.");
     } finally {
       setBusy(false);
     }
@@ -55,7 +66,10 @@ export function KnowledgeCheckWidget({
 
   return (
     <section
-      className={`my-6 rounded-xl border p-4 ${
+      id={`activity-${check.id}`}
+      onFocusCapture={() => onActivityFocus?.(check.id)}
+      onPointerDown={() => onActivityFocus?.(check.id)}
+      className={`my-6 scroll-mt-20 rounded-xl border p-4 ${
         solved ? "border-emerald-500/40 bg-emerald-500/5" : "border-edge bg-surface"
       }`}
     >
@@ -118,6 +132,12 @@ export function KnowledgeCheckWidget({
           </p>
           <p className="mt-1 leading-relaxed">{result.explanation}</p>
         </div>
+      )}
+
+      {error && (
+        <p role="alert" className="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-100">
+          {error}
+        </p>
       )}
     </section>
   );

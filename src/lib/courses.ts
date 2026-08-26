@@ -133,7 +133,9 @@ export interface LessonView {
   completed: boolean;
   solvedExerciseIds: string[];
   attemptedExerciseIds: string[];
+  initialExerciseCodes: Record<string, string>;
   solvedKnowledgeCheckIds: string[];
+  initialKnowledgeCheckAnswers: Record<string, string>;
   assistedExerciseIds: string[];
   unlocked: boolean;
   prevSlug: string | null;
@@ -156,27 +158,56 @@ export async function getLessonView(
   const ordered = orderedLessons(course);
   const index = ordered.findIndex((o) => o.lesson.slug === lessonSlug);
 
-  const [completedRow, solvedRows, attemptedRows, mastery] = await Promise.all([
-    prisma.lessonProgress.findUnique({
-      where: {
-        userId_courseSlug_lessonSlug: { userId, courseSlug, lessonSlug },
-      },
-      select: { id: true },
-    }),
-    prisma.courseExerciseSubmission.findMany({
-      where: { userId, courseSlug, lessonSlug, mode: "submit", status: "passed" },
-      select: { exerciseId: true },
-    }),
-    prisma.courseExerciseSubmission.findMany({
-      where: { userId, courseSlug, lessonSlug },
-      select: { exerciseId: true },
-    }),
-    getCourseMasterySnapshot(userId, course),
-  ]);
+  const [completedRow, solvedRows, attemptedRows, knowledgeRows, mastery] =
+    await Promise.all([
+      prisma.lessonProgress.findUnique({
+        where: {
+          userId_courseSlug_lessonSlug: { userId, courseSlug, lessonSlug },
+        },
+        select: { id: true },
+      }),
+      prisma.courseExerciseSubmission.findMany({
+        where: {
+          userId,
+          courseSlug,
+          lessonSlug,
+          mode: "submit",
+          status: "passed",
+        },
+        select: { exerciseId: true },
+      }),
+      prisma.courseExerciseSubmission.findMany({
+        where: { userId, courseSlug, lessonSlug },
+        orderBy: { createdAt: "desc" },
+        select: { exerciseId: true, code: true },
+      }),
+      prisma.courseActivityAttempt.findMany({
+        where: {
+          userId,
+          courseSlug,
+          lessonSlug,
+          kind: "knowledge_check",
+          answer: { not: null },
+        },
+        orderBy: { createdAt: "desc" },
+        select: { activityId: true, answer: true },
+      }),
+      getCourseMasterySnapshot(userId, course),
+    ]);
   const solvedExerciseIds = [...new Set(solvedRows.map((row) => row.exerciseId))];
   const attemptedExerciseIds = [
     ...new Set(attemptedRows.map((row) => row.exerciseId)),
   ];
+  const initialExerciseCodes: Record<string, string> = {};
+  for (const row of attemptedRows) {
+    initialExerciseCodes[row.exerciseId] ??= row.code;
+  }
+  const initialKnowledgeCheckAnswers: Record<string, string> = {};
+  for (const row of knowledgeRows) {
+    if (row.answer !== null) {
+      initialKnowledgeCheckAnswers[row.activityId] ??= row.answer;
+    }
+  }
 
   const lessonState = mastery.modules
     .flatMap((courseModule) => courseModule.lessons)
@@ -203,7 +234,9 @@ export async function getLessonView(
         : completedRow != null,
     solvedExerciseIds,
     attemptedExerciseIds,
+    initialExerciseCodes,
     solvedKnowledgeCheckIds,
+    initialKnowledgeCheckAnswers,
     assistedExerciseIds,
     unlocked: lessonState?.unlocked ?? true,
     prevSlug: index > 0 ? ordered[index - 1].lesson.slug : null,

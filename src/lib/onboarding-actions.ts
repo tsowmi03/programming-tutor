@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { requireUserPage } from "./auth";
 import { experiencedStartPath } from "./auth-utils";
 import { prisma } from "./prisma";
@@ -25,6 +26,7 @@ export async function completeOnboarding(formData: FormData): Promise<void> {
     eventName: "onboarding_completed",
     properties: { experience: parsed.data.experience },
   });
+  revalidatePath("/", "layout");
 
   if (parsed.data.experience === "beginner") {
     redirect("/courses/programming-foundations-python");

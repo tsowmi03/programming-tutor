@@ -9,6 +9,22 @@ import {
 } from "react";
 import type { JudgeValue, FunctionSignature } from "@/lib/judge/types";
 
+function readLocalState(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeLocalState(key: string, value: string): void {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Draft persistence is helpful, but storage restrictions must not block learning.
+  }
+}
+
 /** localStorage-backed state (drafts survive reloads). */
 export function useStoredState(key: string, initial: string) {
   const [value, setValue] = useState(initial);
@@ -22,7 +38,7 @@ export function useStoredState(key: string, initial: string) {
     // switching language). Reading localStorage during render would cause a
     // server/client hydration mismatch, so the sync setState here is the
     // standard pattern; consumers gate rendering on `loaded`.
-    const saved = window.localStorage.getItem(key);
+    const saved = readLocalState(key);
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue(saved ?? initial);
     setLoadedKey(key);
@@ -32,7 +48,7 @@ export function useStoredState(key: string, initial: string) {
   useEffect(() => {
     const previous = previousRef.current;
     if (previous.loaded && previous.key !== key) {
-      window.localStorage.setItem(previous.key, previous.value);
+      writeLocalState(previous.key, previous.value);
     }
     previousRef.current = { key, value, loaded };
     latestRef.current = { key, value, loaded };
@@ -43,7 +59,7 @@ export function useStoredState(key: string, initial: string) {
     const timeout = window.setTimeout(() => {
       const latest = latestRef.current;
       if (latest.loaded && latest.key === key) {
-        window.localStorage.setItem(key, latest.value);
+        writeLocalState(key, latest.value);
       }
     }, 150);
     return () => window.clearTimeout(timeout);
@@ -53,7 +69,7 @@ export function useStoredState(key: string, initial: string) {
     const flush = () => {
       const latest = latestRef.current;
       if (latest.loaded) {
-        window.localStorage.setItem(latest.key, latest.value);
+        writeLocalState(latest.key, latest.value);
       }
     };
     window.addEventListener("pagehide", flush);

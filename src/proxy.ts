@@ -23,10 +23,6 @@ export function proxy(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (hasSession && isPublic) {
-    return NextResponse.redirect(new URL("/", req.nextUrl));
-  }
-
   return NextResponse.next();
 }
 
