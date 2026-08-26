@@ -18,6 +18,13 @@ export async function POST(req: Request) {
       throw new NotFoundError("Lesson not found");
     }
 
+    if (course.progression === "mastery") {
+      return NextResponse.json(
+        { error: "This course calculates completion from required activities." },
+        { status: 409 },
+      );
+    }
+
     await setLessonCompletion(user.id, courseSlug, lessonSlug, completed);
     return NextResponse.json({ completed });
   } catch (err) {

@@ -322,7 +322,14 @@ export class OAuthEmailError extends Error {
   }
 }
 
-export async function findOrCreateOAuthUser(profile: OAuthProfile): Promise<string> {
+export interface OAuthUserResult {
+  userId: string;
+  isNewUser: boolean;
+}
+
+export async function findOrCreateOAuthUser(
+  profile: OAuthProfile,
+): Promise<OAuthUserResult> {
   try {
     return await prisma.$transaction(async (tx) => {
       const account = await tx.oAuthAccount.findUnique({
@@ -334,14 +341,14 @@ export async function findOrCreateOAuthUser(profile: OAuthProfile): Promise<stri
         },
         select: { userId: true },
       });
-      if (account) return account.userId;
+      if (account) return { userId: account.userId, isNewUser: false };
 
       const existing = await tx.user.findUnique({
         where: { email: profile.email },
         select: { id: true, emailVerifiedAt: true },
       });
-      const user =
-        existing ??
+      const isNewUser = existing === null;
+      const user = existing ??
         (await tx.user.create({
           data: {
             email: profile.email,
@@ -367,7 +374,7 @@ export async function findOrCreateOAuthUser(profile: OAuthProfile): Promise<stri
         },
       });
 
-      return user.id;
+      return { userId: user.id, isNewUser };
     });
   } catch (err) {
     if (
@@ -383,7 +390,7 @@ export async function findOrCreateOAuthUser(profile: OAuthProfile): Promise<stri
         },
         select: { userId: true },
       });
-      if (account) return account.userId;
+      if (account) return { userId: account.userId, isNewUser: false };
     }
     throw err;
   }

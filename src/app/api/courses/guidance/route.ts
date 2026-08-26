@@ -15,6 +15,8 @@ import {
 } from "@/lib/ai-guidance-limit";
 import { normalizeGuidance } from "@/lib/guidance";
 import { courseAiGuidanceRequestSchema } from "@/lib/validation";
+import { courseLessonIsUnlocked } from "@/lib/course-mastery";
+import { prisma } from "@/lib/prisma";
 
 export const maxDuration = 30;
 
@@ -32,6 +34,25 @@ export async function POST(req: Request) {
 
     const exercise = getExercise(course, body.lessonSlug, body.exerciseId);
     if (!exercise) throw new NotFoundError("Exercise not found");
+    if (!(await courseLessonIsUnlocked(user.id, course, body.lessonSlug))) {
+      return NextResponse.json({ error: "This lesson is locked." }, { status: 409 });
+    }
+    if (course.progression === "mastery") {
+      const attempts = await prisma.courseExerciseSubmission.count({
+        where: {
+          userId: user.id,
+          courseSlug: course.slug,
+          lessonSlug: body.lessonSlug,
+          exerciseId: body.exerciseId,
+        },
+      });
+      if (attempts === 0) {
+        return NextResponse.json(
+          { error: "Run or submit your own attempt before requesting AI guidance." },
+          { status: 409 },
+        );
+      }
+    }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -41,7 +62,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const visibleTests = exercise.tests.filter((test) => !test.hidden);
+    const visibleTestCount = exercise.tests.filter((test) => !test.hidden).length;
     const problem: AiGuidanceProblemContext = {
       title: exercise.title,
       difficulty: "course exercise",
@@ -51,9 +72,21 @@ Lesson: ${lesson.title}
 
 ${exercise.prompt}`,
       guidance: normalizeGuidance(exercise.guidance, exercise.hints),
-      signature: exercise.signature,
-      visibleTests,
-      hiddenTestCount: exercise.tests.length - visibleTests.length,
+      ...(exercise.mode === "script"
+        ? {
+            sampleCasesText: exercise.tests
+              .filter((test) => !test.hidden)
+              .slice(0, 4)
+              .map((test, index) =>
+                `Case ${index + 1}: stdin=${JSON.stringify(test.input)} expected stdout=${JSON.stringify(test.expectedOutput)}`,
+              )
+              .join("\n"),
+          }
+        : {
+            signature: exercise.signature,
+            visibleTests: exercise.tests.filter((test) => !test.hidden),
+          }),
+      hiddenTestCount: exercise.tests.length - visibleTestCount,
     };
 
     const usage = await reserveAiGuidanceUsage(user.id);

@@ -11,6 +11,7 @@ import {
   orderedLessons,
 } from "@/content/courses";
 import type { Course, Lesson } from "@/content/courses";
+import { getCourseMasterySnapshot } from "./course-mastery";
 
 export interface CourseSummary {
   slug: string;
@@ -20,6 +21,8 @@ export interface CourseSummary {
   lessonCount: number;
   exerciseCount: number;
   completedCount: number;
+  level: Course["level"];
+  courseMastered: boolean;
 }
 
 function countExercises(course: Course): number {
@@ -61,15 +64,31 @@ export async function listCourses(userId: string): Promise<CourseSummary[]> {
     completedByCourse.map((c) => [c.courseSlug, c._count.lessonSlug]),
   );
 
-  return ALL_COURSES.map((course) => ({
-    slug: course.slug,
-    title: course.title,
-    language: course.language,
-    tagline: course.tagline,
-    lessonCount: countLessons(course),
-    exerciseCount: countExercises(course),
-    completedCount: completedMap.get(course.slug) ?? 0,
-  }));
+  return Promise.all(
+    ALL_COURSES.map(async (course) => {
+      const mastery =
+        course.progression === "mastery"
+          ? await getCourseMasterySnapshot(userId, course)
+          : null;
+      const lessonCount = countLessons(course);
+      const completedCount = mastery
+        ? mastery.masteredLessonSlugs.size
+        : (completedMap.get(course.slug) ?? 0);
+      return {
+        slug: course.slug,
+        title: course.title,
+        language: course.language,
+        tagline: course.tagline,
+        lessonCount,
+        exerciseCount: countExercises(course),
+        completedCount,
+        level: course.level,
+        courseMastered: mastery
+          ? mastery.modules.every((courseModule) => courseModule.checkpointPassed)
+          : lessonCount > 0 && completedCount === lessonCount,
+      };
+    }),
+  );
 }
 
 export interface CourseOverview {
@@ -78,6 +97,7 @@ export interface CourseOverview {
   lessonCount: number;
   /** First not-yet-completed lesson, for the "start / continue" button. */
   nextLessonSlug: string | null;
+  mastery: Awaited<ReturnType<typeof getCourseMasterySnapshot>>;
 }
 
 export async function getCourseOverview(
@@ -86,14 +106,24 @@ export async function getCourseOverview(
 ): Promise<CourseOverview | null> {
   const course = getCourse(slug);
   if (!course) return null;
-  const completed = await getCompletedLessons(userId, slug);
+  const mastery = await getCourseMasterySnapshot(userId, course);
+  const completed =
+    course.progression === "mastery"
+      ? mastery.masteredLessonSlugs
+      : await getCompletedLessons(userId, slug);
   const ordered = orderedLessons(course);
-  const next = ordered.find((o) => !completed.has(o.lesson.slug));
+  const next = ordered.find(
+    (o) => o.lesson.slug === mastery.nextLessonSlug,
+  );
   return {
     course,
     completed,
     lessonCount: ordered.length,
-    nextLessonSlug: next?.lesson.slug ?? ordered[0]?.lesson.slug ?? null,
+    nextLessonSlug:
+      course.progression === "mastery"
+        ? (next?.lesson.slug ?? null)
+        : (next?.lesson.slug ?? ordered[0]?.lesson.slug ?? null),
+    mastery,
   };
 }
 
@@ -102,6 +132,10 @@ export interface LessonView {
   lesson: Lesson;
   completed: boolean;
   solvedExerciseIds: string[];
+  attemptedExerciseIds: string[];
+  solvedKnowledgeCheckIds: string[];
+  assistedExerciseIds: string[];
+  unlocked: boolean;
   prevSlug: string | null;
   nextSlug: string | null;
   /** 1-based position in the course, and the total, for the progress label. */
@@ -122,7 +156,7 @@ export async function getLessonView(
   const ordered = orderedLessons(course);
   const index = ordered.findIndex((o) => o.lesson.slug === lessonSlug);
 
-  const [completedRow, solvedRows] = await Promise.all([
+  const [completedRow, solvedRows, attemptedRows, mastery] = await Promise.all([
     prisma.lessonProgress.findUnique({
       where: {
         userId_courseSlug_lessonSlug: { userId, courseSlug, lessonSlug },
@@ -133,14 +167,45 @@ export async function getLessonView(
       where: { userId, courseSlug, lessonSlug, mode: "submit", status: "passed" },
       select: { exerciseId: true },
     }),
+    prisma.courseExerciseSubmission.findMany({
+      where: { userId, courseSlug, lessonSlug },
+      select: { exerciseId: true },
+    }),
+    getCourseMasterySnapshot(userId, course),
   ]);
   const solvedExerciseIds = [...new Set(solvedRows.map((row) => row.exerciseId))];
+  const attemptedExerciseIds = [
+    ...new Set(attemptedRows.map((row) => row.exerciseId)),
+  ];
+
+  const lessonState = mastery.modules
+    .flatMap((courseModule) => courseModule.lessons)
+    .find((state) => state.slug === lessonSlug);
+  const solvedKnowledgeCheckIds = lesson.blocks.flatMap((block) =>
+    block.kind === "knowledge_check" &&
+    mastery.solvedActivityKeys.has(`${lessonSlug}:${block.check.id}`)
+      ? [block.check.id]
+      : [],
+  );
+  const assistedExerciseIds = lesson.blocks.flatMap((block) =>
+    block.kind === "exercise" &&
+    mastery.assistedActivityKeys.has(`${lessonSlug}:${block.exercise.id}`)
+      ? [block.exercise.id]
+      : [],
+  );
 
   return {
     course,
     lesson,
-    completed: completedRow != null,
+    completed:
+      course.progression === "mastery"
+        ? (lessonState?.mastered ?? false)
+        : completedRow != null,
     solvedExerciseIds,
+    attemptedExerciseIds,
+    solvedKnowledgeCheckIds,
+    assistedExerciseIds,
+    unlocked: lessonState?.unlocked ?? true,
     prevSlug: index > 0 ? ordered[index - 1].lesson.slug : null,
     nextSlug:
       index < ordered.length - 1 ? ordered[index + 1].lesson.slug : null,

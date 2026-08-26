@@ -15,6 +15,10 @@ export const pythonCourse: Course = {
   slug: "python-for-developers",
   title: "Python for Developers",
   language: "python",
+  level: "intermediate",
+  audience: "Programmers with prior experience",
+  prerequisiteCourseSlugs: ["programming-foundations-python"],
+  progression: "open",
   tagline:
     "Build complete Python fluency, from object semantics to practical projects and algorithms.",
   description: `A comprehensive Python course for people who **already know how to program**. It begins with syntax and core containers, then develops deeper fluency across Python's object model, mutability, exceptions, type hints, dataclasses, decorators, modules, environments, files, JSON, async work, testing, standard-library tools, and algorithm patterns.

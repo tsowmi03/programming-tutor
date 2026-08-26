@@ -35,10 +35,12 @@ export function GuidanceReveal({
   guidance,
   emptyText = "No guidance yet.",
   compact = false,
+  onAllRevealed,
 }: {
   guidance: GuidanceItem[];
   emptyText?: string;
   compact?: boolean;
+  onAllRevealed?: () => void;
 }) {
   const [revealed, setRevealed] = useState(0);
 
@@ -73,7 +75,11 @@ export function GuidanceReveal({
         ) : index === revealed ? (
           <button
             key={index}
-            onClick={() => setRevealed(revealed + 1)}
+            onClick={() => {
+              const next = revealed + 1;
+              setRevealed(next);
+              if (next === guidance.length) onAllRevealed?.();
+            }}
             className={
               compact
                 ? "flex items-center gap-1.5 text-xs text-muted transition hover:text-amber-300"

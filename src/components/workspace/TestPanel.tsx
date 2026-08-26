@@ -12,10 +12,12 @@ import {
 import type {
   FunctionSignature,
   JudgeOutcome,
+  ScriptTestCase,
   TestCase,
   TestResult,
 } from "@/lib/judge/types";
 import { formatInput } from "./shared";
+import { beginnerFeedback } from "@/lib/beginner-feedback";
 
 type Phase = "idle" | "running" | "submitting";
 
@@ -31,6 +33,7 @@ const STATUS_META: Record<
 
 export const TestPanel = memo(function TestPanel({
   signature,
+  mode = "function",
   visibleTests,
   hiddenTestCount,
   outcome,
@@ -38,15 +41,18 @@ export const TestPanel = memo(function TestPanel({
   errorMessage,
   showHiddenTestDetails,
   onShowHiddenTestDetailsChange,
+  beginnerMode = false,
 }: {
+  mode?: "function" | "script";
   signature?: FunctionSignature;
-  visibleTests: TestCase[];
+  visibleTests: (TestCase | ScriptTestCase)[];
   hiddenTestCount: number;
   outcome: JudgeOutcome | null;
   phase: Phase;
   errorMessage: string | null;
   showHiddenTestDetails: boolean;
   onShowHiddenTestDetailsChange: (value: boolean) => void;
+  beginnerMode?: boolean;
 }) {
   const [selected, setSelected] = useState(0);
 
@@ -55,8 +61,12 @@ export const TestPanel = memo(function TestPanel({
       <div className="flex h-full items-center justify-center gap-3 text-sm text-muted">
         <span className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-600 border-t-indigo-400" />
         {phase === "running"
-          ? "Running sample tests…"
-          : "Judging against all tests…"}
+          ? beginnerMode
+            ? "Trying your program…"
+            : "Running sample tests…"
+          : beginnerMode
+            ? "Checking your program…"
+            : "Judging against all tests…"}
       </div>
     );
   }
@@ -65,10 +75,34 @@ export const TestPanel = memo(function TestPanel({
     return (
       <div className="h-full overflow-y-auto p-4 panel-scroll">
         <div className="rounded-lg border border-orange-500/30 bg-orange-500/10 p-4 text-sm text-orange-200">
-          <p className="mb-1 font-semibold">Couldn&apos;t run your code</p>
-          <p className="whitespace-pre-wrap font-mono text-xs">{errorMessage}</p>
+          <p className="mb-1 font-semibold">
+            {beginnerMode
+              ? "CodeClimb could not check the program just now"
+              : "Couldn&apos;t run your code"}
+          </p>
+          {beginnerMode ? (
+            <details className="mt-2 text-xs text-orange-100/80">
+              <summary className="cursor-pointer">Show technical details</summary>
+              <p className="mt-2 whitespace-pre-wrap font-mono text-[11px]">
+                {errorMessage}
+              </p>
+            </details>
+          ) : (
+            <p className="whitespace-pre-wrap font-mono text-xs">{errorMessage}</p>
+          )}
         </div>
       </div>
+    );
+  }
+
+  if (beginnerMode) {
+    return (
+      <BeginnerTestPanel
+        mode={mode}
+        visibleTests={visibleTests}
+        hiddenTestCount={hiddenTestCount}
+        outcome={outcome}
+      />
     );
   }
 
@@ -106,8 +140,22 @@ export const TestPanel = memo(function TestPanel({
             showDetails={showHiddenTestDetails}
             onChange={onShowHiddenTestDetailsChange}
           />
-          <Field label="Input" value={formatInput(signature, test.input)} />
-          <Field label="Expected" value={JSON.stringify(test.expected)} />
+          <Field
+            label={mode === "script" ? "Standard input" : "Input"}
+            value={
+              mode === "script"
+                ? JSON.stringify((test as ScriptTestCase).input)
+                : formatInput(signature, (test as TestCase).input)
+            }
+          />
+          <Field
+            label={mode === "script" ? "Expected output" : "Expected"}
+            value={
+              mode === "script"
+                ? (test as ScriptTestCase).expectedOutput
+                : JSON.stringify((test as TestCase).expected)
+            }
+          />
           {hiddenTestCount > 0 && (
             <p className="flex items-center gap-1.5 pt-1 text-xs text-muted">
               <EyeOff className="h-3.5 w-3.5" />
@@ -147,11 +195,13 @@ export const TestPanel = memo(function TestPanel({
     );
   }
 
-  const test = visibleTests[result.index] as TestCase | undefined;
+  const test = visibleTests[result.index];
   const inputValue = result.input
     ? formatInput(signature, result.input)
     : test
-      ? formatInput(signature, test.input)
+      ? mode === "script"
+        ? JSON.stringify((test as ScriptTestCase).input)
+        : formatInput(signature, (test as TestCase).input)
       : null;
   const meta = STATUS_META[result.status];
 
@@ -219,6 +269,99 @@ export const TestPanel = memo(function TestPanel({
     </div>
   );
 });
+
+function BeginnerTestPanel({
+  mode,
+  visibleTests,
+  hiddenTestCount,
+  outcome,
+}: {
+  mode: "function" | "script";
+  visibleTests: (TestCase | ScriptTestCase)[];
+  hiddenTestCount: number;
+  outcome: JudgeOutcome | null;
+}) {
+  if (!outcome) {
+    const sample = visibleTests[0];
+    const scriptSample = mode === "script" ? (sample as ScriptTestCase | undefined) : undefined;
+    return (
+      <div className="h-full overflow-y-auto p-4 panel-scroll">
+        <p className="text-sm font-semibold">What CodeClimb will check</p>
+        <p className="mt-1 text-xs leading-relaxed text-muted">
+          Check your program to compare what it prints with the result the task asks for.
+        </p>
+        <div className="mt-4 space-y-3">
+          {scriptSample?.input && (
+            <Field label="Input supplied to your program" value={scriptSample.input} />
+          )}
+          {sample && (
+            <Field
+              label="Expected output"
+              value={
+                mode === "script"
+                  ? (sample as ScriptTestCase).expectedOutput
+                  : JSON.stringify((sample as TestCase).expected)
+              }
+            />
+          )}
+          {hiddenTestCount > 0 && (
+            <p className="rounded-lg bg-indigo-500/5 p-3 text-xs leading-relaxed text-muted ring-1 ring-indigo-500/20">
+              CodeClimb will also try {hiddenTestCount} other reasonable example{hiddenTestCount === 1 ? "" : "s"} to make sure the program works generally.
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (outcome.status === "passed") {
+    return (
+      <div className="flex h-full items-center justify-center p-5">
+        <div className="max-w-sm text-center">
+          <CheckCircle2 className="mx-auto h-9 w-9 text-emerald-400" />
+          <p className="mt-3 font-semibold text-emerald-200">Your program works</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted">
+            It produced the right result for all {outcome.totalCount} example{outcome.totalCount === 1 ? "" : "s"} CodeClimb checked.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const feedback = beginnerFeedback(outcome);
+  const result = outcome.results.find(
+    (item) => item.status === "fail" || item.status === "error",
+  );
+  return (
+    <div className="h-full overflow-y-auto p-4 panel-scroll">
+      <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4">
+        <p className="text-sm font-semibold text-amber-200">{feedback?.title}</p>
+        <p className="mt-2 text-xs leading-relaxed text-amber-100/80">
+          {feedback?.explanation}
+        </p>
+        <p className="mt-3 text-xs font-medium text-amber-100">
+          Try this: {feedback?.nextStep}
+        </p>
+      </div>
+      {!result?.hidden && result?.expected !== undefined && (
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <Field label="Expected output" value={result.expected} />
+          <Field label="Your output" value={result.got ?? "(no output)"} tone="bad" />
+        </div>
+      )}
+      {feedback?.technicalDetails && (
+        <details className="mt-3 rounded-lg border border-edge bg-surface/60 p-3 text-xs text-muted">
+          <summary className="cursor-pointer font-medium text-foreground">
+            Show Python&apos;s technical message
+          </summary>
+          <pre className="mt-2 overflow-x-auto whitespace-pre-wrap font-mono text-[11px] leading-relaxed">
+            {feedback.technicalDetails}
+          </pre>
+        </details>
+      )}
+    </div>
+  );
+}
 
 function HiddenTestSetting({
   hiddenTestCount,

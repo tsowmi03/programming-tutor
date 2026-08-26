@@ -19,6 +19,7 @@ export interface SessionUser {
   id: string;
   email: string;
   name: string;
+  programmingExperience: string | null;
 }
 
 export class UnauthorizedError extends Error {
@@ -71,7 +72,16 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
 
   const session = await prisma.session.findUnique({
     where: { tokenHash: hashToken(token) },
-    include: { user: { select: { id: true, email: true, name: true } } },
+    include: {
+      user: {
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          programmingExperience: true,
+        },
+      },
+    },
   });
   if (!session) return null;
 

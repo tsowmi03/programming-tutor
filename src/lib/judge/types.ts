@@ -76,6 +76,14 @@ export interface JudgeOutcome {
   totalCount: number;
 }
 
+export interface ScriptTestCase {
+  /** Text delivered to the program on standard input. */
+  input: string;
+  /** Expected standard output after beginner-friendly whitespace normalization. */
+  expectedOutput: string;
+  hidden?: boolean;
+}
+
 /** Canonical compact-JSON rendering used for display and C-side comparison. */
 export function canonical(value: JudgeValue): string {
   return JSON.stringify(value);

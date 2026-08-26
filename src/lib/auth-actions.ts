@@ -18,8 +18,14 @@ import {
 } from "./auth-rate-limit";
 import { hashPassword, verifyPassword } from "./password";
 import { createSession, destroySession } from "./auth";
-import { clientIp, hashRateLimitKey, safeRedirectPath } from "./auth-utils";
+import {
+  clientIp,
+  hashRateLimitKey,
+  onboardingPath,
+  safeRedirectPath,
+} from "./auth-utils";
 import { loginSchema, signupSchema } from "./validation";
+import { recordLearningEvent } from "./learning-events";
 
 export interface AuthFormState {
   error?: string;
@@ -97,8 +103,12 @@ export async function signup(
   }
 
   await createSession(userId);
+  await recordLearningEvent(userId, {
+    eventName: "signup_completed",
+    properties: { method: "email" },
+  });
   revalidatePath("/", "layout");
-  redirect(safeRedirectPath(formData.get("next")));
+  redirect(onboardingPath(formData.get("next")));
 }
 
 export async function login(

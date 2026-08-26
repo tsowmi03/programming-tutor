@@ -3,15 +3,24 @@ import { LogOut, Mountain } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { logout } from "@/lib/auth-actions";
 
-const links = [
+const standardLinks = [
   { href: "/courses", label: "Courses" },
   { href: "/problems", label: "Problems" },
   { href: "/review", label: "Review" },
   { href: "/progress", label: "Progress" },
 ];
 
+const beginnerLinks = [
+  { href: "/courses", label: "Learn" },
+  { href: "/progress", label: "Progress" },
+];
+
 export async function Navbar() {
   const user = await getCurrentUser();
+  const links =
+    user?.programmingExperience === "beginner"
+      ? beginnerLinks
+      : standardLinks;
 
   return (
     <header className="z-20 border-b border-edge bg-surface/80 backdrop-blur">

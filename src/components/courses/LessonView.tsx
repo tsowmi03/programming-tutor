@@ -14,6 +14,7 @@ import type { LanguageId } from "@/lib/judge/languages";
 import { MarkdownView } from "@/components/MarkdownView";
 import { fetchJson } from "@/components/workspace/shared";
 import { ExerciseWidget } from "./ExerciseWidget";
+import { KnowledgeCheckWidget } from "./KnowledgeCheckWidget";
 import type { ClientBlock } from "./types";
 
 export function LessonView({
@@ -26,6 +27,11 @@ export function LessonView({
   blocks,
   initialCompleted,
   initialSolvedExerciseIds,
+  initialAttemptedExerciseIds,
+  initialSolvedKnowledgeCheckIds,
+  initialAssistedExerciseIds,
+  masteryGated,
+  beginnerMode,
   prevSlug,
   nextSlug,
   position,
@@ -40,6 +46,11 @@ export function LessonView({
   blocks: ClientBlock[];
   initialCompleted: boolean;
   initialSolvedExerciseIds: string[];
+  initialAttemptedExerciseIds: string[];
+  initialSolvedKnowledgeCheckIds: string[];
+  initialAssistedExerciseIds: string[];
+  masteryGated: boolean;
+  beginnerMode: boolean;
   prevSlug: string | null;
   nextSlug: string | null;
   position: number;
@@ -49,14 +60,20 @@ export function LessonView({
   const [completed, setCompleted] = useState(initialCompleted);
   const [saving, setSaving] = useState(false);
   const [solvedIds, setSolvedIds] = useState<Set<string>>(
-    () => new Set(initialSolvedExerciseIds),
+    () => new Set([...initialSolvedExerciseIds, ...initialSolvedKnowledgeCheckIds]),
   );
 
-  const exerciseIds = useMemo(
+  const requiredActivityIds = useMemo(
     () =>
-      blocks
-        .filter((b) => b.kind === "exercise")
-        .map((b) => (b.kind === "exercise" ? b.exercise.id : "")),
+      blocks.flatMap((block) => {
+        if (block.kind === "exercise" && block.exercise.required) {
+          return [block.exercise.id];
+        }
+        if (block.kind === "knowledge_check" && block.check.required) {
+          return [block.check.id];
+        }
+        return [];
+      }),
     [blocks],
   );
 
@@ -79,7 +96,9 @@ export function LessonView({
   }, []);
 
   const allSolved =
-    exerciseIds.length > 0 && exerciseIds.every((id) => solvedIds.has(id));
+    requiredActivityIds.length > 0 &&
+    requiredActivityIds.every((id) => solvedIds.has(id));
+  const lessonCompleted = masteryGated ? completed || allSolved : completed;
 
   const saveCompletion = useCallback(
     async (value: boolean) => {
@@ -103,11 +122,11 @@ export function LessonView({
   // Auto-complete once every exercise in the lesson has been solved.
   const autoMarked = useRef(false);
   useEffect(() => {
-    if (allSolved && !completed && !autoMarked.current) {
+    if (allSolved && !masteryGated && !completed && !autoMarked.current) {
       autoMarked.current = true;
       void saveCompletion(true);
     }
-  }, [allSolved, completed, saveCompletion]);
+  }, [allSolved, completed, masteryGated, saveCompletion]);
 
   const nextHref = nextSlug
     ? `/courses/${courseSlug}/${nextSlug}`
@@ -118,7 +137,8 @@ export function LessonView({
   }, [nextHref, router]);
 
   const goNext = () => {
-    if (!completed) void saveCompletion(true);
+    if (masteryGated && !allSolved) return;
+    if (!masteryGated && !completed) void saveCompletion(true);
     router.push(nextHref);
   };
 
@@ -139,7 +159,7 @@ export function LessonView({
         </p>
         <h1 className="mt-1 flex items-center gap-2.5 text-2xl font-bold tracking-tight">
           {lessonTitle}
-          {completed && (
+          {lessonCompleted && (
             <CheckCircle2 className="h-5 w-5 text-emerald-400" aria-label="Completed" />
           )}
         </h1>
@@ -151,6 +171,18 @@ export function LessonView({
           if (block.kind === "prose") {
             return <MarkdownView key={i}>{block.markdown}</MarkdownView>;
           }
+          if (block.kind === "knowledge_check") {
+            return (
+              <KnowledgeCheckWidget
+                key={block.check.id}
+                courseSlug={courseSlug}
+                lessonSlug={lessonSlug}
+                check={block.check}
+                initialSolved={initialSolvedKnowledgeCheckIds.includes(block.check.id)}
+                onSolvedChange={onSolvedChange}
+              />
+            );
+          }
           return (
             <ExerciseWidget
               key={block.exercise.id}
@@ -160,6 +192,10 @@ export function LessonView({
               language={language}
               index={exerciseNumbers[i] ?? 1}
               initialSolved={initialSolvedExerciseIds.includes(block.exercise.id)}
+              initialAttempted={initialAttemptedExerciseIds.includes(block.exercise.id)}
+              initialAssisted={initialAssistedExerciseIds.includes(block.exercise.id)}
+              beginnerMode={beginnerMode}
+              guidedFirstRun={beginnerMode && position === 1 && exerciseNumbers[i] === 1}
               onSolvedChange={onSolvedChange}
             />
           );
@@ -168,10 +204,9 @@ export function LessonView({
 
       {/* Completion + navigation footer */}
       <div className="mt-10 border-t border-edge pt-6">
-        {exerciseIds.length > 0 && !allSolved && !completed && (
+        {requiredActivityIds.length > 0 && !allSolved && !lessonCompleted && (
           <p className="mb-4 text-sm text-muted">
-            {solvedIds.size} of {exerciseIds.length} exercises solved — finish
-            them to complete this lesson automatically.
+            {requiredActivityIds.filter((id) => solvedIds.has(id)).length} of {requiredActivityIds.length} required activities complete.
           </p>
         )}
 
@@ -191,7 +226,7 @@ export function LessonView({
           </div>
 
           <div className="flex items-center gap-3">
-            <button
+            {!masteryGated && <button
               onClick={() => saveCompletion(!completed)}
               disabled={saving}
               className="inline-flex items-center gap-1.5 text-sm text-muted transition hover:text-foreground disabled:opacity-50"
@@ -207,11 +242,12 @@ export function LessonView({
                   Mark complete
                 </>
               )}
-            </button>
+            </button>}
 
             <button
               onClick={goNext}
-              className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-950/40 transition hover:bg-indigo-400"
+              disabled={masteryGated && !allSolved}
+              className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-950/40 transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {nextSlug ? "Next lesson" : "Finish course"}
               <ArrowRight className="h-4 w-4" />

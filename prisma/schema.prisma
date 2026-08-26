@@ -22,6 +22,8 @@ model User {
   name            String
   passwordHash    String? // scrypt:N:r:p:salt:hash (base64url); null for OAuth-only accounts
   emailVerifiedAt DateTime?
+  programmingExperience String? // beginner | experienced; set during first-time onboarding
+  onboardingCompletedAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -32,6 +34,9 @@ model User {
   mistakeNotes           MistakeNote[]
   lessonProgress         LessonProgress[]
   courseExerciseSubmissions CourseExerciseSubmission[]
+  courseActivityAttempts    CourseActivityAttempt[]
+  courseCheckpointAttempts  CourseCheckpointAttempt[]
+  learningEvents            LearningEvent[]
   aiGuidanceUsageBuckets AiGuidanceUsageBucket[]
 }
 
@@ -215,4 +220,66 @@ model CourseExerciseSubmission {
   @@index([userId, courseSlug, lessonSlug, exerciseId, createdAt])
   @@index([userId, courseSlug, lessonSlug])
   @@index([userId, courseSlug, lessonSlug, exerciseId, mode, createdAt])
+}
+
+model CourseActivityAttempt {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  courseSlug  String
+  moduleSlug  String
+  lessonSlug  String
+  activityId  String
+  objectiveId String
+  kind        String // knowledge_check | solution_reveal
+  answer      String?
+  correct     Boolean @default(false)
+  score       Int     @default(0)
+  maxScore    Int     @default(1)
+  assisted    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, courseSlug, lessonSlug, activityId, createdAt])
+  @@index([userId, courseSlug, objectiveId, createdAt])
+}
+
+model CourseCheckpointAttempt {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  courseSlug        String
+  moduleSlug        String
+  checkpointId      String
+  attemptNumber     Int
+  formId            String
+  answers           String // JSON Record<objectiveId, string>
+  score             Int
+  maxScore          Int
+  passed            Boolean
+  missedObjectiveIds String @default("[]") // JSON string[]
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseSlug, moduleSlug, attemptNumber])
+  @@index([userId, courseSlug, moduleSlug, createdAt])
+}
+
+model LearningEvent {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  eventName String
+  courseSlug String?
+  lessonSlug String?
+  activityId String?
+  properties String @default("{}") // JSON with non-PII event context
+  createdAt DateTime @default(now())
+
+  @@index([eventName, createdAt])
+  @@index([userId, eventName, createdAt])
+  @@index([userId, courseSlug, lessonSlug, createdAt])
 }

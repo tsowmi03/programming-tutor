@@ -83,9 +83,10 @@ function runCommand(
   args: string[],
   cwd: string,
   timeout: number,
+  stdin = "",
 ): Promise<ExecStage> {
   return new Promise((resolve, reject) => {
-    execFile(
+    const child = execFile(
       cmd,
       args,
       { cwd, timeout, maxBuffer: MAX_OUTPUT_BYTES, killSignal: "SIGKILL" },
@@ -113,6 +114,7 @@ function runCommand(
         });
       },
     );
+    child.stdin?.end(stdin);
   });
 }
 
@@ -146,7 +148,13 @@ export async function executeLocally(req: ExecRequest): Promise<ExecResult> {
       }
     }
 
-    const run = await runCommand(plan.run.cmd, plan.run.args, dir, RUN_TIMEOUT_MS);
+    const run = await runCommand(
+      plan.run.cmd,
+      plan.run.args,
+      dir,
+      RUN_TIMEOUT_MS,
+      req.stdin,
+    );
     return { compile, run };
   } finally {
     await rm(dir, { recursive: true, force: true });

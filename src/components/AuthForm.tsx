@@ -18,7 +18,7 @@ const COPY = {
   },
   signup: {
     title: "Create your account",
-    subtitle: "Track your progress as you climb through the problem set.",
+    subtitle: "Tell us where you are starting, then follow the right learning path.",
     submit: "Sign up",
     submitting: "Creating account…",
     alt: { prompt: "Already have an account?", label: "Log in", href: "/login" },

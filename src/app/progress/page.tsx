@@ -6,6 +6,8 @@ import { CATEGORIES } from "@/content/categories";
 import { DifficultyBadge } from "@/components/badges";
 import { LANGUAGES } from "@/lib/judge/languages";
 import type { LanguageId } from "@/lib/judge/languages";
+import { getCourse } from "@/content/courses";
+import { getCourseMasterySnapshot } from "@/lib/course-mastery";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +24,7 @@ const STATUS_LABELS: Record<string, { label: string; classes: string }> = {
 
 export default async function ProgressPage() {
   const user = await requireUserPage();
+  const beginnerCourse = getCourse("programming-foundations-python");
   const [problems, recent, totalSubmissions] = await Promise.all([
     prisma.problem.findMany({
       include: {
@@ -115,6 +118,10 @@ export default async function ProgressPage() {
     .sort((a, b) => b.score - a.score)
     .slice(0, 4);
 
+  const beginnerMastery = beginnerCourse
+    ? await getCourseMasterySnapshot(user.id, beginnerCourse)
+    : null;
+
   const diffColor: Record<string, string> = {
     easy: "bg-emerald-400",
     medium: "bg-amber-400",
@@ -136,6 +143,56 @@ export default async function ProgressPage() {
       </div>
 
       {/* Difficulty bars */}
+      {beginnerCourse && beginnerMastery && (
+        <section className="mt-8 rounded-xl border border-indigo-500/30 bg-indigo-500/5 p-5">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-indigo-200">
+                Programming Foundations with Python
+              </h2>
+              <p className="mt-1 text-xs text-muted">
+                Mastery, checkpoint scores, and focused review
+              </p>
+            </div>
+            <Link href={`/courses/${beginnerCourse.slug}`} className="text-xs font-semibold text-indigo-300 hover:underline">
+              Continue course
+            </Link>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {beginnerCourse.modules.map((courseModule) => {
+              const state = beginnerMastery.modules.find((item) => item.slug === courseModule.slug)!;
+              const mastered = state.lessons.filter((lesson) => lesson.mastered).length;
+              return (
+                <div key={courseModule.slug} className="rounded-lg border border-edge bg-background/50 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-semibold">{courseModule.title}</p>
+                      <p className="mt-1 text-xs text-muted">{mastered}/{state.lessons.length} lessons mastered</p>
+                    </div>
+                    <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${state.checkpointPassed ? "bg-emerald-500/10 text-emerald-300" : state.unlocked ? "bg-amber-500/10 text-amber-300" : "bg-zinc-800 text-muted"}`}>
+                      {state.checkpointPassed ? `Best ${state.bestScore}/${state.maxScore}` : state.unlocked ? "In progress" : "Locked"}
+                    </span>
+                  </div>
+                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-zinc-800">
+                    <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-emerald-400" style={{ width: `${state.lessons.length ? (mastered / state.lessons.length) * 100 : 0}%` }} />
+                  </div>
+                  {state.remediationObjectiveIds.length > 0 && !state.remediationComplete && (
+                    <p className="mt-3 text-xs leading-relaxed text-amber-200">
+                      Review required: {state.remediationObjectiveIds.map((id) => id.replace(/^m\d+-/, "").replaceAll("-", " ")).join(", ")}.
+                    </p>
+                  )}
+                  {state.lessons.some((lesson) => lesson.assistedCount > 0) && (
+                    <p className="mt-2 text-[11px] text-muted">
+                      {state.lessons.reduce((sum, lesson) => sum + lesson.assistedCount, 0)} assisted activit{state.lessons.reduce((sum, lesson) => sum + lesson.assistedCount, 0) === 1 ? "y" : "ies"}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
       <section className="mt-8 rounded-xl border border-edge bg-surface p-5">
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted">
           By difficulty

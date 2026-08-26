@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 import { createSession } from "@/lib/auth";
+import { onboardingPath } from "@/lib/auth-utils";
+import { recordLearningEvent } from "@/lib/learning-events";
 import {
   createOAuthClient,
   fetchOAuthProfile,
@@ -98,8 +100,17 @@ async function handleCallback(
       codeVerifier: codeVerifier ?? undefined,
       appleUser: values.appleUser,
     });
-    const userId = await findOrCreateOAuthUser(profile);
-    await createSession(userId);
+    const result = await findOrCreateOAuthUser(profile);
+    await createSession(result.userId);
+    if (result.isNewUser) {
+      await recordLearningEvent(result.userId, {
+        eventName: "signup_completed",
+        properties: { method: provider },
+      });
+      return NextResponse.redirect(
+        new URL(onboardingPath(next), requestOrigin),
+      );
+    }
     return NextResponse.redirect(new URL(next, requestOrigin));
   } catch (err) {
     const code = err instanceof OAuthEmailError ? "oauth_email" : "oauth_failed";

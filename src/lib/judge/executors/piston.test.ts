@@ -42,6 +42,7 @@ describe("executeOnPiston", () => {
     const result = await executeOnPiston({
       language: "python",
       files: [{ name: "main.py", content: "print('ok')" }],
+      stdin: "answer\n",
     });
 
     expect(fetchMock).toHaveBeenCalledWith(
@@ -60,5 +61,7 @@ describe("executeOnPiston", () => {
       wall_time: 18,
       memory: 4_500_000,
     });
+    const request = fetchMock.mock.calls[0][1] as RequestInit;
+    expect(JSON.parse(String(request.body))).toMatchObject({ stdin: "answer\n" });
   });
 });

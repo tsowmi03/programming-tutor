@@ -4,25 +4,49 @@
  * cross to the browser (mirroring the problem workspace).
  */
 
-import type { FunctionSignature, TestCase } from "@/lib/judge/types";
+import type {
+  FunctionSignature,
+  ScriptTestCase,
+  TestCase,
+} from "@/lib/judge/types";
+import type { KnowledgeCheckFormat } from "@/content/courses/types";
 import type { GuidanceItem } from "@/content/types";
 
-export interface ClientExercise {
+interface ClientExerciseBase {
   id: string;
   title: string;
   prompt: string;
-  signature: FunctionSignature;
-  /** Sample tests only; hidden tests are summarised by hiddenTestCount. */
-  visibleTests: TestCase[];
   hiddenTestCount: number;
   starterCode: string;
-  /** The reference solution (revealable in the UI). */
-  solution: string;
   guidance: GuidanceItem[];
   /** Legacy shape retained for older callers. */
   hints?: string[];
+  required: boolean;
+}
+
+export interface ClientFunctionExercise extends ClientExerciseBase {
+  mode: "function";
+  signature: FunctionSignature;
+  visibleTests: TestCase[];
+}
+
+export interface ClientScriptExercise extends ClientExerciseBase {
+  mode: "script";
+  visibleTests: ScriptTestCase[];
+}
+
+export type ClientExercise = ClientFunctionExercise | ClientScriptExercise;
+
+export interface ClientKnowledgeCheck {
+  id: string;
+  format: KnowledgeCheckFormat;
+  prompt: string;
+  choices?: string[];
+  objectiveId: string;
+  required: boolean;
 }
 
 export type ClientBlock =
   | { kind: "prose"; markdown: string }
-  | { kind: "exercise"; exercise: ClientExercise };
+  | { kind: "exercise"; exercise: ClientExercise }
+  | { kind: "knowledge_check"; check: ClientKnowledgeCheck };

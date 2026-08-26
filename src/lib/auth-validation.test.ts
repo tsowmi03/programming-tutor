@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { loginSchema, signupSchema } from "./validation";
+import { loginSchema, onboardingSchema, signupSchema } from "./validation";
 
 describe("auth validation", () => {
   it("normalizes valid signup fields", () => {
@@ -55,5 +55,17 @@ describe("auth validation", () => {
     });
 
     expect(parsed.success).toBe(false);
+  });
+
+  it("accepts only the two supported onboarding paths", () => {
+    expect(onboardingSchema.parse({ experience: "beginner" })).toEqual({
+      experience: "beginner",
+    });
+    expect(onboardingSchema.parse({ experience: "experienced" })).toEqual({
+      experience: "experienced",
+    });
+    expect(
+      onboardingSchema.safeParse({ experience: "skip" }).success,
+    ).toBe(false);
   });
 });

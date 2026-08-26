@@ -20,6 +20,7 @@ import {
   type JudgeOutcome,
   type TestCase,
   type TestResult,
+  type ScriptTestCase,
 } from "./types";
 
 export function buildHarness(
@@ -103,6 +104,94 @@ export async function judgeCode(params: {
         : hasError
           ? "error"
           : "failed",
+    results,
+    passedCount,
+    totalCount: tests.length,
+  };
+}
+
+export function normalizeScriptOutput(value: string): string {
+  return value
+    .replace(/\r\n?/g, "\n")
+    .split("\n")
+    .map((line) => line.replace(/[ \t]+$/g, ""))
+    .join("\n")
+    .replace(/\n+$/g, "");
+}
+
+/** Judge a complete program once per case so stdin and process state are isolated. */
+export async function judgeScript(params: {
+  language: LanguageId;
+  code: string;
+  tests: ScriptTestCase[];
+  revealHiddenTests?: boolean;
+}): Promise<JudgeOutcome> {
+  const { language, code, tests, revealHiddenTests = false } = params;
+  const info = LANGUAGES[language];
+  const results: TestResult[] = [];
+  let compileOutput: string | undefined;
+
+  for (let index = 0; index < tests.length; index += 1) {
+    const test = tests[index];
+    const response = await execute({
+      language,
+      files: [{ name: info.fileName, content: code }],
+      stdin: test.input,
+    });
+
+    if (response.compile && response.compile.code !== 0) {
+      compileOutput = trimOutput(
+        response.compile.stderr || response.compile.output,
+      );
+      break;
+    }
+
+    const got = normalizeScriptOutput(response.run.stdout);
+    const expected = normalizeScriptOutput(test.expectedOutput);
+    const crashed = response.run.code !== 0 || response.run.signal != null;
+    const result: TestResult = {
+      index,
+      status: crashed ? "error" : got === expected ? "pass" : "fail",
+      got,
+      expected,
+      hidden: test.hidden,
+    };
+    if (crashed) {
+      result.error = trimOutput(
+        response.run.stderr || response.run.message || "The program stopped unexpectedly.",
+      );
+      annotateCrash([result], response.run);
+    }
+    if (test.hidden && !revealHiddenTests) {
+      delete result.got;
+      delete result.expected;
+    } else {
+      result.input = [test.input];
+    }
+    results.push(result);
+    if (crashed) break;
+  }
+
+  if (compileOutput) {
+    return {
+      status: "compile_error",
+      results: [],
+      compileOutput,
+      passedCount: 0,
+      totalCount: tests.length,
+    };
+  }
+
+  while (results.length < tests.length) {
+    results.push({ index: results.length, status: "not_run" });
+  }
+  const passedCount = results.filter((result) => result.status === "pass").length;
+  const hasError = results.some(
+    (result) => result.status === "error" || result.status === "not_run",
+  );
+  return {
+    status:
+      passedCount === tests.length ? "passed" : hasError ? "error" : "failed",
     results,
     passedCount,
     totalCount: tests.length,

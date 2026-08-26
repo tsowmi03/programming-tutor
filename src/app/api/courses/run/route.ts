@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { judgeCode } from "@/lib/judge/judge";
+import { judgeCode, judgeScript } from "@/lib/judge/judge";
 import { getCourse, getExercise } from "@/content/courses";
 import { courseExerciseRunSchema } from "@/lib/validation";
 import { requireUser } from "@/lib/auth";
 import { NotFoundError, toErrorResponse } from "@/lib/api";
+import { courseLessonIsUnlocked } from "@/lib/course-mastery";
 
 /**
  * "Run" a course exercise against its sample (visible) tests only — a fast
@@ -22,14 +23,23 @@ export async function POST(req: Request) {
     if (!course) throw new NotFoundError(`No course named "${courseSlug}"`);
     const exercise = getExercise(course, lessonSlug, exerciseId);
     if (!exercise) throw new NotFoundError("Exercise not found");
+    if (!(await courseLessonIsUnlocked(user.id, course, lessonSlug))) {
+      return NextResponse.json({ error: "This lesson is locked." }, { status: 409 });
+    }
 
-    const visibleTests = exercise.tests.filter((t) => !t.hidden);
-    const outcome = await judgeCode({
-      language: course.language,
-      code,
-      signature: exercise.signature,
-      tests: visibleTests,
-    });
+    const outcome =
+      exercise.mode === "script"
+        ? await judgeScript({
+            language: course.language,
+            code,
+            tests: exercise.tests.filter((test) => !test.hidden),
+          })
+        : await judgeCode({
+            language: course.language,
+            code,
+            signature: exercise.signature,
+            tests: exercise.tests.filter((test) => !test.hidden),
+          });
 
     const submission = await prisma.courseExerciseSubmission.create({
       data: {

@@ -46,13 +46,24 @@ describe("course content", () => {
           lessonSlugs.add(lesson.slug);
 
           const exerciseIds = new Set<string>();
+          const activityIds = new Set<string>();
           for (const block of lesson.blocks) {
+            if (block.kind === "knowledge_check") {
+              expect(
+                activityIds.has(block.check.id),
+                `duplicate activity id ${course.slug}/${lesson.slug}/${block.check.id}`,
+              ).toBe(false);
+              activityIds.add(block.check.id);
+              continue;
+            }
             if (block.kind !== "exercise") continue;
             expect(
               exerciseIds.has(block.exercise.id),
               `duplicate exercise id ${course.slug}/${lesson.slug}/${block.exercise.id}`,
             ).toBe(false);
             exerciseIds.add(block.exercise.id);
+            expect(activityIds.has(block.exercise.id)).toBe(false);
+            activityIds.add(block.exercise.id);
           }
         }
       }
@@ -68,6 +79,12 @@ describe("course content", () => {
             const fenceCount = block.markdown.match(/```/g)?.length ?? 0;
             expect(block.markdown.trim().length, id).toBeGreaterThan(80);
             expect(fenceCount % 2, `${id} code fences`).toBe(0);
+            continue;
+          }
+          if (block.kind === "knowledge_check") {
+            expect(block.check.prompt.trim().length).toBeGreaterThan(20);
+            expect(block.check.acceptedAnswers.length).toBeGreaterThan(0);
+            expect(block.check.explanation.trim().length).toBeGreaterThan(20);
             continue;
           }
 
@@ -97,10 +114,12 @@ describe("course content", () => {
           );
           const guidance = normalizeGuidance(exercise.guidance, exercise.hints);
           expect(guidance.length, `${id} guidance`).toBeGreaterThanOrEqual(2);
-          for (const test of exercise.tests) {
-            expect(test.input.length, `${id} test argument count`).toBe(
-              exercise.signature.params.length,
-            );
+          if (exercise.mode !== "script") {
+            for (const test of exercise.tests) {
+              expect(test.input.length, `${id} test argument count`).toBe(
+                exercise.signature.params.length,
+              );
+            }
           }
         }
       }
@@ -117,5 +136,37 @@ describe("course content", () => {
     expect(pythonCourse.modules.length).toBeGreaterThanOrEqual(10);
     expect(orderedLessons(pythonCourse).length).toBeGreaterThanOrEqual(35);
     expect(exerciseCount(pythonCourse)).toBeGreaterThanOrEqual(30);
+  });
+
+  it("provides a complete mastery-gated beginner Python curriculum", () => {
+    const course = ALL_COURSES.find(
+      (item) => item.slug === "programming-foundations-python",
+    );
+    expect(course).toBeDefined();
+    if (!course) throw new Error("beginner course missing");
+    expect(course.progression).toBe("mastery");
+    expect(course.level).toBe("beginner");
+    expect(course.modules).toHaveLength(8);
+    expect(orderedLessons(course)).toHaveLength(24);
+    expect(exerciseCount(course)).toBe(48);
+
+    for (const courseModule of course.modules) {
+      expect(courseModule.objectiveIds).toHaveLength(5);
+      expect(courseModule.checkpoint?.passingScore).toBe(4);
+      expect(courseModule.checkpoint?.slots).toHaveLength(5);
+      for (const slot of courseModule.checkpoint?.slots ?? []) {
+        expect(slot.variants).toHaveLength(3);
+        expect(
+          courseModule.lessons.some((lesson) =>
+            lesson.blocks.some(
+              (block) =>
+                block.kind === "knowledge_check" &&
+                block.check.objectiveId === slot.objectiveId,
+            ),
+          ),
+          `${courseModule.slug}/${slot.objectiveId} remediation check`,
+        ).toBe(true);
+      }
+    }
   });
 });

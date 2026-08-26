@@ -3,37 +3,10 @@ import { getLessonView } from "@/lib/courses";
 import { getCourse, getLesson } from "@/content/courses";
 import { requireUserPage } from "@/lib/auth";
 import { LessonView } from "@/components/courses/LessonView";
-import type { ClientBlock } from "@/components/courses/types";
-import type { LessonBlock } from "@/content/courses";
-import { guidanceBodies, normalizeGuidance } from "@/lib/guidance";
+import { toClientCourseBlocks } from "@/lib/course-client";
+import { LearningEventBeacon } from "@/components/LearningEventBeacon";
 
 export const dynamic = "force-dynamic";
-
-/** Strip hidden test expectations before sending an exercise to the client. */
-function toClientBlocks(blocks: LessonBlock[]): ClientBlock[] {
-  return blocks.map((block) => {
-    if (block.kind === "prose") {
-      return { kind: "prose", markdown: block.markdown };
-    }
-    const ex = block.exercise;
-    const guidance = normalizeGuidance(ex.guidance, ex.hints);
-    return {
-      kind: "exercise",
-      exercise: {
-        id: ex.id,
-        title: ex.title,
-        prompt: ex.prompt,
-        signature: ex.signature,
-        visibleTests: ex.tests.filter((t) => !t.hidden),
-        hiddenTestCount: ex.tests.filter((t) => t.hidden).length,
-        starterCode: ex.starterCode,
-        solution: ex.solution,
-        guidance,
-        hints: guidanceBodies(guidance),
-      },
-    };
-  });
-}
 
 export default async function LessonPage({
   params,
@@ -50,6 +23,10 @@ export default async function LessonPage({
     lesson,
     completed,
     solvedExerciseIds,
+    attemptedExerciseIds,
+    solvedKnowledgeCheckIds,
+    assistedExerciseIds,
+    unlocked,
     prevSlug,
     nextSlug,
     position,
@@ -57,27 +34,58 @@ export default async function LessonPage({
   } =
     view;
 
+  if (!unlocked) {
+    return (
+      <main className="mx-auto max-w-2xl px-4 py-16">
+        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-8 text-center">
+          <h1 className="text-2xl font-bold">This lesson is still locked</h1>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
+            Complete the required activities before this lesson, including the
+            previous module checkpoint when applicable, to continue.
+          </p>
+          <a href={`/courses/${course.slug}`} className="mt-5 inline-block rounded-lg bg-indigo-500 px-4 py-2 text-sm font-semibold text-white">
+            Return to course
+          </a>
+        </div>
+      </main>
+    );
+  }
+
   // Locate the module title for the breadcrumb.
   const moduleTitle =
     course.modules.find((m) => m.lessons.some((l) => l.slug === lesson.slug))
       ?.title ?? course.title;
 
   return (
-    <LessonView
+    <>
+      {course.level === "beginner" && (
+        <LearningEventBeacon
+          eventName="lesson_started"
+          courseSlug={course.slug}
+          lessonSlug={lesson.slug}
+        />
+      )}
+      <LessonView
       courseSlug={course.slug}
       courseTitle={course.title}
       language={course.language}
       lessonSlug={lesson.slug}
       lessonTitle={lesson.title}
       moduleTitle={moduleTitle}
-      blocks={toClientBlocks(lesson.blocks)}
+      blocks={toClientCourseBlocks(lesson.blocks)}
       initialCompleted={completed}
       initialSolvedExerciseIds={solvedExerciseIds}
+      initialAttemptedExerciseIds={attemptedExerciseIds}
+      initialSolvedKnowledgeCheckIds={solvedKnowledgeCheckIds}
+      initialAssistedExerciseIds={assistedExerciseIds}
+      masteryGated={course.progression === "mastery"}
+      beginnerMode={course.level === "beginner"}
       prevSlug={prevSlug}
       nextSlug={nextSlug}
       position={position}
       total={total}
-    />
+      />
+    </>
   );
 }
 

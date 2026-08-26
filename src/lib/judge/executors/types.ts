@@ -10,6 +10,8 @@ export interface ExecFile {
 export interface ExecRequest {
   language: LanguageId;
   files: ExecFile[];
+  /** Standard input supplied to the program. */
+  stdin?: string;
 }
 
 export type ExecStatus = "RE" | "SG" | "TO" | "OL" | "EL" | "XX";

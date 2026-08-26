@@ -21,14 +21,30 @@ export default async function CoursesPage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Courses</h1>
           <p className="text-sm text-muted">
-            Guided, interactive paths for learning a language through data
-            structures and algorithms.
+            Start from your first line of code, then progress into language
+            fluency, data structures, and algorithms.
           </p>
         </div>
       </div>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2">
-        {courses.map((course) => {
+      <div className="mt-8 space-y-9">
+        {[
+          {
+            title: "Start here",
+            description: "No prior programming experience required.",
+            courses: courses.filter((course) => course.level === "beginner"),
+          },
+          {
+            title: "For existing programmers",
+            description: "Build language fluency and algorithmic depth.",
+            courses: courses.filter((course) => course.level !== "beginner"),
+          },
+        ].map((group) => (
+          <section key={group.title}>
+            <h2 className="text-base font-semibold">{group.title}</h2>
+            <p className="mt-1 text-sm text-muted">{group.description}</p>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2">
+        {group.courses.map((course) => {
           const pct =
             course.lessonCount === 0
               ? 0
@@ -47,7 +63,7 @@ export default async function CoursesPage() {
                 <span className="rounded-full bg-indigo-500/10 px-2.5 py-1 text-xs font-semibold text-indigo-300 ring-1 ring-indigo-500/30">
                   {langLabel}
                 </span>
-                {started && pct === 100 && (
+                {course.courseMastered && (
                   <span className="flex items-center gap-1 text-xs font-medium text-emerald-400">
                     <BookOpenCheck className="h-3.5 w-3.5" />
                     Complete
@@ -89,6 +105,9 @@ export default async function CoursesPage() {
             </Link>
           );
         })}
+            </div>
+          </section>
+        ))}
       </div>
     </main>
   );

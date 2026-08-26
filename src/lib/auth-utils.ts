@@ -10,6 +10,18 @@ export function safeRedirectPath(value: unknown): string {
     : "/";
 }
 
+export function onboardingPath(value: unknown): string {
+  const next = safeRedirectPath(value);
+  return next === "/"
+    ? "/onboarding"
+    : `/onboarding?next=${encodeURIComponent(next)}`;
+}
+
+export function experiencedStartPath(value: unknown): string {
+  const next = safeRedirectPath(value);
+  return next === "/" ? "/courses" : next;
+}
+
 export async function clientIp(): Promise<string> {
   const headerList = await headers();
   const forwarded = headerList.get("x-forwarded-for")?.split(",")[0]?.trim();

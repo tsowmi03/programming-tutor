@@ -17,8 +17,9 @@ export interface AiGuidanceProblemContext {
   category: string;
   description: string;
   guidance: GuidanceItem[];
-  signature: FunctionSignature;
-  visibleTests: TestCase[];
+  signature?: FunctionSignature;
+  visibleTests?: TestCase[];
+  sampleCasesText?: string;
   hiddenTestCount: number;
 }
 
@@ -92,7 +93,8 @@ export function sanitizeOutcomeForGuidance(
   };
 }
 
-function renderSignature(signature: FunctionSignature): string {
+function renderSignature(signature: FunctionSignature | undefined): string {
+  if (!signature) return "Complete program (standard input and output)";
   const params = signature.params
     .map((param) => `${param.name}: ${param.type}`)
     .join(", ");
@@ -100,7 +102,10 @@ function renderSignature(signature: FunctionSignature): string {
 }
 
 function renderVisibleTests(problem: AiGuidanceProblemContext): string {
-  if (problem.visibleTests.length === 0) return "No visible tests.";
+  if (problem.sampleCasesText) return problem.sampleCasesText;
+  if (!problem.visibleTests || problem.visibleTests.length === 0) {
+    return "No visible tests.";
+  }
   return problem.visibleTests
     .slice(0, 4)
     .map((test, index) =>

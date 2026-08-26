@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { LANGUAGE_IDS } from "@/lib/judge/languages";
+import { CLIENT_LEARNING_EVENT_NAMES } from "@/lib/learning-event-types";
 
 export const runRequestSchema = z.object({
   slug: z.string().min(1),
@@ -127,6 +128,16 @@ export const loginSchema = z.object({
     .max(200, "Password must be 200 characters or fewer."),
 });
 
+export const onboardingSchema = z.object({
+  experience: z.enum(["beginner", "experienced"]),
+});
+
+export const clientLearningEventSchema = z.object({
+  eventName: z.enum(CLIENT_LEARNING_EVENT_NAMES),
+  courseSlug: z.string().min(1).max(100).optional(),
+  lessonSlug: z.string().min(1).max(100).optional(),
+});
+
 export const selfAssessSchema = z.object({
   submissionId: z.string().min(1),
   selfScore: z.number().int().min(0).max(2),
@@ -212,6 +223,26 @@ export const lessonProgressSchema = z.object({
   courseSlug: z.string().min(1),
   lessonSlug: z.string().min(1),
   completed: z.boolean(),
+});
+
+export const courseKnowledgeCheckSchema = z.object({
+  courseSlug: z.string().min(1).max(100),
+  lessonSlug: z.string().min(1).max(100),
+  activityId: z.string().min(1).max(100),
+  answer: z.string().max(10_000),
+});
+
+export const courseCheckpointSubmitSchema = z.object({
+  courseSlug: z.string().min(1).max(100),
+  moduleSlug: z.string().min(1).max(100),
+  answers: z.record(z.string(), z.string().max(10_000)),
+});
+
+export const courseAssistanceEventSchema = z.object({
+  courseSlug: z.string().min(1).max(100),
+  lessonSlug: z.string().min(1).max(100),
+  exerciseId: z.string().min(1).max(100),
+  kind: z.enum(["guidance_complete", "solution_reveal"]),
 });
 
 export type RunRequest = z.infer<typeof runRequestSchema>;

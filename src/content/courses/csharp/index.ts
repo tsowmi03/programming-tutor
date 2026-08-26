@@ -15,6 +15,9 @@ export const csharpCourse: Course = {
   slug: "csharp-for-developers",
   title: "C# for Developers",
   language: "csharp",
+  level: "intermediate",
+  audience: "Programmers with prior experience",
+  progression: "open",
   tagline:
     "Build complete C# fluency, from the type system to production .NET patterns.",
   description: `A comprehensive C# course for people who **already know how to program**. It begins with the language rules that differ from other ecosystems, then develops practical fluency across collections, LINQ, object-oriented design, error handling, files and serialization, async/await, testing, data structures, and algorithm patterns.

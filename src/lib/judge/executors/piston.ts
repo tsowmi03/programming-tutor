@@ -47,6 +47,7 @@ export async function executeOnPiston(req: ExecRequest): Promise<ExecResult> {
     language: piston.language,
     version: piston.version,
     files: req.files,
+    stdin: req.stdin ?? "",
   });
 
   let lastError: Error | undefined;

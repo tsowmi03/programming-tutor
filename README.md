@@ -23,8 +23,14 @@ reviewed against model answers.
 - **Learning-first design**: progressive guidance, solutions locked until you
   solve (with an honest escape hatch), editorials that teach the *pattern*,
   drafts auto-saved per language, confetti when you earn it
+- **Programming Foundations with Python**: a zero-prerequisite, mastery-gated
+  path with 24 lessons, 48 runnable programs, prediction and tracing checks,
+  remediated 80% checkpoints, mini-projects, and a quiz-game capstone
+- **Two course exercise modes**: isolated function exercises and complete
+  stdin/stdout programs, both executed by the local or Piston sandbox
 - **Progress tracking**: per-topic and per-difficulty breakdowns, submission
-  history with one-click restore into the editor
+  history with one-click restore into the editor, plus course mastery,
+  checkpoint scores, assisted activities, and focused review
 
 ## Quick start
 

@@ -11,6 +11,7 @@ import { buildProblemHref } from "@/lib/problem-navigation";
 import { requireUserPage } from "@/lib/auth";
 import { CATEGORY_LIST } from "@/content/categories";
 import { DifficultyBadge, StatusIcon } from "@/components/badges";
+import { BeginnerDashboard } from "@/components/courses/BeginnerDashboard";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +21,9 @@ function buildCourseExerciseHref(item: CourseExerciseReviewItem): string {
 
 export default async function DashboardPage() {
   const user = await requireUserPage();
+  if (user.programmingExperience === "beginner") {
+    return <BeginnerDashboard user={user} />;
+  }
   const [problems, courses, reviewQueue, courseReviewQueue] = await Promise.all([
     listProblems(user.id),
     listCourses(user.id),

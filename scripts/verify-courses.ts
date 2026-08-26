@@ -7,7 +7,7 @@
  */
 
 import { ALL_COURSES } from "../src/content/courses";
-import { judgeCode } from "../src/lib/judge/judge";
+import { judgeCode, judgeScript } from "../src/lib/judge/judge";
 
 async function main() {
   const only = process.argv[2];
@@ -25,12 +25,19 @@ async function main() {
           const id = `${course.slug}/${lesson.slug}/${ex.id} [${course.language}]`;
           const started = Date.now();
           try {
-            const outcome = await judgeCode({
-              language: course.language,
-              code: ex.solution,
-              signature: ex.signature,
-              tests: ex.tests,
-            });
+            const outcome =
+              ex.mode === "script"
+                ? await judgeScript({
+                    language: course.language,
+                    code: ex.solution,
+                    tests: ex.tests,
+                  })
+                : await judgeCode({
+                    language: course.language,
+                    code: ex.solution,
+                    signature: ex.signature,
+                    tests: ex.tests,
+                  });
             const ok = outcome.status === "passed";
             if (!ok) failures++;
             console.log(
