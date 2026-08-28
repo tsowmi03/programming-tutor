@@ -13,6 +13,30 @@ export function answerIsAccepted(answer: string, accepted: string[]): boolean {
   return accepted.some((value) => normalizeCourseAnswer(value) === normalized);
 }
 
+export function parseCheckpointObjectiveIds(
+  value: string,
+  validObjectiveIds: readonly string[],
+): string[] | null {
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (!Array.isArray(parsed) || parsed.length === 0) return null;
+
+    const validIds = new Set(validObjectiveIds);
+    if (
+      !parsed.every(
+        (objectiveId) =>
+          typeof objectiveId === "string" && validIds.has(objectiveId),
+      )
+    ) {
+      return null;
+    }
+
+    return [...new Set(parsed)];
+  } catch {
+    return null;
+  }
+}
+
 export function requiredActivityIds(lesson: Lesson): string[] {
   return lesson.blocks.flatMap((block) => {
     if (block.kind === "exercise" && block.exercise.required !== false) {
@@ -193,9 +217,25 @@ export async function getCourseMasterySnapshot(
     );
     const checkpointPassed = attempts.some((row) => row.passed);
     const latest = attempts.at(-1);
-    const missed = latest && !latest.passed
-      ? (JSON.parse(latest.missedObjectiveIds) as string[])
-      : [];
+    const checkpointObjectiveIds =
+      courseModule.checkpoint?.slots.map((slot) => slot.objectiveId) ??
+      courseModule.objectiveIds ??
+      [];
+    const storedMissed =
+      latest && !latest.passed
+        ? parseCheckpointObjectiveIds(
+            latest.missedObjectiveIds,
+            checkpointObjectiveIds,
+          )
+        : [];
+    if (latest && !latest.passed && storedMissed === null) {
+      console.error("Invalid checkpoint remediation data", {
+        courseSlug: course.slug,
+        moduleSlug: courseModule.slug,
+        attemptId: latest.id,
+      });
+    }
+    const missed = storedMissed ?? checkpointObjectiveIds;
     const completedRemediation = new Set(
       latest
         ? activityRows

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Award, CheckCircle2, RotateCcw } from "lucide-react";
 import { fetchJson } from "@/components/workspace/shared";
+import { createCheckpointAnswerChangeHandler } from "./checkpoint-answer-change";
 
 interface Question {
   objectiveId: string;
@@ -139,13 +140,13 @@ export function CheckpointWidget({
                 <div className="mt-2 space-y-1.5">
                   {question.choices.map((choice) => (
                     <label key={choice} className="flex cursor-pointer items-start gap-2 rounded-lg border border-edge bg-background/40 px-3 py-2 text-sm">
-                      <input type="radio" name={`${moduleSlug}-${question.objectiveId}`} value={choice} checked={answers[question.objectiveId] === choice} onChange={(event) => setAnswers((current) => ({ ...current, [question.objectiveId]: event.currentTarget.value }))} className="mt-0.5 accent-indigo-500" />
+                      <input type="radio" name={`${moduleSlug}-${question.objectiveId}`} value={choice} checked={answers[question.objectiveId] === choice} onChange={createCheckpointAnswerChangeHandler(question.objectiveId, setAnswers)} className="mt-0.5 accent-indigo-500" />
                       {choice}
                     </label>
                   ))}
                 </div>
               ) : (
-                <input value={answers[question.objectiveId] ?? ""} onChange={(event) => setAnswers((current) => ({ ...current, [question.objectiveId]: event.currentTarget.value }))} className="mt-2 w-full rounded-lg border border-edge bg-background px-3 py-2 text-sm" />
+                <input value={answers[question.objectiveId] ?? ""} onChange={createCheckpointAnswerChangeHandler(question.objectiveId, setAnswers)} className="mt-2 w-full rounded-lg border border-edge bg-background px-3 py-2 text-sm" />
               )}
             </fieldset>
           ))}

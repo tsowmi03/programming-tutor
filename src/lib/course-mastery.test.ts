@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   answerIsAccepted,
   normalizeCourseAnswer,
+  parseCheckpointObjectiveIds,
   requiredActivityIds,
 } from "./course-mastery";
 import type { Lesson } from "@/content/courses";
@@ -45,5 +46,24 @@ describe("course mastery helpers", () => {
       ],
     } satisfies Lesson;
     expect(requiredActivityIds(lesson)).toEqual(["required-check"]);
+  });
+
+  it("validates persisted checkpoint objective identifiers", () => {
+    const validIds = ["m1-order", "m1-output"];
+
+    expect(
+      parseCheckpointObjectiveIds(
+        '["m1-order","m1-output","m1-order"]',
+        validIds,
+      ),
+    ).toEqual(["m1-order", "m1-output"]);
+    expect(parseCheckpointObjectiveIds("not json", validIds)).toBeNull();
+    expect(parseCheckpointObjectiveIds("[]", validIds)).toBeNull();
+    expect(
+      parseCheckpointObjectiveIds('["m1-order",42]', validIds),
+    ).toBeNull();
+    expect(
+      parseCheckpointObjectiveIds('["unknown-objective"]', validIds),
+    ).toBeNull();
   });
 });
