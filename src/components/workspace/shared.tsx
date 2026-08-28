@@ -90,25 +90,26 @@ export function celebrate() {
       zIndex: 100,
       disableForReducedMotion: true,
     };
-    confetti({ ...opts, particleCount: 90, origin: { x: 0.5, y: 0.7 } });
+
+    const launch = (particleCount: number, x: number, y: number) => {
+      try {
+        confetti({ ...opts, particleCount, origin: { x, y } });
+      } catch (error) {
+        console.error("Celebration animation failed:", error);
+      }
+    };
+
+    launch(90, 0.5, 0.7);
     setTimeout(
-      () =>
-        confetti({
-          ...opts,
-          particleCount: 50,
-          origin: { x: 0.2, y: 0.8 },
-        }),
+      () => launch(50, 0.2, 0.8),
       180,
     );
     setTimeout(
-      () =>
-        confetti({
-          ...opts,
-          particleCount: 50,
-          origin: { x: 0.8, y: 0.8 },
-        }),
+      () => launch(50, 0.8, 0.8),
       320,
     );
+  }).catch((error) => {
+    console.error("Celebration animation failed to load:", error);
   });
 }
 
